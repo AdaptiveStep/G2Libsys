@@ -71,6 +71,12 @@ namespace G2Libsys.Data.Repository
             return await _db.QueryAsync<T>("usp_getall_" + _tableName, new { }, commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<T>> GetRangeAsync(string search)
+        {
+            using var _db = Connection;
+            return await _db.QueryAsync<T>("usp_getrange_" + _tableName, new { search }, commandType: CommandType.StoredProcedure);
+        }
+
         // Update
         public async Task UpdateAsync(T item)
         {

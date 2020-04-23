@@ -35,6 +35,13 @@ namespace G2Libsys.Data.Repository
         public Task<IEnumerable<T>> GetAllAsync();
 
         /// <summary>
+        /// Get all items matching search
+        /// </summary>
+        /// <param name="search"></param>
+        /// <returns></returns>
+        public Task<IEnumerable<T>> GetRangeAsync(string search);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="item"></param>
