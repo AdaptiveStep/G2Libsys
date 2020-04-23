@@ -30,10 +30,16 @@ namespace G2Libsys.Data.Repository
         // Create
         public async Task<int> AddAsync(T item)
         {
+            var parameters = new DynamicParameters();
+            parameters.AddDynamicParams(item);
+            parameters.Add("NewID",
+                    dbType: DbType.Int32,
+                 direction: ParameterDirection.Output);
+
             using var _db = Connection;
-            // Example: _tableName = "users";
-            // usp_insert_users = procedure name
-            return await _db.ExecuteScalarAsync<int>("usp_insert_" + _tableName, item, commandType: CommandType.StoredProcedure);
+            await _db.ExecuteScalarAsync<int>("usp_insert_" + _tableName, parameters, commandType: CommandType.StoredProcedure);
+
+            return parameters.Get<int>("NewID");
         }
 
         public async Task AddRange(IEnumerable<T> item)

@@ -12,6 +12,7 @@ namespace G2Libsys.ViewModels
 
         public FrontPageViewModel()
         {
+            // Navigate to vm where vm = ViewModel
             NavigateToVM = new RelayCommand<Type>(vm =>
             {
                 // Create new ViewModel

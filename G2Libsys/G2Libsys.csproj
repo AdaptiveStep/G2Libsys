@@ -10,4 +10,9 @@
     <Folder Include="Controls\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\G2Libsys.Data\G2Libsys.Data.csproj" />
+    <ProjectReference Include="..\G2Libsys.Library\G2Libsys.Library.csproj" />
+  </ItemGroup>
+
 </Project>
