@@ -8,8 +8,8 @@
         xmlns:userControl="clr-namespace:G2Libsys.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        ResizeMode="CanResizeWithGrip" AllowsTransparency="True"
-        SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="None">
+        ResizeMode="CanResizeWithGrip" AllowsTransparency="true"
+        SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="none">
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
             <local:FrontPageView/>
@@ -30,8 +30,7 @@
 
         <!--Navbar-->
         <userControl:NavBarControl Grid.Row="1"
-                                   DataContext="{Binding}"
-                                   />
+                                   DataContext="{Binding}"/>
 
         <!--Content-->
         <Frame Grid.Row="2"
