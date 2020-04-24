@@ -42,14 +42,14 @@ namespace G2Libsys.Data.Repository
         public Task<IEnumerable<T>> GetRangeAsync(string search);
 
         /// <summary>
-        /// 
+        /// Update item in database
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
         public Task UpdateAsync(T item);
 
         /// <summary>
-        /// 
+        /// Delete item from database
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>

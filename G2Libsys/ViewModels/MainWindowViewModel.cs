@@ -28,9 +28,9 @@ namespace G2Libsys.ViewModels
         {
             _userRepo = new UserRepository();
 
-            // Exempelkod
-            GetUsers();
-            InsertUser();
+            // Exempelkod använder temporär databas
+            //GetUsers();
+            //InsertUser();
          
             // Initial viewmodel 
             CurrentViewModel = new FrontPageViewModel();
@@ -38,7 +38,7 @@ namespace G2Libsys.ViewModels
             HostScreen = this;
         }
 
-        // Exempelkod
+        // Exempelkod använder temporär databas
         private async void GetUsers()
         {
             List<User> userlist = new List<User>(await _userRepo.GetAllAsync());
