@@ -11,6 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MaterialDesignColors" Version="1.2.3" />
+    <PackageReference Include="MaterialDesignThemes" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\G2Libsys.Data\G2Libsys.Data.csproj" />
     <ProjectReference Include="..\G2Libsys.Library\G2Libsys.Library.csproj" />
   </ItemGroup>
