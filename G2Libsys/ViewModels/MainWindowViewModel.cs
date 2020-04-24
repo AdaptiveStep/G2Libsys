@@ -1,4 +1,6 @@
 ﻿using G2Libsys.Commands;
+using G2Libsys.Data.Repository;
+using G2Libsys.Library;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +12,7 @@ namespace G2Libsys.ViewModels
         public static MainWindowViewModel HostScreen { get; set; }
 
         private object currentViewModel;
+        private readonly UserRepository _userRepo;
 
         public object CurrentViewModel
         {
@@ -23,17 +26,28 @@ namespace G2Libsys.ViewModels
 
         public MainWindowViewModel()
         {
+            _userRepo = new UserRepository();
 
-            //NavigateToVM = new RelayCommand<FrontPageViewModel>(vm =>
-            //{
-            //    // Create new ViewModel
-            //    CurrentViewModel = Activator.CreateInstance(typeof(FrontPageViewModel), new object[] { vm });
-            //});
-
-            //CurrentViewModel = Activator.CreateInstance(typeof(FrontPageViewModel));            
+            // Exempelkod använder temporär databas
+            //GetUsers();
+            //InsertUser();
+         
+            // Initial viewmodel 
             CurrentViewModel = new FrontPageViewModel();
 
             HostScreen = this;
+        }
+
+        // Exempelkod använder temporär databas
+        private async void GetUsers()
+        {
+            List<User> userlist = new List<User>(await _userRepo.GetAllAsync());
+        }
+
+        private async void InsertUser()
+        {
+            var user = new User { Name = "Olja" };
+            user.ID = await _userRepo.AddAsync(user);
         }
     }
 }
