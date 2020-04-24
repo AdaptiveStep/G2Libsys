@@ -5,9 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:G2Libsys.Views"
         xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+        xmlns:userControl="clr-namespace:G2Libsys.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        SizeToContent="Manual">
+        SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
             <local:FrontPageView/>
@@ -17,7 +18,23 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <Frame Content="{Binding CurrentViewModel}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <!--Window controls-->
+        <userControl:WindowControl DataContext="{Binding}"/>
+
+        <!--Navbar-->
+        <userControl:NavBarControl Grid.Row="1"
+                                   DataContext="{Binding}"
+                                   />
+
+        <!--Content-->
+        <Frame Grid.Row="1"
+               Content="{Binding CurrentViewModel}"
                NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
