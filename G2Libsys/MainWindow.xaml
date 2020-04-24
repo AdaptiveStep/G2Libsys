@@ -8,8 +8,8 @@
         xmlns:userControl="clr-namespace:G2Libsys.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        ResizeMode="CanResizeWithGrip" AllowsTransparency="true"
-        SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="none">
+        ResizeMode="CanResizeWithGrip"
+        SizeToContent="Manual" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
             <local:FrontPageView/>
@@ -18,6 +18,10 @@
             <local:TestView/>
         </DataTemplate>
     </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="{Binding ActualHeight,ElementName=titlebar}"/>
+    </WindowChrome.WindowChrome>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -26,7 +30,7 @@
         </Grid.RowDefinitions>
 
         <!--Window controls-->
-        <userControl:TitleBarControl DataContext="{Binding}"/>
+        <userControl:TitleBarControl DataContext="{Binding}" x:Name="titlebar"/>
 
         <!--Navbar-->
         <userControl:NavBarControl Grid.Row="1"
