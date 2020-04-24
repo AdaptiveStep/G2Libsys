@@ -7,39 +7,14 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="1000">
-    <Grid Background="{StaticResource MaterialDesignDarkBackground}">
+    <Grid Background="{StaticResource MaterialDesignShadowBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
         
-        <!--Background--><!--
-        <Rectangle Grid.ColumnSpan="3">
-            <Rectangle.Fill>
-                <SolidColorBrush Color="{StaticResource Primary300}"/>
-            </Rectangle.Fill>
-        </Rectangle>-->
-
-
         
-        <!--Exit Button-->
-        <Button Grid.Column="2"
-                Background="Transparent"
-                Height="35"
-                Padding="0"
-                Width="35"
-                HorizontalAlignment="Center"
-                Style="{StaticResource MaterialDesignFlatButton}" Click="Button_Click">
-            <Button.Content>
-                <materialDesign:PackIcon Kind="Close"
-                                         HorizontalAlignment="Center"
-                                         VerticalAlignment="Center"
-                                         Height="35"
-                                         Width="35"
-                                         Foreground="{StaticResource MaterialDesignToolForeground}"
-                                         />
-            </Button.Content>
-        </Button>
+
     </Grid>
 </UserControl>

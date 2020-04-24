@@ -8,6 +8,7 @@
         xmlns:userControl="clr-namespace:G2Libsys.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
+        ResizeMode="CanResizeWithGrip" AllowsTransparency="True"
         SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="None">
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
@@ -25,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <!--Window controls-->
-        <userControl:WindowControl DataContext="{Binding}"/>
+        <userControl:TitleBarControl DataContext="{Binding}"/>
 
         <!--Navbar-->
         <userControl:NavBarControl Grid.Row="1"
@@ -33,7 +34,7 @@
                                    />
 
         <!--Content-->
-        <Frame Grid.Row="1"
+        <Frame Grid.Row="2"
                Content="{Binding CurrentViewModel}"
                NavigationUIVisibility="Hidden"/>
     </Grid>

@@ -22,11 +22,5 @@ namespace G2Libsys.Controls
         {
             InitializeComponent();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var window = Application.Current.MainWindow;
-            window.Close();
-        }
     }
 }

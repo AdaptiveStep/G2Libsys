@@ -16,11 +16,23 @@ namespace G2Libsys.Controls
     /// <summary>
     /// Interaction logic for WindowControl.xaml
     /// </summary>
-    public partial class WindowControl : UserControl
+    public partial class TitleBarControl : UserControl
     {
-        public WindowControl()
+        public TitleBarControl()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var window = Application.Current.MainWindow;
+            window.Close();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            var window = Application.Current.MainWindow;
+            window.WindowState = WindowState.Maximized;
         }
     }
 }
