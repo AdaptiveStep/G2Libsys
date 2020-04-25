@@ -9,13 +9,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         ResizeMode="CanResizeWithGrip"
-        SizeToContent="Manual" WindowStartupLocation="CenterScreen">
+        SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
             <local:FrontPageView/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:TestVM}">
             <local:TestView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+            <local:LoginView/>
         </DataTemplate>
     </Window.Resources>
     <WindowChrome.WindowChrome>
@@ -24,8 +27,8 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="16"/>
-            <RowDefinition Height="35"/>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="45"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
