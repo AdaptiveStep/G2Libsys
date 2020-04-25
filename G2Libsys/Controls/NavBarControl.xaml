@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="1000">
     <Grid Background="{StaticResource PrimaryHueLightForegroundBrush}"
-          Height="35">
+          Height="45">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="1*"/>
@@ -17,21 +17,21 @@
             <ColumnDefinition Width="120"/>
         </Grid.ColumnDefinitions>
         
-        <!--Logo-->
+        <!--Logo/Home Button-->
         <Button Padding="0"
-                Height="35"
+                Height="45"
                 Command="{Binding NavigateToVM}"
                 CommandParameter="{x:Type vm:FrontPageViewModel}"
                 Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                            FontWeight="Regular"
-                           FontSize="22"
+                           FontSize="24"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Bottom"
-                           Margin="0 0 0 1"
+                           Margin="0 0 0 4"
                            Foreground="{StaticResource PrimaryHueDarkForegroundBrush}">
-                    <Run FontSize="28" Foreground="{StaticResource PrimaryHueLightBrush}" Text="G2"/><Run Text="Libsys"/>
+                    <Run FontSize="30" Foreground="{StaticResource PrimaryHueLightBrush}" Text="G2"/><Run Text="Libsys"/>
                 </TextBlock>
             </Button.Content>
         </Button>
@@ -41,14 +41,14 @@
         <!--Some Button-->
         <Button Grid.Column="2" 
                 Padding="0"
-                Height="35"
+                Height="45"
                 Command="{Binding NavigateToVM}"
                 CommandParameter="{x:Type vm:TestVM}"
                 Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                        FontWeight="Regular"
-                       FontSize="18"
+                       FontSize="20"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Bottom"
                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
@@ -59,14 +59,14 @@
         <!--Login Button-->
         <Button Grid.Column="3" 
                 Padding="0"
-                Height="35"
+                Height="45"
                 Command="{Binding NavigateToVM}"
-                CommandParameter="{x:Type vm:TestVM}"
+                CommandParameter="{x:Type vm:LoginViewModel}"
                 Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                            FontWeight="Regular"
-                           FontSize="18"
+                           FontSize="20"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Bottom"
                            Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
