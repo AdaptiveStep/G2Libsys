@@ -22,9 +22,9 @@ namespace G2Libsys.Views
             } 
         }
 
-        public BasePage()
+        public BasePage(VM viewModel = null)
         {
-            this.ViewModel = new VM();
+            ViewModel = viewModel ?? new VM();
             this.DataContext = ViewModel;
         }
     }

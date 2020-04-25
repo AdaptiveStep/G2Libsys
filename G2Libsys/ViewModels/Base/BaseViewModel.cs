@@ -25,9 +25,16 @@ namespace G2Libsys.ViewModels
         }
         #endregion
 
+        public virtual ICommand NavigateToVM { get; protected set; }
+
         public BaseViewModel()
         {
-
+            // Navigate to vm where vm = ViewModel
+            NavigateToVM = new RelayCommand<Type>(vm =>
+            {
+                // Create new ViewModel
+                MainWindowViewModel.HostScreen.CurrentViewModel = Activator.CreateInstance(vm);
+            });
         }
     }
 }
