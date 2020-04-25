@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:G2Libsys.Views"
         xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+        xmlns:userControl="clr-namespace:G2Libsys.Controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        SizeToContent="Manual">
+        ResizeMode="CanResizeWithGrip"
+        SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
             <local:FrontPageView/>
@@ -15,9 +17,31 @@
         <DataTemplate DataType="{x:Type vm:TestVM}">
             <local:TestView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+            <local:LoginView/>
+        </DataTemplate>
     </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="{Binding ActualHeight,ElementName=titlebar}"/>
+    </WindowChrome.WindowChrome>
+
     <Grid>
-        <Frame Content="{Binding CurrentViewModel}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="28"/>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <!--Window controls-->
+        <userControl:TitleBarControl DataContext="{Binding}" x:Name="titlebar"/>
+
+        <!--Navbar-->
+        <userControl:NavBarControl Grid.Row="1"
+                                   DataContext="{Binding}"/>
+
+        <!--Content-->
+        <Frame Grid.Row="2"
+               Content="{Binding CurrentViewModel}"
                NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

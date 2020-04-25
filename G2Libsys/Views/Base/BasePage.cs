@@ -6,11 +6,11 @@ using System.Windows.Controls;
 
 namespace G2Libsys.Views
 {
-    public class BasePage<T> : Page where T : BaseViewModel, new()
+    public class BasePage<VM> : Page where VM : BaseViewModel, new()
     {
-        private T viewModel;
+        private VM viewModel;
 
-        public T ViewModel 
+        public VM ViewModel 
         { 
             get => viewModel;
             set 
@@ -22,9 +22,9 @@ namespace G2Libsys.Views
             } 
         }
 
-        public BasePage()
+        public BasePage(VM viewModel = null)
         {
-            this.ViewModel = new T();
+            ViewModel = viewModel ?? new VM();
             this.DataContext = ViewModel;
         }
     }
