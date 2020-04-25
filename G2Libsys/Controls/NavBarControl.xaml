@@ -9,9 +9,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="1000">
     <Grid Background="{StaticResource PrimaryHueLightForegroundBrush}"
-          Height="30">
+          Height="35">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="120"/>
@@ -19,19 +19,19 @@
         
         <!--Logo-->
         <Button Padding="0"
-                Height="30"
+                Height="35"
                 Command="{Binding NavigateToVM}"
                 CommandParameter="{x:Type vm:FrontPageViewModel}"
                 Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                       FontWeight="DemiBold"
-                       FontSize="20"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Bottom"
-                       Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
-                       >
-                    <Run FontSize="26" Foreground="{StaticResource PrimaryHueLightBrush}" Text="G2"/><Run Text="Libsys"/>
+                           FontWeight="Regular"
+                           FontSize="22"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Margin="0 0 0 1"
+                           Foreground="{StaticResource PrimaryHueDarkForegroundBrush}">
+                    <Run FontSize="28" Foreground="{StaticResource PrimaryHueLightBrush}" Text="G2"/><Run Text="Libsys"/>
                 </TextBlock>
             </Button.Content>
         </Button>
@@ -41,16 +41,16 @@
         <!--Some Button-->
         <Button Grid.Column="2" 
                 Padding="0"
-                Height="30"
+                Height="35"
                 Command="{Binding NavigateToVM}"
                 CommandParameter="{x:Type vm:TestVM}"
                 Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                       FontWeight="DemiBold"
-                       FontSize="16"
+                       FontWeight="Regular"
+                       FontSize="18"
                        HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
+                       VerticalAlignment="Bottom"
                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
                        Text="Fråga oss!"/>
             </Button.Content>
@@ -59,18 +59,18 @@
         <!--Login Button-->
         <Button Grid.Column="3" 
                 Padding="0"
-                Height="30"
+                Height="35"
                 Command="{Binding NavigateToVM}"
                 CommandParameter="{x:Type vm:TestVM}"
                 Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                       FontWeight="DemiBold"
-                       FontSize="16"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
-                       Text="Logga in"/>
+                           FontWeight="Regular"
+                           FontSize="18"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Bottom"
+                           Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                           Text="Logga in"/>
             </Button.Content>
         </Button>
     </Grid>

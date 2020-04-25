@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:local="clr-namespace:G2Libsys.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="20" d:DesignWidth="800">
+             d:DesignHeight="16" d:DesignWidth="800">
     <Grid Background="{StaticResource MaterialDesignDarkBackground}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
@@ -19,18 +19,19 @@
 
             <!--Fullscreen Button-->
             <Button Grid.Column="2"
-                        Background="Transparent"
-                        Height="20"
-                        Padding="0"
-                        Width="44"
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource MaterialDesignOutlinedButton}"
-                        BorderBrush="{StaticResource AttentionToActionBrush}">
+                    Background="Transparent"
+                    Height="16"
+                    Padding="0"
+                    Width="44"
+                    Opacity="0.6"
+                    HorizontalAlignment="Center"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    BorderBrush="{StaticResource AttentionToActionBrush}">
                 <Button.Content>
                     <materialDesign:PackIcon Kind="WindowMinimize"
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Center"
-                                                 Height="18"
+                                                 Height="15"
                                                  Width="18"
                                                  Foreground="{StaticResource MaterialDesignToolForeground}"
                                                  />
@@ -40,9 +41,10 @@
             <!--Fullscreen Button-->
             <Button Grid.Column="3"
                     Background="Transparent"
-                    Height="20"
+                    Height="16"
                     Padding="0"
                     Width="44"
+                    Opacity="0.6"
                     HorizontalAlignment="Center"
                     Style="{StaticResource MaterialDesignOutlinedButton}"
                     BorderBrush="{StaticResource AttentionToActionBrush}">
@@ -50,7 +52,7 @@
                     <materialDesign:PackIcon Kind="Fullscreen"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Center"
-                                             Height="18"
+                                             Height="15"
                                              Width="18"
                                              Foreground="{StaticResource MaterialDesignToolForeground}"
                                              />
@@ -60,9 +62,10 @@
             <!--Exit Button-->
             <Button Grid.Column="4"
                     Background="Transparent"
-                    Height="20"
+                    Height="16"
                     Padding="0"
                     Width="44"
+                    Opacity="0.6"
                     HorizontalAlignment="Center"
                     Style="{StaticResource MaterialDesignOutlinedButton}"
                     BorderBrush="{StaticResource AttentionToActionBrush}">
@@ -70,7 +73,7 @@
                     <materialDesign:PackIcon Kind="Close"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Center"
-                                             Height="18"
+                                             Height="15"
                                              Width="18"
                                              Foreground="{StaticResource MaterialDesignToolForeground}"
                                              />
