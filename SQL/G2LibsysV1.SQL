@@ -91,7 +91,7 @@ CREATE TABLE Rights(
 CREATE TABLE Users(
 	ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,                  		--Candidatekey
 	
-	[Card] INT FOREIGN KEY REFERENCES Cards(ID) UNIQUE, 				--Candidatekey
+	[Card] INT FOREIGN KEY REFERENCES Cards(ID), 				--Candidatekey
 	Email VARCHAR(20) 	   NOT NULL UNIQUE,								--Candidatekey
 	[Password] VARCHAR(20) NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
 	Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
@@ -100,7 +100,8 @@ CREATE TABLE Users(
 	LoggedIn bit 		   NOT NULL DEFAULT 0, 
 	)
 	GO
-
+	CREATE UNIQUE INDEX  UC_Users_Card ON Users([Card]) WHERE [Card] IS NOT NULL; -- Needed or null is unique
+	GO
 	--STANDARD INSERTS
 		SET IDENTITY_INSERT 	Users on
 			INSERT INTO 		Users (ID,[Card],[Email], Firstname, Lastname, Rights) 
@@ -191,3 +192,32 @@ CREATE TABLE Users(
 ------------------------------------------------------------------------
 --- OTHER SQL BATCH INSERTS ------------------------------------------
 ------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+--- STORED PROCEDURES ---------------------------------------------
+------------------------------------------------------------------------
+	GO
+Create proc usp_insert_users
+	@ID int = null,
+	@Card int = null,
+	@Email varchar(50),
+	@Password varchar(50),
+	@Firstname varchar(50),
+	@Lastname varchar(50),
+	@Rights int,
+	@LoggedIn bit,
+	@NewID int Output
+	as
+	begin
+		insert into users ([Card], Email, [Password], Firstname, Lastname, Rights, LoggedIn)
+		values (@Card, @Email, @Password, @Firstname, @Lastname, @Rights, @LoggedIn);
+		select @NewID = SCOPE_IDENTITY();
+	end
+
+	GO
+Create proc usp_getall_users
+	as
+	begin
+		select * from users
+	end
