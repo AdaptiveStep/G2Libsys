@@ -27,6 +27,21 @@
                 Command="{Binding NavigateToVM}"
                 CommandParameter="{x:Type vm:TestVM}"
                 />
+
+            <Border Height="100" Background="{StaticResource accent_light}">
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="RightClick" 
+                                  Command="{Binding NavigateToVM}"
+                                  CommandParameter="{x:Type vm:TestVM}"/>
+                    <MouseBinding MouseAction="LeftClick" 
+                                  Command="{Binding NavigateToVM}"
+                                  CommandParameter="{x:Type vm:LoginViewModel}"/>
+                </Border.InputBindings>
+                <TextBlock Text="Border leftclick / rightclick test"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource MaterialDesignHeadline4TextBlock}"/>
+            </Border>
         </StackPanel>
     </Grid>
 </local:BasePage>
