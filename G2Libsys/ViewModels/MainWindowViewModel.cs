@@ -12,6 +12,7 @@ namespace G2Libsys.ViewModels
         public static MainWindowViewModel HostScreen { get; set; }
 
         private object currentViewModel;
+        private readonly IRepository _repository;
         private readonly UserRepository _userRepo;
 
         public object CurrentViewModel
@@ -26,27 +27,29 @@ namespace G2Libsys.ViewModels
 
         public MainWindowViewModel()
         {
+            _repository = new GeneralRepository();
             _userRepo = new UserRepository();
 
             // Exempelkod använder temporär databas
-            //GetUsers();
-            //InsertUser();
-         
-            // Initial viewmodel 
-            CurrentViewModel = new FrontPageViewModel();
+            GetUsers();
+            InsertUser();
 
-            HostScreen = this;
+            // Initial viewmodel 
+            //CurrentViewModel = new FrontPageViewModel();
+
+            //HostScreen = this;
         }
 
         // Exempelkod använder temporär databas
         private async void GetUsers()
         {
             List<User> userlist = new List<User>(await _userRepo.GetAllAsync());
+            List<User> list = new List<User>(await _repository.GetAllAsync<User>());
         }
 
         private async void InsertUser()
         {
-            var user = new User { Name = "Olja" };
+            var user = new User { Email = "bob@g2systems.com", Firstname = "Bob", Lastname = "Ross", Password = "123" };
             user.ID = await _userRepo.AddAsync(user);
         }
     }

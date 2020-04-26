@@ -7,7 +7,7 @@ namespace G2Libsys.Data.Repository
 {
     public class UserRepository : GenericRepository<User>
     {
-        public UserRepository() : base("users")
+        public UserRepository() : base()
         {
 
         }
