@@ -17,6 +17,7 @@ namespace G2Libsys.Data.Repository
         {
 
         }
+
     }
 
     /// <summary>
@@ -34,5 +35,10 @@ namespace G2Libsys.Data.Repository
         {
 
         }
+
+        //public override async Task<IEnumerable<T>> GetAllAsync()
+        //{
+        //    return await base.GetAllAsync<T>();
+        //}
     }
 }

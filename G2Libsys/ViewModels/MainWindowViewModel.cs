@@ -31,7 +31,7 @@ namespace G2Libsys.ViewModels
             _userRepo = new UserRepository();
 
             // Exempelkod använder temporär databas
-            GetUsers();
+            //GetUsers();
             InsertUser();
 
             // Initial viewmodel 
@@ -49,8 +49,10 @@ namespace G2Libsys.ViewModels
 
         private async void InsertUser()
         {
-            var user = new User { Email = "bob@g2systems.com", Firstname = "Bob", Lastname = "Ross", Password = "123" };
+            var user = new User { Email = "bob4@g2systems.com", Firstname = "Bob", Lastname = "Ross", Password = "123" };
+            var user2 = new User { Email = "bert2@g2systems.com", Firstname = "Bert", Lastname = "Karlsson", Password = "123" };
             user.ID = await _userRepo.AddAsync(user);
+            user2.ID = await _repository.AddAsync(user2);
         }
     }
 }

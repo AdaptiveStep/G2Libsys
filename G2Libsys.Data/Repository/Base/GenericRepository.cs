@@ -63,7 +63,7 @@
             // Map item
             DynamicParameters parameters = new DynamicParameters();
             parameters.AddDynamicParams(item);
-
+            
             // Create ID parameter for output
             parameters.Add("NewID",
                     dbType: DbType.Int32,
