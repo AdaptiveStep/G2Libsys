@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace G2Libsys.Data.Repository
+﻿namespace G2Libsys.Data.Repository
 {
     /// <summary>
     /// <inheritdoc cref="GenericRepository"/>
@@ -13,32 +8,22 @@ namespace G2Libsys.Data.Repository
         /// <summary>
         /// Default constructor
         /// </summary>
-        public GeneralRepository()
-        {
-
-        }
+        public GeneralRepository() { }
 
     }
 
     /// <summary>
     /// <inheritdoc cref="GenericRepository{T}"/>
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Model</typeparam>
     public class GeneralRepository<T> : GenericRepository<T> where T : class
     {
         /// <summary>
-        /// Default constructor where tableName = target table in database
+        /// Default constructor where tableName = target table in database <para/>
         /// Note: Only specify table name if needed
         /// </summary>
         /// <param name="tableName">target table</param>
-        public GeneralRepository(string tableName = null) : base(tableName)
-        {
-
-        }
-
-        //public override async Task<IEnumerable<T>> GetAllAsync()
-        //{
-        //    return await base.GetAllAsync<T>();
-        //}
+        public GeneralRepository(string tableName = null) 
+            : base(tableName) { }
     }
 }

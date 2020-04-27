@@ -1,5 +1,8 @@
 ﻿namespace G2Libsys.Data.Repository
 {
+    /// <summary>
+    /// Required namespaces
+    /// </summary>
     #region NameSpaces
     using Dapper;
     using G2Libsys.Library.Extensions;
@@ -9,7 +12,12 @@
     using System.Data;
     using System.Data.SqlClient;
     using System.Threading.Tasks;
+    using System.Transactions;
     #endregion
+
+    // Ändringar här måste även göras i IRepository.
+    // Lägg inte till fler saker här, ändra bara
+    // befintliga metoder om ej fungerar.
 
     /// <summary>
     /// Genric repository with method type params
@@ -50,7 +58,7 @@
 
         #region Connection
 
-        protected IDbConnection Connection => new SqlConnection(_connectionString);
+        protected virtual IDbConnection Connection => new SqlConnection(_connectionString);
 
         #endregion
 
@@ -84,25 +92,26 @@
         {
             using IDbConnection _db = Connection;
 
-            // Start transaction
-            using (IDbTransaction transaction = _db.BeginTransaction())
-            {
-                try
-                {
-                    await _db.ExecuteAsync(
-                                sql: GetProcedureName<T>("insertrange"),
-                              param: items,
-                        commandType: CommandType.StoredProcedure, transaction: transaction);
+            // Connection open needed for transaction
+            _db.Open();
 
-                    // Commit database changes if transaction succeeded
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    // Rollback databse changes if transaction failed
-                    transaction.Rollback();
-                    Console.Error.WriteLine(ex.ToString());
-                }
+            // Start transaction
+            using IDbTransaction transaction = _db.BeginTransaction();
+            try
+            {
+                await _db.ExecuteAsync(
+                            sql: GetProcedureName<T>("insertrange"),
+                          param: items,
+                    commandType: CommandType.StoredProcedure, transaction: transaction);
+
+                // Commit database changes if transaction succeeded
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                // Rollback databse changes if transaction failed
+                transaction.Rollback();
+                throw new TransactionAbortedException(ex.ToString());
             }
         }
 
@@ -163,7 +172,7 @@
 
         #endregion
 
-        #region Private Methods
+        #region Protected Methods
 
         /// <summary>
         /// Generate procedure name with name of <typeparamref name="T"/> Model and proc type
@@ -171,7 +180,7 @@
         /// <typeparam name="T">Model</typeparam>
         /// <param name="action">procedure type</param>
         /// <returns></returns>
-        private string GetProcedureName<T>(string action)
+        protected virtual string GetProcedureName<T>(string action)
         {
             string table = _tableName ?? typeof(T).ToTableName();
             return $"{_prefix}_{action}_{table}";
@@ -185,7 +194,8 @@
     /// NOTE: Use for specific model
     /// </summary>
     /// <typeparam name="T">Model</typeparam>
-    public abstract class GenericRepository<T> : GenericRepository, IRepository<T> where T : class
+    public abstract class GenericRepository<T> : GenericRepository, IRepository<T> 
+        where T : class
     {
         #region Constructor
 
@@ -193,9 +203,8 @@
         /// Default constructor where tableName = target table in database <para/>
         /// Note: Only specify tablename if needed
         /// </summary>
-        public GenericRepository(string tableName = null) :
-            base(tableName)
-        { }
+        public GenericRepository(string tableName = null) 
+            : base(tableName) { }
 
         #endregion
 
