@@ -7,6 +7,10 @@ using System.Windows.Markup;
 
 namespace G2Libsys.Converters
 {
+    /// <summary>
+    /// Base class for value converters
+    /// </summary>
+    /// <typeparam name="T">Converter class</typeparam>
     public abstract class BaseValueConverter<T> : MarkupExtension, IValueConverter where T : class, new()
     {
         /// <summary>

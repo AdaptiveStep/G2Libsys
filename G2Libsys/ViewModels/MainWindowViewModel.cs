@@ -14,6 +14,7 @@ namespace G2Libsys.ViewModels
         #region Privates
 
         private object currentViewModel;
+        private bool isLoggedIn;
         private readonly UserRepository _userRepo;
 
         #endregion
@@ -38,6 +39,36 @@ namespace G2Libsys.ViewModels
             }
         }
 
+        #region Bools
+
+        /// <summary>
+        /// True if user is not already logged in
+        /// </summary>
+        public bool CanLogIn
+        {
+            get => !isLoggedIn;
+            set
+            {
+                isLoggedIn = !value;
+                OnPropertyChanged(nameof(CanLogIn));
+            }
+        }
+
+        /// <summary>
+        /// Check if user is logged in
+        /// </summary>
+        public bool IsLoggedIn
+        {
+            get => isLoggedIn;
+            set
+            {
+                isLoggedIn = value;
+                OnPropertyChanged(nameof(IsLoggedIn));
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Constructor
@@ -47,22 +78,28 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
+            Initialize();
+
             // Exempelkod använder temporär databas
             _userRepo = new UserRepository();
 
             //GetUsers();
             //InsertUser();
-            // --------------------------------
+        }
 
+        #endregion
+
+        public void Initialize()
+        {
             // Set MainWindowViewModel to hostscreen
             HostScreen = this;
+
+            IsLoggedIn = false;
 
             // Initial viewmodel 
             //NavigateToVM.Execute(typeof(FrontPageViewModel));
             CurrentViewModel = new FrontPageViewModel();
         }
-
-        #endregion
 
         // Exempelkod använder temporär databas
         private async void GetUsers()
