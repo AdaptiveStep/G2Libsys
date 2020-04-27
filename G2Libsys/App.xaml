@@ -17,6 +17,8 @@
             <SolidColorBrush x:Key="primary_dark" Color="#07393C" />
             <SolidColorBrush x:Key="primary_mid" Color="#2C666E" />
             <SolidColorBrush x:Key="accent_light" Color="#90DDF0" />
+            
+           
         </ResourceDictionary>
     </Application.Resources>
 </Application>
