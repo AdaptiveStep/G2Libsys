@@ -30,6 +30,8 @@ namespace G2Libsys.ViewModels
             _repository = new GeneralRepository();
             _userRepo = new UserRepository();
 
+
+
             // Exempelkod använder temporär databas
             GetUsers();
             //InsertUser();
@@ -43,6 +45,8 @@ namespace G2Libsys.ViewModels
         // Exempelkod använder temporär databas
         private async void GetUsers()
         {
+            //List<User> b = new List<User>();
+            //await _repository.AddRange(b);
             List<User> userlist = new List<User>(await _userRepo.GetAllAsync());
             List<User> list = new List<User>(await _repository.GetAllAsync<User>());
         }

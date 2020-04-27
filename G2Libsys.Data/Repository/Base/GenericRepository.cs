@@ -12,64 +12,7 @@
     #endregion
 
     /// <summary>
-    /// Generic repository where <typeparamref name="T"/> is Model
-    /// </summary>
-    /// <typeparam name="T">Model</typeparam>
-    public abstract class GenericRepository<T> : GenericRepository, IRepository<T> where T : class
-    {
-        #region Constructor
-
-        /// <summary>
-        /// Default constructor where tableName = target table in database <para/>
-        /// Note: Only specify tablename if needed
-        /// </summary>
-        public GenericRepository(string tableName = null) : 
-            base(tableName) { }
-
-        #endregion
-
-        #region Queries
-
-        public virtual async Task<int> AddAsync(T item)
-        {
-            return await base.AddAsync(item);
-        }
-
-        public virtual async Task AddRange(IEnumerable<T> items)
-        {
-            await base.AddRange(items);
-        }
-
-        public virtual async Task<T> GetByIdAsync(int id)
-        {
-            return await base.GetByIdAsync<T>(id);
-        }
-
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
-        {
-            return await base.GetAllAsync<T>();
-        }
-
-        public virtual async Task<IEnumerable<T>> GetRangeAsync(string search)
-        {
-            return await base.GetRangeAsync<T>(search);
-        }
-
-        public virtual async Task UpdateAsync(T item)
-        {
-            await base.UpdateAsync(item);
-        }
-
-        public virtual async Task RemoveAsync(T item)
-        {
-            await base.RemoveAsync(item);
-        }
-
-        #endregion
-    }
-
-    /// <summary>
-    /// Repository with method type params
+    /// Genric repository with method type params
     /// </summary>
     public abstract class GenericRepository : IRepository
     {
@@ -142,23 +85,24 @@
             using IDbConnection _db = Connection;
 
             // Start transaction
-            using IDbTransaction transaction = _db.BeginTransaction();
-
-            try
+            using (IDbTransaction transaction = _db.BeginTransaction())
             {
-                await _db.ExecuteAsync(
-                            sql: GetProcedureName<T>("insertrange"), 
-                          param: items, 
-                    commandType: CommandType.StoredProcedure, transaction: transaction);
+                try
+                {
+                    await _db.ExecuteAsync(
+                                sql: GetProcedureName<T>("insertrange"),
+                              param: items,
+                        commandType: CommandType.StoredProcedure, transaction: transaction);
 
-                // Commit database changes if transaction succeeded
-                transaction.Commit();
-            }
-            catch
-            {
-                // Rollback databse changes if transaction failed
-                transaction.Rollback();
-                throw new Exception("Insert Failed");
+                    // Commit database changes if transaction succeeded
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    // Rollback databse changes if transaction failed
+                    transaction.Rollback();
+                    Console.Error.WriteLine(ex.ToString());
+                }
             }
         }
 
@@ -235,4 +179,43 @@
 
         #endregion
     }
+
+    /// <summary>
+    /// Generic repository where type is predetermined as <typeparamref name="T"/> Model <para/>
+    /// NOTE: Use for specific model
+    /// </summary>
+    /// <typeparam name="T">Model</typeparam>
+    public abstract class GenericRepository<T> : GenericRepository, IRepository<T> where T : class
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Default constructor where tableName = target table in database <para/>
+        /// Note: Only specify tablename if needed
+        /// </summary>
+        public GenericRepository(string tableName = null) :
+            base(tableName)
+        { }
+
+        #endregion
+
+        #region Queries
+
+        public virtual async Task<int> AddAsync(T item) => await base.AddAsync(item);
+
+        public virtual async Task AddRange(IEnumerable<T> items) => await base.AddRange(items);
+
+        public virtual async Task<T> GetByIdAsync(int id) => await base.GetByIdAsync<T>(id);
+
+        public virtual async Task<IEnumerable<T>> GetAllAsync() => await base.GetAllAsync<T>();
+
+        public virtual async Task<IEnumerable<T>> GetRangeAsync(string search) => await base.GetRangeAsync<T>(search);
+
+        public virtual async Task UpdateAsync(T item) => await base.UpdateAsync(item);
+
+        public virtual async Task RemoveAsync(T item) => await base.RemoveAsync(item);
+
+        #endregion
+    }
+
 }
