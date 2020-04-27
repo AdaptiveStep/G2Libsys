@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:G2Libsys.Styles">
+
+    <SolidColorBrush x:Key="light_background" Color="#F0EDEE" />
+    <SolidColorBrush x:Key="primary_dark" Color="#07393C" />
+    <SolidColorBrush x:Key="primary_mid" Color="#2C666E" />
+    <SolidColorBrush x:Key="accent_light" Color="#90DDF0" />
+    
+</ResourceDictionary>

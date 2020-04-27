@@ -6,19 +6,20 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <!-- Register Views -->
+                <ResourceDictionary Source="Views/Base/PageDataTemplates.xaml"/>
+                
+                <!-- MaterialDesign Theme -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+
+                <!-- MaterialDesign Colors -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Teal.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Cyan.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
-            <!-- Custom colors -->
-            <SolidColorBrush x:Key="light_background" Color="#F0EDEE" />
-            <SolidColorBrush x:Key="primary_dark" Color="#07393C" />
-            <SolidColorBrush x:Key="primary_mid" Color="#2C666E" />
-            <SolidColorBrush x:Key="accent_light" Color="#90DDF0" />
-            
-           
+                <!-- Custom Colors -->
+                <ResourceDictionary Source="Styles/Colors.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
