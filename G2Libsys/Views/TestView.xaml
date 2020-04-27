@@ -11,6 +11,38 @@
       Title="TestView">
 
     <Grid Background="Khaki">
-        
+        <StackPanel VerticalAlignment="Center">
+            <Button Content="TestVM"
+                Margin="10"
+                Height="50"
+                Width="100"
+                Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                Command="{Binding NavigateToVM}"
+                CommandParameter="{x:Type vm:TestVM}"
+                />
+            <Button Content="TestVM"
+                Margin="10"
+                Height="50"
+                Width="100"
+                Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                Command="{Binding NavigateToVM}"
+                CommandParameter="{x:Type vm:TestVM}"
+                />
+
+            <Border Height="100" Background="{StaticResource accent_light}">
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="RightClick" 
+                                  Command="{Binding NavigateToVM}"
+                                  CommandParameter="{x:Type vm:TestVM}"/>
+                    <MouseBinding MouseAction="LeftClick" 
+                                  Command="{Binding NavigateToVM}"
+                                  CommandParameter="{x:Type vm:LoginViewModel}"/>
+                </Border.InputBindings>
+                <TextBlock Text="Border leftclick / rightclick test"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Style="{StaticResource MaterialDesignHeadline4TextBlock}"/>
+            </Border>
+        </StackPanel>
     </Grid>
 </local:BasePage>

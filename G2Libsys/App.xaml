@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- Register Views -->
-                <ResourceDictionary Source="Views/Base/PageDataTemplates.xaml"/>
+                <ResourceDictionary Source="Templates/PageDataTemplates.xaml"/>
                 
                 <!-- MaterialDesign Theme -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
