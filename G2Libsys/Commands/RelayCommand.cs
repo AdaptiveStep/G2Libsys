@@ -4,15 +4,12 @@ using System.Windows.Input;
 namespace G2Libsys.Commands
 {
     /// <summary>
-    /// <typeparamref name="ICommand"/> implementation with built in Action
+    /// <typeparamref name="ICommand"/> implementation
     /// </summary>
-    public class RelayCommand : ICommand
+    public class RelayCommand : RelayCommand<object>
     {
-        private readonly Predicate<object> _canExecute;
-        private readonly Action<object> _execute;
-
         /// <summary>
-        /// Initializes command with <paramref name="canExecute"/> as true by default
+        /// Initializes command without <paramref name="canExecute"/>
         /// </summary>
         /// <param name="execute"></param>
         public RelayCommand(Action<object> execute) : this(execute, null) { }
@@ -22,27 +19,8 @@ namespace G2Libsys.Commands
         /// </summary>
         /// <param name="execute"></param>
         /// <param name="canExecute"></param>
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute)
-        {
-            _execute = execute ?? throw new ArgumentNullException("execute");
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter) => _canExecute == null || _canExecute(parameter);
-
-        public void Execute(object parameter) => _execute(parameter);
-
-        public event EventHandler CanExecuteChanged
-        {
-            add
-            {
-                CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                CommandManager.RequerySuggested -= value;
-            }
-        }
+        public RelayCommand(Action<object> execute, Predicate<object> canExecute) 
+            : base(execute, canExecute) { }
     }
 
     /// <summary>
@@ -71,10 +49,21 @@ namespace G2Libsys.Commands
             _canExecute = canExecute;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter"></param>
         public bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="parameter"></param>
         public void Execute(object parameter) => _execute((T)parameter);
 
+        /// <summary>
+        /// 
+        /// </summary>
         public event EventHandler CanExecuteChanged
         {
             add

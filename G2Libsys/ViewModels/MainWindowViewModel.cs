@@ -14,7 +14,6 @@ namespace G2Libsys.ViewModels
         #region Privates
 
         private object currentViewModel;
-        private readonly UserRepository _userRepo;
 
         #endregion
 
@@ -47,33 +46,9 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
-            // Exempelkod använder temporär databas
-            _userRepo = new UserRepository();
-
-            //GetUsers();
-            //InsertUser();
-            // --------------------------------
-
-            // Set MainWindowViewModel to hostscreen
             HostScreen = this;
 
-            // Initial viewmodel 
-            //NavigateToVM.Execute(typeof(FrontPageViewModel));
             CurrentViewModel = new FrontPageViewModel();
-        }
-
-        #endregion
-
-        // Exempelkod använder temporär databas
-        private async void GetUsers()
-        {
-            List<User> userlist = new List<User>(await _userRepo.GetAllAsync());
-        }
-
-        private async void InsertUser()
-        {
-            var user = new User { Name = "Olja" };
-            user.ID = await _userRepo.AddAsync(user);
         }
     }
 }
