@@ -25,7 +25,9 @@ namespace G2Libsys.ViewModels
 
         public MainWindowViewModel()
         {
+            HostScreen = this;
 
+            CurrentViewModel = new FrontPageViewModel();
         }
     }
 }
