@@ -30,11 +30,11 @@
 
 		USE [master]
 		GO
-		ALTER DATABASE [TESTDB55] SET  SINGLE_USER WITH ROLLBACK IMMEDIATE
+		ALTER DATABASE [G2Libsys] SET  SINGLE_USER WITH ROLLBACK IMMEDIATE
 		GO
 		USE [master]
 		GO
-		DROP DATABASE [TESTDB55]
+		DROP DATABASE [G2Libsys]
 		GO
 		----------- WARNING
 
@@ -42,9 +42,9 @@
 		GO 
 		USE [master]
 		GO
-		Create Database [TESTDB55]
+		Create Database [G2Libsys]
 		GO
-		USE [TESTDB55]
+		USE [G2Libsys]
 		GO
 
 ------------------------------------------------------------------------
