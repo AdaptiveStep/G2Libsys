@@ -15,7 +15,6 @@ namespace G2Libsys.ViewModels
 
         private object currentViewModel;
         private bool isLoggedIn;
-        private readonly UserRepository _userRepo;
 
         #endregion
 
@@ -79,7 +78,6 @@ namespace G2Libsys.ViewModels
         public MainWindowViewModel()
         {
             Initialize();
-
         }
 
         #endregion
