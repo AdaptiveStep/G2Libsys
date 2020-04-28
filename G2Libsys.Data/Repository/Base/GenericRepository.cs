@@ -1,36 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dapper;
-using DapperExtensions;
-
-namespace G2Libsys.Data.Repository
+﻿namespace G2Libsys.Data.Repository
 {
-    public abstract class GenericRepository<T> : IRepository<T> where T : class
+    /// <summary>
+    /// Required namespaces
+    /// </summary>
+    #region NameSpaces
+    using Dapper;
+    using G2Libsys.Library.Extensions;
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Data;
+    using System.Data.SqlClient;
+    using System.Threading.Tasks;
+    using System.Transactions;
+    #endregion
+
+    // Ändringar här måste även göras i IRepository.
+    // Lägg inte till fler saker här, ändra bara
+    // befintliga metoder om ej fungerar.
+
+    /// <summary>
+    /// Genric repository with method type params
+    /// </summary>
+    public abstract class GenericRepository : IRepository
     {
-        private readonly string _tableName;
+        #region Privates
+
+        /// <summary>
+        /// Default prodecure prefix
+        /// </summary>
+        private const string _prefix = "usp";
+
+        /// <summary>
+        /// Connection string
+        /// </summary>
         private readonly string _connectionString;
+
+        /// <summary>
+        /// Name of target table
+        /// </summary>
+        private readonly string _tableName;
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// tableName = target table in database
         /// </summary>
-        public GenericRepository(string tableName)
+        public GenericRepository(string tableName = null)
         {
             _tableName = tableName;
             _connectionString = ConfigurationManager.ConnectionStrings["sqldefault"].ConnectionString;
         }
 
-        protected IDbConnection Connection => new SqlConnection(_connectionString);
+        #endregion
 
-        public async Task<int> AddAsync(T item)
+        #region Connection
+
+        protected virtual IDbConnection Connection => new SqlConnection(_connectionString);
+
+        #endregion
+
+        #region Queries
+
+        public virtual async Task<int> AddAsync<T>(T item)
         {
             // Map item
-            var parameters = new DynamicParameters();
+            DynamicParameters parameters = new DynamicParameters();
             parameters.AddDynamicParams(item);
 
             // Create ID parameter for output
@@ -39,75 +76,155 @@ namespace G2Libsys.Data.Repository
                  direction: ParameterDirection.Output);
 
             // Open connection
-            using var _db = Connection;
+            using IDbConnection _db = Connection;
 
             // Insert mapped item and set NewID to created item ID
-            await _db.ExecuteScalarAsync<int>("usp_insert_" + _tableName, parameters, commandType: CommandType.StoredProcedure);
+            await _db.ExecuteScalarAsync<int>(
+                        sql: GetProcedureName<T>("insert"), 
+                      param: parameters, 
+                commandType: CommandType.StoredProcedure);
 
             // Return the ID of inserted item
             return parameters.Get<int>("NewID");
         }
 
-        public async Task AddRange(IEnumerable<T> item)
+        public virtual async Task AddRange<T>(IEnumerable<T> items)
         {
-            using var _db = Connection;
+            using IDbConnection _db = Connection;
+
+            // Connection open needed for transaction
+            _db.Open();
 
             // Start transaction
-            using var transaction = _db.BeginTransaction();
-
+            using IDbTransaction transaction = _db.BeginTransaction();
             try
             {
-                await _db.ExecuteAsync("usp_insertrange_" + _tableName, item, commandType: CommandType.StoredProcedure, transaction: transaction);
+                await _db.ExecuteAsync(
+                            sql: GetProcedureName<T>("insertrange"),
+                          param: items,
+                    commandType: CommandType.StoredProcedure, transaction: transaction);
 
                 // Commit database changes if transaction succeeded
                 transaction.Commit();
             }
-            catch
+            catch (Exception ex)
             {
                 // Rollback databse changes if transaction failed
                 transaction.Rollback();
-                throw new Exception("Insert Failed");
+                throw new TransactionAbortedException(ex.ToString());
             }
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public virtual async Task<T> GetByIdAsync<T>(int id)
         {
-            using var _db = Connection;
+            using IDbConnection _db = Connection;
 
             // Return item with matching id
-            return await _db.QueryFirstAsync<T>("usp_getbyid_" + _tableName, new { id }, commandType: CommandType.StoredProcedure);
+            return await _db.QueryFirstOrDefaultAsync<T>(
+                        sql: GetProcedureName<T>("getbyid"), 
+                      param: new { id }, 
+                commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            using var _db = Connection;
+            using IDbConnection _db = Connection;
 
             // Return all items of type T
-            return await _db.QueryAsync<T>("usp_getall_" + _tableName, new { }, commandType: CommandType.StoredProcedure);
+            return await _db.QueryAsync<T>(
+                        sql: GetProcedureName<T>("getall"), 
+                      param: new { }, 
+                commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<IEnumerable<T>> GetRangeAsync(string search)
+        public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(string search)
         {
-            using var _db = Connection;
+            using IDbConnection _db = Connection;
 
             // Return all items matching search
-            return await _db.QueryAsync<T>("usp_getrange_" + _tableName, new { search }, commandType: CommandType.StoredProcedure);
+            return await _db.QueryAsync<T>(
+                        sql: GetProcedureName<T>("getrange"), 
+                      param: new { search }, 
+                commandType: CommandType.StoredProcedure);
         }
 
-        public async Task UpdateAsync(T item)
+        public virtual async Task UpdateAsync<T>(T item)
         {
-            using var _db = Connection;
+            using IDbConnection _db = Connection;
 
             // Update item in database
-            await _db.ExecuteAsync("usp_update_" + _tableName, item, commandType: CommandType.StoredProcedure);
+            await _db.ExecuteAsync(
+                        sql: GetProcedureName<T>("update"), 
+                      param: item, 
+                commandType: CommandType.StoredProcedure);
         }
 
-        public async Task RemoveAsync(T item)
+        public virtual async Task RemoveAsync<T>(T item)
         {
-            using var _db = Connection;
+            using IDbConnection _db = Connection;
 
             // Remove item from database
-            await _db.ExecuteAsync("usp_remove_" + _tableName, item, commandType: CommandType.StoredProcedure);
+            await _db.ExecuteAsync(
+                        sql: GetProcedureName<T>("remove"), 
+                      param: item, 
+                commandType: CommandType.StoredProcedure);
         }
+
+        #endregion
+
+        #region Protected Methods
+
+        /// <summary>
+        /// Generate procedure name with name of <typeparamref name="T"/> Model and proc type
+        /// </summary>
+        /// <typeparam name="T">Model</typeparam>
+        /// <param name="action">procedure type</param>
+        /// <returns></returns>
+        protected virtual string GetProcedureName<T>(string action)
+        {
+            string table = _tableName ?? typeof(T).ToTableName();
+            return $"{_prefix}_{action}_{table}";
+        }
+
+        #endregion
     }
+
+    /// <summary>
+    /// Generic repository where type is predetermined as <typeparamref name="T"/> Model <para/>
+    /// NOTE: Use for specific model
+    /// </summary>
+    /// <typeparam name="T">Model</typeparam>
+    public abstract class GenericRepository<T> : GenericRepository, IRepository<T> 
+        where T : class
+    {
+        #region Constructor
+
+        /// <summary>
+        /// Default constructor where tableName = target table in database <para/>
+        /// Note: Only specify tablename if needed
+        /// </summary>
+        public GenericRepository(string tableName = null) 
+            : base(tableName) { }
+
+        #endregion
+
+        #region Queries
+
+        public virtual async Task<int> AddAsync(T item) => await base.AddAsync(item);
+
+        public virtual async Task AddRange(IEnumerable<T> items) => await base.AddRange(items);
+
+        public virtual async Task<T> GetByIdAsync(int id) => await base.GetByIdAsync<T>(id);
+
+        public virtual async Task<IEnumerable<T>> GetAllAsync() => await base.GetAllAsync<T>();
+
+        public virtual async Task<IEnumerable<T>> GetRangeAsync(string search) => await base.GetRangeAsync<T>(search);
+
+        public virtual async Task UpdateAsync(T item) => await base.UpdateAsync(item);
+
+        public virtual async Task RemoveAsync(T item) => await base.RemoveAsync(item);
+
+        #endregion
+    }
+
 }
