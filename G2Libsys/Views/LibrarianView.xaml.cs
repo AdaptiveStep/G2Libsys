@@ -1,4 +1,6 @@
-﻿using System;
+﻿using G2Libsys.ViewModels;
+using MaterialDesignThemes.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -16,11 +18,13 @@ namespace G2Libsys.Views
     /// <summary>
     /// Interaction logic for LibrarianView.xaml
     /// </summary>
-    public partial class LibrarianView : Page
+    public partial class LibrarianView : BasePage<LibrarianViewModel>
     {
+        
         public LibrarianView()
         {
             InitializeComponent();
+            DataContext = new LibrarianViewModel();
         }
     }
 }

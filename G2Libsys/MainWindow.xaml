@@ -20,6 +20,9 @@
         <DataTemplate DataType="{x:Type vm:LoginViewModel}">
             <local:LoginView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:LibrarianViewModel}">
+            <local:LibrarianView/>
+        </DataTemplate>
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="{Binding ActualHeight,ElementName=titlebar}"/>
