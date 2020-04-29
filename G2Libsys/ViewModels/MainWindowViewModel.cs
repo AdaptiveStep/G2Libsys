@@ -1,19 +1,33 @@
 ﻿using G2Libsys.Commands;
 using G2Libsys.Data.Repository;
 using G2Libsys.Library;
+using G2Libsys.Views;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace G2Libsys.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        public static MainWindowViewModel HostScreen { get; set; }
+        #region Privates
 
         private object currentViewModel;
-        private readonly UserRepository _userRepo;
+        private bool isLoggedIn;
 
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Property for calling the mainviewmodel for navigation purposes
+        /// </summary>
+        public static MainWindowViewModel HostScreen { get; set; }
+
+        /// <summary>
+        /// Sets the active viewmodel
+        /// </summary>
         public object CurrentViewModel
         {
             get => currentViewModel;
@@ -24,30 +38,60 @@ namespace G2Libsys.ViewModels
             }
         }
 
+        #region Bools
+
+        /// <summary>
+        /// True if user is not already logged in
+        /// </summary>
+        public bool CanLogIn
+        {
+            get => !isLoggedIn;
+            set
+            {
+                isLoggedIn = !value;
+                OnPropertyChanged(nameof(CanLogIn));
+            }
+        }
+
+        /// <summary>
+        /// Check if user is logged in
+        /// </summary>
+        public bool IsLoggedIn
+        {
+            get => isLoggedIn;
+            set
+            {
+                isLoggedIn = value;
+                OnPropertyChanged(nameof(IsLoggedIn));
+            }
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public MainWindowViewModel()
         {
-            _userRepo = new UserRepository();
+            Initialize();
+        }
 
-            // Exempelkod använder temporär databas
-            //GetUsers();
-            //InsertUser();
-         
-            // Initial viewmodel 
-            CurrentViewModel = new FrontPageViewModel();
+        #endregion
 
+        public void Initialize()
+        {
+            // Set MainWindowViewModel to hostscreen
             HostScreen = this;
-        }
 
-        // Exempelkod använder temporär databas
-        private async void GetUsers()
-        {
-            List<User> userlist = new List<User>(await _userRepo.GetAllAsync());
-        }
+            IsLoggedIn = false;
 
-        private async void InsertUser()
-        {
-            var user = new User { Name = "Olja" };
-            user.ID = await _userRepo.AddAsync(user);
+            // Initial viewmodel 
+            //NavigateToVM.Execute(typeof(FrontPageViewModel));
+            CurrentViewModel = new FrontPageViewModel();
         }
     }
 }

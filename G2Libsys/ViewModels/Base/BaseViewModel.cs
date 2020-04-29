@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using G2Libsys.Commands;
 
 namespace G2Libsys.ViewModels
@@ -13,7 +14,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Property changed event handler
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
 
         /// <summary>
         /// Raise property changed event on calling members name
@@ -25,16 +26,30 @@ namespace G2Libsys.ViewModels
         }
         #endregion
 
+        #region Public Commands
+        /// <summary>
+        /// Command for navigating to another ViewModel
+        /// </summary>
         public virtual ICommand NavigateToVM { get; protected set; }
+        #endregion
 
+        #region Constructor
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public BaseViewModel()
         {
             // Navigate to vm where vm = ViewModel
             NavigateToVM = new RelayCommand<Type>(vm =>
             {
-                // Create new ViewModel
-                MainWindowViewModel.HostScreen.CurrentViewModel = Activator.CreateInstance(vm);
+                try
+                {
+                    // Create new ViewModel
+                    MainWindowViewModel.HostScreen.CurrentViewModel = Activator.CreateInstance(vm);
+                }
+                catch { throw new Exception("Couldn't find " + vm.ToString()); }
             });
         }
+        #endregion
     }
 }

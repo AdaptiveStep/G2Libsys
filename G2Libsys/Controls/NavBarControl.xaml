@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+             xmlns:converter="clr-namespace:G2Libsys.Converters"
              xmlns:local="clr-namespace:G2Libsys.Controls"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
@@ -58,6 +59,7 @@
         
         <!--Login Button-->
         <Button Grid.Column="3" 
+                Visibility="{Binding CanLogIn, Converter={converter:BoolToVisibilityConverter}}"
                 Padding="0"
                 Height="45"
                 Command="{Binding NavigateToVM}"
