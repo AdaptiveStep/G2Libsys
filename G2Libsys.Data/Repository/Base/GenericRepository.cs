@@ -24,7 +24,7 @@
     /// </summary>
     public abstract class GenericRepository : IRepository
     {
-        #region Privates
+        #region Private fields
 
         /// <summary>
         /// Default prodecure prefix
@@ -46,6 +46,7 @@
         #region Constructor
 
         /// <summary>
+        /// Default constructor, 
         /// tableName = target table in database
         /// </summary>
         public GenericRepository(string tableName = null)
@@ -132,7 +133,7 @@
 
             // Return all items of type T
             return await _db.QueryAsync<T>(
-                        sql: GetProcedureName<T>("getall"), 
+                        sql: GetProcedureName<T>("getall"),
                       param: new { }, 
                 commandType: CommandType.StoredProcedure);
         }

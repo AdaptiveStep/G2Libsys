@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
@@ -24,6 +25,11 @@ namespace G2Libsys.ViewModels
         /// Property for calling the mainviewmodel for navigation purposes
         /// </summary>
         public static MainWindowViewModel HostScreen { get; set; }
+
+        public IRepository<User> repoUser = new GeneralRepository<User>();
+        public IRepository repoGen  = new GeneralRepository();
+        public IUserRepository userRepo = new UserRepository();
+
 
         /// <summary>
         /// Sets the active viewmodel
@@ -49,7 +55,6 @@ namespace G2Libsys.ViewModels
             set
             {
                 isLoggedIn = !value;
-                OnPropertyChanged(nameof(CanLogIn));
             }
         }
 
@@ -63,10 +68,17 @@ namespace G2Libsys.ViewModels
             {
                 isLoggedIn = value;
                 OnPropertyChanged(nameof(IsLoggedIn));
+                OnPropertyChanged(nameof(CanLogIn));
             }
         }
 
         #endregion
+
+        #endregion
+
+        #region Public Commands
+
+        public ICommand LogOutCommand { get; set; }
 
         #endregion
 
@@ -78,6 +90,8 @@ namespace G2Libsys.ViewModels
         public MainWindowViewModel()
         {
             Initialize();
+
+            LogOutCommand = new RelayCommand(x => LogOut());
         }
 
         #endregion
@@ -92,6 +106,12 @@ namespace G2Libsys.ViewModels
             // Initial viewmodel 
             //NavigateToVM.Execute(typeof(FrontPageViewModel));
             CurrentViewModel = new FrontPageViewModel();
+        }
+
+        private void LogOut()
+        {
+            IsLoggedIn = false;
+            NavigateToVM.Execute(typeof(FrontPageViewModel));
         }
     }
 }
