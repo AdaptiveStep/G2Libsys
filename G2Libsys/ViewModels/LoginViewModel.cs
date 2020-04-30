@@ -16,21 +16,21 @@ namespace G2Libsys.ViewModels
                     Email = "bob@gmail.com",
                     Firstname = "Bob",
                     Lastname = "Anka",
-                    Rights = new Right() { ID = 1, Name = "Admin" }
+                    UserType = new UserType() { ID = 1, Name = "Admin" }
                 },
                 new User()
                 {
                     Email = "pelle@gmail.com",
                     Firstname = "Pelle",
                     Lastname = "Planka",
-                    Rights = new Right() { ID = 2, Name = "Bibliotekarie" }
+                    UserType = new UserType() { ID = 2, Name = "Bibliotekarie" }
                 },
                 new User()
                 {
                     Email = "guest@gmail.com",
                     Firstname = "Gäst",
                     Lastname = "Låst",
-                    Rights = new Right() { ID = 3, Name = "Användare" }
+                    UserType = new UserType() { ID = 3, Name = "Användare" }
                 }
             };
 
@@ -38,7 +38,7 @@ namespace G2Libsys.ViewModels
             var rnd = new Random();
             hostScreen.IsLoggedIn = true;
             hostScreen.CurrentUser = Users[rnd.Next(0, 3)];
-            hostScreen.UserType = GetUserAccess(hostScreen.CurrentUser.Rights.ID);
+            hostScreen.UserType = GetUserAccess(hostScreen.CurrentUser.UserType.ID);
         }
 
         public Type GetUserAccess(int id)
@@ -48,7 +48,7 @@ namespace G2Libsys.ViewModels
                 case 1:
                     return typeof(AdminViewModel);
                 case 2:
-                    return typeof(LoginViewModel);
+                    return typeof(TestVM);
                 case 3:
                     return typeof(TestVM);
                 default:

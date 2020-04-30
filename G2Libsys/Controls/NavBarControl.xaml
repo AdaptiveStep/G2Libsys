@@ -115,7 +115,7 @@
                         Width="200"
                         Command="{Binding NavigateToVM}"
                         CommandParameter="{Binding UserType}"
-                        Header="{Binding CurrentUser.Rights.Name}" />
+                        Header="{Binding CurrentUser.UserType.Name}" />
                     <Separator />
                     <MenuItem Command="{Binding LogOutCommand}" Header="Logout" />
                 </MenuItem>

@@ -1,83 +1,88 @@
-﻿<UserControl x:Class="G2Libsys.Controls.TitleBarControl"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             xmlns:local="clr-namespace:G2Libsys.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="800">
-    <Grid Background="{StaticResource MaterialDesignDarkBackground}" Height="28">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="45"/>
-                <ColumnDefinition Width="9.5"/>
-            </Grid.ColumnDefinitions>
+﻿<UserControl
+    x:Class="G2Libsys.Controls.TitleBarControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:G2Libsys.Controls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="30"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid Height="28" Background="{StaticResource MaterialDesignDarkBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="45" />
+            <ColumnDefinition Width="45" />
+            <ColumnDefinition Width="45" />
+            <ColumnDefinition Width="9.5" />
+        </Grid.ColumnDefinitions>
 
-            <!--Fullscreen Button-->
-            <Button Grid.Column="2"
-                    Background="Transparent"
-                    Height="22"
-                    Padding="0"
-                    Width="44"
-                    Opacity="0.6"
+        <!--  Fullscreen Button  -->
+        <Button
+            Grid.Column="2"
+            Width="44"
+            Height="22"
+            Padding="0"
+            HorizontalAlignment="Center"
+            Background="Transparent"
+            BorderBrush="{StaticResource AttentionToActionBrush}"
+            Opacity="0.6"
+            Style="{StaticResource MaterialDesignOutlinedButton}">
+            <Button.Content>
+                <materialDesign:PackIcon
+                    Width="18"
+                    Height="15"
                     HorizontalAlignment="Center"
-                    Style="{StaticResource MaterialDesignOutlinedButton}"
-                    BorderBrush="{StaticResource AttentionToActionBrush}">
-                <Button.Content>
-                    <materialDesign:PackIcon Kind="WindowMinimize"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center"
-                                                 Height="15"
-                                                 Width="18"
-                                                 Foreground="{StaticResource MaterialDesignToolForeground}"
-                                                 />
-                </Button.Content>
-            </Button>
+                    VerticalAlignment="Center"
+                    Foreground="{StaticResource MaterialDesignToolForeground}"
+                    Kind="WindowMinimize" />
+            </Button.Content>
+        </Button>
 
-            <!--Fullscreen Button-->
-            <Button Grid.Column="3"
-                    Background="Transparent"
-                    Height="22"
-                    Padding="0"
-                    Width="44"
-                    Opacity="0.6"
+        <!--  Fullscreen Button  -->
+        <Button
+            Grid.Column="3"
+            Width="44"
+            Height="22"
+            Padding="0"
+            HorizontalAlignment="Center"
+            Background="Transparent"
+            BorderBrush="{StaticResource AttentionToActionBrush}"
+            Opacity="0.6"
+            Style="{StaticResource MaterialDesignOutlinedButton}">
+            <Button.Content>
+                <materialDesign:PackIcon
+                    Width="18"
+                    Height="15"
                     HorizontalAlignment="Center"
-                    Style="{StaticResource MaterialDesignOutlinedButton}"
-                    BorderBrush="{StaticResource AttentionToActionBrush}">
-                <Button.Content>
-                    <materialDesign:PackIcon Kind="Fullscreen"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"
-                                             Height="15"
-                                             Width="18"
-                                             Foreground="{StaticResource MaterialDesignToolForeground}"
-                                             />
-                </Button.Content>
-            </Button>
+                    VerticalAlignment="Center"
+                    Foreground="{StaticResource MaterialDesignToolForeground}"
+                    Kind="Fullscreen" />
+            </Button.Content>
+        </Button>
 
-            <!--Exit Button-->
-            <Button Grid.Column="4"
-                    Background="Transparent"
-                    Height="22"
-                    Padding="0"
-                    Width="44"
-                    Opacity="0.6"
+        <!--  Exit Button  -->
+        <Button
+            Grid.Column="4"
+            Width="44"
+            Height="22"
+            Padding="0"
+            HorizontalAlignment="Center"
+            Background="Transparent"
+            BorderBrush="{StaticResource AttentionToActionBrush}"
+            Opacity="0.6"
+            Style="{StaticResource MaterialDesignOutlinedButton}">
+            <Button.Content>
+                <materialDesign:PackIcon
+                    Width="18"
+                    Height="15"
                     HorizontalAlignment="Center"
-                    Style="{StaticResource MaterialDesignOutlinedButton}"
-                    BorderBrush="{StaticResource AttentionToActionBrush}">
-                <Button.Content>
-                    <materialDesign:PackIcon Kind="Close"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"
-                                             Height="15"
-                                             Width="18"
-                                             Foreground="{StaticResource MaterialDesignToolForeground}"
-                                             />
-                </Button.Content>
-            </Button>
+                    VerticalAlignment="Center"
+                    Foreground="{StaticResource MaterialDesignToolForeground}"
+                    Kind="Close" />
+            </Button.Content>
+        </Button>
     </Grid>
 </UserControl>
