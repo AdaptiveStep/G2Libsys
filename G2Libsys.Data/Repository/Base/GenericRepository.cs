@@ -185,7 +185,7 @@
         {
             string table = _tableName ?? typeof(T).ToTableName();
             return $"{_prefix}_{action}_{table}";
-        }
+        }             //usp_getall_users
 
         #endregion
     }

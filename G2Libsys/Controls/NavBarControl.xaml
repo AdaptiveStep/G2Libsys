@@ -114,12 +114,8 @@
                     <MenuItem
                         Width="200"
                         Command="{Binding NavigateToVM}"
-                        CommandParameter="{x:Type vm:AdminViewModel}"
-                        Header="Home" />
-                    <MenuItem
-                        Command="{Binding NavigateToVM}"
-                        CommandParameter="{x:Type vm:TestVM}"
-                        Header="TestView" />
+                        CommandParameter="{Binding UserType}"
+                        Header="{Binding CurrentUser.Rights.Name}" />
                     <Separator />
                     <MenuItem Command="{Binding LogOutCommand}" Header="Logout" />
                 </MenuItem>

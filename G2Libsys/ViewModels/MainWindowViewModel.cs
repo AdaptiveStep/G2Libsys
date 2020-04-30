@@ -26,9 +26,29 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public static MainWindowViewModel HostScreen { get; set; }
 
-        public IRepository<User> repoUser = new GeneralRepository<User>();
-        public IRepository repoGen  = new GeneralRepository();
-        public IUserRepository userRepo = new UserRepository();
+        private User currentUser;
+
+        public User CurrentUser
+        {
+            get => currentUser;
+            set 
+            { 
+                currentUser = value;
+                OnPropertyChanged(nameof(CurrentUser));
+            }
+        }
+
+        private object userType;
+
+        public object UserType
+        {
+            get => userType;
+            set 
+            { 
+                userType = value;
+                OnPropertyChanged(nameof(UserType));
+            }
+        }
 
 
         /// <summary>
@@ -111,6 +131,7 @@ namespace G2Libsys.ViewModels
         private void LogOut()
         {
             IsLoggedIn = false;
+            CurrentUser = null;
             NavigateToVM.Execute(typeof(FrontPageViewModel));
         }
     }

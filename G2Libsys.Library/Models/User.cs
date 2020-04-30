@@ -15,7 +15,7 @@ namespace G2Libsys.Library
         public string Password { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
-        public int Rights { get; set; } = 3; // Default 'Användare'
+        public Right Rights { get; set; }
         public bool LoggedIn { get; set; } = false;
     }
 }
