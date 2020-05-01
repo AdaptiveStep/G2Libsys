@@ -16,7 +16,7 @@
             <ColumnDefinition Width="150" />
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="120" />
-            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="140" />
         </Grid.ColumnDefinitions>
 
         <!--  Logo/Home Button  -->
@@ -91,6 +91,7 @@
             <Menu
                 Margin="0"
                 Padding="0"
+                FontSize="20"
                 HorizontalAlignment="Stretch"
                 Background="Black"
                 FlowDirection="RightToLeft">
@@ -105,19 +106,33 @@
                     HorizontalContentAlignment="Center">
                     <MenuItem.Header>
                         <TextBlock
-                            Margin="0,0,-60,0"
+                            Margin="0,0,-70,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            FontSize="20"
                             Text="Mina sidor" />
                     </MenuItem.Header>
                     <MenuItem
-                        Width="200"
+                        Width="160"
                         Command="{Binding NavigateToVM}"
-                        CommandParameter="{Binding UserType}"
-                        Header="{Binding CurrentUser.UserType.Name}" />
+                        CommandParameter="{Binding UserType}">
+                        <MenuItem.Header>
+                            <TextBlock
+                            Margin="0,0,-80,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="{Binding Path=CurrentUser.UserType.Name}" />
+                        </MenuItem.Header>
+                    </MenuItem>
                     <Separator />
-                    <MenuItem Command="{Binding LogOutCommand}" Header="Logout" />
+                    <MenuItem Command="{Binding LogOutCommand}">
+                        <MenuItem.Header>
+                            <TextBlock
+                            Margin="0,0,-80,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text="Logout" />
+                        </MenuItem.Header>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
         </Grid>

@@ -4,6 +4,7 @@ using G2Libsys.Library;
 using G2Libsys.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -125,7 +126,7 @@ namespace G2Libsys.ViewModels
 
             // Initial viewmodel 
             //NavigateToVM.Execute(typeof(FrontPageViewModel));
-            CurrentViewModel = new FrontPageViewModel();
+            //CurrentViewModel = new FrontPageViewModel();
         }
 
         private void LogOut()

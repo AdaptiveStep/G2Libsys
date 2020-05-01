@@ -11,5 +11,8 @@
     d:DesignWidth="480"
     x:TypeArguments="vm:AdminViewModel"
     mc:Ignorable="d">
-    <Grid Background="LightCoral" />
+    <Grid Background="LightCoral">
+        <Button Content="TestVM"
+                Command="{Binding GoToVMWithData}"/>
+    </Grid>
 </local:BasePage>
