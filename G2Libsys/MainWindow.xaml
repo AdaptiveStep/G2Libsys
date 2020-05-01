@@ -18,6 +18,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>
             <RowDefinition Height="45"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
@@ -27,6 +29,10 @@
         <!--Navbar-->
         <userControl:NavBarControl Grid.Row="1"
                                    DataContext="{Binding}"/>
+
+        <userControl:SearchHeaderControl DataContext="{Binding}" x:Name="searchtitle"
+                                         Grid.Row="2"/>
+        
 
         <!--Content-->
         <Frame Grid.Row="2"

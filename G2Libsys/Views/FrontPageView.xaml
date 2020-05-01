@@ -6,42 +6,70 @@
                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                 xmlns:local="clr-namespace:G2Libsys.Views"
                 xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+                xmlns:uc="clr-namespace:G2Libsys.Controls"
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                mc:Ignorable="d" 
-                d:DesignHeight="480" d:DesignWidth="480">
-    <Grid Background="GreenYellow">
-        <StackPanel VerticalAlignment="Center">
-        <Button Content="TestVM"
-                Margin="10"
-                Height="50"
-                Width="100"
-                Style="{StaticResource MaterialDesignRaisedDarkButton}"
-                Command="{Binding NavigateToVM}"
-                CommandParameter="{x:Type vm:TestVM}"
-                />        
-        <Button Content="TestVM"
-                Margin="10"
-                Height="50"
-                Width="100"
-                Style="{StaticResource MaterialDesignRaisedAccentButton}"
-                Command="{Binding NavigateToVM}"
-                CommandParameter="{x:Type vm:TestVM}"
+                mc:Ignorable="d"
+                d:DesignHeight="1500" d:DesignWidth="780"
+                FontFamily="{StaticResource MaterialDesignFont}">
+
+    <Grid Background="{StaticResource light_background}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="auto" />
+            
+        </Grid.RowDefinitions>
+
+        <!--Header-->
+        <ScrollViewer Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3">
+            
+        <WrapPanel
+                   Orientation="Vertical"
+                   >
+        <TextBlock Text="Heta Boktips!"
+                   FontSize="30"
+                   Grid.Column="1"
+                   Grid.Row="0"
+                   HorizontalAlignment="Left"
+                   FontFamily="{StaticResource MaterialDesignFont}"
+                   FontWeight="Regular"/>
+        <uc:SmallPostControl 
+                
+                DataContext="{Binding}" 
+                x:Name="smallpostcontrol"
+                Margin="0 0 40 0"
                 />
 
-            <Border Height="100" Background="{StaticResource accent_light}">
-                <Border.InputBindings>
-                    <MouseBinding MouseAction="RightClick" 
-                                  Command="{Binding NavigateToVM}"
-                                  CommandParameter="{x:Type vm:TestVM}"/>
-                    <MouseBinding MouseAction="LeftClick" 
-                                  Command="{Binding NavigateToVM}"
-                                  CommandParameter="{x:Type vm:LoginViewModel}"/>
-                </Border.InputBindings>
-                <TextBlock Text="Border leftclick / rightclick test"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Style="{StaticResource MaterialDesignHeadline4TextBlock}"/>
-            </Border>
-        </StackPanel>
+                <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" />
+            
+                <uc:BigPostControl 
+                
+                DataContext="{Binding}" 
+                x:Name="bigpostctrl"
+                Grid.ColumnSpan="2"
+                    
+                />
+
+                <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" Height="50"/>
+
+
+                <uc:SmallPostControl 
+                
+                DataContext="{Binding}" 
+                x:Name="smallpostonrl"
+                />
+        <uc:SmallPostControl 
+                
+                DataContext="{Binding}" 
+                x:Name="smallpostCntrl"
+                />
+            </WrapPanel>
+
+        </ScrollViewer>
     </Grid>
 </local:BasePage>

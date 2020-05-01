@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace G2Libsys.Controls
 {
     /// <summary>
-    /// Interaction logic for SearchBarControl.xaml
+    /// Interaction logic for BigPostControl.xaml
     /// </summary>
-    public partial class SearchBarControl : UserControl
+    public partial class BigPostControl : UserControl
     {
-        public SearchBarControl()
+        public BigPostControl()
         {
             InitializeComponent();
         }
