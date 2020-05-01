@@ -8,7 +8,8 @@ namespace G2Libsys.ViewModels
     {
         public LoginViewModel()
         {
-
+            //MainWindowViewModel.HostScreen.IsLoggedIn = true;
+            //MainWindowViewModel.HostScreen.CanLogIn = false;
         }
     }
 }

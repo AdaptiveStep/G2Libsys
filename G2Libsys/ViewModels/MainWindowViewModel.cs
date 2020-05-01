@@ -14,7 +14,7 @@ namespace G2Libsys.ViewModels
         #region Privates
 
         private object currentViewModel;
-        private readonly UserRepository _userRepo;
+        private bool isLoggedIn;
 
         #endregion
 
@@ -38,6 +38,36 @@ namespace G2Libsys.ViewModels
             }
         }
 
+        #region Bools
+
+        /// <summary>
+        /// True if user is not already logged in
+        /// </summary>
+        public bool CanLogIn
+        {
+            get => !isLoggedIn;
+            set
+            {
+                isLoggedIn = !value;
+                OnPropertyChanged(nameof(CanLogIn));
+            }
+        }
+
+        /// <summary>
+        /// Check if user is logged in
+        /// </summary>
+        public bool IsLoggedIn
+        {
+            get => isLoggedIn;
+            set
+            {
+                isLoggedIn = value;
+                OnPropertyChanged(nameof(IsLoggedIn));
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Constructor
@@ -47,33 +77,21 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
-            // Exempelkod använder temporär databas
-            _userRepo = new UserRepository();
-
-            //GetUsers();
-            //InsertUser();
-            // --------------------------------
-
-            // Set MainWindowViewModel to hostscreen
-            HostScreen = this;
-
-            // Initial viewmodel 
-            //NavigateToVM.Execute(typeof(FrontPageViewModel));
-            CurrentViewModel = new FrontPageViewModel();
+            Initialize();
         }
 
         #endregion
 
-        // Exempelkod använder temporär databas
-        private async void GetUsers()
+        public void Initialize()
         {
-            List<User> userlist = new List<User>(await _userRepo.GetAllAsync());
-        }
+            // Set MainWindowViewModel to hostscreen
+            HostScreen = this;
 
-        private async void InsertUser()
-        {
-            var user = new User { Name = "Olja" };
-            user.ID = await _userRepo.AddAsync(user);
+            IsLoggedIn = false;
+
+            // Initial viewmodel 
+            //NavigateToVM.Execute(typeof(FrontPageViewModel));
+            CurrentViewModel = new FrontPageViewModel();
         }
     }
 }
