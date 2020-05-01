@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="G2Libsys.Controls.BigPostControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:G2Libsys.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="320" d:DesignWidth="650"
+             FontFamily="{StaticResource MaterialDesignFont}">
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="300"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition Width="650"/>
+            <ColumnDefinition Width="25"/>
+        </Grid.ColumnDefinitions>
+        
+    <materialDesign:Card 
+        Grid.Row="1"
+        Grid.Column="1"
+        Background="{StaticResource accent_light}">
+    <Grid >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Det mest naturliga"
+                       Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                       />
+            <StackPanel
+                       Grid.Row="1"
+                       Grid.RowSpan="2">
+                
+            <TextBlock Text="Susanne Burelo"
+                       Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                       />
+                
+                
+            <WrapPanel 
+                Grid.Row="1" 
+                >
+            <TextBlock 
+                TextWrapping="Wrap"
+                Grid.Row="1"
+                Style="{StaticResource MaterialDesignTextBlock}"
+                Text="
+
+Det här är en berättelse om det mest naturliga i livet, att skaffa barn. Om barnlängtan och kampen att bli gravid genom ivf när biologin inte är där.
+
+En resa genom spruckna drömmar, sargade kroppar, hopp och förtvivlan. Om det som oftast tas för givet. Från renaste lycka till mörkaste avgrund då
+det förödande beskedet kommer, att barnet vi väntar har Downs syndrom.
+Då allting rasar och ingenting längre känns naturligt.
+
+»När jag skrev den här boken, berättelsen om det mest naturliga, skrev jag den för alla de som burit liv. De som kämpat och de som fortfarande kämpar. Jag vet hur svårt det kan vara. Jag vet hur ont det kan göra. I både kropp och själ. Jag vet hur ensamt det är.
+                
+«Susanne Burelo" />
+                        <TextBlock Text="Publicerad den 30 april"
+                                   Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
+                    </WrapPanel>
+            </StackPanel>
+            <!--Image-->
+            <materialDesign:Card Grid.Column="1"
+                                 Grid.RowSpan="3"
+                                 Margin="0 5 5 0"
+                                 Background="{StaticResource accent_light}">
+                
+            <Image
+                Source="https://www.blue.se/wp-content/uploads/2020/02/det-mest-naturliga_600.jpg"/>
+            </materialDesign:Card>
+
+    </Grid>
+    </materialDesign:Card>
+    </Grid>
+</UserControl>
