@@ -89,7 +89,7 @@
             return parameters.Get<int>("NewID");
         }
 
-        public virtual async Task AddRange<T>(IEnumerable<T> items)
+        public virtual async Task AddRangeAsync<T>(IEnumerable<T> items)
         {
             using IDbConnection _db = Connection;
 
@@ -213,7 +213,7 @@
 
         public virtual async Task<int> AddAsync(T item) => await base.AddAsync(item);
 
-        public virtual async Task AddRange(IEnumerable<T> items) => await base.AddRange(items);
+        public virtual async Task AddRangeAsync(IEnumerable<T> items) => await base.AddRangeAsync(items);
 
         public virtual async Task<T> GetByIdAsync(int id) => await base.GetByIdAsync<T>(id);
 

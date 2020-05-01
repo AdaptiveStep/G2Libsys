@@ -1,9 +1,11 @@
 ﻿using G2Libsys.Commands;
 using G2Libsys.Data.Repository;
 using G2Libsys.Library;
+using G2Libsys.Models;
 using G2Libsys.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -13,8 +15,10 @@ namespace G2Libsys.ViewModels
 {
     public class MainWindowViewModel : BaseViewModel
     {
-        #region Privates
+        #region Private Fields
 
+        private User currentUser;
+        private UserMenuItem userType;
         private object currentViewModel;
         private bool isLoggedIn;
 
@@ -27,8 +31,6 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public static MainWindowViewModel HostScreen { get; set; }
 
-        private User currentUser;
-
         public User CurrentUser
         {
             get => currentUser;
@@ -39,18 +41,18 @@ namespace G2Libsys.ViewModels
             }
         }
 
-        private object userType;
-
-        public object UserType
+        /// <summary>
+        /// 
+        /// </summary>
+        public UserMenuItem UserType
         {
             get => userType;
             set 
-            { 
+            {
                 userType = value;
                 OnPropertyChanged(nameof(UserType));
             }
         }
-
 
         /// <summary>
         /// Sets the active viewmodel
@@ -113,6 +115,8 @@ namespace G2Libsys.ViewModels
             Initialize();
 
             LogOutCommand = new RelayCommand(x => LogOut());
+
+
         }
 
         #endregion
@@ -125,7 +129,6 @@ namespace G2Libsys.ViewModels
             IsLoggedIn = false;
 
             // Initial viewmodel 
-            //NavigateToVM.Execute(typeof(FrontPageViewModel));
             //CurrentViewModel = new FrontPageViewModel();
         }
 

@@ -91,10 +91,10 @@
             <Menu
                 Margin="0"
                 Padding="0"
-                FontSize="20"
                 HorizontalAlignment="Stretch"
                 Background="Black"
-                FlowDirection="RightToLeft">
+                FlowDirection="RightToLeft"
+                FontSize="20">
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid />
@@ -114,27 +114,40 @@
                     <MenuItem
                         Width="160"
                         Command="{Binding NavigateToVM}"
-                        CommandParameter="{Binding UserType}">
+                        CommandParameter="{x:Type vm:TestVM}">
                         <MenuItem.Header>
                             <TextBlock
-                            Margin="0,0,-80,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="{Binding Path=CurrentUser.UserType.Name}" />
+                                Margin="0,0,-100,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Text="Profil" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem
+                        Width="160"
+                        Command="{Binding NavigateToVM}"
+                        CommandParameter="{Binding Path=UserType.Type}">
+                        <MenuItem.Header>
+                            <TextBlock
+                                Margin="0,0,-100,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Text="{Binding Path=UserType.Title}" />
                         </MenuItem.Header>
                     </MenuItem>
                     <Separator />
                     <MenuItem Command="{Binding LogOutCommand}">
                         <MenuItem.Header>
                             <TextBlock
-                            Margin="0,0,-80,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="Logout" />
+                                Margin="0,0,-100,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Text="Logout" />
                         </MenuItem.Header>
                     </MenuItem>
                 </MenuItem>
             </Menu>
+
         </Grid>
     </Grid>
 </UserControl>

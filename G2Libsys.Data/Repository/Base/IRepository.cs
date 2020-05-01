@@ -28,7 +28,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Task AddRange<T>(IEnumerable<T> item);
+        public Task AddRangeAsync<T>(IEnumerable<T> item);
 
         /// <summary>
         /// Get item by id
@@ -83,7 +83,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Task AddRange(IEnumerable<T> item);
+        public Task AddRangeAsync(IEnumerable<T> item);
 
         /// <summary>
         /// Get item by id

@@ -15,7 +15,7 @@ namespace G2Libsys.Library
         public string Password { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
-        public UserType UserType { get; set; }
+        public int UserType { get; set; }
         public bool LoggedIn { get; set; }
     }
 }

@@ -1,59 +1,69 @@
-﻿using G2Libsys.Library;
+﻿using G2Libsys.Data.Repository;
+using G2Libsys.Library;
+using G2Libsys.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace G2Libsys.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        #region Private Fields
+        private readonly IRepository _repo;
+
+        #endregion
+
+        #region Public Properties
+        #endregion
+
+        #region Public Properties
+
         public LoginViewModel()
         {
-            var Users = new List<User>() {
-                new User()
-                {
-                    Email = "bob@gmail.com",
-                    Firstname = "Bob",
-                    Lastname = "Anka",
-                    UserType = new UserType() { ID = 1, Name = "Admin" }
-                },
-                new User()
-                {
-                    Email = "pelle@gmail.com",
-                    Firstname = "Pelle",
-                    Lastname = "Planka",
-                    UserType = new UserType() { ID = 2, Name = "Bibliotekarie" }
-                },
-                new User()
-                {
-                    Email = "guest@gmail.com",
-                    Firstname = "Gäst",
-                    Lastname = "Låst",
-                    UserType = new UserType() { ID = 3, Name = "Användare" }
-                }
-            };
+            _repo = new GeneralRepository();
 
-            var hostScreen = MainWindowViewModel.HostScreen;
-            var rnd = new Random();
-            hostScreen.IsLoggedIn = true;
-            hostScreen.CurrentUser = Users[rnd.Next(0, 3)];
-            hostScreen.UserType = GetUserAccess(hostScreen.CurrentUser.UserType.ID);
+            Getusers();
         }
 
-        public Type GetUserAccess(int id)
+        #endregion
+
+
+        #region Public Properties
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        public UserMenuItem GetUserAccess(int id)
         {
             switch (id)
             {
                 case 1:
-                    return typeof(AdminViewModel);
+                    return new UserMenuItem("Admin", new AdminViewModel());
                 case 2:
-                    return typeof(TestVM);
-                case 3:
-                    return typeof(TestVM);
+                    return new UserMenuItem("Bibliotekarie", new TestVM());
                 default:
-                    return typeof(FrontPageViewModel);
+                    return new UserMenuItem("Mina lån", new TestVM());
             }
         }
+
+        private async void Getusers()
+        {
+            var hostScreen = MainWindowViewModel.HostScreen;
+
+            var rnd = new Random();
+
+            var users = new List<User>();
+
+            users.AddRange(await _repo.GetAllAsync<User>());
+
+            hostScreen.IsLoggedIn = true;
+            hostScreen.CurrentUser = users[rnd.Next(0, 3)];
+            hostScreen.UserType = GetUserAccess(hostScreen.CurrentUser.ID);
+        }
+
+        #endregion
     }
 }
