@@ -8,7 +8,6 @@ namespace G2Libsys.ViewModels
     {
         public AdminViewModel()
         {
-
         }
     }
 }

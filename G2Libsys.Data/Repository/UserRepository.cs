@@ -1,11 +1,14 @@
 ﻿namespace G2Libsys.Data.Repository
 {
+    using Dapper;
+
     /// <summary>
     /// Required namespaces
     /// </summary>
     #region Namespaces
     using G2Libsys.Library;
     using System;
+    using System.Data;
     using System.Threading.Tasks;
     #endregion
 
@@ -19,20 +22,21 @@
         /// <summary>
         /// Default constructor
         /// </summary>
-        public UserRepository() : base()
-        {
-
-        }
+        public UserRepository() 
+            : base() { }
 
         /// <summary>
         /// Example User specific query
         /// </summary>
-        public Task ExampleQueryAsync()
+        public async Task<User> VerifyLoginAsync(string email, string password)
         {
-            using var _db = base.Connection;
-            var procedureName = base.GetProcedureName<User>("ProcedureActionName");
-            _db.Close();
-            throw new NotImplementedException();
+            using IDbConnection _db = base.Connection;
+
+            // Fetch user with correct username and password
+            return await _db.QueryFirstOrDefaultAsync<User>(
+                        sql: GetProcedureName<User>("verifylogin"),
+                      param: new { email, password },
+                commandType: CommandType.StoredProcedure);
         }
     }
 }
