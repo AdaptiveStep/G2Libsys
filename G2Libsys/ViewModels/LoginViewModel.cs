@@ -12,57 +12,86 @@ namespace G2Libsys.ViewModels
     public class LoginViewModel : BaseViewModel
     {
         #region Private Fields
-        private readonly IRepository _repo;
-
+        private readonly IUserRepository _repo;
+        private string username;
+        private string password;
         #endregion
-
-        #region Public Properties
-        #endregion
-
-        #region Public Properties
-
-        public LoginViewModel()
-        {
-            _repo = new GeneralRepository();
-
-            Getusers();
-        }
-
-        #endregion
-
 
         #region Public Properties
         /// <summary>
-        /// 
+        /// User email
         /// </summary>
-        /// <param name="id"></param>
-        public UserMenuItem GetUserAccess(int id)
+        public string Username
         {
-            switch (id)
-            {
-                case 1:
-                    return new UserMenuItem("Admin", new AdminViewModel());
-                case 2:
-                    return new UserMenuItem("Bibliotekarie", new TestVM());
-                default:
-                    return new UserMenuItem("Mina lån", new TestVM());
+            get => username;
+            set 
+            { 
+                username = value;
+                OnPropertyChanged(nameof(Username));
             }
         }
 
-        private async void Getusers()
+        /// <summary>
+        /// User password
+        /// </summary>
+        public string Password
+        {
+            get => password;
+            set 
+            {
+                password = value;
+                OnPropertyChanged(nameof(Password));
+            }
+        }
+        #endregion
+
+        #region Constructor
+        /// <summary>
+        /// 
+        /// </summary>
+        public LoginViewModel()
+        {
+            _repo = new UserRepository();
+
+            Username = "Johan@johan.com";
+            password = "25857";
+
+            VerifyLogin();
+        }
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// 
+        /// </summary>
+        private async void VerifyLogin()
         {
             var hostScreen = MainWindowViewModel.HostScreen;
 
-            var rnd = new Random();
+            var user = await _repo.VerifyLoginAsync(Username, Password);
 
-            var users = new List<User>();
+            if (user != null)
+            {
+                user.LoggedIn = true;
 
-            users.AddRange(await _repo.GetAllAsync<User>());
+                await _repo.UpdateAsync(user).ConfigureAwait(false);
 
-            hostScreen.IsLoggedIn = true;
-            hostScreen.CurrentUser = users[rnd.Next(0, 3)];
-            hostScreen.UserType = GetUserAccess(hostScreen.CurrentUser.ID);
+                hostScreen.CurrentUser = user;
+                hostScreen.UserType = GetUserAccess(user.ID);
+            }
         }
+
+        /// <summary>
+        /// Switch expression that returns user viewmodel access based on UserType
+        /// </summary>
+        /// <param name="id">UserTypeID</param>
+        private UserMenuItem GetUserAccess(int id) => id switch
+        {
+            1 => new UserMenuItem("Admin", new AdminViewModel()), // Case 1
+            2 => new UserMenuItem("Bibliotekarie", new TestVM()), // Case 2
+            3 => new UserMenuItem("Mina lån", new TestVM()), // Case 3
+            _ => new UserMenuItem("Fel", new TestVM()), // Default
+        };
 
         #endregion
     }

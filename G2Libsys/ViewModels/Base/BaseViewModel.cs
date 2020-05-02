@@ -14,10 +14,10 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Property changed event handler
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged = (sender, e) => { };
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Raise property changed event on calling members name
+        /// Raise property changed event
         /// </summary>
         /// <param name="propertyName"></param>
         protected virtual void OnPropertyChanged(string propertyName)

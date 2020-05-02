@@ -20,7 +20,6 @@ namespace G2Libsys.ViewModels
         private User currentUser;
         private UserMenuItem userType;
         private object currentViewModel;
-        private bool isLoggedIn;
 
         #endregion
 
@@ -31,6 +30,8 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public static MainWindowViewModel HostScreen { get; set; }
 
+        private readonly IRepository _repo;
+
         public User CurrentUser
         {
             get => currentUser;
@@ -38,6 +39,8 @@ namespace G2Libsys.ViewModels
             { 
                 currentUser = value;
                 OnPropertyChanged(nameof(CurrentUser));
+                OnPropertyChanged(nameof(CanLogIn));
+                OnPropertyChanged(nameof(IsLoggedIn));
             }
         }
 
@@ -74,11 +77,7 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public bool CanLogIn
         {
-            get => !isLoggedIn;
-            set
-            {
-                isLoggedIn = !value;
-            }
+            get => CurrentUser == null ? true : !CurrentUser.LoggedIn;
         }
 
         /// <summary>
@@ -86,13 +85,7 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public bool IsLoggedIn
         {
-            get => isLoggedIn;
-            set
-            {
-                isLoggedIn = value;
-                OnPropertyChanged(nameof(IsLoggedIn));
-                OnPropertyChanged(nameof(CanLogIn));
-            }
+            get => CurrentUser == null ? false : CurrentUser.LoggedIn;
         }
 
         #endregion
@@ -112,6 +105,8 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
+            _repo = new GeneralRepository();
+
             Initialize();
 
             LogOutCommand = new RelayCommand(x => LogOut());
@@ -126,15 +121,14 @@ namespace G2Libsys.ViewModels
             // Set MainWindowViewModel to hostscreen
             HostScreen = this;
 
-            IsLoggedIn = false;
-
             // Initial viewmodel 
-            //CurrentViewModel = new FrontPageViewModel();
+            CurrentViewModel = new FrontPageViewModel();
         }
 
         private void LogOut()
         {
-            IsLoggedIn = false;
+            CurrentUser.LoggedIn = false;
+            _repo.UpdateAsync(CurrentUser).ConfigureAwait(false);
             CurrentUser = null;
             NavigateToVM.Execute(typeof(FrontPageViewModel));
         }
