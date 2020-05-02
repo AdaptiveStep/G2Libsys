@@ -1,0 +1,119 @@
+﻿<UserControl x:Class="G2Libsys.Controls.SmallPostControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:G2Libsys.Controls" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="500" >
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <materialDesign:Card
+            Grid.Column="1"
+            Grid.Row="1"
+            Grid.RowSpan="2"
+            Grid.ColumnSpan="2"
+            Margin="0 0 0 40"
+            BorderBrush="{StaticResource PrimaryHueMidBrush}"
+            BorderThickness="3"
+            Background="{StaticResource MaterialDesignBodyLight}"
+            Height="150"
+            MaxWidth="500">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="4*" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <!--Bild-->
+                <materialDesign:Card 
+                    Background="{StaticResource MaterialDesignBodyLight}"
+                    Grid.RowSpan="3" 
+                    Grid.Column="2" 
+                    Margin="2">
+
+
+                    <Image
+               Source="https://www.blue.se/wp-content/uploads/2020/03/Hall-vikten_600.jpg"
+               Stretch="Uniform"
+               Margin="5"
+               Grid.RowSpan="3"
+               Grid.Column="2" />
+
+                </materialDesign:Card >
+  <!--Stackpanel för Boktitel, författare & beskrivning-->
+
+                    
+                <StackPanel Margin="5 5 0 0">
+   <!--Titel-->
+                    <TextBlock x:Name="blogTitle"
+                   Text="Håll vikten"
+                   FontSize="15"
+                   FontWeight="Medium"
+                   Style="{StaticResource MaterialDesignHeadline1TextBlock}">
+                    </TextBlock>
+    <!--Författare-->
+                    <TextBlock x:Name="blogWriter"
+                   Text="Erik Nicklagård"
+                   FontSize="7"
+                   FontWeight="SemiBold"
+                   Style="{StaticResource MaterialDesignBody2TextBlock}" />
+                </StackPanel>
+                    
+                <WrapPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="5">
+                    
+                    
+     <!--Beskrivning-->
+                    <TextBlock x:Name="blogDescription"
+                TextWrapping="Wrap"
+                FontFamily="{StaticResource MaterialDesignFont}"
+                FontSize="9"
+                Text="
+
+De flesta som försöker gå ner i vikt misslyckas. Efter en tid med träning och nyttig kost dras de tillbaka till sin gamla livsstil. Oavsett hur bra de mådde när de nått sin målvikt.
+
+Men så finns de få undantagen. De som inte faller tillbaka i gamla vanor. Och det är dem som den här boken handlar om. I Håll vikten berättar kost- och träningskonsulten Erik Nicklagård om några av sina klienter, och om sina egna erfarenheter inom personlig utveckling och hälsa. Du får svaret på varför vissa människor lyckas åstadkomma en varaktig livsstilsförändring – om det så är att gå ner i vikt, lägga om kosten, effektivisera sin tid, eller något helt annat. Boken ger en förståelse för hur våra medvetna och undermedvetna sinnen fungerar, och hur du själv kan skapa en inre drivkraft. Du får exempel på personer som tagit stora kliv i sin personliga utveckling, och en övningsdel med tips på hur du kan gå till väga för att bli en av dem.
+"
+                Style="{StaticResource MaterialDesignBody2TextBlock}" />
+
+                </WrapPanel>
+
+     <!--Läs mer contentgrid-->
+                <Grid
+                    Grid.Column="1"
+                    Grid.Row="2"
+                    >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+
+                </Grid>
+
+                <TextBlock x:Name="blogPubDate"
+                    Text="Publicerad den: 24 april 2019"
+                   Grid.Row="2"
+                   VerticalAlignment="Bottom"
+                   FontSize="7"
+                   Margin="5 0 0 5" />
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>
