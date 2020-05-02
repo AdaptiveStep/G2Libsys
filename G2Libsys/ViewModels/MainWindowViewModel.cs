@@ -133,7 +133,7 @@ namespace G2Libsys.ViewModels
         public void Initialize()
         {
             // Enable dev menu
-            DeveloperMode = true;
+            DeveloperMode = false;
             SetDevViewModels();
 
             // Set MainWindowViewModel to hostscreen

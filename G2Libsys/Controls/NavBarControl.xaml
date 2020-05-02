@@ -104,6 +104,7 @@
                 ScrollViewer.VerticalScrollBarVisibility="Disabled"
                 SelectedItem="{Binding SelectedDevItem}"
                 SelectionMode="Single"
+                ToolTip="DevMenu"
                 Visibility="{Binding DeveloperMode, Converter={converter:BoolToVisibilityConverter}}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
