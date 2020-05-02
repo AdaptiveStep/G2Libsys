@@ -18,12 +18,12 @@ namespace G2Libsys.Models
         /// <summary>
         /// Viewmodel type
         /// </summary>
-        public Type Type { get; private set; }
+        public Type VMType { get; private set; }
 
         public UserMenuItem(string title, BaseViewModel vm)
         {
             this.Title = title;
-            this.Type = vm.GetType();
+            this.VMType = vm.GetType();
         }
     }
 }

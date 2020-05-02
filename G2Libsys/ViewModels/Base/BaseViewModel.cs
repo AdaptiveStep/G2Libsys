@@ -30,7 +30,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Command for navigating to another ViewModel
         /// </summary>
-        public virtual ICommand NavigateToVM { get; protected set; }        
+        public virtual ICommand NavigateToVM { get; protected set; }
         #endregion
 
         #region Constructor

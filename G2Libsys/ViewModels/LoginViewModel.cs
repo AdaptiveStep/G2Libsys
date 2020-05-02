@@ -77,7 +77,7 @@ namespace G2Libsys.ViewModels
                 await _repo.UpdateAsync(user).ConfigureAwait(false);
 
                 hostScreen.CurrentUser = user;
-                hostScreen.UserType = GetUserAccess(user.ID);
+                hostScreen.MenuItem = GetUserAccess(user.ID);
             }
         }
 

@@ -11,6 +11,50 @@
     d:DesignHeight="50"
     d:DesignWidth="1000"
     mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <Border
+                            x:Name="Bd"
+                            Uid="Border_38"
+                            Margin="0"
+                            Padding="16,8"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter
+                                x:Name="ContentPresenter"
+                                Uid="ContentPresenter_33"
+                                Grid.Column="1"
+                                Margin="{TemplateBinding Padding}"
+                                Content="{TemplateBinding Header}"
+                                ContentSource="Header"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Bd" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Opacity="0.4" Color="{StaticResource Primary800}" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Bd" Property="BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Opacity="0.3" Color="{StaticResource Primary800}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150" />
@@ -45,6 +89,35 @@
 
         <!--  Middle Space  -->
 
+        <!--  Secret Dev Menu  -->
+        <Grid Grid.Column="1" HorizontalAlignment="Right">
+            <ListView
+                x:Name="ViewListBox"
+                Width="auto"
+                Height="auto"
+                Margin="20,0,30,0"
+                DataContext="{Binding}"
+                FontSize="12"
+                FontWeight="DemiBold"
+                Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                ItemsSource="{Binding ViewModelList}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedDevItem}"
+                SelectionMode="Single"
+                Visibility="{Binding DeveloperMode, Converter={converter:BoolToVisibilityConverter}}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Margin="4" Text="{Binding Title}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </Grid>
         <!--  Some Button  -->
         <Button
             Grid.Column="2"
@@ -93,8 +166,7 @@
                 HorizontalAlignment="Stretch"
                 Background="Black"
                 FlowDirection="RightToLeft"
-                FontSize="20"
-                Style="{StaticResource MaterialDesignMenu}">
+                FontSize="20">
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid />
@@ -103,13 +175,16 @@
                 <MenuItem
                     Padding="0"
                     HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center">
+                    HorizontalContentAlignment="Center"
+                    ItemContainerStyle="{StaticResource MenuItemStyle}">
                     <MenuItem.Header>
-                        <TextBlock
+                        <Border
                             Margin="0,0,-70,0"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Text="Mina sidor" />
+                            Background="Transparent">
+                            <TextBlock Text="Mina sidor" />
+                        </Border>
                     </MenuItem.Header>
                     <MenuItem
                         Width="160"
@@ -118,7 +193,6 @@
                         CommandParameter="{x:Type vm:TestVM}">
                         <MenuItem.Header>
                             <TextBlock
-                                Margin="0,0,-105,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Text="Profil" />
@@ -127,20 +201,18 @@
                     <MenuItem
                         Width="160"
                         Command="{Binding NavigateToVM}"
-                        CommandParameter="{Binding Path=UserType.Type}">
+                        CommandParameter="{Binding Path=MenuItem.VMType}">
                         <MenuItem.Header>
                             <TextBlock
-                                Margin="0,0,-105,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Text="{Binding Path=UserType.Title}" />
+                                Text="{Binding Path=MenuItem.Title}" />
                         </MenuItem.Header>
                     </MenuItem>
                     <Separator Padding="0" />
-                    <MenuItem Margin="0,0,0,-10" Command="{Binding LogOutCommand}">
+                    <MenuItem Command="{Binding LogOutCommand}">
                         <MenuItem.Header>
                             <TextBlock
-                                Margin="0,0,-105,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Text="Logout" />

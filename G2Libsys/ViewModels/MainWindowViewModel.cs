@@ -6,6 +6,7 @@ using G2Libsys.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -17,9 +18,11 @@ namespace G2Libsys.ViewModels
     {
         #region Private Fields
 
+        private readonly IRepository _repo;
         private User currentUser;
-        private UserMenuItem userType;
+        private UserMenuItem menuItem;
         private object currentViewModel;
+        private bool developerMode = false;
 
         #endregion
 
@@ -30,13 +33,27 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public static MainWindowViewModel HostScreen { get; set; }
 
-        private readonly IRepository _repo;
+        /// <summary>
+        /// Viewmodels for developer menu
+        /// </summary>
+        public ObservableCollection<UserMenuItem> ViewModelList { get; set; }
+
+        /// <summary>
+        /// Quick navigation for devmenu
+        /// </summary>
+        public UserMenuItem SelectedDevItem 
+        {
+            set
+            {
+                NavigateToVM.Execute(value.VMType);
+            }
+        }
 
         public User CurrentUser
         {
             get => currentUser;
-            set 
-            { 
+            set
+            {
                 currentUser = value;
                 OnPropertyChanged(nameof(CurrentUser));
                 OnPropertyChanged(nameof(CanLogIn));
@@ -47,13 +64,13 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// 
         /// </summary>
-        public UserMenuItem UserType
+        public UserMenuItem MenuItem
         {
-            get => userType;
-            set 
+            get => menuItem;
+            set
             {
-                userType = value;
-                OnPropertyChanged(nameof(UserType));
+                menuItem = value;
+                OnPropertyChanged(nameof(MenuItem));
             }
         }
 
@@ -88,12 +105,25 @@ namespace G2Libsys.ViewModels
             get => CurrentUser == null ? false : CurrentUser.LoggedIn;
         }
 
+        public bool DeveloperMode
+        {
+            get => developerMode;
+            set
+            {
+                developerMode = value;
+                OnPropertyChanged(nameof(DeveloperMode));
+            }
+        }
+
         #endregion
 
         #endregion
 
         #region Public Commands
 
+        /// <summary>
+        /// Call logout method
+        /// </summary>
         public ICommand LogOutCommand { get; set; }
 
         #endregion
@@ -108,29 +138,54 @@ namespace G2Libsys.ViewModels
             _repo = new GeneralRepository();
 
             Initialize();
-
-            LogOutCommand = new RelayCommand(x => LogOut());
-
-
         }
 
         #endregion
 
         public void Initialize()
         {
+            // Enable dev menu
+            DeveloperMode = true;
+            SetDevViewModels();
+
             // Set MainWindowViewModel to hostscreen
             HostScreen = this;
 
             // Initial viewmodel 
             CurrentViewModel = new FrontPageViewModel();
+
+            // Set logout command
+            LogOutCommand = new RelayCommand(x => LogOut());
+
+            // Aplication closing event handler
+            Application.Current.MainWindow.Closing
+                += new CancelEventHandler((o, e) =>
+                {
+                    LogOut();
+                });
         }
 
         private void LogOut()
         {
+            if (CurrentUser is null) return;
+
             CurrentUser.LoggedIn = false;
             _repo.UpdateAsync(CurrentUser).ConfigureAwait(false);
             CurrentUser = null;
             NavigateToVM.Execute(typeof(FrontPageViewModel));
+        }
+
+        /// <summary>
+        /// Set viewmodels for developer menu
+        /// </summary>
+        private void SetDevViewModels()
+        {
+            ViewModelList = new ObservableCollection<UserMenuItem>
+            {
+                new UserMenuItem("FrontPage", new FrontPageViewModel()),
+                new UserMenuItem("TestVM", new TestVM()),
+                new UserMenuItem("Admin", new AdminViewModel())
+            };
         }
     }
 }
