@@ -54,7 +54,7 @@ namespace G2Libsys.ViewModels
             _repo = new UserRepository();
 
             // Temporary login
-            Username = "Joppan@johanna.com";
+            Username = "Johan@johan.com";
             password = "25857";
 
             VerifyLogin();
