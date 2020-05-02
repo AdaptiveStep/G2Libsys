@@ -20,9 +20,17 @@ namespace G2Libsys.Models
         /// </summary>
         public Type VMType { get; private set; }
 
-        public UserMenuItem(string title, BaseViewModel vm)
+        /// <summary>
+        /// Input the viewmodel and displayname Title, default title is viewmodel name
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <param name="title"></param>
+        public UserMenuItem(BaseViewModel vm, string title = null)
         {
-            this.Title = title;
+            // Set Title to title or viewmodel name
+            this.Title = title ?? vm.GetType().Name.Replace("ViewModel", null);
+
+            // Set Type to type of vm
             this.VMType = vm.GetType();
         }
     }

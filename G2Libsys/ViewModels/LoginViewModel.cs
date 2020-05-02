@@ -53,7 +53,8 @@ namespace G2Libsys.ViewModels
         {
             _repo = new UserRepository();
 
-            Username = "Johan@johan.com";
+            // Temporary login
+            Username = "Joppan@johanna.com";
             password = "25857";
 
             VerifyLogin();
@@ -87,10 +88,10 @@ namespace G2Libsys.ViewModels
         /// <param name="id">UserTypeID</param>
         private UserMenuItem GetUserAccess(int id) => id switch
         {
-            1 => new UserMenuItem("Admin", new AdminViewModel()), // Case 1
-            2 => new UserMenuItem("Bibliotekarie", new TestVM()), // Case 2
-            3 => new UserMenuItem("Mina lån", new TestVM()), // Case 3
-            _ => new UserMenuItem("Fel", new TestVM()), // Default
+            1 => new UserMenuItem(new AdminViewModel(), "Admin"), // Case 1
+            2 => new UserMenuItem(new TestVM(), "Bibliotekarie"), // Case 2
+            3 => new UserMenuItem(new TestVM(), "Mina lån"), // Case 3
+            _ => new UserMenuItem(new TestVM(), "Fel"), // Default
         };
 
         #endregion

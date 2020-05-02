@@ -33,7 +33,7 @@
             using IDbConnection _db = base.Connection;
 
             // Fetch user with correct username and password
-            return await _db.QueryFirstAsync<User>(
+            return await _db.QueryFirstOrDefaultAsync<User>(
                         sql: GetProcedureName<User>("verifylogin"),
                       param: new { email, password },
                 commandType: CommandType.StoredProcedure);

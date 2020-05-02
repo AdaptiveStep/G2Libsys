@@ -96,7 +96,6 @@
                 Width="auto"
                 Height="auto"
                 Margin="20,0,30,0"
-                DataContext="{Binding}"
                 FontSize="12"
                 FontWeight="DemiBold"
                 Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
@@ -118,6 +117,8 @@
                 </ListView.ItemsPanel>
             </ListView>
         </Grid>
+
+
         <!--  Some Button  -->
         <Button
             Grid.Column="2"

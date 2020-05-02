@@ -41,13 +41,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Quick navigation for devmenu
         /// </summary>
-        public UserMenuItem SelectedDevItem 
-        {
-            set
-            {
-                NavigateToVM.Execute(value.VMType);
-            }
-        }
+        public UserMenuItem SelectedDevItem { set => NavigateToVM.Execute(value.VMType); }
 
         public User CurrentUser
         {
@@ -92,18 +86,12 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// True if user is not already logged in
         /// </summary>
-        public bool CanLogIn
-        {
-            get => CurrentUser == null ? true : !CurrentUser.LoggedIn;
-        }
+        public bool CanLogIn => CurrentUser == null ? true : !CurrentUser.LoggedIn;
 
         /// <summary>
         /// Check if user is logged in
         /// </summary>
-        public bool IsLoggedIn
-        {
-            get => CurrentUser == null ? false : CurrentUser.LoggedIn;
-        }
+        public bool IsLoggedIn => CurrentUser == null ? false : CurrentUser.LoggedIn;
 
         public bool DeveloperMode
         {
@@ -180,11 +168,12 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private void SetDevViewModels()
         {
+            // Fill with needed viewmodels
             ViewModelList = new ObservableCollection<UserMenuItem>
             {
-                new UserMenuItem("FrontPage", new FrontPageViewModel()),
-                new UserMenuItem("TestVM", new TestVM()),
-                new UserMenuItem("Admin", new AdminViewModel())
+                new UserMenuItem(new FrontPageViewModel()),
+                new UserMenuItem(new TestVM()),
+                new UserMenuItem(new AdminViewModel())
             };
         }
     }
