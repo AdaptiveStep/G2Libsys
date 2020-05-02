@@ -91,11 +91,11 @@ CREATE TABLE Users(
 	GO
 	--STANDARD INSERTS
 		SET IDENTITY_INSERT 	Users on
-			INSERT INTO 		Users (ID,[Email], Firstname, Lastname, UserType) 
+			INSERT INTO 		Users (ID,[Password],[Email], Firstname, Lastname, UserType) 
 					VALUES 
-					(1, 'Johan@johan.com'		,'johan'	,'schwartz'    	,1),		--Does ID really have to be inserted? 
-					(2, 'Petra@petra.com'	  	,'Petra'	,'Mede'   	 	,2),
-					(3, 'Joppan@johanna.com'	,'Joan'		,'Sacrebleu'	,3);
+					(1, 'Admin@johan.com'	,123		,'johan'	,'schwartz'    	,1),		--Does ID really have to be inserted? 
+					(2, 'Petra@petra.com'	,123	  	,'Petra'	,'Mede'   	 	,2),
+					(3, 'Joppan@johanna.com',123		,'Joan'		,'Sacrebleu'	,3);
 			SET IDENTITY_INSERT Users OFF
 			GO
 
