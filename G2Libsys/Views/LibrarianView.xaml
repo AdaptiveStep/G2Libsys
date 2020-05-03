@@ -21,7 +21,17 @@
         <StackPanel Grid.Column="1" Orientation="Horizontal" Background="{StaticResource accent_light}">
 
             <materialDesign:Card Margin="10 10 10 10">
-                <DataGrid Margin="10 10 10 10" MinWidth="400" ItemsSource="{Binding Source=Users}"/>
+
+                <DataGrid SelectedItem="{Binding OldUser}" CanUserAddRows="False" CanUserDeleteRows="False" Margin="10 10 10 10" MinWidth="400" ItemsSource="{Binding Users}" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                        <DataGridTextColumn Header="Namn" Binding="{Binding Firstname}"/>
+                        <DataGridTextColumn Header="Efternamn" Binding="{Binding Lastname}"/>
+                        <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                        
+                    </DataGrid.Columns>
+                </DataGrid>
+                
             </materialDesign:Card>
             
             <StackPanel Orientation="Vertical">
@@ -36,13 +46,15 @@
 
                     <StackPanel>
                         <Label Content="Namn"/>
-                        <TextBox Text="{Binding name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBox Margin="10 0 10 0" Width="100" Background="Wheat" Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Efternamn"/>
-                        <TextBox Text="{Binding lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Email"/>
-                        <TextBox Text="{Binding email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <Label Content="Personnummer"/>
-                        <TextBox Text="{Binding ssnumber, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <Label Content="Lösenord"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <Label Content="Användartyp"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.UserType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Button Command="{Binding addbutton}" Content="Lägg till" Margin="10 20 10 10"/>
                     </StackPanel>
                 </materialDesign:Card>
@@ -60,9 +72,8 @@
 
                     <StackPanel>
                        
-                        <Label Content="Email"/>
-                        <TextBox x:Name="Emailadress"/>
-                        <Button Command="{Binding deletebutton}" CommandParameter="{Binding Emailadress}" Content="Ta bort" Margin="10 10 20 10"/>
+                        
+                        <Button Command="{Binding deletebutton}" Content="Ta bort" Margin="10 10 20 10"/>
                     </StackPanel>
                 </materialDesign:Card>
             </StackPanel>

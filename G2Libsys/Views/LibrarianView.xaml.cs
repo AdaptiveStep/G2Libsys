@@ -22,7 +22,7 @@ namespace G2Libsys.Views
         public LibrarianView()
         {
             InitializeComponent();
-            DataContext = new LibrarianViewModel();
+            
         }
     }
 }

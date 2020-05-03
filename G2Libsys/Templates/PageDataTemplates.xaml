@@ -22,4 +22,8 @@
         <vs:AdminView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:LibrarianViewModel}">
+        <vs:LibrarianView />
+    </DataTemplate>
+
 </ResourceDictionary>
