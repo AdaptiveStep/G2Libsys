@@ -17,6 +17,6 @@
         /// <summary>
         /// Implement specific user query
         /// </summary>
-        public Task ExampleQueryAsync();
+        public Task<User> VerifyLoginAsync(string username, string password);
     }
 }
