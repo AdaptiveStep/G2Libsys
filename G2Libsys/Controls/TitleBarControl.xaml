@@ -2,6 +2,7 @@
     x:Class="G2Libsys.Controls.TitleBarControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:G2Libsys.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:G2Libsys.Controls"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -18,6 +19,16 @@
             <ColumnDefinition Width="45" />
             <ColumnDefinition Width="9.5" />
         </Grid.ColumnDefinitions>
+
+        <TextBlock
+            Grid.ColumnSpan="6"
+            Margin="2"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            FontSize="11"
+            Foreground="{StaticResource MaterialDesignShadowBrush}"
+            Text="Developer Mode"
+            Visibility="{Binding DeveloperMode, Converter={converter:BoolToVisibilityConverter}}" />
 
         <!--  Fullscreen Button  -->
         <Button
