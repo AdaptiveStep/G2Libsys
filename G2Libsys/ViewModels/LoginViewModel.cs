@@ -1,4 +1,5 @@
-﻿using G2Libsys.Data.Repository;
+﻿using G2Libsys.Commands;
+using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Models;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
@@ -45,6 +47,12 @@ namespace G2Libsys.ViewModels
         }
         #endregion
 
+        public ICommand LoginCommand { get; set; }
+
+        private Predicate<object> CanLogin =>
+            o => !string.IsNullOrWhiteSpace(Username)
+              && !string.IsNullOrWhiteSpace(Password);
+
         #region Constructor
         /// <summary>
         /// 
@@ -54,10 +62,12 @@ namespace G2Libsys.ViewModels
             _repo = new UserRepository();
 
             // Temporary login
-            Username = "Johan@johan.com";
-            password = "25857";
+            //Username = "Johan@johan.com";
+            //password = "25857";
 
-            VerifyLogin();
+            //VerifyLogin();
+
+            LoginCommand = new RelayCommand(x => VerifyLogin(), CanLogin);
         }
         #endregion
 
@@ -79,7 +89,12 @@ namespace G2Libsys.ViewModels
 
                 hostScreen.CurrentUser = user;
                 hostScreen.MenuItem = GetUserAccess(user.ID);
+
+                NavigateToVM.Execute(typeof(FrontPageViewModel));
             }
+
+            Username = string.Empty;
+            Password = string.Empty;
         }
 
         /// <summary>
