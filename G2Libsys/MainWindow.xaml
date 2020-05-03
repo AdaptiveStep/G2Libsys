@@ -6,28 +6,14 @@
         xmlns:local="clr-namespace:G2Libsys.Views"
         xmlns:vm="clr-namespace:G2Libsys.ViewModels"
         xmlns:userControl="clr-namespace:G2Libsys.Controls"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="" Height="580" Width="900"
         ResizeMode="CanResizeWithGrip"
-        SizeToContent="Manual" WindowStartupLocation="CenterScreen" WindowStyle="SingleBorderWindow">
-    <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
-            <local:FrontPageView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:TestVM}">
-            <local:TestView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:LoginViewModel}">
-            <local:LoginView/>
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type vm:LibrarianViewModel}">
-            <local:LibrarianView/>
-        </DataTemplate>
-    </Window.Resources>
+        SizeToContent="Manual" 
+        WindowStartupLocation="CenterScreen" 
+        WindowStyle="SingleBorderWindow">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="{Binding ActualHeight,ElementName=titlebar}"/>
     </WindowChrome.WindowChrome>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="28"/>

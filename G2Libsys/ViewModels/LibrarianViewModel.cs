@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-using System.Threading.Tasks;
+
 
 namespace G2Libsys.ViewModels
 {
     public class LibrarianViewModel: BaseViewModel
     {
-        private readonly UserRepository _repo;
+        private readonly GeneralRepository<User> _repo;
 
         //binda knapparna från viewen
         //skapa datagrid
@@ -23,13 +23,13 @@ namespace G2Libsys.ViewModels
         }
         public LibrarianViewModel()
         {
-            _repo = new UserRepository();
+            _repo = new GeneralRepository<User>();
             GetUsers();
         }
         
         public async void GetUsers()
         {
-            Users = new ObservableCollection<User>(await _repo.GetAllAsync());
+            await _repo.AddRange<User>(Users);
             
         }
         //lista av besökare
