@@ -26,8 +26,8 @@ namespace G2Libsys.ViewModels
         public string Username
         {
             get => username;
-            set 
-            { 
+            set
+            {
                 username = value;
                 OnPropertyChanged(nameof(Username));
             }
@@ -39,10 +39,22 @@ namespace G2Libsys.ViewModels
         public string Password
         {
             get => password;
-            set 
+            set
             {
                 password = value;
                 OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        private User newUser;
+
+        public User NewUser 
+        { 
+            get => newUser;
+            set
+            {
+                newUser = value;
+                OnPropertyChanged(nameof(NewUser));
             }
         }
         #endregion
@@ -50,8 +62,8 @@ namespace G2Libsys.ViewModels
         public ICommand LoginCommand { get; set; }
 
         private Predicate<object> CanLogin =>
-            o => !string.IsNullOrWhiteSpace(Username)
-              && !string.IsNullOrWhiteSpace(Password);
+            o => !string.IsNullOrWhiteSpace(NewUser.Email)
+              && !string.IsNullOrWhiteSpace(NewUser.Password);
 
         #region Constructor
         /// <summary>
@@ -60,6 +72,7 @@ namespace G2Libsys.ViewModels
         public LoginViewModel()
         {
             _repo = new UserRepository();
+            NewUser = new User();
 
             // Temporary login
             //Username = "Johan@johan.com";
@@ -77,24 +90,26 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void VerifyLogin()
         {
-            var hostScreen = MainWindowViewModel.HostScreen;
+            var b = await _repo.VerifyEmailAsync(NewUser.Email);
 
-            var user = await _repo.VerifyLoginAsync(Username, Password);
+            //var hostScreen = MainWindowViewModel.HostScreen;
 
-            if (user != null)
-            {
-                user.LoggedIn = true;
+            //var user = await _repo.VerifyLoginAsync(NewUser.Email, NewUser.Password);
 
-                await _repo.UpdateAsync(user).ConfigureAwait(false);
+            //if (user != null)
+            //{
+            //    user.LoggedIn = true;
 
-                hostScreen.CurrentUser = user;
-                hostScreen.MenuItem = GetUserAccess(user.ID);
+            //    await _repo.UpdateAsync(user).ConfigureAwait(false);
 
-                NavigateToVM.Execute(typeof(FrontPageViewModel));
-            }
+            //    hostScreen.CurrentUser = user;
+            //    hostScreen.MenuItem = GetUserAccess(user.ID);
 
-            Username = string.Empty;
-            Password = string.Empty;
+            //    NavigateToVM.Execute(typeof(FrontPageViewModel));
+            //}
+
+            //Username = string.Empty;
+            //Password = string.Empty;
         }
 
         /// <summary>
