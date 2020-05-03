@@ -5,6 +5,7 @@ using G2Libsys.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -35,6 +36,7 @@ namespace G2Libsys.ViewModels
 
         /// <summary>
         /// User password
+        /// TODO: Change to secure password and passwordbox
         /// </summary>
         public string Password
         {
@@ -59,11 +61,22 @@ namespace G2Libsys.ViewModels
         }
         #endregion
 
-        public ICommand LoginCommand { get; set; }
+        #region Commands
+        public ICommand LogIn { get; set; }
 
         private Predicate<object> CanLogin =>
-            o => !string.IsNullOrWhiteSpace(NewUser.Email)
+            o => !string.IsNullOrWhiteSpace(Username)
+              && !string.IsNullOrWhiteSpace(Password);
+
+        public ICommand Register { get; set; }
+
+        private Predicate<object> CanRegister =>
+            o => !string.IsNullOrWhiteSpace(NewUser.Firstname)
+              && !string.IsNullOrWhiteSpace(NewUser.Lastname)
+              && !string.IsNullOrWhiteSpace(NewUser.Email)
               && !string.IsNullOrWhiteSpace(NewUser.Password);
+
+        #endregion
 
         #region Constructor
         /// <summary>
@@ -80,7 +93,8 @@ namespace G2Libsys.ViewModels
 
             //VerifyLogin();
 
-            LoginCommand = new RelayCommand(x => VerifyLogin(), CanLogin);
+            LogIn = new RelayCommand(_ => VerifyLogin(), CanLogin);
+            Register = new RelayCommand(_ => VerifyRegister(), CanRegister);
         }
         #endregion
 
@@ -90,26 +104,32 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void VerifyLogin()
         {
-            var b = await _repo.VerifyEmailAsync(NewUser.Email);
+            //var b = await _repo.VerifyEmailAsync(Username);
 
-            //var hostScreen = MainWindowViewModel.HostScreen;
+            var hostScreen = MainWindowViewModel.HostScreen;
 
-            //var user = await _repo.VerifyLoginAsync(NewUser.Email, NewUser.Password);
+            var user = await _repo.VerifyLoginAsync(Username, Password);
 
-            //if (user != null)
-            //{
-            //    user.LoggedIn = true;
+            if (user != null)
+            {
+                user.LoggedIn = true;
 
-            //    await _repo.UpdateAsync(user).ConfigureAwait(false);
+                await _repo.UpdateAsync(user).ConfigureAwait(false);
 
-            //    hostScreen.CurrentUser = user;
-            //    hostScreen.MenuItem = GetUserAccess(user.ID);
+                hostScreen.CurrentUser = user;
+                hostScreen.MenuItem = GetUserAccess(user.ID);
 
-            //    NavigateToVM.Execute(typeof(FrontPageViewModel));
-            //}
+                NavigateToVM.Execute(typeof(FrontPageViewModel));
+            }
 
-            //Username = string.Empty;
-            //Password = string.Empty;
+            Username = string.Empty;
+            Password = string.Empty;
+        }
+
+        private async void VerifyRegister()
+        {
+            var emailExist = await _repo.VerifyEmailAsync(NewUser.Email);
+            var user = NewUser;
         }
 
         /// <summary>

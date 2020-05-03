@@ -48,7 +48,7 @@
         {
             using IDbConnection _db = base.Connection;
 
-            // Fetch user with correct username and password
+            // Return true if email exist in db
             return await _db.ExecuteScalarAsync<bool>(
                         sql: GetProcedureName<User>("verifyemail"),
                       param: new { email },
