@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="G2Libsys.Controls.LeftNavBarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:userControl="clr-namespace:G2Libsys.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="160" d:DesignWidth="160" >
+    <Grid Background="{DynamicResource accent_light}">
+
+
+      
+
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <materialDesign:PackIcon Kind="Library"
+                                 Margin="10,10,0,0"
+                                 Height="24" 
+                                 Width="24"
+                                 Grid.Column="0"/>
+        <Button VerticalAlignment="Top"
+                HorizontalAlignment="Left" 
+                Content="Boktips"
+                Background="{x:Null}"
+                Foreground="#FF080000"
+                BorderBrush="{x:Null}" 
+                Margin="7,10,0,0" 
+                Grid.Column="1"/>
+
+        <Button VerticalAlignment="Top"
+                HorizontalAlignment="Left" 
+                Content="Bibliotek"
+                Background="{x:Null}"
+                Foreground="#FF080000"
+                BorderBrush="{x:Null}" 
+                Margin="7,48,0,0"
+                Grid.Column="1"/>
+
+
+        <materialDesign:PackIcon Kind="AccountBox"
+                                 Height="24"
+                                 Width="24" 
+                                 Margin="10,52,0,0"
+                                 Grid.Column="0"/>
+        <materialDesign:PackIcon Kind="Headphones"
+                                 Margin="10,91,0,0"
+                                 Height="24" 
+                                 Width="24"
+                                 Grid.Column="0"/>
+        <materialDesign:PackIcon Kind="DesktopMac"
+                                 Height="24" 
+                                 Width="24" 
+                                 Margin="10,132,0,0" 
+                                 Grid.Column="0"/>
+        <Button  VerticalAlignment="Top"
+                 HorizontalAlignment="Left"
+                 Content="Seminarium"
+                 Background="{x:Null}"
+                 Foreground="#FF080000"
+                 BorderBrush="{x:Null}"
+                 Margin="7,122,0,0"
+                 Width="109"
+                 Grid.Column="1"/>
+        <Button VerticalAlignment="Top"
+                HorizontalAlignment="Left" 
+                Content="E-Böcker" 
+                Background="{x:Null}"
+                Foreground="#FF080000"
+                BorderBrush="{x:Null}" Margin="7,83,0,0"
+                Grid.Column="1"/>
+
+
+
+    </Grid>
+</UserControl>

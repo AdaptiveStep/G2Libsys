@@ -6,15 +6,205 @@
                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
                 xmlns:local="clr-namespace:G2Libsys.Views"
                 xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+                xmlns:userControl="clr-namespace:G2Libsys.Controls"
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                 mc:Ignorable="d" 
-                d:DesignHeight="450" d:DesignWidth="800"
-                Title="LoginView">    
+                WindowHeight="450" WindowWidth="800"  
+                
+                Title="LoginView" MinHeight="450" MinWidth="800" >
     <Grid Background="{StaticResource accent_light}">
-        <TextBlock VerticalAlignment="Center" 
-                   HorizontalAlignment="Center"
-                   FontSize="100" 
-                   Text="Logga in"
-                   Foreground="{StaticResource primary_dark}"/>
+
+
+
+        <Grid.ColumnDefinitions >
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="356*"/>
+            <ColumnDefinition Width="297*"/>
+        </Grid.ColumnDefinitions>
+
+        <userControl:LeftNavBarControl Grid.Column="0" DataContext="{Binding}" />
+
+        <materialDesign:Card
+            Grid.Column="1"
+         Background="{DynamicResource MaterialDesignChipBackground}"
+         Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
+         Padding="8"
+         UniformCornerRadius="10" Margin="10,14,10,10" Grid.ColumnSpan="2"/>
+        <Label 
+            Grid.Column="1"
+            Content="Logga in med din e-postadress"
+            Height="32"
+            Width="257"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Margin="31,42,0,0" 
+            Background="{x:Null}" 
+            Foreground="#DDFFFFFF" 
+            FontSize="18"/>
+        <TextBox 
+            Grid.Column="1"
+            Height="40" 
+            Width="257"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Margin="31,95,0,0" 
+            Background="#FFBFBFBF"
+            CaretBrush="{x:Null}"
+            SelectionBrush="#FFF7F7F7"
+            FontSize="18" BorderBrush="{x:Null}" SelectionTextBrush="Black"
+            />
+        <Label 
+            Grid.Column="1"
+            Content="Ange ditt lösenord"
+            Height="32"
+            Width="160"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Margin="31,140,0,0" 
+            Background="{x:Null}" 
+            Foreground="#DDFFFFFF" 
+            FontSize="18"/>
+        <PasswordBox   Grid.Column="1" 
+                       Width="257" Height="40"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Margin="31,185,0,0"
+                       Background="#FFBDB9B9"
+                       CaretBrush="#FFBDBBBB" 
+                       Foreground="Black" 
+                       SelectionBrush="#FFBDBBBB"
+                       FontSize="18" BorderBrush="{x:Null}" SelectionTextBrush="#FF050000"/>
+
+        <Button Grid.Column="1"
+    Style="{StaticResource MaterialDesignRaisedLightButton}"
+    Width="100"
+    ToolTip="Resource name: MaterialDesignRaisedLightButton"
+                Margin="31,244,0,0"
+                Content="Logga in"
+                Background="{DynamicResource accent_light}"
+                BorderBrush="{x:Null}"
+                Foreground="#DD000000" 
+                FontSize="16"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Left"
+                >
+        </Button>
+
+        <Label 
+            Grid.Column="2"
+            Content="Första gången?&#xA;Registrera dig här!"
+            Height="60"
+            Width="163"
+            HorizontalAlignment="Right" 
+            VerticalAlignment="Top" 
+            Margin="0,44,82,0" 
+            Background="{x:Null}" 
+            Foreground="#DDFFFFFF" 
+            FontSize="18"/>
+        <Label Content="Namn" 
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Grid.Column="2" 
+               Margin="0,109,187,0"
+               Width="58" 
+               Height="31"
+               FontSize="15"
+               />
+
+        <TextBox 
+            Grid.Column="2"
+            Height="28" 
+            Width="210"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,144,35,0" 
+            Background="#FFBFBFBF"
+            CaretBrush="{x:Null}"
+            SelectionBrush="#FFF7F7F7"
+            FontSize="16" BorderBrush="{x:Null}" SelectionTextBrush="Black"
+            />
+        <Label Content="Efternamn" 
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Grid.Column="2" 
+               Margin="0,177,163,0"
+               Width="82" 
+               Height="31"
+               FontSize="15"
+               />
+        <TextBox 
+            Grid.Column="2"
+            Height="28" 
+            Width="210"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,282,35,0" 
+            Background="#FFBFBFBF"
+            CaretBrush="{x:Null}"
+            SelectionBrush="#FFF7F7F7"
+            FontSize="16" BorderBrush="{x:Null}" SelectionTextBrush="Black"/>
+
+        <Label Content="Email" 
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Grid.Column="2" 
+               Margin="0,246,187,0"
+               Width="58" 
+               Height="31"
+               FontSize="15"
+               />
+
+        <TextBox 
+            Grid.Column="2"
+            Height="28" 
+            Width="210"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="0,213,35,0" 
+            Background="#FFBFBFBF"
+            CaretBrush="{x:Null}"
+            SelectionBrush="#FFF7F7F7"
+            FontSize="16" BorderBrush="{x:Null}" SelectionTextBrush="Black"
+            
+            />
+        <Label Content="Lösenord" 
+               HorizontalAlignment="Right"
+               VerticalAlignment="Top"
+               Grid.Column="2" 
+               Margin="0,315,163,0"
+               Width="82" 
+               Height="31"
+               FontSize="15"
+               />
+        <PasswordBox   Grid.Column="2" 
+                       Width="210" Height="28"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Top"
+                       Margin="0,346,35,0"
+                       Background="#FFBDB9B9"
+                       CaretBrush="#FFBDBBBB" 
+                       Foreground="Black" 
+                       SelectionBrush="#FFBDBBBB"
+                       FontSize="16" BorderBrush="{x:Null}" SelectionTextBrush="#FF050000"/>
+
+        <Button Grid.Column="2"
+            Style="{StaticResource MaterialDesignRaisedLightButton}"
+            Width="163"
+            ToolTip="Resource name: MaterialDesignRaisedLightButton"
+            Margin="0,393,82,0"
+            Content="Registrera dig"
+            Background="{DynamicResource accent_light}"
+            BorderBrush="{x:Null}"
+            Foreground="#DD000000" 
+            FontSize="16"
+            VerticalAlignment="Top"
+            HorizontalAlignment="Right" Height="33"
+                />
+
+
+
+
+   
+
     </Grid>
 </local:BasePage>
