@@ -30,179 +30,171 @@
         <materialDesign:Card
             Grid.Column="1"
             Grid.ColumnSpan="2"
+            Height="{Binding (FrameworkElement.ActualHeight), RelativeSource={RelativeSource AncestorType={x:Type Frame}}}"
+            MaxWidth="700"
+            MaxHeight="500"
             Margin="10,14,10,10"
-            Padding="8"
+            Padding="10"
             Background="{DynamicResource MaterialDesignChipBackground}"
-            Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}"
-            UniformCornerRadius="10" />
+            Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+            UniformCornerRadius="10">
+            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <Grid Height="{Binding (FrameworkElement.ActualHeight)}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <Label
+                            Width="257"
+                            Height="32"
+                            Margin="10,10,10,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Background="{x:Null}"
+                            Content="Logga in med din e-postadress"
+                            FontSize="18"
+                            Foreground="#DDFFFFFF" />
+                        <TextBox
+                            Width="257"
+                            Height="32"
+                            Margin="10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="#FFBFBFBF"
+                            FontSize="18"
+                            SelectionBrush="#FFF7F7F7"
+                            SelectionTextBrush="Black"
+                            Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label
+                            Width="160"
+                            Height="32"
+                            Margin="10,10,10,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Background="{x:Null}"
+                            Content="Ange ditt lösenord"
+                            FontSize="18"
+                            Foreground="#DDFFFFFF" />
 
-
-        <Label
-            Grid.Column="1"
-            Width="257"
-            Height="32"
-            Margin="31,42,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="{x:Null}"
-            Content="Logga in med din e-postadress"
-            FontSize="18"
-            Foreground="#DDFFFFFF" />
-        <TextBox
-            Grid.Column="1"
+                        <!--<PasswordBox
             Width="257"
             Height="40"
-            Margin="31,95,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            materialDesign:TextFieldAssist.HasClearButton="True"
-            Background="#FFBFBFBF"
-            FontSize="18"
-            SelectionBrush="#FFF7F7F7"
-            SelectionTextBrush="Black"
-            Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <Label
-            Grid.Column="1"
-            Width="160"
-            Height="32"
-            Margin="31,140,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="{x:Null}"
-            Content="Ange ditt lösenord"
-            FontSize="18"
-            Foreground="#DDFFFFFF" />
-
-        <!--<PasswordBox
-            Grid.Column="1"
-            Width="257"
-            Height="40"
-            Margin="31,185,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Background="#FFBDB9B9"
-            BorderBrush="{x:Null}"
             CaretBrush="#FFBDBBBB"
             FontSize="18"
             Foreground="Black"
             SelectionBrush="#FFBDBBBB"
             SelectionTextBrush="#FF050000" />-->
 
-        <TextBox
-            Grid.Column="1"
-            Width="257"
-            Height="40"
-            Margin="31,185,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
-            materialDesign:TextFieldAssist.HasClearButton="True"
-            Background="#FFBDB9B9"
-            BorderThickness="0"
-            FontSize="18"
-            Foreground="Black"
-            Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <TextBox
+                            Width="257"
+                            Height="32"
+                            Margin="10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="#FFBDB9B9"
+                            BorderThickness="0"
+                            FontSize="18"
+                            Text="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <Button
-            Grid.Column="1"
-            Width="100"
-            Margin="31,244,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Command="{Binding LogIn}"
-            Content="Logga in"
-            FontSize="16"
-            Style="{StaticResource MaterialDesignRaisedButton}" />
+                        <Button
+                            Width="100"
+                            Margin="10"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding LogIn}"
+                            Content="Logga in"
+                            FontSize="16"
+                            Style="{StaticResource MaterialDesignRaisedButton}" />
 
+                    </StackPanel>
 
+                    <StackPanel
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
 
-        <Label
-            Grid.Column="2"
-            Width="163"
-            Height="60"
-            Margin="0,44,82,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="Första gången?&#xA;Registrera dig här!"
-            FontSize="18"
-            Foreground="#DDFFFFFF" />
-        <Label
-            Grid.Column="2"
-            Width="58"
-            Height="31"
-            Margin="0,109,187,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="Förnamn"
-            FontSize="15" />
+                        <Label
+                            Grid.Column="2"
+                            Width="163"
+                            Height="60"
+                            Margin="10,0,0,0"
+                            HorizontalAlignment="Left"
+                            Content="Första gången?&#xA;Registrera dig här!"
+                            FontSize="18"
+                            Foreground="#DDFFFFFF" />
 
-        <TextBox
-            Grid.Column="2"
-            Width="210"
-            Height="28"
-            Margin="0,144,35,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Background="#FFBFBFBF"
-            FontSize="16"
-            SelectionBrush="#FFF7F7F7"
-            SelectionTextBrush="Black"
-            Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <Label
-            Grid.Column="2"
-            Width="82"
-            Height="31"
-            Margin="0,177,163,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="Efternamn"
-            FontSize="15" />
-        <TextBox
-            Grid.Column="2"
-            Width="210"
-            Height="28"
-            Margin="0,282,35,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Background="#FFBFBFBF"
-            FontSize="16"
-            SelectionBrush="#FFF7F7F7"
-            SelectionTextBrush="Black"
-            Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label
+                            Grid.Column="2"
+                            Width="58"
+                            Height="31"
+                            Margin="10,2,2,2"
+                            HorizontalAlignment="Left"
+                            Content="Förnamn"
+                            FontSize="15" />
 
-        <Label
-            Grid.Column="2"
-            Width="58"
-            Height="31"
-            Margin="0,246,187,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="Email"
-            FontSize="15" />
+                        <TextBox
+                            Grid.Column="2"
+                            Width="210"
+                            Height="28"
+                            Margin="10,2,2,2"
+                            HorizontalAlignment="Left"
+                            Background="#FFBFBFBF"
+                            FontSize="16"
+                            SelectionBrush="#FFF7F7F7"
+                            SelectionTextBrush="Black"
+                            Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label
+                            Grid.Column="2"
+                            Width="82"
+                            Height="31"
+                            Margin="10,2,2,2"
+                            HorizontalAlignment="Left"
+                            Content="Efternamn"
+                            FontSize="15" />
+                        <TextBox
+                            Width="210"
+                            Height="28"
+                            Margin="10,2,2,2"
+                            HorizontalAlignment="Left"
+                            Background="#FFBFBFBF"
+                            FontSize="16"
+                            SelectionBrush="#FFF7F7F7"
+                            SelectionTextBrush="Black"
+                            Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
-        <TextBox
-            Grid.Column="2"
-            Width="210"
-            Height="28"
-            Margin="0,213,35,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Background="#FFBFBFBF"
-            FontSize="16"
-            SelectionBrush="#FFF7F7F7"
-            SelectionTextBrush="Black"
-            Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-        <Label
-            Grid.Column="2"
-            Width="82"
-            Height="31"
-            Margin="0,315,163,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Content="Lösenord"
-            FontSize="15" />
-        <!--<PasswordBox
-            Grid.Column="2"
+                        <Label
+                            Width="58"
+                            Height="31"
+                            Margin="10,2,2,2"
+                            HorizontalAlignment="Left"
+                            Content="Email"
+                            FontSize="15" />
+
+                        <TextBox
+                            Width="210"
+                            Height="28"
+                            Margin="10,2,2,2"
+                            HorizontalAlignment="Left"
+                            Background="#FFBFBFBF"
+                            FontSize="16"
+                            SelectionBrush="#FFF7F7F7"
+                            SelectionTextBrush="Black"
+                            Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label
+                            Width="82"
+                            Height="31"
+                            Margin="10,2,2,2"
+                            HorizontalAlignment="Left"
+                            Content="Lösenord"
+                            FontSize="15" />
+                        <!--<PasswordBox
             Width="210"
             Height="28"
             Margin="0,346,35,0"
@@ -216,31 +208,31 @@
             SelectionTextBrush="#FF050000"
             Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>-->
 
-        <TextBox
-            Grid.Column="2"
-            Width="210"
-            Height="28"
-            Margin="0,346,35,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Background="#FFBFBFBF"
-            FontSize="16"
-            SelectionBrush="#FFF7F7F7"
-            SelectionTextBrush="Black"
-            Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <TextBox
+                            Width="210"
+                            Height="28"
+                            Margin="10,2,2,2"
+                            HorizontalAlignment="Left"
+                            Background="#FFBFBFBF"
+                            FontSize="16"
+                            SelectionBrush="#FFF7F7F7"
+                            SelectionTextBrush="Black"
+                            Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
 
-        <Button
-            Grid.Column="2"
-            Width="163"
-            Height="33"
-            Margin="0,393,82,0"
-            HorizontalAlignment="Right"
-            VerticalAlignment="Top"
-            Command="{Binding Register}"
-            Content="Registrera dig"
-            FontSize="16"
-            Style="{StaticResource MaterialDesignRaisedButton}" />
+                        <Button
+                            Width="163"
+                            Height="33"
+                            Margin="10"
+                            HorizontalAlignment="Left"
+                            Command="{Binding Register}"
+                            Content="Registrera dig"
+                            FontSize="16"
+                            Style="{StaticResource MaterialDesignRaisedButton}" />
 
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+        </materialDesign:Card>
     </Grid>
 </local:BasePage>
