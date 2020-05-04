@@ -5,10 +5,13 @@ using G2Libsys.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Net.Mail;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using G2Libsys.Library.Extensions;
+using System.Windows;
 
 namespace G2Libsys.ViewModels
 {
@@ -18,6 +21,9 @@ namespace G2Libsys.ViewModels
         private readonly IUserRepository _repo;
         private string username;
         private string password;
+        private User newUser;
+        private bool invalidEmail;
+        private string emailValidationMessage;
         #endregion
 
         #region Public Properties
@@ -48,28 +54,60 @@ namespace G2Libsys.ViewModels
             }
         }
 
-        private User newUser;
-
-        public User NewUser 
-        { 
+        public User NewUser
+        {
             get => newUser;
             set
             {
                 newUser = value;
+                Username = string.Empty;
+                Password = string.Empty;
                 OnPropertyChanged(nameof(NewUser));
+            }
+        }
+
+        public bool InvalidEmail
+        {
+            get => invalidEmail;
+            set
+            {
+                invalidEmail = value;
+                OnPropertyChanged(nameof(InvalidEmail));
+            }
+        }
+
+        public string EmailValidationMessage
+        {
+            get => emailValidationMessage;
+            set
+            {
+                emailValidationMessage = value;
+                OnPropertyChanged(nameof(EmailValidationMessage));
             }
         }
         #endregion
 
         #region Commands
+        /// <summary>
+        /// Login user command
+        /// </summary>
         public ICommand LogIn { get; set; }
 
+        /// <summary>
+        /// Verify if canExecute command
+        /// </summary>
         private Predicate<object> CanLogin =>
             o => !string.IsNullOrWhiteSpace(Username)
               && !string.IsNullOrWhiteSpace(Password);
 
+        /// <summary>
+        /// Register new user command
+        /// </summary>
         public ICommand Register { get; set; }
 
+        /// <summary>
+        /// Verify if canExecute command
+        /// </summary>
         private Predicate<object> CanRegister =>
             o => !string.IsNullOrWhiteSpace(NewUser.Firstname)
               && !string.IsNullOrWhiteSpace(NewUser.Lastname)
@@ -80,18 +118,12 @@ namespace G2Libsys.ViewModels
 
         #region Constructor
         /// <summary>
-        /// 
+        /// Default constructor
         /// </summary>
         public LoginViewModel()
         {
             _repo = new UserRepository();
             NewUser = new User();
-
-            // Temporary login
-            //Username = "Johan@johan.com";
-            //password = "25857";
-
-            //VerifyLogin();
 
             LogIn = new RelayCommand(_ => VerifyLogin(), CanLogin);
             Register = new RelayCommand(_ => VerifyRegister(), CanRegister);
@@ -100,7 +132,7 @@ namespace G2Libsys.ViewModels
 
         #region Private Methods
         /// <summary>
-        /// 
+        /// Verify user credentials and login
         /// </summary>
         private async void VerifyLogin()
         {
@@ -119,17 +151,58 @@ namespace G2Libsys.ViewModels
                 hostScreen.CurrentUser = user;
                 hostScreen.MenuItem = GetUserAccess(user.ID);
 
+                // On successfull login go to frontpage
                 NavigateToVM.Execute(typeof(FrontPageViewModel));
             }
 
+            // Reset Username and Password
             Username = string.Empty;
             Password = string.Empty;
         }
 
+        /// <summary>
+        /// Verify user registering credentials
+        /// </summary>
         private async void VerifyRegister()
         {
-            var emailExist = await _repo.VerifyEmailAsync(NewUser.Email);
-            var user = NewUser;
+            if (!NewUser.Email.IsValidEmail())
+            {
+                // Email is not valid
+                EmailValidationMessage = "Ogiltig mailadress";
+            }
+            else if (await _repo.VerifyEmailAsync(NewUser.Email))
+            {
+                // Email already exists in database
+                EmailValidationMessage = "Mailadressen finns redan";
+            }
+            else
+            {
+                // Call
+                RegisterUser();
+            }
+        }
+
+        /// <summary>
+        /// Try to register new user
+        /// </summary>
+        private async void RegisterUser()
+        {
+            try
+            {
+                // Insert new user
+                await _repo.AddAsync(NewUser);
+                MessageBox.Show("Registrerad, logga in med: \n" + NewUser.Email);
+            }
+            catch (Exception ex)
+            {
+                // Insert failed
+                MessageBox.Show("Kunde inte lägga till användare\n" + ex.Message);
+            }
+            finally
+            {
+                // Reset NewUser
+                NewUser = new User();
+            }
         }
 
         /// <summary>

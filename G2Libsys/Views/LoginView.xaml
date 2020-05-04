@@ -167,7 +167,7 @@
                             FontSize="16"
                             SelectionBrush="#FFF7F7F7"
                             SelectionTextBrush="Black"
-                            Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                         <Label
                             Width="58"
@@ -186,7 +186,7 @@
                             FontSize="16"
                             SelectionBrush="#FFF7F7F7"
                             SelectionTextBrush="Black"
-                            Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label
                             Width="82"
                             Height="31"
