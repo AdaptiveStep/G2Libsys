@@ -8,10 +8,89 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
     d:DesignHeight="480"
-    d:DesignWidth="480"
+    d:DesignWidth="600"
     x:TypeArguments="vm:AdminViewModel"
     mc:Ignorable="d">
-    <Grid Background="LightCoral">
-        <Button Content="TestVM" />
+    <Grid>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+
+            <materialDesign:Card Margin="10,10,10,10">
+
+                <DataGrid
+                    MinWidth="400"
+                    Margin="10,10,10,10"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Users}"
+                    SelectedItem="{Binding SelectedUser}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
+                        <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
+                        <DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
+                        <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </materialDesign:Card>
+
+            <StackPanel Orientation="Vertical">
+                <Label Content="Lägg till medlem" Foreground="Black" />
+                <materialDesign:Card>
+                    <StackPanel>
+                        <Label Content="Namn" />
+                        <TextBox
+                            Width="100"
+                            Margin="10,0,10,0"
+                            Background="Wheat"
+                            Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Efternamn" />
+                        <TextBox
+                            Width="100"
+                            Margin="10,0,10,0"
+                            Background="Wheat"
+                            Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Email" />
+                        <TextBox
+                            Width="100"
+                            Margin="10,0,10,0"
+                            Background="Wheat"
+                            Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Lösenord" />
+                        <TextBox
+                            Width="100"
+                            Margin="10,0,10,0"
+                            Background="Wheat"
+                            Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Användartyp" />
+                        <TextBox
+                            Width="100"
+                            Margin="10,0,10,0"
+                            Background="Wheat"
+                            Text="{Binding NewUser.UserType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Button
+                            Margin="10,20,10,10"
+                            Command="{Binding AddUserCommand}"
+                            Content="Lägg till" />
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <Label Content="Ta bort medlem" Foreground="Black" />
+
+                <materialDesign:Card>
+                    <StackPanel>
+                        <Button
+                            Margin="5,10"
+                            HorizontalAlignment="Center"
+                            Command="{Binding RemoveUserCommand}"
+                            Content="Ta bort" />
+                    </StackPanel>
+                </materialDesign:Card>
+            </StackPanel>
+
+
+        </StackPanel>
     </Grid>
 </local:BasePage>
