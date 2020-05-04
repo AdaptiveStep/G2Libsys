@@ -1,24 +1,25 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:G2Libsys"
-                    xmlns:vs="clr-namespace:G2Libsys.Views"
-                    xmlns:vm="clr-namespace:G2Libsys.ViewModels">
-    
-    <!-- Match ViewModels To Views -->
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:G2Libsys"
+    xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+    xmlns:vs="clr-namespace:G2Libsys.Views">
+
+    <!--  Match ViewModels To Views  -->
     <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
-        <vs:FrontPageView/>
+        <vs:FrontPageView />
     </DataTemplate>
-    
+
     <DataTemplate DataType="{x:Type vm:TestVM}">
-        <vs:TestView/>
+        <vs:TestView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:LoginViewModel}">
-        <vs:LoginView/>
+        <vs:LoginView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:AdminViewModel}">
-        <vs:AdminView/>
+        <vs:AdminView />
     </DataTemplate>
 
 </ResourceDictionary>
