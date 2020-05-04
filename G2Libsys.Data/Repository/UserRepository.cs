@@ -38,5 +38,21 @@
                       param: new { email, password },
                 commandType: CommandType.StoredProcedure);
         }
+
+        /// <summary>
+        /// Check if email already exist
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        public async Task<bool> VerifyEmailAsync(string email)
+        {
+            using IDbConnection _db = base.Connection;
+
+            // Return true if email exist in db
+            return await _db.ExecuteScalarAsync<bool>(
+                        sql: GetProcedureName<User>("verifyemail"),
+                      param: new { email },
+                commandType: CommandType.StoredProcedure);
+        }
     }
 }

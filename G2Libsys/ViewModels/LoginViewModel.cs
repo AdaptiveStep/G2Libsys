@@ -1,11 +1,11 @@
-﻿using G2Libsys.Data.Repository;
+﻿using G2Libsys.Commands;
+using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
+using G2Libsys.Library.Extensions;
+using System.Windows;
 
 namespace G2Libsys.ViewModels
 {
@@ -15,6 +15,8 @@ namespace G2Libsys.ViewModels
         private readonly IUserRepository _repo;
         private string username;
         private string password;
+        private string emailValidationMessage;
+        private User newUser;
         #endregion
 
         #region Public Properties
@@ -24,8 +26,8 @@ namespace G2Libsys.ViewModels
         public string Username
         {
             get => username;
-            set 
-            { 
+            set
+            {
                 username = value;
                 OnPropertyChanged(nameof(Username));
             }
@@ -33,52 +35,170 @@ namespace G2Libsys.ViewModels
 
         /// <summary>
         /// User password
+        /// TODO: Change to secure password and passwordbox
         /// </summary>
         public string Password
         {
             get => password;
-            set 
+            set
             {
                 password = value;
                 OnPropertyChanged(nameof(Password));
             }
         }
+
+        /// <summary>
+        /// For registring new user
+        /// </summary>
+        public User NewUser
+        {
+            get => newUser;
+            set
+            {
+                newUser = value;
+                Username = string.Empty;
+                Password = string.Empty;
+                OnPropertyChanged(nameof(NewUser));
+            }
+        }
+
+        /// <summary>
+        /// Error message for email
+        /// </summary>
+        public string EmailValidationMessage
+        {
+            get => emailValidationMessage;
+            set
+            {
+                emailValidationMessage = value;
+                OnPropertyChanged(nameof(EmailValidationMessage));
+            }
+        }
+        #endregion
+
+        #region Commands
+        /// <summary>
+        /// Login user command
+        /// </summary>
+        public ICommand LogIn { get; set; }
+
+        /// <summary>
+        /// Verify if canExecute command
+        /// </summary>
+        private Predicate<object> CanLogin =>
+            o => !string.IsNullOrWhiteSpace(Username)
+              && !string.IsNullOrWhiteSpace(Password);
+
+        /// <summary>
+        /// Register new user command
+        /// </summary>
+        public ICommand Register { get; set; }
+
+        /// <summary>
+        /// Verify if canExecute command
+        /// </summary>
+        private Predicate<object> CanRegister =>
+            o => !string.IsNullOrWhiteSpace(NewUser.Firstname)
+              && !string.IsNullOrWhiteSpace(NewUser.Lastname)
+              && !string.IsNullOrWhiteSpace(NewUser.Email)
+              && !string.IsNullOrWhiteSpace(NewUser.Password);
+
         #endregion
 
         #region Constructor
         /// <summary>
-        /// 
+        /// Default constructor
         /// </summary>
         public LoginViewModel()
         {
             _repo = new UserRepository();
 
-            // Temporary login
-            Username = "Johan@johan.com";
-            password = "25857";
+            EmailValidationMessage = string.Empty;
+            NewUser = new User();
 
-            VerifyLogin();
+            // Create commands
+            LogIn = new RelayCommand(_ => VerifyLogin(), CanLogin);
+            Register = new RelayCommand(_ => VerifyRegister(), CanRegister);
         }
         #endregion
 
         #region Private Methods
         /// <summary>
-        /// 
+        /// Verify user credentials and login
         /// </summary>
         private async void VerifyLogin()
         {
             var hostScreen = MainWindowViewModel.HostScreen;
 
+            // Check for user with correct credentials
             var user = await _repo.VerifyLoginAsync(Username, Password);
 
             if (user != null)
             {
+                // Set userstatus to logged in
                 user.LoggedIn = true;
 
+                // Update userstatus in db
                 await _repo.UpdateAsync(user).ConfigureAwait(false);
 
+                // Set current active user
                 hostScreen.CurrentUser = user;
+
+                // Get useraccess based on usertype
                 hostScreen.MenuItem = GetUserAccess(user.ID);
+
+                // On successfull login go to frontpage
+                NavigateToVM.Execute(typeof(FrontPageViewModel));
+            }
+
+            // Reset new user
+            EmailValidationMessage = string.Empty;
+            NewUser = new User();
+        }
+
+        /// <summary>
+        /// Verify user registering credentials
+        /// </summary>
+        private async void VerifyRegister()
+        {
+            if (!NewUser.Email.IsValidEmail())
+            {
+                // Email is not valid
+                EmailValidationMessage = "Ogiltig mailadress";
+            }
+            else if (await _repo.VerifyEmailAsync(NewUser.Email))
+            {
+                // Email already exists in database
+                EmailValidationMessage = "Mailadressen finns redan";
+            }
+            else
+            {
+                EmailValidationMessage = string.Empty;
+                // Call
+                RegisterUser();
+            }
+        }
+
+        /// <summary>
+        /// Try to register new user
+        /// </summary>
+        private async void RegisterUser()
+        {
+            try
+            {
+                // Insert new user
+                await _repo.AddAsync(NewUser);
+                MessageBox.Show("Registrerad, logga in med: \n" + NewUser.Email);
+            }
+            catch (Exception ex)
+            {
+                // Insert failed
+                MessageBox.Show("Kunde inte lägga till användare\n" + ex.Message);
+            }
+            finally
+            {
+                // Reset NewUser
+                NewUser = new User();
             }
         }
 

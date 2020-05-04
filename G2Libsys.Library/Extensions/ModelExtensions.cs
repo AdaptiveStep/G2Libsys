@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace G2Libsys.Library.Extensions
 {
@@ -21,6 +22,17 @@ namespace G2Libsys.Library.Extensions
             {
                 return result + "s";
             }
+        }
+
+        /// <summary>
+        /// Validate basic email pattern
+        /// </summary>
+        /// <param name="email"></param>
+        public static bool IsValidEmail(this string email)
+        {
+            string pattern = @"^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$";
+            var regex = new Regex(pattern, RegexOptions.IgnoreCase);
+            return regex.IsMatch(email);
         }
     }
 }

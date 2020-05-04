@@ -18,5 +18,10 @@
         /// Implement specific user query
         /// </summary>
         public Task<User> VerifyLoginAsync(string username, string password);
+
+        /// <summary>
+        /// Implement specific user query
+        /// </summary>
+        public Task<bool> VerifyEmailAsync(string email);
     }
 }
