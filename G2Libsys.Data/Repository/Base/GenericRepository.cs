@@ -24,7 +24,7 @@
     /// </summary>
     public abstract class GenericRepository : IRepository
     {
-        #region Privates
+        #region Private fields
 
         /// <summary>
         /// Default prodecure prefix
@@ -46,6 +46,7 @@
         #region Constructor
 
         /// <summary>
+        /// Default constructor, 
         /// tableName = target table in database
         /// </summary>
         public GenericRepository(string tableName = null)
@@ -88,7 +89,7 @@
             return parameters.Get<int>("NewID");
         }
 
-        public virtual async Task AddRange<T>(IEnumerable<T> items)
+        public virtual async Task AddRangeAsync<T>(IEnumerable<T> items)
         {
             using IDbConnection _db = Connection;
 
@@ -132,7 +133,7 @@
 
             // Return all items of type T
             return await _db.QueryAsync<T>(
-                        sql: GetProcedureName<T>("getall"), 
+                        sql: GetProcedureName<T>("getall"),
                       param: new { }, 
                 commandType: CommandType.StoredProcedure);
         }
@@ -184,7 +185,7 @@
         {
             string table = _tableName ?? typeof(T).ToTableName();
             return $"{_prefix}_{action}_{table}";
-        }
+        }             //usp_getall_users
 
         #endregion
     }
@@ -212,7 +213,7 @@
 
         public virtual async Task<int> AddAsync(T item) => await base.AddAsync(item);
 
-        public virtual async Task AddRange(IEnumerable<T> items) => await base.AddRange(items);
+        public virtual async Task AddRangeAsync(IEnumerable<T> items) => await base.AddRangeAsync(items);
 
         public virtual async Task<T> GetByIdAsync(int id) => await base.GetByIdAsync<T>(id);
 
