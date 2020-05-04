@@ -3,12 +3,6 @@ using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Net.Mail;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using G2Libsys.Library.Extensions;
 using System.Windows;
@@ -21,9 +15,8 @@ namespace G2Libsys.ViewModels
         private readonly IUserRepository _repo;
         private string username;
         private string password;
-        private User newUser;
-        private bool invalidEmail;
         private string emailValidationMessage;
+        private User newUser;
         #endregion
 
         #region Public Properties
@@ -54,6 +47,9 @@ namespace G2Libsys.ViewModels
             }
         }
 
+        /// <summary>
+        /// For registring new user
+        /// </summary>
         public User NewUser
         {
             get => newUser;
@@ -66,16 +62,9 @@ namespace G2Libsys.ViewModels
             }
         }
 
-        public bool InvalidEmail
-        {
-            get => invalidEmail;
-            set
-            {
-                invalidEmail = value;
-                OnPropertyChanged(nameof(InvalidEmail));
-            }
-        }
-
+        /// <summary>
+        /// Error message for email
+        /// </summary>
         public string EmailValidationMessage
         {
             get => emailValidationMessage;
@@ -123,8 +112,11 @@ namespace G2Libsys.ViewModels
         public LoginViewModel()
         {
             _repo = new UserRepository();
+
+            EmailValidationMessage = string.Empty;
             NewUser = new User();
 
+            // Create commands
             LogIn = new RelayCommand(_ => VerifyLogin(), CanLogin);
             Register = new RelayCommand(_ => VerifyRegister(), CanRegister);
         }
@@ -136,28 +128,32 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void VerifyLogin()
         {
-            //var b = await _repo.VerifyEmailAsync(Username);
-
             var hostScreen = MainWindowViewModel.HostScreen;
 
+            // Check for user with correct credentials
             var user = await _repo.VerifyLoginAsync(Username, Password);
 
             if (user != null)
             {
+                // Set userstatus to logged in
                 user.LoggedIn = true;
 
+                // Update userstatus in db
                 await _repo.UpdateAsync(user).ConfigureAwait(false);
 
+                // Set current active user
                 hostScreen.CurrentUser = user;
+
+                // Get useraccess based on usertype
                 hostScreen.MenuItem = GetUserAccess(user.ID);
 
                 // On successfull login go to frontpage
                 NavigateToVM.Execute(typeof(FrontPageViewModel));
             }
 
-            // Reset Username and Password
-            Username = string.Empty;
-            Password = string.Empty;
+            // Reset new user
+            EmailValidationMessage = string.Empty;
+            NewUser = new User();
         }
 
         /// <summary>
@@ -177,6 +173,7 @@ namespace G2Libsys.ViewModels
             }
             else
             {
+                EmailValidationMessage = string.Empty;
                 // Call
                 RegisterUser();
             }

@@ -171,8 +171,8 @@ namespace G2Libsys.ViewModels
             // Fill with needed viewmodels
             ViewModelList = new ObservableCollection<UserMenuItem>
             {
-                new UserMenuItem(new FrontPageViewModel()),
                 new UserMenuItem(new TestVM()),
+                new UserMenuItem(new LoginViewModel()),
                 new UserMenuItem(new AdminViewModel())
             };
         }
