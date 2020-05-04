@@ -16,6 +16,7 @@
 		-- Dummy Reservations
 		-- Fix the search features
 
+--FIXA LÄNGRE EMAILS VARCHAR(100)
 		--Svåra saker		
 		-- Ta bort "Batch Resetter" och använd 
 		-- "IF EXISTS...Replace" när tabeller 
@@ -101,7 +102,7 @@ CREATE TABLE Users(
 	ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,                  		--Candidatekey
 	LoanID AS (ID+100) * 2867585817934888 % 8687931395129801, 			--Calculated with (mod p) . Inverse is 7654321234567890 . Always unique due to being Finite Field.
 
-	[Email] VARCHAR(20) 	   NOT NULL UNIQUE,								--Candidatekey
+	[Email] VARCHAR(20) 	   NOT NULL DEFAULT 'UNNAMED',
 	[Password] VARCHAR(20) NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
 	Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
 	Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
@@ -199,7 +200,7 @@ CREATE TABLE Cards(
 		SET IDENTITY_INSERT LibraryObjects OFF
 		GO
 
-	--Relationship USER-2-OBJECT ; M2M
+	--Relationship Card-2-OBJECT ; M2M
 	CREATE TABLE ReservationsBy(
 		ID				INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,
 		ReservationDate DATE				NOT NULL DEFAULT SYSDATETIME(),   
@@ -291,19 +292,21 @@ CREATE PROC usp_delete_users
 
 ---------------Usertype ---------------------
 --Change usertype for user
-CREATE PROC usp_changeUsertype_users
-    @UserID int = null,
-    @UsertypeID int = null
-    AS
-    BEGIN
-   	    IF (@UserID IS NOT NULL and @UsertypeID is NOT NULL)
-   	    	BEGIN
-				UPDATE Users
-				SET Usertype = @UsertypeID
-				WHERE ID=@UserID; 
-			END
-    END
-    GO
+
+	--Överflödig
+	-- CREATE PROC usp_changeUsertype_users
+	--     @UserID int = null,
+	--     @UsertypeID int = null
+	--     AS
+	--     BEGIN
+	--    	    IF (@UserID IS NOT NULL and @UsertypeID is NOT NULL)
+	--    	    	BEGIN
+	-- 				UPDATE Users
+	-- 				SET Usertype = @UsertypeID
+	-- 				WHERE ID=@UserID; 
+	-- 			END
+	--     END
+	--     GO
 
 --Delete Usertype
 CREATE PROC usp_delete_usertypes
@@ -319,6 +322,7 @@ CREATE PROC usp_delete_usertypes
 
 --Add Usertype
 CREATE PROC usp_insert_usertype
+	@ID INT = null,
 	@Name VARCHAR(50)
     as
     begin
@@ -329,7 +333,7 @@ CREATE PROC usp_insert_usertype
 
 ---------------Reservations ---------------------
 --ADD reservation for objectID: using a cardID and a ReservationDate.
-CREATE PROC usp_addreservation_reservationsby
+CREATE PROC usp_add_reservationsby
 	@ReservationDate DATE,
 	@ObjectID		INT,
 	@Card			INT
@@ -353,41 +357,32 @@ CREATE PROC usp_delete_reservationsby
     END
     GO
 
+
+--Slå ihop med nedan
 --Edit Reservation: Change reservationdate
-CREATE PROC usp_ChResDate_reservationsby
-    @ReservationID INT,
-    @NewDate DATE
+CREATE PROC usp_update_reservationsby
+	@ID 			 	INT  	= null,
+	@ReservationDate 	DATE	= null,
+	@ObjectID 			INT 	= null,
+	@Card 				INT 	= null, 
+	@Fulfilled 			BIT
 
     AS
     BEGIN
-   	    IF (@ReservationID IS NOT NULL and @NewDate is NOT NULL)
-   	    	BEGIN
-				UPDATE ReservationsBy
-				SET ReservationDate = @NewDate
-				WHERE ID=@ReservationID; 
-			END
-    END
-    GO
-
---Edit Reservation: Change reserved object
-CREATE PROC usp_ChResObj_reservationsby
-    @ReservationID INT = null,
-    @ObjectID INT = null
-
-    AS
-    BEGIN
-   	    IF (@ReservationID IS NOT NULL and @ObjectID is NOT NULL)
-   	    	BEGIN
-				UPDATE ReservationsBy
-				SET ObjectID = @ObjectID
-				WHERE ID=@ReservationID; 
-			END
+		UPDATE ReservationsBy
+		SET ReservationDate = @ReservationDate, 
+			ObjectID 		= @OBjectID,
+			Card 			= @Card,
+			Fulfilled 		= @Fulfilled
+		WHERE ID=@ID; 
     END
     GO
 
 ---------------Cards ---------------------
 	--Delete the card for user
-CREATE PROC usp_deleteCard_cards
+
+--funkar
+CREATE PROC usp_delete_cards
     @ID int = null
     AS
     begin
@@ -395,6 +390,21 @@ CREATE PROC usp_deleteCard_cards
    	    	BEGIN
 			DELETE FROM Cards WHERE ID=@ID; 		--Might still crash if there is no user with this userid
 			END
+    END
+    GO
+
+
+CREATE PROC usp_add_cards
+    @ID 			int 		=null,
+	@ActivationDate DATETIME 	=null,
+	@Activated 		BIT 		=null,	
+	@Owner 		INT 		=null
+
+    AS
+
+    BEGIN
+        INSERT INTO 
+        Cards(Owner) VALUES (@Owner);
     END
     GO
 
@@ -419,11 +429,9 @@ CREATE PROC usp_findusers_users
     END
     GO
 
-
 --------BELOW IS STILL UNDER CONSTRUCITON:
---Dynamic search of objects
+--Dynamic search of objects - multiple keywords (i.e conjunctive filter search)
 CREATE PROC usp_findobject_LibraryObjects
-
 	@PartialTitle VARCHAR(20) = '',
 	@PartialDescription VARCHAR(20) = '',
 	@PartialPublisher VARCHAR(20) = ''
@@ -441,6 +449,21 @@ CREATE PROC usp_findobject_LibraryObjects
 			Title LIKE '%' + @PartialTitle + '%' AND
 			[Description] LIKE '%' + @PartialDescription + '%' AND
 			[Publisher] LIKE '%' + @PartialPublisher + '%';
+    END
+    GO
+
+--Dynamic search of objects - only one keyword
+CREATE PROC usp_simplesearch_LibraryObjects
+	@Partialword VARCHAR(20) = ''
+
+    AS
+    BEGIN
+		SELECT *
+		FROM LibraryObjects
+		WHERE 
+			Title LIKE '%' + @Partialword + '%' Or
+			[Description] LIKE '%' + @Partialword + '%' OR
+			[Publisher] LIKE '%' + @Partialword + '%';
     END
     GO
 
