@@ -15,11 +15,20 @@ namespace G2Libsys.ViewModels
         private readonly IUserRepository _repo;
         private User newUser;
         private User selectedUser;
+        private ObservableCollection<User> users;
 
         /// <summary>
         /// 
         /// </summary>
-        public ObservableCollection<User> Users { get; set; }
+        public ObservableCollection<User> Users
+        {
+            get => users;
+            set
+            {
+                users = value;
+                OnPropertyChanged(nameof(Users));
+            }
+        }
 
         /// <summary>
         /// 
@@ -63,7 +72,6 @@ namespace G2Libsys.ViewModels
         public AdminViewModel()
         {
             _repo = new UserRepository();
-            Users = new ObservableCollection<User>();
 
             GetUsers();
 
@@ -77,7 +85,7 @@ namespace G2Libsys.ViewModels
         private async void GetUsers()
         {
             NewUser = new User();
-            Users.ToList().AddRange(await _repo.GetAllAsync());
+            Users = new ObservableCollection<User>(await _repo.GetAllAsync());
         }
 
         /// <summary>
@@ -87,6 +95,8 @@ namespace G2Libsys.ViewModels
         {
             await _repo.RemoveAsync(SelectedUser);
             Users.Remove(SelectedUser);
+
+            // Reset NewUser
             NewUser = new User();
         }
 
@@ -95,8 +105,10 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void AddUser()
         {
-            await _repo.AddAsync(NewUser);
+            NewUser.ID = await _repo.AddAsync(NewUser);
             Users.Add(NewUser);
+
+            // Reset NewUser
             NewUser = new User();
         }
     }
