@@ -132,12 +132,10 @@
             using IDbConnection _db = Connection;
 
             // Return all items of type T
-            var b = await _db.QueryAsync<T>(
+            return await _db.QueryAsync<T>(
                         sql: GetProcedureName<T>("getall"),
                       param: new { }, 
                 commandType: CommandType.StoredProcedure);
-
-            return b;
         }
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(string search)

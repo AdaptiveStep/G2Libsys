@@ -26,7 +26,7 @@
                     IsReadOnly="True"
                     ItemsSource="{Binding Users}"
                     SelectedItem="{Binding SelectedUser}"
-                    SelectionMode="Extended">
+                    SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
                         <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
