@@ -22,4 +22,12 @@
         <vs:AdminView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:LibraryMainViewModel}">
+        <vs:LibraryMainView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LibraryObjectViewModel}">
+        <vs:LibraryObjectView />
+    </DataTemplate>
+
 </ResourceDictionary>

@@ -140,7 +140,7 @@ namespace G2Libsys.ViewModels
             HostScreen = this;
 
             // Initial viewmodel 
-            CurrentViewModel = new FrontPageViewModel();
+            CurrentViewModel = new LibraryMainViewModel();
 
             // Set logout command
             LogOutCommand = new RelayCommand(x => LogOut());
@@ -160,7 +160,7 @@ namespace G2Libsys.ViewModels
             CurrentUser.LoggedIn = false;
             _repo.UpdateAsync(CurrentUser).ConfigureAwait(false);
             CurrentUser = null;
-            NavigateToVM.Execute(typeof(FrontPageViewModel));
+            NavigateToVM.Execute(typeof(LibraryMainViewModel));
         }
 
         /// <summary>
