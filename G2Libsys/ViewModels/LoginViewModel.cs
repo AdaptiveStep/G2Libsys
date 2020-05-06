@@ -148,7 +148,7 @@ namespace G2Libsys.ViewModels
                 hostScreen.MenuItem = GetUserAccess(user.ID);
 
                 // On successfull login go to frontpage
-                NavigateToVM.Execute(typeof(FrontPageViewModel));
+                NavigateToVM.Execute(typeof(LibraryMainViewModel));
             }
 
             // Reset new user
