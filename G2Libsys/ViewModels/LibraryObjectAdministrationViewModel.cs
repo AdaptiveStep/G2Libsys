@@ -5,7 +5,7 @@ using System.Text;
 namespace G2Libsys.ViewModels
 {
     // Hantera alla library objects
-    public class LibraryObjectAdministration : BaseViewModel
+    public class LibraryObjectAdministrationViewModel : BaseViewModel
     {
     }
 }

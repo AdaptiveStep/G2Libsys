@@ -1,4 +1,5 @@
-﻿using System;
+﻿using G2Libsys.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -16,7 +17,7 @@ namespace G2Libsys.Views
     /// <summary>
     /// Interaction logic for LibraryObjectInfoView.xaml
     /// </summary>
-    public partial class LibraryObjectInfoView : Page
+    public partial class LibraryObjectInfoView : BasePage<LibraryObjectInfoViewModel>
     {
         public LibraryObjectInfoView()
         {

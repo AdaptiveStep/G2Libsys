@@ -1,4 +1,5 @@
-﻿using System;
+﻿using G2Libsys.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -16,7 +17,7 @@ namespace G2Libsys.Views
     /// <summary>
     /// Interaction logic for UserProfileView.xaml
     /// </summary>
-    public partial class UserProfileView : Page
+    public partial class UserProfileView : BasePage<UserProfileViewModel>
     {
         public UserProfileView()
         {
