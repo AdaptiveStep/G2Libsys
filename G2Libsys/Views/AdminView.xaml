@@ -15,8 +15,18 @@
         <StackPanel Grid.Column="1" Orientation="Horizontal">
 
             <materialDesign:Card Margin="10,10,10,10">
+                <StackPanel>
+                    <materialDesign:Card Margin="10 10 10 10">
+                        <StackPanel Orientation="Horizontal">
 
-                <DataGrid
+                            <Label Content="Sök efter användare" VerticalAlignment="Center"/>
+                            <TextBox Background="Wheat" Text="{Binding SearchString}"  Margin="10 10 10 10" Width="140"/>
+                            <Button Margin="0 0 10 0" Content="Sök" Command="{Binding searchbutton}"/>
+                            <Button Content="Avbryt" Command="{Binding cancelsearch}"/>
+                        </StackPanel>
+                    </materialDesign:Card>
+
+                    <DataGrid
                     MinWidth="400"
                     Margin="10,10,10,10"
                     AutoGenerateColumns="False"
@@ -36,6 +46,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
+                </StackPanel>
             </materialDesign:Card>
 
             <StackPanel Orientation="Vertical">

@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace G2Libsys.ViewModels
 {
@@ -14,11 +15,24 @@ namespace G2Libsys.ViewModels
     {
         public ICommand addbutton { get; private set; }
         public ICommand deletebutton { get; private set; }
+        public ICommand searchbutton { get; private set; }
+        public ICommand cancelsearch { get; private set; }
         private readonly IRepository<User> _repo;
 
         //binda knapparna från viewen
         //skapa datagrid
         private ObservableCollection<User> _users;
+        private string searchstring;
+
+        public string SearchString
+        {
+            get => searchstring;
+            set
+            {
+                searchstring = value;
+                OnPropertyChanged(nameof(SearchString));
+            }
+        }
         private User newUser;
         public User NewUser 
         { 
@@ -37,41 +51,57 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(oldUser));
             }
         }
+       
         public ObservableCollection<User> Users
         {
-            get { return _users; }
-            set { _users = value; }
+            get => _users;
+            set
+            {
+                _users = value;
+                OnPropertyChanged(nameof(Users));
+            }
         }
         public LibrarianViewModel()
         {
             _repo = new GeneralRepository<User>();
             Users = new ObservableCollection<User>();
-            Users.CollectionChanged += Users_CollectionChanged;
+            //Users.CollectionChanged += Users_CollectionChanged;
             NewUser = new User();
+            
             GetUsers();
             addbutton = new RelayCommand(x => AddUser());
             deletebutton = new RelayCommand(x=>DeleteUser());
-            
-          
+            searchbutton = new RelayCommand(x => Search());
+            cancelsearch = new RelayCommand(x => GetUsers());
+
         }
 
-        private void Users_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        
+        public async void Search()
         {
-
-            if (e.OldItems != null)
-                foreach (INotifyPropertyChanged i in e.OldItems)
-                    i.PropertyChanged -= itempropchanged;
-            if (e.NewItems != null)
-                foreach (INotifyPropertyChanged i in e.NewItems)
-                    i.PropertyChanged -= itempropchanged;
-
+            Users.Clear();
+            Users = new ObservableCollection<User>((await _repo.GetRangeAsync(SearchString)).Where(x => x.UserType == 3));
+            
         }
-        void itempropchanged(object sender, PropertyChangedEventArgs e) { }
+        
+        //private void Users_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        //{
+
+        //    if (e.OldItems != null)
+        //        foreach (INotifyPropertyChanged i in e.OldItems)
+        //            i.PropertyChanged -= itempropchanged;
+        //    if (e.NewItems != null)
+        //        foreach (INotifyPropertyChanged i in e.NewItems)
+        //            i.PropertyChanged -= itempropchanged;
+           
+
+        //}
+        //void itempropchanged(object sender, PropertyChangedEventArgs e) { }
 
         public async void GetUsers()
         {
             Users = new ObservableCollection<User>((await _repo.GetAllAsync()).ToList().Where(x => x.UserType == 3));
-            OnPropertyChanged(nameof(Users));
+            
         }
 
         
