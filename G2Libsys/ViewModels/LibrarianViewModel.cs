@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.ComponentModel;
+using System.Linq;
 
 namespace G2Libsys.ViewModels
 {
@@ -69,15 +70,15 @@ namespace G2Libsys.ViewModels
 
         public async void GetUsers()
         {
-            Users = new ObservableCollection<User>(await _repo.GetAllAsync());
+            Users = new ObservableCollection<User>((await _repo.GetAllAsync()).ToList().Where(x => x.UserType == 3));
             OnPropertyChanged(nameof(Users));
         }
 
         
         public async void DeleteUser()
         {
-            
-           await _repo.RemoveAsync(OldUser);
+            if (OldUser != null)
+                await _repo.RemoveAsync(OldUser);
             GetUsers();
         }
         public async void AddUser()

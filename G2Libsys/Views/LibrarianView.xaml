@@ -11,7 +11,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LibrarianView">
-    <Grid  ShowGridLines="True" Background="{StaticResource light_background}">
+    <Grid  ShowGridLines="False" Background="{StaticResource light_background}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -53,8 +53,7 @@
                         <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Lösenord"/>
                         <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                        <Label Content="Användartyp"/>
-                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.UserType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                       
                         <Button Command="{Binding addbutton}" Content="Lägg till" Margin="10 20 10 10"/>
                     </StackPanel>
                 </materialDesign:Card>
