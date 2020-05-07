@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
+using System.Diagnostics;
 using System.Windows.Input;
-using System.Windows.Navigation;
 using G2Libsys.Commands;
 using G2Libsys.Services;
 
@@ -27,7 +25,7 @@ namespace G2Libsys.ViewModels
         }
         #endregion
 
-        #region Public Commands
+        #region Commands
         /// <summary>
         /// Command for navigating to another ViewModel
         /// </summary>
@@ -46,11 +44,9 @@ namespace G2Libsys.ViewModels
                 try
                 {
                     // Create new ViewModel
-                    //MainWindowViewModel.HostScreen.CurrentViewModel = (BaseViewModel)Activator.CreateInstance(vm);
-
-                    Services.NavService.GoToAndReset((BaseViewModel)Activator.CreateInstance(vm));
+                    NavService.GoToAndReset((BaseViewModel)Activator.CreateInstance(vm));
                 }
-                catch { throw new Exception("Couldn't find " + vm.ToString()); }
+                catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });
         }
         #endregion

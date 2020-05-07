@@ -121,6 +121,17 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public ICommand LogOutCommand { get; private set; }
 
+        public ICommand GoToFrontPage => new RelayCommand(_ =>
+        {
+            if (!(CurrentViewModel is LibraryMainViewModel))
+                NavService.GoToAndReset(new LibraryMainViewModel());
+            else
+            {
+                var viewModel = (LibraryMainViewModel)CurrentViewModel;
+                viewModel.FrontPage = true;
+            }
+        });
+
         #endregion
 
         #region Constructor
@@ -140,11 +151,8 @@ namespace G2Libsys.ViewModels
         public void Initialize()
         {
             // Enable dev menu
-            DeveloperMode = false;
+            DeveloperMode = true;
             SetDevViewModels();
-
-            // Set MainWindowViewModel to hostscreen
-            //HostScreen = this;
 
             // Initial viewmodel 
             CurrentViewModel = new LibraryMainViewModel();
@@ -178,9 +186,11 @@ namespace G2Libsys.ViewModels
             // Fill with needed viewmodels
             ViewModelList = new ObservableCollection<UserMenuItem>
             {
-                new UserMenuItem(new TestVM()),
-                new UserMenuItem(new LoginViewModel()),
-                new UserMenuItem(new AdminViewModel())
+                new UserMenuItem(new AdminViewModel()),
+                new UserMenuItem(new LibraryObjectInfoViewModel(), "ObjectInfo"),
+                new UserMenuItem(new LibraryObjectAdministrationViewModel(), "ObjectsAdmin"),
+                new UserMenuItem(new UserProfileViewModel(), "Profile"),
+                new UserMenuItem(new UserReservationsViewModel(), "UserLoans")
             };
         }
     }

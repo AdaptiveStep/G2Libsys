@@ -67,8 +67,7 @@
         <Button
             Height="45"
             Padding="0"
-            Command="{Binding NavigateToVM}"
-            CommandParameter="{x:Type vm:LibraryMainViewModel}"
+            Command="{Binding GoToFrontPage}"
             Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <TextBlock
