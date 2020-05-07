@@ -1,71 +1,49 @@
 ﻿using G2Libsys.Commands;
 using G2Libsys.Library.Models;
+using G2Libsys.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Windows;
 using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
     public class LibraryMainViewModel : BaseViewModel
     {
-        private BaseViewModel contentVM;
-        private Category selectedCategory;
+        private bool frontPage;
 
-        public BaseViewModel ContentVM
+        public bool FrontPage
         {
-            get => contentVM;
+            get => frontPage;
             set
             {
-                contentVM = value;
-                OnPropertyChanged(nameof(contentVM));
+                frontPage = value;
+                OnPropertyChanged(nameof(FrontPage));
+                OnPropertyChanged(nameof(SearchPage));
             }
         }
 
-        public ObservableCollection<Category> Categories { get; set; }
+        public bool SearchPage => !FrontPage;
 
-        /// <summary>
-        /// Open list of selected category
-        /// </summary>
-        public Category SelectedCategory
+
+        public ICommand SearchCommand => new RelayCommand(_ => Search());
+
+        private void Search()
         {
-            set => ContentVM = new LibraryObjectViewModel() { CurrentCategory = value };
+            if (FrontPage)
+                FrontPage = false;
+            else
+                FrontPage = true;
         }
-
-        public Category SelectedSearchCategory
-        {
-            get => selectedCategory;
-            set
-            {
-                selectedCategory = value;
-                OnPropertyChanged(nameof(SelectedSearchCategory));
-            }
-        }
-
-        public ICommand SelectContent { get; set; }
-
-        public ICommand SearchCommand { get; set; }
-
 
         public LibraryMainViewModel()
         {
-            ContentVM = new FrontPageViewModel();
-
-            Categories = new ObservableCollection<Category>()
-            {
-                new Category() { ID = 1 },
-                new Category() { ID = 2 },
-                new Category() { ID = 3 }
-            };
-
-            SelectedSearchCategory = Categories[2];
-
-            SearchCommand = new RelayCommand<string>(search =>
-            {
-                ContentVM = new LibraryObjectViewModel();
-            });
+            FrontPage = true;
         }
     }
 }

@@ -9,7 +9,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControl="clr-namespace:G2Libsys.Controls"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
-    Title="LibraryObjectAdministrationView"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="vm:LibraryObjectAdministrationViewModel"

@@ -1,4 +1,5 @@
-﻿using G2Libsys.ViewModels;
+﻿using G2Libsys.Services;
+using G2Libsys.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -6,11 +7,11 @@ using System.Windows.Controls;
 
 namespace G2Libsys.Views
 {
-    public class BasePage<VM> : Page where VM : BaseViewModel, new()
+    public class BasePage<VM> : UserControl where VM : BaseViewModel, new()
     {
-        private VM viewModel;
+        private object viewModel;
 
-        public VM ViewModel 
+        public object ViewModel 
         { 
             get => viewModel;
             set 
@@ -24,7 +25,8 @@ namespace G2Libsys.Views
 
         public BasePage(VM viewModel = null)
         {
-            ViewModel = viewModel ?? new VM();
+            var b = typeof(VM);
+            ViewModel = viewModel ?? b.Locate() ?? new VM();
             this.DataContext = ViewModel;
         }
     }

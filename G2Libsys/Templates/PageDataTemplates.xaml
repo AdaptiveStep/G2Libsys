@@ -30,4 +30,24 @@
         <vs:LibraryObjectView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:LibraryObjectInfoViewModel}">
+        <vs:LibraryObjectInfoView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LibraryObjectAdministrationViewModel}">
+        <vs:LibraryObjectAdministrationView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UserReservationsViewModel}">
+        <vs:UserReservationsView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UserProfileViewModel}">
+        <vs:UserProfileView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UserAdministrationViewModel}">
+        <vs:UserAdministrationView />
+    </DataTemplate>
+
 </ResourceDictionary>
