@@ -24,8 +24,6 @@ namespace G2Libsys
         public MainWindow()
         {
             InitializeComponent();
-
-            DataContext = new MainWindowViewModel();
         }
     }
 }

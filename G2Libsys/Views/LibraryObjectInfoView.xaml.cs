@@ -9,20 +9,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace G2Libsys.Views
 {
     /// <summary>
-    /// Interaction logic for LibrarianView.xaml
+    /// Interaction logic for LibraryObjectInfoView.xaml
     /// </summary>
-    public partial class LibrarianView : BasePage<LibrarianViewModel>
+    public partial class LibraryObjectInfoView : BasePage<LibraryObjectInfoViewModel>
     {
-        
-        public LibrarianView()
+        public LibraryObjectInfoView()
         {
             InitializeComponent();
-            
         }
     }
 }

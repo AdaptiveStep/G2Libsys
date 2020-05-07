@@ -67,8 +67,7 @@
         <Button
             Height="45"
             Padding="0"
-            Command="{Binding NavigateToVM}"
-            CommandParameter="{x:Type vm:FrontPageViewModel}"
+            Command="{Binding GoToFrontPage}"
             Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <TextBlock
@@ -203,12 +202,12 @@
                     <MenuItem
                         Width="160"
                         Command="{Binding NavigateToVM}"
-                        CommandParameter="{Binding Path=MenuItem.VMType}">
+                        CommandParameter="{Binding Path=MenuItems[0].VMType}">
                         <MenuItem.Header>
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Text="{Binding Path=MenuItem.Title}" />
+                                Text="{Binding Path=MenuItems[0].Title}" />
                         </MenuItem.Header>
                     </MenuItem>
                     <Separator Padding="0" />

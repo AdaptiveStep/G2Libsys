@@ -35,6 +35,7 @@
         /// Connection string
         /// </summary>
         private readonly string _connectionString;
+        private string bkupString;
 
         /// <summary>
         /// Name of target table
@@ -56,10 +57,44 @@
         }
 
         #endregion
+        #region Connection
+
+        #endregion
+        #region Connection
+
+        #endregion
 
         #region Connection
 
-        protected virtual IDbConnection Connection => new SqlConnection(_connectionString);
+        //protected virtual IDbConnection GetConnection => new SqlConnection(_connectionString);
+
+        // Temporär lösning för flera connectionstrings
+        protected virtual IDbConnection GetConnection()
+        {
+            try
+            {
+                var conn = new SqlConnection(_connectionString);
+                conn.Open();
+                return conn;
+            }
+            catch
+            {
+                try
+                {
+                    bkupString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
+                    var conn = new SqlConnection(bkupString);
+                    conn.Open();
+                    return conn;
+                }
+                catch
+                {
+                    bkupString = ConfigurationManager.ConnectionStrings["sqlcustom"].ConnectionString;
+                    var conn = new SqlConnection(bkupString);
+                    conn.Open();
+                    return conn;
+                }
+            }
+        }
 
         #endregion
 
@@ -77,7 +112,7 @@
                  direction: ParameterDirection.Output);
 
             // Open connection
-            using IDbConnection _db = Connection;
+            using IDbConnection _db = GetConnection();
 
             // Insert mapped item and set NewID to created item ID
             await _db.ExecuteScalarAsync<int>(
@@ -91,10 +126,7 @@
 
         public virtual async Task AddRangeAsync<T>(IEnumerable<T> items)
         {
-            using IDbConnection _db = Connection;
-
-            // Connection open needed for transaction
-            _db.Open();
+            using IDbConnection _db = GetConnection();
 
             // Start transaction
             using IDbTransaction transaction = _db.BeginTransaction();
@@ -118,7 +150,7 @@
 
         public virtual async Task<T> GetByIdAsync<T>(int id)
         {
-            using IDbConnection _db = Connection;
+            using IDbConnection _db = GetConnection();
 
             // Return item with matching id
             return await _db.QueryFirstOrDefaultAsync<T>(
@@ -129,7 +161,7 @@
 
         public virtual async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            using IDbConnection _db = Connection;
+            using IDbConnection _db = GetConnection();
 
             // Return all items of type T
             return await _db.QueryAsync<T>(
@@ -140,7 +172,7 @@
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(string search)
         {
-            using IDbConnection _db = Connection;
+            using IDbConnection _db = GetConnection();
 
             // Return all items matching search
             return await _db.QueryAsync<T>(
@@ -162,7 +194,7 @@
 
         public virtual async Task UpdateAsync<T>(T item)
         {
-            using IDbConnection _db = Connection;
+            using IDbConnection _db = GetConnection();
 
             // Update item in database
             await _db.ExecuteAsync(
@@ -173,7 +205,7 @@
 
         public virtual async Task DeleteByIDAsync<T>(int id)
         {
-            using IDbConnection _db = Connection;
+            using IDbConnection _db = GetConnection();
 
             // Remove item from database
             await _db.ExecuteAsync(

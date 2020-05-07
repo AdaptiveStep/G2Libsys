@@ -1,14 +1,17 @@
-﻿<Page x:Class="G2Libsys.Views.LibrarianView"
-       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:G2Libsys.Views"
-     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+﻿<local:BasePage 
+                x:Class="G2Libsys.Views.LibrarianView"
+                x:TypeArguments="vm:LibrarianViewModel"
+                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                xmlns:local="clr-namespace:G2Libsys.Views"
+                xmlns:vm="clr-namespace:G2Libsys.ViewModels"               
+                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
                 mc:Ignorable="d" 
-                d:DesignHeight="450" d:DesignWidth="800"
-                Title="LibrarianView">
-    <Grid  ShowGridLines="True" Background="{StaticResource light_background}">
+                d:DesignHeight="450" d:DesignWidth="800"> 
+
+    <Grid  ShowGridLines="False" Background="{StaticResource light_background}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
@@ -16,9 +19,34 @@
 
         <Button Grid.Column="0" Content="Medlemmar" VerticalAlignment="Top" Margin="10 50 10 0"/>
         <StackPanel Grid.Column="1" Orientation="Horizontal" Background="{StaticResource accent_light}">
+
+
+            <StackPanel>
+                <materialDesign:Card Margin="10 10 10 10">
+                <StackPanel Orientation="Horizontal">
+                        
+                    <Label Content="Sök efter användare" VerticalAlignment="Center"/>
+                        <TextBox Background="Wheat" Text="{Binding SearchString}"  Margin="10 10 10 10" Width="140"/>
+                        <Button Margin="0 0 10 0" Content="Sök" Command="{Binding searchbutton}"/>
+                        <Button Content="Avbryt" Command="{Binding cancelsearch}"/>
+                    </StackPanel>
+                    </materialDesign:Card>
             <materialDesign:Card Margin="10 10 10 10">
-            <DataGrid Margin="10 10 10 10" MinWidth="400"/>
+
+                    <DataGrid SelectedItem="{Binding OldUser}" CanUserAddRows="False" CanUserDeleteRows="False" Margin="10 10 10 10" MinWidth="400" ItemsSource="{Binding Users}" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                        <DataGridTextColumn Header="Namn" Binding="{Binding Firstname}"/>
+                        <DataGridTextColumn Header="Efternamn" Binding="{Binding Lastname}"/>
+                        <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                        
+                    </DataGrid.Columns>
+                </DataGrid>
+                
             </materialDesign:Card>
+            </StackPanel>
+            
+            
             <StackPanel Orientation="Vertical">
                 <Label Content="Lägg till medlem" Foreground="Black"/>
                 <materialDesign:Card>
@@ -31,14 +59,15 @@
 
                     <StackPanel>
                         <Label Content="Namn"/>
-                        <TextBox/>
+                        <TextBox Margin="10 0 10 0" Width="100" Background="Wheat" Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Efternamn"/>
-                        <TextBox/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Email"/>
-                        <TextBox/>
-                        <Label Content="Personnummer"/>
-                        <TextBox/>
-                        <Button Content="Lägg till" Margin="10 20 10 10"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <Label Content="Lösenord"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                       
+                        <Button Command="{Binding addbutton}" Content="Lägg till" Margin="10 20 10 10"/>
                     </StackPanel>
                 </materialDesign:Card>
 
@@ -55,9 +84,8 @@
 
                     <StackPanel>
                        
-                        <Label Content="Email"/>
-                        <TextBox/>
-                        <Button Content="Ta bort" Margin="10 10 20 10"/>
+                        
+                        <Button Command="{Binding deletebutton}" Content="Ta bort" Margin="10 10 20 10"/>
                     </StackPanel>
                 </materialDesign:Card>
             </StackPanel>
@@ -68,5 +96,5 @@
 
 
     </Grid>
-</Page>
+</local:BasePage>
 

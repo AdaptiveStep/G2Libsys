@@ -6,7 +6,6 @@
     xmlns:local="clr-namespace:G2Libsys.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
-    Title="TestView"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="vm:TestVM"

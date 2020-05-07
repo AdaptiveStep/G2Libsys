@@ -1,4 +1,6 @@
-﻿using System;
+﻿using G2Libsys.Services;
+using G2Libsys.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +15,17 @@ namespace G2Libsys
     /// </summary>
     public partial class App : Application
     {
+        /// <summary>
+        /// Application startup
+        /// </summary>
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            MainWindow app = new MainWindow();
+            NavService.Setup(new MainWindowViewModel());
+            app.DataContext = NavService.HostScreen;
+            app.Show();
+        }
     }
 }

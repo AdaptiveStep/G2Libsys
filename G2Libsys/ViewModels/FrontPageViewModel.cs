@@ -10,7 +10,7 @@ namespace G2Libsys.ViewModels
     {
         public FrontPageViewModel()
         {
-
+            // Denna klass används ej.
         }
     }
 }
