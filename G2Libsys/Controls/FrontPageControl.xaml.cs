@@ -1,9 +1,6 @@
-﻿using G2Libsys.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,14 +11,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace G2Libsys
+namespace G2Libsys.Controls
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for FrontPageControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class FrontPageControl : UserControl
     {
-        public MainWindow()
+        public FrontPageControl()
         {
             InitializeComponent();
         }
