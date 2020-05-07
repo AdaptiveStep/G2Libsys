@@ -193,7 +193,8 @@ namespace G2Libsys.ViewModels
                 new UserMenuItem(new LibraryObjectInfoViewModel(), "ObjectInfo"),
                 new UserMenuItem(new LibraryObjectAdministrationViewModel(), "ObjectsAdmin"),
                 new UserMenuItem(new UserProfileViewModel(), "Profile"),
-                new UserMenuItem(new UserReservationsViewModel(), "UserLoans")
+                new UserMenuItem(new UserReservationsViewModel(), "UserLoans"),
+                new UserMenuItem(new LibrarianViewModel(), "UserManagement")
             };
         }
     }
