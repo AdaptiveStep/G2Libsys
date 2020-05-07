@@ -51,6 +51,14 @@
         public Task<IEnumerable<T>> GetRangeAsync<T>(string search);
 
         /// <summary>
+        /// Get all items matching search with multiple filters
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public Task<IEnumerable<T>> GetRangeAsync<T>(T item);
+
+        /// <summary>
         /// Update item in database
         /// </summary>
         /// <param name="item"></param>
@@ -62,7 +70,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Task RemoveAsync<T>(T item);
+        public Task DeleteByIDAsync<T>(int id);
     }
 
     /// <summary>
@@ -106,6 +114,13 @@
         public Task<IEnumerable<T>> GetRangeAsync(string search);
 
         /// <summary>
+        /// Get all items matching search with multiple filters
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public Task<IEnumerable<T>> GetRangeAsync(T item);
+
+        /// <summary>
         /// Update item in database
         /// </summary>
         /// <param name="item"></param>
@@ -117,6 +132,6 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Task RemoveAsync(T item);
+        public Task DeleteByIDAsync(int id);
     }
 }

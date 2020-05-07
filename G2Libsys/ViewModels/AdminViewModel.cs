@@ -17,6 +17,17 @@ namespace G2Libsys.ViewModels
         private User selectedUser;
         private ObservableCollection<User> users;
 
+        private string searchstring;
+
+        public string SearchString
+        {
+            get => searchstring;
+            set
+            {
+                searchstring = value;
+                OnPropertyChanged(nameof(SearchString));
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -55,6 +66,8 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SelectedUser));
             }
         }
+        public ICommand searchbutton { get; private set; }
+        public ICommand cancelsearch { get; private set; }
 
         /// <summary>
         /// 
@@ -69,6 +82,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// 
         /// </summary>
+        /// 
         public AdminViewModel()
         {
             _repo = new UserRepository();
@@ -77,8 +91,16 @@ namespace G2Libsys.ViewModels
 
             AddUserCommand = new RelayCommand(x => AddUser());
             RemoveUserCommand = new RelayCommand(x => RemoveUser());
+            searchbutton = new RelayCommand(x => Search());
+            cancelsearch = new RelayCommand(x => GetUsers());
         }
 
+        public async void Search()
+        {
+            Users.Clear();
+            Users = new ObservableCollection<User>((await _repo.GetRangeAsync(SearchString)));
+            OnPropertyChanged(nameof(Users));
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -93,7 +115,7 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void RemoveUser()
         {
-            await _repo.RemoveAsync(SelectedUser.ID);
+            await _repo.DeleteByIDAsync(SelectedUser.ID);
             Users.Remove(SelectedUser);
 
             // Reset NewUser
