@@ -183,7 +183,7 @@
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(T item)
         {
-            using IDbConnection _db = Connection;
+            using IDbConnection _db = GetConnection();
 
             // Return all items matching search with multiple filters
             return await _db.QueryAsync<T>(
