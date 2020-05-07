@@ -3,10 +3,13 @@ using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Models;
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using G2Libsys.Library.Extensions;
+using System.Collections.ObjectModel;
 using System.Windows;
 using G2Libsys.Services;
+using System.Linq;
 
 namespace G2Libsys.ViewModels
 {
@@ -148,7 +151,7 @@ namespace G2Libsys.ViewModels
                 hostScreen.MenuItems.Clear();
 
                 // Get useraccess based on usertype
-                hostScreen.MenuItems.Add(GetUserAccess(user.ID));
+                hostScreen.MenuItems = GetUserAccess(user.ID);
 
                 // On successfull login go to frontpage
                 NavigateToVM.Execute(typeof(LibraryMainViewModel));
@@ -209,12 +212,12 @@ namespace G2Libsys.ViewModels
         /// Switch expression that returns user viewmodel access based on UserType
         /// </summary>
         /// <param name="id">UserTypeID</param>
-        private UserMenuItem GetUserAccess(int id) => id switch
+        private ObservableCollection<UserMenuItem> GetUserAccess(int id) => id switch
         {
-            1 => new UserMenuItem(new AdminViewModel(), "Admin"), // Case 1
-            2 => new UserMenuItem(new TestVM(), "Bibliotekarie"), // Case 2
-            3 => new UserMenuItem(new TestVM(), "Mina lån"), // Case 3
-            _ => new UserMenuItem(new TestVM(), "Fel"), // Default
+            1 => new ObservableCollection<UserMenuItem>() { new UserMenuItem(new AdminViewModel(), "Admin") }, // Case 1
+            2 => new ObservableCollection<UserMenuItem>() { new UserMenuItem(new TestVM(), "Bibliotekarie") }, // Case 2
+            3 => new ObservableCollection<UserMenuItem>() { new UserMenuItem(new TestVM(), "Mina lån") }, // Case 3
+            _ => new ObservableCollection<UserMenuItem>() { new UserMenuItem(new TestVM(), "Fel") }, // Default
         };
 
         #endregion

@@ -33,7 +33,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Viewmodels for developer menu
         /// </summary>
-        public ObservableCollection<UserMenuItem> ViewModelList { get; set; }
+        public List<UserMenuItem> ViewModelList { get; set; }
 
         /// <summary>
         /// Quick navigation for devmenu
@@ -154,8 +154,11 @@ namespace G2Libsys.ViewModels
             DeveloperMode = true;
             SetDevViewModels();
 
+            // Initialize navservice and set hostscreen to this MainWindowViewModel
+            NavService.Setup(this);
+
             // Initial viewmodel 
-            CurrentViewModel = new LibraryMainViewModel();
+            NavService.GoToAndReset(new LibraryMainViewModel());
 
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();
@@ -187,7 +190,7 @@ namespace G2Libsys.ViewModels
         private void SetDevViewModels()
         {
             // Fill with needed viewmodels
-            ViewModelList = new ObservableCollection<UserMenuItem>
+            ViewModelList = new List<UserMenuItem>
             {
                 new UserMenuItem(new AdminViewModel()),
                 new UserMenuItem(new LibraryObjectInfoViewModel(), "ObjectInfo"),
