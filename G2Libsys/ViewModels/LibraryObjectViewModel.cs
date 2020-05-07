@@ -12,9 +12,10 @@ namespace G2Libsys.ViewModels
 {
     public class LibraryObjectViewModel : BaseViewModel
     {
+
         public LibraryObjectViewModel()
         {
-
+            // Denna klass används ej.
         }
     }
 }
