@@ -6,6 +6,7 @@ using System;
 using System.Windows.Input;
 using G2Libsys.Library.Extensions;
 using System.Windows;
+using G2Libsys.Services;
 
 namespace G2Libsys.ViewModels
 {
@@ -128,7 +129,7 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void VerifyLogin()
         {
-            var hostScreen = MainWindowViewModel.HostScreen;
+            var hostScreen = NavService.HostScreen;
 
             // Check for user with correct credentials
             var user = await _repo.VerifyLoginAsync(Username, Password);
@@ -144,8 +145,10 @@ namespace G2Libsys.ViewModels
                 // Set current active user
                 hostScreen.CurrentUser = user;
 
+                hostScreen.MenuItems.Clear();
+
                 // Get useraccess based on usertype
-                hostScreen.MenuItem = GetUserAccess(user.ID);
+                hostScreen.MenuItems.Add(GetUserAccess(user.ID));
 
                 // On successfull login go to frontpage
                 NavigateToVM.Execute(typeof(LibraryMainViewModel));

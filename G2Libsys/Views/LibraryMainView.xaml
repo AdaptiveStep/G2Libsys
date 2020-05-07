@@ -2,6 +2,7 @@
     x:Class="G2Libsys.Views.LibraryMainView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:G2Libsys.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:G2Libsys.Views"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -28,10 +29,18 @@
                 <userControl:LeftNavBarControl DataContext="{Binding}" />
 
                 <userControl:SearchHeaderControl Grid.Column="1" DataContext="{Binding}" />
-
             </Grid>
 
-            <Frame Grid.Row="1" Content="{Binding ContentVM}" />
+            <userControl:LibraryObjectsControl
+                Grid.Row="1"
+                DataContext="{Binding}"
+                Visibility="{Binding SearchPage, Converter={converter:BoolToVisibilityConverter}}" />
+
+            <local:FrontPageView
+                Grid.Row="1"
+                DataContext="{Binding}"
+                Visibility="{Binding FrontPage, Converter={converter:BoolToVisibilityConverter}}" />
+
         </Grid>
     </ScrollViewer>
 </local:BasePage>
