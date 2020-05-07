@@ -2,6 +2,7 @@
 using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Models;
+using G2Libsys.Services;
 using G2Libsys.Views;
 using System;
 using System.Collections.Generic;
@@ -14,24 +15,20 @@ using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : BaseViewModel, IHostScreen
     {
         #region Private Fields
 
         private readonly IRepository _repo;
         private User currentUser;
         private UserMenuItem menuItem;
-        private object currentViewModel;
+        private ObservableCollection<UserMenuItem> menuItems;
+        private BaseViewModel currentViewModel;
         private bool developerMode = false;
 
         #endregion
 
         #region Public Properties
-
-        /// <summary>
-        /// Property for calling the mainviewmodel for navigation purposes
-        /// </summary>
-        public static MainWindowViewModel HostScreen { get; set; }
 
         /// <summary>
         /// Viewmodels for developer menu
@@ -68,10 +65,20 @@ namespace G2Libsys.ViewModels
             }
         }
 
+        public ObservableCollection<UserMenuItem> MenuItems
+        {
+            get => menuItems;
+            set
+            {
+                menuItems = value;
+                OnPropertyChanged(nameof(MenuItems));
+            }
+        }
+
         /// <summary>
         /// Sets the active viewmodel
         /// </summary>
-        public object CurrentViewModel
+        public BaseViewModel CurrentViewModel
         {
             get => currentViewModel;
             set
@@ -112,7 +119,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Call logout method
         /// </summary>
-        public ICommand LogOutCommand { get; set; }
+        public ICommand LogOutCommand { get; private set; }
 
         #endregion
 
@@ -137,7 +144,7 @@ namespace G2Libsys.ViewModels
             SetDevViewModels();
 
             // Set MainWindowViewModel to hostscreen
-            HostScreen = this;
+            //HostScreen = this;
 
             // Initial viewmodel 
             CurrentViewModel = new LibraryMainViewModel();
