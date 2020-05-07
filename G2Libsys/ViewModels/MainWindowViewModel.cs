@@ -157,6 +157,9 @@ namespace G2Libsys.ViewModels
             // Initial viewmodel 
             CurrentViewModel = new LibraryMainViewModel();
 
+            // Initiate menuitems list
+            MenuItems = new ObservableCollection<UserMenuItem>();
+
             // Set logout command
             LogOutCommand = new RelayCommand(x => LogOut());
 

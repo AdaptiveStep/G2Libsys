@@ -207,7 +207,7 @@
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Text="{Binding Path=MenuItem[0].Title}" />
+                                Text="{Binding Path=MenuItems[0].Title}" />
                         </MenuItem.Header>
                     </MenuItem>
                     <Separator Padding="0" />
