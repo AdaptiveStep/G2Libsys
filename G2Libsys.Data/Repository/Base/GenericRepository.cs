@@ -176,8 +176,19 @@
 
             // Return all items matching search
             return await _db.QueryAsync<T>(
-                        sql: GetProcedureName<T>("getrange"), 
+                        sql: GetProcedureName<T>("simplesearch"), 
                       param: new { search }, 
+                commandType: CommandType.StoredProcedure);
+        }
+
+        public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(T item)
+        {
+            using IDbConnection _db = GetConnection();
+
+            // Return all items matching search with multiple filters
+            return await _db.QueryAsync<T>(
+                        sql: GetProcedureName<T>("filtersearch"), 
+                      param: item, 
                 commandType: CommandType.StoredProcedure);
         }
 
@@ -192,14 +203,14 @@
                 commandType: CommandType.StoredProcedure);
         }
 
-        public virtual async Task RemoveAsync<T>(T item)
+        public virtual async Task DeleteByIDAsync<T>(int id)
         {
             using IDbConnection _db = GetConnection();
 
             // Remove item from database
             await _db.ExecuteAsync(
                         sql: GetProcedureName<T>("remove"), 
-                      param: item, 
+                      param: new { id }, 
                 commandType: CommandType.StoredProcedure);
         }
 
@@ -217,7 +228,7 @@
         {
             string table = _tableName ?? typeof(T).ToTableName();
             return $"{_prefix}_{action}_{table}";
-        }             //usp_getall_users
+        }             
 
         #endregion
     }
@@ -253,9 +264,11 @@
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync(string search) => await base.GetRangeAsync<T>(search);
 
+        public virtual async Task<IEnumerable<T>> GetRangeAsync(T item)  => await base.GetRangeAsync(item);
+
         public virtual async Task UpdateAsync(T item) => await base.UpdateAsync(item);
 
-        public virtual async Task RemoveAsync(T item) => await base.RemoveAsync(item);
+        public virtual async Task DeleteByIDAsync(int id) => await base.DeleteByIDAsync<T>(id);
 
         #endregion
     }
