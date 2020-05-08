@@ -99,7 +99,7 @@ namespace G2Libsys.ViewModels
         {
             Users.Clear();
             Users = new ObservableCollection<User>((await _repo.GetRangeAsync(SearchString)));
-            OnPropertyChanged(nameof(Users));
+            
         }
         /// <summary>
         /// 
