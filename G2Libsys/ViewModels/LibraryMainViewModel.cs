@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
-    public class LibraryMainViewModel : BaseViewModel
+    public class LibraryMainViewModel : BaseViewModel, IViewModel
     {
         public ICommand BookButton { get; private set; }
         private readonly IRepository _repo;

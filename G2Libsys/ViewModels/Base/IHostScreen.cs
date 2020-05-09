@@ -9,10 +9,10 @@ namespace G2Libsys.ViewModels
 {
     public interface IHostScreen
     {
-        public BaseViewModel CurrentViewModel { get; set; }
+        public IViewModel CurrentViewModel { get; set; }
+
+        public IViewModel SubViewModel { get; set; }
 
         public User CurrentUser { get; set; }
-
-        public ObservableCollection<UserMenuItem> MenuItems { get; set; }
     }
 }

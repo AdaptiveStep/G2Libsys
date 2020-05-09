@@ -7,29 +7,18 @@ using G2Libsys.Services;
 
 namespace G2Libsys.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : BaseNotificationClass
     {
-        #region PropertyChangedEvent
-        /// <summary>
-        /// Property changed event handler
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Raise property changed event
-        /// </summary>
-        /// <param name="propertyName"></param>
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
-
         #region Commands
         /// <summary>
         /// Command for navigating to another ViewModel
         /// </summary>
-        public virtual ICommand NavigateToVM { get; protected set; }
+        public ICommand NavigateToVM { get; protected set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public ICommand OpenSubVM { get; protected set; }
         #endregion
 
         #region Constructor
@@ -44,7 +33,7 @@ namespace G2Libsys.ViewModels
                 try
                 {
                     // Create new ViewModel
-                    NavService.GoToAndReset((BaseViewModel)Activator.CreateInstance(vm));
+                    NavService.HostScreen.CurrentViewModel = NavService.GetViewModel((IViewModel)Activator.CreateInstance(vm));
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });

@@ -1,8 +1,11 @@
-﻿using G2Libsys.ViewModels;
+﻿using G2Libsys.Commands;
+using G2Libsys.Services;
+using G2Libsys.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
 
 namespace G2Libsys.Models
 {
@@ -17,22 +20,27 @@ namespace G2Libsys.Models
         public string Title { get; private set; }
 
         /// <summary>
-        /// Viewmodel type
+        /// MenuItem command
         /// </summary>
-        public Type VMType { get; private set; }
+        public ICommand Action { get; private set; }
 
         /// <summary>
         /// Input the viewmodel and displayname Title, default title is viewmodel name
         /// </summary>
         /// <param name="vm"></param>
         /// <param name="title"></param>
-        public UserMenuItem(BaseViewModel vm, string title = null)
+        public UserMenuItem(IViewModel vm, string title = null, ICommand action = null)
         {
             // Set Title to title or viewmodel name
             this.Title = title ?? vm.GetType().Name.Replace("ViewModel", null);
 
-            // Set Type to type of vm
-            this.VMType = vm.GetType();
+            // Create new instance of vm in NavService
+            var viewmodel = NavService.CreateNewInstance(vm);
+
+            Action = action ?? new RelayCommand(_ => 
+            {
+                NavService.HostScreen.CurrentViewModel = viewmodel;
+            });
         }
     }
 }

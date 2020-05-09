@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
-    public class AdminViewModel : BaseViewModel
+    public class AdminViewModel : BaseViewModel, IViewModel
     {
         private readonly IUserRepository _repo;
         private readonly IRepository<UserType> _repoUT;

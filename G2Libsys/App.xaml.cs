@@ -23,8 +23,7 @@ namespace G2Libsys
             base.OnStartup(e);
 
             MainWindow app = new MainWindow();
-            NavService.Setup(new MainWindowViewModel());
-            app.DataContext = NavService.HostScreen;
+            app.DataContext = new MainWindowViewModel();
             app.Show();
         }
     }
