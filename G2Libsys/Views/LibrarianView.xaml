@@ -1,5 +1,4 @@
-
-﻿<local:BasePage 
+<local:BasePage 
                 x:Class="G2Libsys.Views.LibrarianView"
                 x:TypeArguments="vm:LibrarianViewModel"
                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"

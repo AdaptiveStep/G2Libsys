@@ -35,7 +35,7 @@
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<T> GetByIdAsync<T>(int id);
+        public Task<T> GetByIdAsync<T>(int id); 
 
         /// <summary>
         /// Get all items

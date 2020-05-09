@@ -10,7 +10,7 @@
     
     <Grid Background="{StaticResource light_background}" 
           MinHeight="100" 
-          MinWidth="400" MaxHeight="250" MaxWidth="750">
+          MinWidth="400" MaxHeight="250">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="6*" />
@@ -23,7 +23,7 @@
             <RowDefinition Height="3" />
         </Grid.RowDefinitions>
 
-        <Image Source="https://cdn.imgbin.com/20/7/4/imgbin-books-background-WSgJ6uWsJc6L6ZbqAkkvb7CsK.jpg" 
+        <Image Source="http://riversofthinking.com/wp-content/uploads/2016/03/cropped-cropped-tree-frogs.jpg" 
                Stretch="Fill" 
                HorizontalAlignment="Stretch" 
                VerticalAlignment="Stretch" 
@@ -39,6 +39,7 @@
                 Background="{StaticResource primary_dark}" 
                 materialDesign:ShadowAssist.ShadowDepth="Depth5"
                 materialDesign:ShadowAssist.ShadowEdges="All"
+                MaxWidth="750"
                 >
         <Border 
             BorderThickness="3" 
