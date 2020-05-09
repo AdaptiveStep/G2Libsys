@@ -4,7 +4,7 @@ using System.Text;
 
 namespace G2Libsys.ViewModels
 {
-    public class TestVM : BaseViewModel
+    public class TestVM : BaseViewModel, IViewModel
     {
         public TestVM()
         {

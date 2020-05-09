@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace G2Libsys.ViewModels
 {
-    public class LibraryObjectViewModel : BaseViewModel
+    public class LibraryObjectViewModel : BaseViewModel, IViewModel
     {
 
         public LibraryObjectViewModel()

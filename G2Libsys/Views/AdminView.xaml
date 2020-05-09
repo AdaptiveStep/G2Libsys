@@ -17,35 +17,42 @@
 
             <materialDesign:Card Margin="10,10,10,10">
                 <StackPanel>
-                    <materialDesign:Card Margin="10 10 10 10">
+                    <materialDesign:Card Margin="10,10,10,10">
                         <StackPanel Orientation="Horizontal">
 
-                            <Label Content="Sök efter användare" VerticalAlignment="Center"/>
-                            <TextBox Background="Wheat" Text="{Binding SearchString}"  Margin="10 10 10 10" Width="140"/>
-                            <Button Margin="0 0 10 0" Content="Sök" Command="{Binding searchbutton}"/>
-                            <Button Content="Avbryt" Command="{Binding cancelsearch}"/>
+                            <Label VerticalAlignment="Center" Content="Sök efter användare" />
+                            <TextBox
+                                Width="140"
+                                Margin="10,10,10,10"
+                                Background="Wheat"
+                                Text="{Binding SearchString}" />
+                            <Button
+                                Margin="0,0,10,0"
+                                Command="{Binding searchbutton}"
+                                Content="Sök" />
+                            <Button Command="{Binding cancelsearch}" Content="Avbryt" />
                         </StackPanel>
                     </materialDesign:Card>
 
                     <DataGrid
-                    MinWidth="400"
-                    Margin="10,10,10,10"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    DataContext="{Binding}"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding Users}"
-                    SelectedItem="{Binding SelectedUser}"
-                    SelectionMode="Single">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
-                        <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
-                        <DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
-                        <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
-                        <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
-                    </DataGrid.Columns>
-                </DataGrid>
+                        MinWidth="400"
+                        Margin="10,10,10,10"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        DataContext="{Binding}"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding Users}"
+                        SelectedItem="{Binding SelectedUser}"
+                        SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
+                            <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
+                            <DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
+                            <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                            <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
+                        </DataGrid.Columns>
+                    </DataGrid>
 
                 </StackPanel>
             </materialDesign:Card>

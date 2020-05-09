@@ -3,14 +3,17 @@ using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Models;
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 using G2Libsys.Library.Extensions;
+using System.Collections.ObjectModel;
 using System.Windows;
 using G2Libsys.Services;
+using System.Linq;
 
 namespace G2Libsys.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : BaseViewModel, IViewModel
     {
         #region Private Fields
         private readonly IUserRepository _repo;
@@ -21,6 +24,7 @@ namespace G2Libsys.ViewModels
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// User email
         /// </summary>
@@ -75,6 +79,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(EmailValidationMessage));
             }
         }
+
         #endregion
 
         #region Commands
@@ -84,7 +89,7 @@ namespace G2Libsys.ViewModels
         public ICommand LogIn { get; set; }
 
         /// <summary>
-        /// Verify if canExecute command
+        /// Verify if canExecute login command
         /// </summary>
         private Predicate<object> CanLogin =>
             o => !string.IsNullOrWhiteSpace(Username)
@@ -96,7 +101,7 @@ namespace G2Libsys.ViewModels
         public ICommand Register { get; set; }
 
         /// <summary>
-        /// Verify if canExecute command
+        /// Verify if canExecute Register command
         /// </summary>
         private Predicate<object> CanRegister =>
             o => !string.IsNullOrWhiteSpace(NewUser.Firstname)
@@ -129,8 +134,6 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void VerifyLogin()
         {
-            var hostScreen = NavService.HostScreen;
-
             // Check for user with correct credentials
             var user = await _repo.VerifyLoginAsync(Username, Password);
 
@@ -143,15 +146,10 @@ namespace G2Libsys.ViewModels
                 await _repo.UpdateAsync(user).ConfigureAwait(false);
 
                 // Set current active user
-                hostScreen.CurrentUser = user;
-
-                hostScreen.MenuItems.Clear();
-
-                // Get useraccess based on usertype
-                hostScreen.MenuItems.Add(GetUserAccess(user.ID));
+                NavService.HostScreen.CurrentUser = user;
 
                 // On successfull login go to frontpage
-                NavigateToVM.Execute(typeof(LibraryMainViewModel));
+                NavService.GoToAndReset(new LibraryMainViewModel());
             }
 
             // Reset new user
@@ -204,18 +202,6 @@ namespace G2Libsys.ViewModels
                 NewUser = new User();
             }
         }
-
-        /// <summary>
-        /// Switch expression that returns user viewmodel access based on UserType
-        /// </summary>
-        /// <param name="id">UserTypeID</param>
-        private UserMenuItem GetUserAccess(int id) => id switch
-        {
-            1 => new UserMenuItem(new AdminViewModel(), "Admin"), // Case 1
-            2 => new UserMenuItem(new TestVM(), "Bibliotekarie"), // Case 2
-            3 => new UserMenuItem(new TestVM(), "Mina lån"), // Case 3
-            _ => new UserMenuItem(new TestVM(), "Fel"), // Default
-        };
 
         #endregion
     }

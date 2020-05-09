@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace G2Libsys.ViewModels
 {
-    public class LibrarianViewModel: BaseViewModel
+    public class LibrarianViewModel: BaseViewModel, IViewModel
     {
         public ICommand addbutton { get; private set; }
         public ICommand deletebutton { get; private set; }
@@ -108,7 +108,7 @@ namespace G2Libsys.ViewModels
         public async void DeleteUser()
         {
             if (OldUser != null)
-                await _repo.RemoveAsync(OldUser);
+                await _repo.DeleteByIDAsync(OldUser.ID);
             GetUsers();
         }
         public async void AddUser()

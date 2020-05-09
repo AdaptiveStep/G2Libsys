@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
-    public class FrontPageViewModel : BaseViewModel
+    public class FrontPageViewModel : BaseViewModel, IViewModel
     {
         public FrontPageViewModel()
         {
