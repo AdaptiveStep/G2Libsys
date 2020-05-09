@@ -86,11 +86,17 @@
                             Background="Wheat"
                             Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="Användartyp" />
-                        <TextBox
+                        <ComboBox
                             Width="100"
                             Margin="10,0,10,0"
                             Background="Wheat"
-                            Text="{Binding NewUser.UserType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            ItemsSource="{Binding UserTypes}" >
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock  Text="{Binding Name}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
                         <Button
                             Margin="10,20,10,10"
                             Command="{Binding AddUserCommand}"

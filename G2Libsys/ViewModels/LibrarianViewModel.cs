@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
 namespace G2Libsys.ViewModels
 {
@@ -34,14 +35,19 @@ namespace G2Libsys.ViewModels
             }
         }
         private User newUser;
-        public User NewUser 
-        { 
+        public User NewUser
+        {
             get => newUser;
-            set { newUser = value;
+            set
+            {
+                newUser = value;
                 OnPropertyChanged(nameof(NewUser));
             }
         }
+
+        
         private User oldUser;
+
         public User OldUser
         {
             get => oldUser;
@@ -51,7 +57,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(oldUser));
             }
         }
-       
+
         public ObservableCollection<User> Users
         {
             get => _users;
@@ -61,18 +67,20 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(Users));
             }
         }
+        
+
         public LibrarianViewModel()
         {
             _repo = new GeneralRepository<User>();
             Users = new ObservableCollection<User>();
             //Users.CollectionChanged += Users_CollectionChanged;
             NewUser = new User();
-            
             GetUsers();
             addbutton = new RelayCommand(x => AddUser());
             deletebutton = new RelayCommand(x=>DeleteUser());
             searchbutton = new RelayCommand(x => Search());
             cancelsearch = new RelayCommand(x => GetUsers());
+
 
         }
 
@@ -103,7 +111,7 @@ namespace G2Libsys.ViewModels
             Users = new ObservableCollection<User>((await _repo.GetAllAsync()).ToList().Where(x => x.UserType == 3));
             
         }
-
+        
         
         public async void DeleteUser()
         {

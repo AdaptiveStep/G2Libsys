@@ -13,10 +13,11 @@ namespace G2Libsys.ViewModels
     public class AdminViewModel : BaseViewModel, IViewModel
     {
         private readonly IUserRepository _repo;
+        private readonly IRepository<UserType> _repoUT;
         private User newUser;
         private User selectedUser;
         private ObservableCollection<User> users;
-
+        private ObservableCollection<UserType> _userTypes;
         private string searchstring;
 
         public string SearchString
@@ -86,6 +87,9 @@ namespace G2Libsys.ViewModels
         public AdminViewModel()
         {
             _repo = new UserRepository();
+            _repoUT = new GeneralRepository<UserType>();
+            UserTypes = new ObservableCollection<UserType>();
+            GetUserTypes();
 
             GetUsers();
 
@@ -94,7 +98,19 @@ namespace G2Libsys.ViewModels
             searchbutton = new RelayCommand(x => Search());
             cancelsearch = new RelayCommand(x => GetUsers());
         }
-
+        public ObservableCollection<UserType> UserTypes
+        {
+            get => _userTypes;
+            set
+            {
+                _userTypes = value;
+                OnPropertyChanged(nameof(UserType));
+            }
+        }
+        private async void GetUserTypes()
+        {
+            UserTypes = new ObservableCollection<UserType>(await _repoUT.GetAllAsync());
+        }
         public async void Search()
         {
             Users.Clear();

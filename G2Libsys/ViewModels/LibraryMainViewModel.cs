@@ -61,6 +61,7 @@ namespace G2Libsys.ViewModels
         {
             FrontPage = true;
             LibraryObjects = new ObservableCollection<LibraryObject>();
+            
             _repo = new GeneralRepository();
             GetLibraryObjects();
             BookButton = new RelayCommand(x => BookButtonClick());
@@ -73,7 +74,7 @@ namespace G2Libsys.ViewModels
         }
         public void BookButtonClick()
         {
-            MessageBox.Show("Snyggt klickat");
+            MessageBox.Show("test");
         }
       /// <summary>
         /// hämtar alla library objects ifrån databasen
