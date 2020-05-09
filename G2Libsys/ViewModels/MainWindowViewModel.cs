@@ -23,8 +23,9 @@ namespace G2Libsys.ViewModels
         private User currentUser;
         private UserMenuItem menuItem;
         private ObservableCollection<UserMenuItem> menuItems;
-        private BaseViewModel currentViewModel;
+        private IViewModel currentViewModel;
         private bool developerMode = false;
+        private IViewModel subViewModel;
 
         #endregion
 
@@ -78,13 +79,26 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Sets the active viewmodel
         /// </summary>
-        public BaseViewModel CurrentViewModel
+        public IViewModel CurrentViewModel
         {
             get => currentViewModel;
             set
             {
                 currentViewModel = value;
                 OnPropertyChanged(nameof(CurrentViewModel));
+            }
+        }
+
+        /// <summary>
+        /// Sets the active subviewmodel
+        /// </summary>
+        public IViewModel SubViewModel
+        {
+            get => subViewModel;
+            set
+            {
+                subViewModel = value;
+                OnPropertyChanged(nameof(SubViewModel));
             }
         }
 

@@ -9,7 +9,7 @@ namespace G2Libsys.ViewModels
 {
     public interface IHostScreen
     {
-        public BaseViewModel CurrentViewModel { get; set; }
+        public IViewModel CurrentViewModel { get; set; }
 
         public User CurrentUser { get; set; }
 

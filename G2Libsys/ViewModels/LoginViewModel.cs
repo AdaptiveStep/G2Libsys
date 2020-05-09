@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace G2Libsys.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    public class LoginViewModel : BaseViewModel, IViewModel
     {
         #region Private Fields
         private readonly IUserRepository _repo;

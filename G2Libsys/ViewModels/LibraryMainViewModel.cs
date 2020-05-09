@@ -13,7 +13,7 @@ using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
-    public class LibraryMainViewModel : BaseViewModel
+    public class LibraryMainViewModel : BaseViewModel, IViewModel
     {
         private bool frontPage;
 

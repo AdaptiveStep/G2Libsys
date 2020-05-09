@@ -18,7 +18,7 @@ namespace G2Libsys.Services
         /// <summary>
         /// Viewmodel navigation stack
         /// </summary>
-        private static List<BaseViewModel> ViewModels { get; set; }
+        private static List<IViewModel> ViewModels { get; set; }
 
         /// <summary>
         /// NavService setup where vm is HostScreen
@@ -27,23 +27,21 @@ namespace G2Libsys.Services
         public static void Setup(IHostScreen vm)
         {
             HostScreen = vm;
-            if (ViewModels is null) ViewModels = new List<BaseViewModel>();
+            ViewModels ??= new List<IViewModel>();
         }
 
         /// <summary>
         /// Look for viewmodel in navigationstack
         /// </summary>
         /// <param name="vm">Viewmodel Type</param>
-        public static BaseViewModel Locate(this Type vm) => ViewModels != null ? 
-            ViewModels.Where(x => x.GetType().Name == vm.Name).FirstOrDefault() : null;
+        public static IViewModel Locate(this Type vm) => ViewModels?.Where(x => x.GetType().Name == vm.Name).FirstOrDefault();
 
         /// <summary>
         /// Set Hostscreen active viewmodel and reset stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        public static void GoToAndReset(BaseViewModel vm)
+        public static void GoToAndReset(IViewModel vm)
         {
-            if (ViewModels is null) ViewModels = new List<BaseViewModel>();
             ViewModels.Clear();
             ViewModels.Add(vm);
             HostScreen.CurrentViewModel = vm;
@@ -53,7 +51,7 @@ namespace G2Libsys.Services
         /// Remove existing one from stack and add a new one
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        public static BaseViewModel GoToNewInstance(BaseViewModel vm)
+        public static IViewModel GoToNewInstance(IViewModel vm)
         {
             var viewModel = vm.GetType().Locate();
 
@@ -71,7 +69,7 @@ namespace G2Libsys.Services
         /// Go to viewmodel in stack or add new to stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        public static BaseViewModel GoTo(BaseViewModel vm)
+        public static IViewModel GoTo(IViewModel vm)
         {
             var viewModel = vm.GetType().Locate();
 

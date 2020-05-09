@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace G2Libsys.ViewModels
 {
-    public class LibrarianViewModel: BaseViewModel
+    public class LibrarianViewModel: BaseViewModel, IViewModel
     {
         public ICommand addbutton { get; private set; }
         public ICommand deletebutton { get; private set; }

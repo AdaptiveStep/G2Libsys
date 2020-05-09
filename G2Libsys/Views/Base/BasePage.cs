@@ -7,7 +7,7 @@ using System.Windows.Controls;
 
 namespace G2Libsys.Views
 {
-    public class BasePage<VM> : UserControl where VM : BaseViewModel, new()
+    public class BasePage<VM> : UserControl where VM : IViewModel, new()
     {
         private object viewModel;
 
@@ -23,10 +23,10 @@ namespace G2Libsys.Views
             } 
         }
 
-        public BasePage(VM viewModel = null)
+        public BasePage()
         {
             var b = typeof(VM);
-            ViewModel = viewModel ?? b.Locate() ?? new VM();
+            ViewModel = b.Locate() ?? new VM();
             this.DataContext = ViewModel;
         }
     }
