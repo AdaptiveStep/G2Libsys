@@ -6,28 +6,58 @@
     xmlns:local="clr-namespace:G2Libsys.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+    xmlns:ctrl="clr-namespace:G2Libsys.Controls"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="vm:LibraryObjectViewModel"
     mc:Ignorable="d">
 
     <Grid>
-        <StackPanel Height="300">
-            <TextBlock FontSize="20" Text="{Binding testing}" />
-            <DataGrid
-                Width="200"
+        <StackPanel 
+            Background="Transparent"
+            Height="250"
+            Width="800"
+            Orientation="Horizontal">
+            <ListView
+                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                ScrollViewer.CanContentScroll="True"
+                Width="800"
                 Margin="40"
-                AutoGenerateColumns="False"
-                CanUserAddRows="False"
-                CanUserDeleteRows="False"
                 DataContext="{Binding}"
-                IsReadOnly="True"
                 ItemsSource="{Binding LibraryObjects}"
+                SelectedItem="{Binding SelectedLibraryObject}"
                 SelectionMode="Single">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
-                </DataGrid.Columns>
-            </DataGrid>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+                                   RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                                   ItemWidth="{Binding (ListView.View).ItemWidth, 
+                                   RelativeSource={RelativeSource AncestorType=ListView}}"
+                                   MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+                                   ItemHeight="{Binding (ListView.View).ItemHeight, 
+                                   RelativeSource={RelativeSource AncestorType=ListView}}"
+                                   MaxWidth="720"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListViewItem>
+                    <Image
+                Height="140"
+                MaxWidth="80"
+                Source="https://img.pngio.com/textpurplevioletfontgraphic-designposterbook-cover-book-covers-png-678_1082.png"
+                Stretch="UniformToFill" 
+                Margin="1"
+                />
+                </ListViewItem>
+                <ListViewItem>
+                    <Image
+                Height="140"
+                MaxWidth="80"
+                Source="https://img.pngio.com/textpurplevioletfontgraphic-designposterbook-cover-book-covers-png-678_1082.png"
+                Stretch="UniformToFill" 
+                Margin="1"
+                />
+                </ListViewItem>
+            </ListView>
         </StackPanel>
     </Grid>
 </local:BasePage>
