@@ -33,7 +33,7 @@ namespace G2Libsys.ViewModels
                 try
                 {
                     // Create new ViewModel
-                    NavService.GoToAndReset((IViewModel)Activator.CreateInstance(vm));
+                    NavService.HostScreen.CurrentViewModel = NavService.GetViewModel((IViewModel)Activator.CreateInstance(vm));
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });

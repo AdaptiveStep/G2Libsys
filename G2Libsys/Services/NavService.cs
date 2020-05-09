@@ -26,7 +26,10 @@ namespace G2Libsys.Services
         /// <param name="vm">HostScreen</param>
         public static void Setup(IHostScreen vm)
         {
+            // Set hostscreen
             HostScreen = vm;
+
+            // Initiate stack
             ViewModels ??= new List<IViewModel>();
         }
 
@@ -37,7 +40,25 @@ namespace G2Libsys.Services
         public static IViewModel Locate(this Type vm) => ViewModels?.Where(x => x.GetType().Name == vm.Name).FirstOrDefault();
 
         /// <summary>
-        /// Set Hostscreen active viewmodel and reset stack
+        /// Return viewmodel from stack or add new to stack
+        /// </summary>
+        /// <param name="vm">Viewmodel to navigate to</param>
+        public static IViewModel GetViewModel(IViewModel vm)
+        {
+            var viewModel = vm.GetType().Locate();
+
+            if (viewModel != null)
+            {
+                return viewModel;
+            }
+
+            ViewModels.Add(vm);
+
+            return vm;
+        }
+
+        /// <summary>
+        /// Set main viewmodel and clear stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
         public static void GoToAndReset(IViewModel vm)
@@ -48,34 +69,16 @@ namespace G2Libsys.Services
         }
 
         /// <summary>
-        /// Remove existing one from stack and add a new one
+        /// Return new instance of the VM and remove previous from stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        public static IViewModel GoToNewInstance(IViewModel vm)
+        public static IViewModel ReturnNewInstance(IViewModel vm)
         {
             var viewModel = vm.GetType().Locate();
 
             if (viewModel != null)
             {
                 ViewModels.Remove(viewModel);
-            }
-
-            ViewModels.Add(vm);
-
-            return vm;
-        }
-
-        /// <summary>
-        /// Go to viewmodel in stack or add new to stack
-        /// </summary>
-        /// <param name="vm">Viewmodel to navigate to</param>
-        public static IViewModel GoTo(IViewModel vm)
-        {
-            var viewModel = vm.GetType().Locate();
-
-            if (viewModel != null)
-            {
-                return viewModel;
             }
 
             ViewModels.Add(vm);

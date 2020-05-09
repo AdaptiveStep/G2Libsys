@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace G2Libsys.ViewModels
 {
@@ -21,11 +22,11 @@ namespace G2Libsys.ViewModels
 
         private readonly IRepository _repo;
         private User currentUser;
-        private UserMenuItem menuItem;
         private ObservableCollection<UserMenuItem> menuItems;
         private IViewModel currentViewModel;
         private bool developerMode = false;
         private IViewModel subViewModel;
+        private Dispatcher dispatcher;
 
         #endregion
 
@@ -39,8 +40,11 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Quick navigation for devmenu
         /// </summary>
-        public UserMenuItem SelectedDevItem { set => NavigateToVM.Execute(value.VMType); }
+        public UserMenuItem SelectedDevItem { set => value.Action.Execute(null); }
 
+        /// <summary>
+        /// Active user
+        /// </summary>
         public User CurrentUser
         {
             get => currentUser;
@@ -50,22 +54,15 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(CurrentUser));
                 OnPropertyChanged(nameof(CanLogIn));
                 OnPropertyChanged(nameof(IsLoggedIn));
+
+                // Set user viewmodel access
+                if (value != null) dispatcher.Invoke(SetUserAccess);
             }
         }
 
         /// <summary>
-        /// 
+        /// User navigation access
         /// </summary>
-        public UserMenuItem MenuItem
-        {
-            get => menuItem;
-            set
-            {
-                menuItem = value;
-                OnPropertyChanged(nameof(MenuItem));
-            }
-        }
-
         public ObservableCollection<UserMenuItem> MenuItems
         {
             get => menuItems;
@@ -138,7 +135,7 @@ namespace G2Libsys.ViewModels
         public ICommand GoToFrontPage => new RelayCommand(_ =>
         {
             if (!(CurrentViewModel is LibraryMainViewModel))
-                NavService.GoToAndReset(new LibraryMainViewModel());
+                NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
             else
             {
                 var viewModel = (LibraryMainViewModel)CurrentViewModel;
@@ -162,23 +159,30 @@ namespace G2Libsys.ViewModels
 
         #endregion
 
-        public void Initialize()
+        #region Setup Methods
+        /// <summary>
+        /// Initial setup
+        /// </summary>
+        private void Initialize()
         {
-            // Enable dev menu
-            DeveloperMode = true;
-            SetDevViewModels();
-
             // Initialize navservice and set hostscreen to this MainWindowViewModel
             NavService.Setup(this);
 
+            // Enable dev menu
+            DeveloperMode = true;
+            DevelopSetup();
+
             // Initial viewmodel 
-            NavService.GoToAndReset(new LibraryMainViewModel());
+            CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
 
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();
 
             // Set logout command
             LogOutCommand = new RelayCommand(x => LogOut());
+
+            // Get dispatcher
+            dispatcher = Application.Current.Dispatcher;
 
             // Aplication closing event handler
             Application.Current.MainWindow.Closing
@@ -188,20 +192,51 @@ namespace G2Libsys.ViewModels
                 });
         }
 
-        private void LogOut()
+        /// <summary>
+        /// Setup user navigation access
+        /// </summary>
+        private void SetUserAccess()
         {
-            if (CurrentUser is null) return;
+            MenuItems ??= new ObservableCollection<UserMenuItem>();
 
-            CurrentUser.LoggedIn = false;
-            _repo.UpdateAsync(CurrentUser).ConfigureAwait(false);
-            CurrentUser = null;
-            NavigateToVM.Execute(typeof(LibraryMainViewModel));
+            if (MenuItems.Count > 0)
+            {
+                MenuItems.Clear();
+            }
+
+            // Create UserMenuItems
+            MenuItems.Add(new UserMenuItem(new UserProfileViewModel(), "Profil"));
+            MenuItems.Add(new UserMenuItem(new UserReservationsViewModel(), "Mina lån"));
+
+            (CurrentUser.UserType switch
+            {
+                1 => new List<UserMenuItem>() // Admin
+                {
+                    new UserMenuItem(new AdminViewModel(), "Användare"),
+                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Produkter"),
+                },
+                2 => new List<UserMenuItem>() // Librarian
+                {
+                    new UserMenuItem(new LibrarianViewModel(), "Användare"),
+                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Produkter"),
+                },
+                3 => new List<UserMenuItem>() // Visitor
+                {
+                    // Implementera eventuella unika viewmodels för endast användare
+                },
+                _ => new List<UserMenuItem>() // Other
+                {
+                    new UserMenuItem(new TestVM(), "Saknas")
+                }
+            }).ForEach(u => MenuItems.Add(u));
+
+            MenuItems.Add(new UserMenuItem(new FrontPageViewModel(), "Logga ut", LogOutCommand));
         }
 
         /// <summary>
         /// Set viewmodels for developer menu
         /// </summary>
-        private void SetDevViewModels()
+        private void DevelopSetup()
         {
             // Fill with needed viewmodels
             ViewModelList = new List<UserMenuItem>
@@ -213,5 +248,24 @@ namespace G2Libsys.ViewModels
                 new UserMenuItem(new UserReservationsViewModel(), "UserLoans")
             };
         }
+
+        #endregion
+
+        #region Functions
+
+        /// <summary>
+        /// Execution logic for user logout
+        /// </summary>
+        private void LogOut()
+        {
+            if (CurrentUser is null) return;
+
+            CurrentUser.LoggedIn = false;
+            _repo.UpdateAsync(CurrentUser).ConfigureAwait(false);
+            CurrentUser = null;
+            NavigateToVM.Execute(typeof(LibraryMainViewModel));
+        }
+
+        #endregion
     }
 }

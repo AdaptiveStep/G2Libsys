@@ -120,7 +120,7 @@
 
 
         <!--  Some Button  -->
-        <Button
+        <!--<Button
             Grid.Column="2"
             Height="45"
             Padding="0"
@@ -137,7 +137,7 @@
                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                     Text="Fråga oss!" />
             </Button.Content>
-        </Button>
+        </Button>-->
 
         <!--  Login Button  -->
         <Button
@@ -162,7 +162,7 @@
 
         <Grid Grid.Column="3" Visibility="{Binding IsLoggedIn, Converter={converter:BoolToVisibilityConverter}}">
 
-            <Menu
+            <!--<Menu
                 Padding="0"
                 HorizontalAlignment="Stretch"
                 Background="Black"
@@ -199,10 +199,7 @@
                                 Text="Profil" />
                         </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem
-                        Width="160"
-                        Command="{Binding NavigateToVM}"
-                        CommandParameter="{Binding Path=MenuItems[0].VMType}">
+                    <MenuItem Width="160" Command="{Binding Path=MenuItems[0].Action}">
                         <MenuItem.Header>
                             <TextBlock
                                 HorizontalAlignment="Center"
@@ -219,6 +216,82 @@
                                 Text="Logout" />
                         </MenuItem.Header>
                     </MenuItem>
+                </MenuItem>
+            </Menu>-->
+
+            <Menu
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                Background="Black"
+                BorderBrush="Transparent"
+                FlowDirection="RightToLeft"
+                FontSize="20"
+                IsMainMenu="true">
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid />
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                <MenuItem
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    ItemsSource="{Binding MenuItems}">
+                    <MenuItem.Header>
+                        <Border
+                            Margin="0,0,-70,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Transparent">
+                            <TextBlock Text="Mina sidor" />
+                        </Border>
+                    </MenuItem.Header>
+                    <MenuItem.ItemContainerStyle>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Width" Value="160" />
+                            <Setter Property="Header" Value="{Binding Title}" />
+                            <Setter Property="Command" Value="{Binding Action}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                                        <Border
+                                            x:Name="Bd"
+                                            Uid="Border_38"
+                                            Margin="0"
+                                            Padding="16,8"
+                                            Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            SnapsToDevicePixels="True">
+                                            <ContentPresenter
+                                                x:Name="ContentPresenter"
+                                                Uid="ContentPresenter_33"
+                                                Grid.Column="1"
+                                                Margin="{TemplateBinding Padding}"
+                                                Content="{TemplateBinding Header}"
+                                                ContentSource="Header"
+                                                RecognizesAccessKey="True"
+                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsHighlighted" Value="True">
+                                                <Setter TargetName="Bd" Property="Background">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Opacity="0.4" Color="{StaticResource Primary800}" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                                <Setter TargetName="Bd" Property="BorderBrush">
+                                                    <Setter.Value>
+                                                        <SolidColorBrush Opacity="0.3" Color="{StaticResource Primary800}" />
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </MenuItem.ItemContainerStyle>
                 </MenuItem>
             </Menu>
 

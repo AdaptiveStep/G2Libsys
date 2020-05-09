@@ -146,15 +146,15 @@ namespace G2Libsys.ViewModels
                 await _repo.UpdateAsync(user).ConfigureAwait(false);
 
                 // Set current active user
-                hostScreen.CurrentUser = user;
+                NavService.HostScreen.CurrentUser = user;
 
-                hostScreen.MenuItems.Clear();
+                //hostScreen.MenuItems.Clear();
 
                 // Get useraccess based on usertype
-                hostScreen.MenuItems = GetUserAccess(user.ID);
+                //hostScreen.MenuItems = GetUserAccess(user.UserType);
 
                 // On successfull login go to frontpage
-                NavigateToVM.Execute(typeof(LibraryMainViewModel));
+                NavService.GoToAndReset(new LibraryMainViewModel());
             }
 
             // Reset new user
@@ -214,10 +214,26 @@ namespace G2Libsys.ViewModels
         /// <param name="id">UserTypeID</param>
         private ObservableCollection<UserMenuItem> GetUserAccess(int id) => id switch
         {
-            1 => new ObservableCollection<UserMenuItem>() { new UserMenuItem(new AdminViewModel(), "Admin") }, // Case 1
-            2 => new ObservableCollection<UserMenuItem>() { new UserMenuItem(new TestVM(), "Bibliotekarie") }, // Case 2
-            3 => new ObservableCollection<UserMenuItem>() { new UserMenuItem(new TestVM(), "Mina lån") }, // Case 3
-            _ => new ObservableCollection<UserMenuItem>() { new UserMenuItem(new TestVM(), "Fel") }, // Default
+            1 => new ObservableCollection<UserMenuItem>() 
+            { 
+                new UserMenuItem(new AdminViewModel(), "Admin"),
+                new UserMenuItem(new LibraryMainViewModel(), "Logout")
+            }, // Case 1
+
+            2 => new ObservableCollection<UserMenuItem>() 
+            { 
+                new UserMenuItem(new LibrarianViewModel(), "Bibliotekarie") 
+            }, // Case 2
+
+            3 => new ObservableCollection<UserMenuItem>() 
+            { 
+                new UserMenuItem(new TestVM(), "Mina lån") 
+            }, // Case 3
+
+            _ => new ObservableCollection<UserMenuItem>() 
+            { 
+                new UserMenuItem(new TestVM(), "Fel") 
+            }, // Default
         };
 
         #endregion

@@ -11,8 +11,8 @@ namespace G2Libsys.ViewModels
     {
         public IViewModel CurrentViewModel { get; set; }
 
-        public User CurrentUser { get; set; }
+        public IViewModel SubViewModel { get; set; }
 
-        public ObservableCollection<UserMenuItem> MenuItems { get; set; }
+        public User CurrentUser { get; set; }
     }
 }
