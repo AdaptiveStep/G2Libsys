@@ -21,12 +21,12 @@ namespace G2Libsys.ViewModels
         #region Private Fields
 
         private readonly IRepository _repo;
-        private User currentUser;
-        private ObservableCollection<UserMenuItem> menuItems;
-        private IViewModel currentViewModel;
-        private bool developerMode = false;
-        private IViewModel subViewModel;
         private Dispatcher dispatcher;
+        private User currentUser;
+        private IViewModel currentViewModel;
+        private IViewModel subViewModel;
+        private ICommand goToFrontPage;
+        private ICommand logOutCommand;
 
         #endregion
 
@@ -63,15 +63,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// User navigation access
         /// </summary>
-        public ObservableCollection<UserMenuItem> MenuItems
-        {
-            get => menuItems;
-            set
-            {
-                menuItems = value;
-                OnPropertyChanged(nameof(MenuItems));
-            }
-        }
+        public ObservableCollection<UserMenuItem> MenuItems { get; private set; }
 
         /// <summary>
         /// Sets the active viewmodel
@@ -111,15 +103,7 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public bool IsLoggedIn => CurrentUser == null ? false : CurrentUser.LoggedIn;
 
-        public bool DeveloperMode
-        {
-            get => developerMode;
-            set
-            {
-                developerMode = value;
-                OnPropertyChanged(nameof(DeveloperMode));
-            }
-        }
+        public bool DeveloperMode { get; private set; }
 
         #endregion
 
@@ -130,9 +114,12 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Call logout method
         /// </summary>
-        public ICommand LogOutCommand { get; private set; }
+        public ICommand LogOutCommand => logOutCommand ??= new RelayCommand(x => LogOut());
 
-        public ICommand GoToFrontPage => new RelayCommand(_ =>
+        /// <summary>
+        /// Navigate to frontpage
+        /// </summary>
+        public ICommand GoToFrontPage => goToFrontPage ??= new RelayCommand(_ =>
         {
             if (!(CurrentViewModel is LibraryMainViewModel))
                 NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
@@ -178,10 +165,7 @@ namespace G2Libsys.ViewModels
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();
 
-            // Set logout command
-            LogOutCommand = new RelayCommand(x => LogOut());
-
-            // Get dispatcher
+            // Set dispatcher
             dispatcher = Application.Current.Dispatcher;
 
             // Aplication closing event handler

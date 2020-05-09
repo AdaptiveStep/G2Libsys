@@ -24,6 +24,7 @@ namespace G2Libsys.ViewModels
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// User email
         /// </summary>
@@ -78,6 +79,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(EmailValidationMessage));
             }
         }
+
         #endregion
 
         #region Commands
@@ -87,7 +89,7 @@ namespace G2Libsys.ViewModels
         public ICommand LogIn { get; set; }
 
         /// <summary>
-        /// Verify if canExecute command
+        /// Verify if canExecute login command
         /// </summary>
         private Predicate<object> CanLogin =>
             o => !string.IsNullOrWhiteSpace(Username)
@@ -99,7 +101,7 @@ namespace G2Libsys.ViewModels
         public ICommand Register { get; set; }
 
         /// <summary>
-        /// Verify if canExecute command
+        /// Verify if canExecute Register command
         /// </summary>
         private Predicate<object> CanRegister =>
             o => !string.IsNullOrWhiteSpace(NewUser.Firstname)
@@ -132,8 +134,6 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void VerifyLogin()
         {
-            var hostScreen = NavService.HostScreen;
-
             // Check for user with correct credentials
             var user = await _repo.VerifyLoginAsync(Username, Password);
 
@@ -147,11 +147,6 @@ namespace G2Libsys.ViewModels
 
                 // Set current active user
                 NavService.HostScreen.CurrentUser = user;
-
-                //hostScreen.MenuItems.Clear();
-
-                // Get useraccess based on usertype
-                //hostScreen.MenuItems = GetUserAccess(user.UserType);
 
                 // On successfull login go to frontpage
                 NavService.GoToAndReset(new LibraryMainViewModel());
@@ -207,34 +202,6 @@ namespace G2Libsys.ViewModels
                 NewUser = new User();
             }
         }
-
-        /// <summary>
-        /// Switch expression that returns user viewmodel access based on UserType
-        /// </summary>
-        /// <param name="id">UserTypeID</param>
-        private ObservableCollection<UserMenuItem> GetUserAccess(int id) => id switch
-        {
-            1 => new ObservableCollection<UserMenuItem>() 
-            { 
-                new UserMenuItem(new AdminViewModel(), "Admin"),
-                new UserMenuItem(new LibraryMainViewModel(), "Logout")
-            }, // Case 1
-
-            2 => new ObservableCollection<UserMenuItem>() 
-            { 
-                new UserMenuItem(new LibrarianViewModel(), "Bibliotekarie") 
-            }, // Case 2
-
-            3 => new ObservableCollection<UserMenuItem>() 
-            { 
-                new UserMenuItem(new TestVM(), "Mina lån") 
-            }, // Case 3
-
-            _ => new ObservableCollection<UserMenuItem>() 
-            { 
-                new UserMenuItem(new TestVM(), "Fel") 
-            }, // Default
-        };
 
         #endregion
     }

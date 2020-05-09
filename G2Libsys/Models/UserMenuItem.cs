@@ -34,7 +34,7 @@ namespace G2Libsys.Models
             this.Title = title ?? vm.GetType().Name.Replace("ViewModel", null);
 
             // Create new instance of vm in NavService
-            var viewmodel = NavService.ReturnNewInstance(vm);
+            var viewmodel = NavService.CreateNewInstance(vm);
 
             Action = action ?? new RelayCommand(_ => 
             {

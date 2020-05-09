@@ -13,6 +13,11 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="Width" Value="140" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,-10,0,0" />
+            <Setter Property="Header" Value="{Binding Title}" />
+            <Setter Property="Command" Value="{Binding Action}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type MenuItem}">
@@ -30,6 +35,8 @@
                                 Uid="ContentPresenter_33"
                                 Grid.Column="1"
                                 Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 Content="{TemplateBinding Header}"
                                 ContentSource="Header"
                                 RecognizesAccessKey="True"
@@ -236,6 +243,7 @@
                     Padding="0"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
+                    ItemContainerStyle="{StaticResource MenuItemStyle}"
                     ItemsSource="{Binding MenuItems}">
                     <MenuItem.Header>
                         <Border
@@ -243,55 +251,13 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Background="Transparent">
-                            <TextBlock Text="Mina sidor" />
+                            <TextBlock
+                                Margin="0,0,-70,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="Mina sidor" />
                         </Border>
                     </MenuItem.Header>
-                    <MenuItem.ItemContainerStyle>
-                        <Style TargetType="MenuItem">
-                            <Setter Property="Width" Value="160" />
-                            <Setter Property="Header" Value="{Binding Title}" />
-                            <Setter Property="Command" Value="{Binding Action}" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="{x:Type MenuItem}">
-                                        <Border
-                                            x:Name="Bd"
-                                            Uid="Border_38"
-                                            Margin="0"
-                                            Padding="16,8"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            SnapsToDevicePixels="True">
-                                            <ContentPresenter
-                                                x:Name="ContentPresenter"
-                                                Uid="ContentPresenter_33"
-                                                Grid.Column="1"
-                                                Margin="{TemplateBinding Padding}"
-                                                Content="{TemplateBinding Header}"
-                                                ContentSource="Header"
-                                                RecognizesAccessKey="True"
-                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsHighlighted" Value="True">
-                                                <Setter TargetName="Bd" Property="Background">
-                                                    <Setter.Value>
-                                                        <SolidColorBrush Opacity="0.4" Color="{StaticResource Primary800}" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                                <Setter TargetName="Bd" Property="BorderBrush">
-                                                    <Setter.Value>
-                                                        <SolidColorBrush Opacity="0.3" Color="{StaticResource Primary800}" />
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </MenuItem.ItemContainerStyle>
                 </MenuItem>
             </Menu>
 

@@ -72,7 +72,7 @@ namespace G2Libsys.Services
         /// Return new instance of the VM and remove previous from stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        public static IViewModel ReturnNewInstance(IViewModel vm)
+        public static IViewModel CreateNewInstance(IViewModel vm)
         {
             var viewModel = vm.GetType().Locate();
 
