@@ -117,6 +117,8 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public LoginViewModel()
         {
+            if (base.IsInDesignMode) return;
+
             _repo = new UserRepository();
 
             EmailValidationMessage = string.Empty;

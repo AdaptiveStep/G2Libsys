@@ -71,6 +71,8 @@ namespace G2Libsys.ViewModels
 
         public LibrarianViewModel()
         {
+            if (base.IsInDesignMode) return;
+
             _repo = new GeneralRepository<User>();
             Users = new ObservableCollection<User>();
             //Users.CollectionChanged += Users_CollectionChanged;

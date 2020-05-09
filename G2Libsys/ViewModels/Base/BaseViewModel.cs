@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using G2Libsys.Commands;
 using G2Libsys.Services;
@@ -21,12 +22,22 @@ namespace G2Libsys.ViewModels
         public ICommand OpenSubVM { get; protected set; }
         #endregion
 
+        /// <summary>
+        /// Check if in design mode
+        /// </summary>
+        public bool IsInDesignMode =>
+            (bool)DependencyPropertyDescriptor
+            .FromProperty(DesignerProperties.IsInDesignModeProperty, typeof(FrameworkElement))
+            .Metadata.DefaultValue;
+
         #region Constructor
         /// <summary>
         /// Default constructor
         /// </summary>
         public BaseViewModel()
         {
+            if (IsInDesignMode) return;
+
             // Navigate to vm where vm = ViewModel
             NavigateToVM = new RelayCommand<Type>(vm =>
             {

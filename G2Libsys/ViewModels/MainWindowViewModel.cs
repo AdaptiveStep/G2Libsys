@@ -139,6 +139,8 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
+            if (base.IsInDesignMode) return;
+
             _repo = new GeneralRepository();
 
             Initialize();

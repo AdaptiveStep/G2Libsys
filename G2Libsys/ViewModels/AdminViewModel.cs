@@ -86,6 +86,8 @@ namespace G2Libsys.ViewModels
         /// 
         public AdminViewModel()
         {
+            if (base.IsInDesignMode) return;
+
             _repo = new UserRepository();
             _repoUT = new GeneralRepository<UserType>();
             UserTypes = new ObservableCollection<UserType>();

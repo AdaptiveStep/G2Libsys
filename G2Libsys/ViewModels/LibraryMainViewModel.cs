@@ -59,6 +59,8 @@ namespace G2Libsys.ViewModels
 
         public LibraryMainViewModel()
         {
+            if (base.IsInDesignMode) return;
+
             FrontPage = true;
             LibraryObjects = new ObservableCollection<LibraryObject>();
             
