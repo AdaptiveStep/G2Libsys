@@ -25,10 +25,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Check if in design mode
         /// </summary>
-        public bool IsInDesignMode =>
-            (bool)DependencyPropertyDescriptor
-            .FromProperty(DesignerProperties.IsInDesignModeProperty, typeof(FrameworkElement))
-            .Metadata.DefaultValue;
+        public bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
 
         #region Constructor
         /// <summary>
