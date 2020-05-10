@@ -119,6 +119,9 @@ namespace G2Libsys.ViewModels
         {
             if (base.IsInDesignMode) return;
 
+            
+            var b = NavService.Dialog.Alert("This is a title", "This is the message");
+
             _repo = new UserRepository();
 
             EmailValidationMessage = string.Empty;
