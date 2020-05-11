@@ -16,7 +16,7 @@
     <Grid>
         <Rectangle Opacity="0.6">
             <Rectangle.Fill>
-                <SolidColorBrush Color="Black" />
+                <SolidColorBrush Color="{StaticResource Primary900}" />
             </Rectangle.Fill>
         </Rectangle>
         <Button

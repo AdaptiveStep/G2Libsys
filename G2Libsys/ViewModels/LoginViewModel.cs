@@ -1,18 +1,23 @@
-﻿using G2Libsys.Commands;
-using G2Libsys.Data.Repository;
-using G2Libsys.Library;
-using G2Libsys.Models;
-using System;
-using System.Collections.Generic;
-using System.Windows.Input;
-using G2Libsys.Library.Extensions;
-using System.Collections.ObjectModel;
-using System.Windows;
-using G2Libsys.Services;
-using System.Linq;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
+    #region Namespaces
+    using G2Libsys.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Input;
+    using G2Libsys.Library.Extensions;
+    using System.Collections.ObjectModel;
+    using System.Windows;
+    using G2Libsys.Services;
+    using System.Linq;
+    using G2Libsys.Commands;
+    using G2Libsys.Data.Repository;
+    using G2Libsys.Library;
+    #endregion
+
+    /// <summary>
+    /// Viewmodel for logging in user
+    /// </summary>
     public class LoginViewModel : BaseViewModel, ISubViewModel
     {
         #region Private Fields
@@ -136,6 +141,7 @@ namespace G2Libsys.ViewModels
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Verify user credentials and login
         /// </summary>
@@ -202,12 +208,12 @@ namespace G2Libsys.ViewModels
             {
                 // Insert new user
                 await _repo.AddAsync(NewUser);
-                MessageBox.Show("Registrerad, logga in med: \n" + NewUser.Email);
+                _dialog.Alert("Registrerad", "Logga in med: " + NewUser.Email);
             }
             catch (Exception ex)
             {
                 // Insert failed
-                MessageBox.Show("Kunde inte lägga till användare\n" + ex.Message);
+                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare:\n" + ex.Message);
             }
             finally
             {
