@@ -11,79 +11,36 @@
     mc:Ignorable="d">
     <Grid Background="{DynamicResource accent_light}">
 
-
-
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="2*" />
-        </Grid.ColumnDefinitions>
-
-
-        <materialDesign:PackIcon
-            Grid.Column="0"
-            Width="24"
-            Height="24"
-            Margin="10,10,0,0"
-            Kind="Library" />
-        <Button
-            Grid.Column="1"
-            Margin="7,10,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            Content="Boktips"
-            Foreground="#FF080000" />
-
-        <Button
-            Grid.Column="1"
-            Margin="7,48,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            Content="Bibliotek"
-            Foreground="#FF080000" />
-
-
-        <materialDesign:PackIcon
-            Grid.Column="0"
-            Width="24"
-            Height="24"
-            Margin="10,52,0,0"
-            Kind="AccountBox" />
-        <materialDesign:PackIcon
-            Grid.Column="0"
-            Width="24"
-            Height="24"
-            Margin="10,91,0,0"
-            Kind="Headphones" />
-        <materialDesign:PackIcon
-            Grid.Column="0"
-            Width="24"
-            Height="24"
-            Margin="10,132,0,0"
-            Kind="DesktopMac" />
-        <Button
-            Grid.Column="1"
-            Width="109"
-            Margin="7,122,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            Content="Seminarium"
-            Foreground="#FF080000" />
-        <Button
-            Grid.Column="1"
-            Margin="7,83,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            Content="E-Böcker"
-            Foreground="#FF080000" />
+        <ListView
+            x:Name="ViewListBox"
+            Width="auto"
+            Height="auto"
+            Margin="5"
+            FontSize="12"
+            FontWeight="DemiBold"
+            Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+            ItemsSource="{Binding ViewModelList}"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+            SelectedItem="{Binding SelectedDevItem}"
+            SelectionMode="Single">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Width="10"
+                            Height="10"
+                            Kind="AboutCircle" />
+                        <TextBlock Margin="4" Text="{Binding Title}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Vertical" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
 
 
 
