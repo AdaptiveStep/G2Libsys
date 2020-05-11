@@ -14,6 +14,19 @@
     x:TypeArguments="vm:LoginViewModel"
     mc:Ignorable="d">
     <Grid>
+        <Rectangle Opacity="0.6">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Black" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Button
+            Width="{Binding (FrameworkElement.ActualWidth)}"
+            Height="{Binding (FrameworkElement.ActualHeight)}"
+            Background="Transparent"
+            Command="{Binding CancelCommand}"
+            Cursor="Arrow"
+            Style="{StaticResource MaterialDesignToolForegroundButton}" />
+
         <materialDesign:Card
             Height="{Binding (FrameworkElement.ActualHeight), RelativeSource={RelativeSource AncestorType={x:Type Frame}}}"
             MaxWidth="700"

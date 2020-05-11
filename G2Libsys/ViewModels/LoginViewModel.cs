@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace G2Libsys.ViewModels
 {
-    public class LoginViewModel : BaseViewModel, IViewModel
+    public class LoginViewModel : BaseViewModel, ISubViewModel
     {
         #region Private Fields
         private readonly IUserRepository _repo;
@@ -110,6 +110,8 @@ namespace G2Libsys.ViewModels
               && !string.IsNullOrWhiteSpace(NewUser.Email)
               && !string.IsNullOrWhiteSpace(NewUser.Password);
 
+        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+
         #endregion
 
         #region Constructor
@@ -159,6 +161,8 @@ namespace G2Libsys.ViewModels
 
                 // On successfull login go to frontpage
                 NavService.GoToAndReset(new LibraryMainViewModel());
+
+                CancelCommand.Execute(null);
             }
 
             // Reset new user

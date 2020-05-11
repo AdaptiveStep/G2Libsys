@@ -155,7 +155,7 @@
             Grid.Column="3"
             Height="45"
             Padding="0"
-            Command="{Binding NavigateToVM}"
+            Command="{Binding OpenSubVM}"
             CommandParameter="{x:Type vm:LoginViewModel}"
             Style="{StaticResource MaterialDesignFlatButton}"
             Visibility="{Binding CanLogIn, Converter={converter:BoolToVisibilityConverter}}">
