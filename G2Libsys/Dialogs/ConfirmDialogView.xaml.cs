@@ -8,24 +8,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace G2Libsys.Dialogs
 {
     /// <summary>
-    /// Interaction logic for DialogWindow.xaml
+    /// Interaction logic for ConfirmDialogView.xaml
     /// </summary>
-    public partial class DialogWindow : Window, IDialog
+    public partial class ConfirmDialogView : UserControl
     {
-        public DialogWindow()
+        public ConfirmDialogView()
         {
             InitializeComponent();
-
-            var window = Application.Current.MainWindow;
-
-            this.Owner = window;
-            this.Height = window.ActualHeight;
-            this.Width = window.ActualWidth;
         }
     }
 }

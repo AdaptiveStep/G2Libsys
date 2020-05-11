@@ -63,4 +63,8 @@
         <dialog:AlertDialogView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialog:ConfirmDialogViewModel}">
+        <dialog:ConfirmDialogView />
+    </DataTemplate>
+
 </ResourceDictionary>

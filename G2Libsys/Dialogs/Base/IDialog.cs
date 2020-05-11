@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace G2Libsys.Dialogs
+﻿namespace G2Libsys.Dialogs
 {
+    /// <summary>
+    /// Dialog window
+    /// </summary>
     public interface IDialog
     {
-        public bool? DialogResult { get; set; }
-        public object DataContext { get; set; }
+        bool? DialogResult { get; set; }
+        object DataContext { get; set; }
 
         bool? ShowDialog();
         void Close();

@@ -168,6 +168,7 @@
                 // On successfull login go to frontpage
                 NavService.GoToAndReset(new LibraryMainViewModel());
 
+                // Exit LoginViewModel
                 CancelCommand.Execute(null);
             }
 
