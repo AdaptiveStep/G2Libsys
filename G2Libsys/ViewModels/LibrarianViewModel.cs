@@ -1,14 +1,9 @@
 ﻿using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Commands;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Linq;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace G2Libsys.ViewModels
 {
