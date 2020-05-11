@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
@@ -21,9 +22,18 @@ namespace G2Libsys.ViewModels
         private readonly IRepository _repo;
 
         private bool frontPage;
-
+        private ObservableCollection<LibraryObject> fpLibObjects;
         private ObservableCollection<LibraryObject> libObjects;
 
+        public ObservableCollection<LibraryObject> FpLibraryObjects
+        {
+            get => fpLibObjects;
+            set
+            {
+                fpLibObjects = value;
+                OnPropertyChanged(nameof(FpLibraryObjects));
+            }
+        }
         public ObservableCollection<LibraryObject> LibraryObjects
         {
             get => libObjects;
@@ -63,27 +73,33 @@ namespace G2Libsys.ViewModels
 
             FrontPage = true;
             LibraryObjects = new ObservableCollection<LibraryObject>();
-            
+            FpLibraryObjects = new ObservableCollection<LibraryObject>();
             _repo = new GeneralRepository();
             GetLibraryObjects();
+            GetFpLibraryObjects();
             BookButton = new RelayCommand(x => BookButtonClick());
             
         }
 
         public LibraryObject SelectedLibraryObject
         {
-            set => MessageBox.Show(value.ID.ToString());
+            set => NavService.HostScreen.SubViewModel = NavService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
         }
         public void BookButtonClick()
         {
             MessageBox.Show("test");
         }
-      /// <summary>
+        /// <summary>
         /// hämtar alla library objects ifrån databasen
         /// </summary>
         private async void GetLibraryObjects()
         {
             //LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
+        }
+        private async void GetFpLibraryObjects()
+        {
+            var list = (await _repo.GetAllAsync<LibraryObject>()).Where(x => x.Category == 1).ToList();
+            FpLibraryObjects = new ObservableCollection<LibraryObject>(list.GetRange(0,4));
         }
     }
 }

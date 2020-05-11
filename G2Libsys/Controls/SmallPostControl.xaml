@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:G2Libsys.Controls" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="200" d:DesignWidth="500" >
+             d:DesignHeight="300" d:DesignWidth="500" >
     <Grid >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5" />
@@ -27,7 +27,7 @@
             BorderBrush="{StaticResource PrimaryHueMidBrush}"
             BorderThickness="3"
             Background="{StaticResource MaterialDesignBodyLight}"
-            Height="150"
+            Height="auto"
             MaxWidth="500">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -37,24 +37,27 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="4*" />
-                    <RowDefinition />
+                    <RowDefinition Height="5*" />
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
 
-                <!--Bild-->
                 <materialDesign:Card 
                     Background="{StaticResource MaterialDesignBodyLight}"
                     Grid.RowSpan="3" 
                     Grid.Column="2" 
-                    Margin="2">
+                    Margin="2"
+                    >
 
+                <!--Bild-->
 
                     <Image
-               Source="https://www.blue.se/wp-content/uploads/2020/03/Hall-vikten_600.jpg"
+               Source="{Binding FpLibraryObjects[0].ImageSource}"
                Stretch="Uniform"
                Margin="5"
                Grid.RowSpan="3"
-               Grid.Column="2" />
+               Grid.Column="2" 
+               VerticalAlignment="Top"
+                        />
 
                 </materialDesign:Card >
   <!--Stackpanel för Boktitel, författare & beskrivning-->
@@ -62,17 +65,17 @@
                     
                 <StackPanel Margin="5 5 0 0">
    <!--Titel-->
-                    <TextBlock x:Name="blogTitle"
-                   Text="Håll vikten"
-                   FontSize="15"
+                    <TextBlock
+                   Text="{Binding FpLibraryObjects[0].Title}"
+                   FontSize="20"
                    FontWeight="Medium"
                    Style="{StaticResource MaterialDesignHeadline1TextBlock}">
                     </TextBlock>
     <!--Författare-->
-                    <TextBlock x:Name="blogWriter"
-                   Text="Erik Nicklagård"
+                    <TextBlock
                    FontSize="7"
                    FontWeight="SemiBold"
+                   Text="{Binding FpLibraryObjects[0].Author}"
                    Style="{StaticResource MaterialDesignBody2TextBlock}" />
                 </StackPanel>
                     
@@ -80,35 +83,48 @@
                     
                     
      <!--Beskrivning-->
-                    <TextBlock x:Name="blogDescription"
+                    <TextBlock
                 TextWrapping="Wrap"
                 FontFamily="{StaticResource MaterialDesignFont}"
                 FontSize="9"
-                Text="
-
-De flesta som försöker gå ner i vikt misslyckas. Efter en tid med träning och nyttig kost dras de tillbaka till sin gamla livsstil. Oavsett hur bra de mådde när de nått sin målvikt.
-
-Men så finns de få undantagen. De som inte faller tillbaka i gamla vanor. Och det är dem som den här boken handlar om. I Håll vikten berättar kost- och träningskonsulten Erik Nicklagård om några av sina klienter, och om sina egna erfarenheter inom personlig utveckling och hälsa. Du får svaret på varför vissa människor lyckas åstadkomma en varaktig livsstilsförändring – om det så är att gå ner i vikt, lägga om kosten, effektivisera sin tid, eller något helt annat. Boken ger en förståelse för hur våra medvetna och undermedvetna sinnen fungerar, och hur du själv kan skapa en inre drivkraft. Du får exempel på personer som tagit stora kliv i sin personliga utveckling, och en övningsdel med tips på hur du kan gå till väga för att bli en av dem.
-"
+                
+                Text="{Binding FpLibraryObjects[0].Description}"
                 Style="{StaticResource MaterialDesignBody2TextBlock}" />
 
+                    
                 </WrapPanel>
 
-     <!--Läs mer contentgrid-->
+     <!--Expander-->
                 <Grid
-                    Grid.Column="1"
+                    Grid.Column="0"
                     Grid.Row="2"
+                    Grid.ColumnSpan="3"
                     >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-
+                    
+                    <Expander
+                        Grid.RowSpan="3"
+                        Background="{StaticResource MaterialDesignBodyLight}"
+                        HorizontalAlignment="Stretch"
+                        Header="Läs Mer">
+                        <StackPanel
+                        Orientation="Vertical"
+                        TextBlock.Foreground="Black"
+      >
+                        <TextBlock
+                        Opacity=".68"
+                        Text="{Binding FpLibraryObjects[0].Description}"
+                        TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Expander>
 
                 </Grid>
 
-                <TextBlock x:Name="blogPubDate"
-                    Text="Publicerad den: 24 april 2019"
+                <TextBlock
+                    Text="{Binding FpLibraryObjects[0].DateAdded}"
                    Grid.Row="2"
                    VerticalAlignment="Bottom"
                    FontSize="7"

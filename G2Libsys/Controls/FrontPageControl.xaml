@@ -35,7 +35,8 @@
                     FontFamily="{StaticResource MaterialDesignFont}"
                     FontSize="30"
                     FontWeight="Regular"
-                    Text="Heta Boktips!" />
+                    Text="Nyheter"
+                    />
                 <local:SmallPostControl
                     x:Name="smallpostcontrol"
                     Margin="0,0,40,0"

@@ -2,12 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:G2Libsys"
-             StartupUri="Views/FrontPageView.xaml">
+             >
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <!-- Register Views -->
-                <ResourceDictionary Source="Views/Base/PageDataTemplates.xaml"/>
+                <ResourceDictionary Source="Templates/PageDataTemplates.xaml"/>
                 
                 <!-- MaterialDesign Theme -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
