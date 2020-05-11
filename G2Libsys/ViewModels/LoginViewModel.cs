@@ -17,6 +17,7 @@ namespace G2Libsys.ViewModels
     {
         #region Private Fields
         private readonly IUserRepository _repo;
+        private readonly IDialogService _dialog;
         private string username;
         private string password;
         private string emailValidationMessage;
@@ -119,8 +120,7 @@ namespace G2Libsys.ViewModels
         {
             if (base.IsInDesignMode) return;
 
-            
-            var b = NavService.Dialog.Alert("This is a title", "This is the message");
+            _dialog = new DialogService();
 
             _repo = new UserRepository();
 
@@ -142,7 +142,11 @@ namespace G2Libsys.ViewModels
             // Check for user with correct credentials
             var user = await _repo.VerifyLoginAsync(Username, Password);
 
-            if (user != null)
+            if (user is null)
+            {
+                _dialog.Alert("Fel lösenord", "Försök igen.");
+            }
+            else
             {
                 // Set userstatus to logged in
                 user.LoggedIn = true;

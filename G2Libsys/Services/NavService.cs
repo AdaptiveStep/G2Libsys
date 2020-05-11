@@ -18,11 +18,6 @@ namespace G2Libsys.Services
         public static IHostScreen HostScreen { get; private set; }
 
         /// <summary>
-        /// Dialog interraction handler
-        /// </summary>
-        public static IDialogService Dialog { get; set; }
-
-        /// <summary>
         /// Viewmodel navigation stack
         /// </summary>
         private static IList<IViewModel> ViewModels { get; set; }
@@ -35,9 +30,6 @@ namespace G2Libsys.Services
         {
             // Set hostscreen
             HostScreen = vm;
-
-            // Initialize dialogservice
-            Dialog = new DialogService();
 
             // Initialize stack
             ViewModels ??= new List<IViewModel>();

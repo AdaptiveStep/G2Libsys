@@ -3,19 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
+using G2Libsys.Events;
 
 namespace G2Libsys.Dialogs
 {
-    public class AlertDialogViewModel : BaseDialogViewModel<string>
+    public class AlertDialogViewModel : BaseDialogViewModel<bool>
     {
-        public ICommand OKCommand => new RelayCommand<IDialogWindow>(OK);
-
         public AlertDialogViewModel(string title = null, string msg = null) 
             : base(title, msg) { }
-
-        private void OK(IDialogWindow window)
-        {
-            base.CloseDialogWithResult(window, "ok");
-        }
     }
 }
