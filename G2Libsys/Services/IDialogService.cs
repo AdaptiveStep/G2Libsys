@@ -6,8 +6,8 @@ namespace G2Libsys.Services
 {
     public interface IDialogService
     {
-        public string Alert(string title, string message);
+        public void Alert(string title, string message);
 
-        public T Confirm<T>(string title, string message);
+        public bool? Confirm(string title, string message);
     }
 }

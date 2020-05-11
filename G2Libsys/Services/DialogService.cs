@@ -1,4 +1,5 @@
 ﻿using G2Libsys.Dialogs;
+using G2Libsys.Events;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,21 +8,44 @@ namespace G2Libsys.Services
 {
     public class DialogService : IDialogService
     {
-        public string Alert(string title = null, string msg = null)
+        public void Alert(string title = null, string msg = null)
         {
             var viewModel = new AlertDialogViewModel(title, msg);
-            IDialogWindow window = new DialogWindow() { DataContext = viewModel };
-            window.ShowDialog();
+            ShowDialog(viewModel);
+        }
+
+        public bool? Confirm(string title = null, string msg = null)
+        {
+            var viewModel = new BaseDialogViewModel<bool?>();
+            viewModel.DialogResult = ShowDialog(viewModel);
             return viewModel.DialogResult;
         }
 
-        public T Confirm<T>(string title = null, string msg = null)
+        private bool? ShowDialog<VM>(VM viewModel) where VM : IDialogRequestClose
         {
-            var viewModel = new BaseDialogViewModel<T>();
-            IDialogWindow window = new DialogWindow();
-            window.DataContext = viewModel;
-            window.ShowDialog();
-            return viewModel.DialogResult;
+            IDialog dialog = new DialogWindow() { DataContext = viewModel };
+
+            EventHandler<DialogCloseRequestedEventArgs> handler = null;
+
+            handler = (sender, e) =>
+            {
+                viewModel.CloseRequested -= handler;
+
+                if (e.DialogResult.HasValue)
+                {
+                    dialog.DialogResult = e.DialogResult;
+                }
+                else
+                {
+                    dialog.Close();
+                }
+            };
+
+            viewModel.CloseRequested += handler;
+
+            dialog.DataContext = viewModel;
+
+            return dialog.ShowDialog();
         }
     }
 }
