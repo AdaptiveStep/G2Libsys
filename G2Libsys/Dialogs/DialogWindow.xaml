@@ -24,12 +24,10 @@
             Width="{Binding (FrameworkElement.ActualWidth)}"
             Height="{Binding (FrameworkElement.ActualHeight)}"
             Background="Transparent"
-            Click="Button_Click"
+            Command="{Binding CancelCommand}"
             Cursor="Arrow"
             Style="{StaticResource MaterialDesignToolForegroundButton}" />
 
-        <ContentControl
-            x:Name="ContentPresenter"
-            Content="{Binding}" />
+        <ContentControl x:Name="ContentPresenter" Content="{Binding}" />
     </Grid>
 </Window>

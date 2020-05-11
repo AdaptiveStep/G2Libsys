@@ -15,7 +15,7 @@ namespace G2Libsys.Dialogs
     /// <summary>
     /// Interaction logic for DialogWindow.xaml
     /// </summary>
-    public partial class DialogWindow : Window, IDialogWindow
+    public partial class DialogWindow : Window, IDialog
     {
         public DialogWindow()
         {
