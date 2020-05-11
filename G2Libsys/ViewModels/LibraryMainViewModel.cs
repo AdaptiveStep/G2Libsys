@@ -101,5 +101,6 @@ namespace G2Libsys.ViewModels
             var list = (await _repo.GetAllAsync<LibraryObject>()).Where(x => x.Category == 1).ToList();
             FpLibraryObjects = new ObservableCollection<LibraryObject>(list.GetRange(0,4));
         }
+      
     }
 }
