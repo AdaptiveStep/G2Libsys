@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\imagesHLRD3NHV.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="DapperExtensions.DotnetCore" Version="1.0.1" />
     <PackageReference Include="MaterialDesignColors" Version="1.2.3" />
@@ -16,6 +20,10 @@
   <ItemGroup>
     <ProjectReference Include="..\G2Libsys.Data\G2Libsys.Data.csproj" />
     <ProjectReference Include="..\G2Libsys.Library\G2Libsys.Library.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\imagesHLRD3NHV.png" />
   </ItemGroup>
 
   <ItemGroup>

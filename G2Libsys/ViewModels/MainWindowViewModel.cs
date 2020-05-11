@@ -155,7 +155,7 @@ namespace G2Libsys.ViewModels
             SetDevViewModels();
 
             // Initial viewmodel 
-            CurrentViewModel = new LibraryMainViewModel();
+            CurrentViewModel = new UserProfileViewModel();
 
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();

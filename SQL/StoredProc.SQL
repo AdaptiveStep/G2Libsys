@@ -22,7 +22,7 @@ Create proc usp_verifyemail_users
     end
     GO
 
-Create proc usp_insert_users
+Alter proc usp_insert_users
     @ID int = null,
     @LoanID numeric = null,
     @Email varchar(100),

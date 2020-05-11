@@ -108,7 +108,7 @@ namespace G2Libsys.ViewModels
         public async void DeleteUser()
         {
             if (OldUser != null)
-                await _repo.RemoveAsync(OldUser);
+                await _repo.DeleteByIDAsync(OldUser.ID);
             GetUsers();
         }
         public async void AddUser()

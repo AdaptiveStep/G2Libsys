@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G2Libsys", "G2Libsys\G2Libsys.csproj", "{11BA87DA-1632-4436-B379-D2EAB89C4153}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "G2Libsys", "G2Libsys\G2Libsys.csproj", "{11BA87DA-1632-4436-B379-D2EAB89C4153}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G2Libsys.Library", "G2Libsys.Library\G2Libsys.Library.csproj", "{30A7AB0B-9ECF-4882-9483-2D02B3AF3A2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "G2Libsys.Library", "G2Libsys.Library\G2Libsys.Library.csproj", "{30A7AB0B-9ECF-4882-9483-2D02B3AF3A2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "G2Libsys.Data", "G2Libsys.Data\G2Libsys.Data.csproj", "{CCA5CA7A-2591-47B1-B532-38271445BD06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "G2Libsys.Data", "G2Libsys.Data\G2Libsys.Data.csproj", "{CCA5CA7A-2591-47B1-B532-38271445BD06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,16 +17,16 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{11BA87DA-1632-4436-B379-D2EAB89C4153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{11BA87DA-1632-4436-B379-D2EAB89C4153}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11BA87DA-1632-4436-B379-D2EAB89C4153}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11BA87DA-1632-4436-B379-D2EAB89C4153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11BA87DA-1632-4436-B379-D2EAB89C4153}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{11BA87DA-1632-4436-B379-D2EAB89C4153}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{30A7AB0B-9ECF-4882-9483-2D02B3AF3A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{30A7AB0B-9ECF-4882-9483-2D02B3AF3A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{30A7AB0B-9ECF-4882-9483-2D02B3AF3A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{30A7AB0B-9ECF-4882-9483-2D02B3AF3A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30A7AB0B-9ECF-4882-9483-2D02B3AF3A2D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{30A7AB0B-9ECF-4882-9483-2D02B3AF3A2D}.Release|Any CPU.Build.0 = Debug|Any CPU
 		{CCA5CA7A-2591-47B1-B532-38271445BD06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CCA5CA7A-2591-47B1-B532-38271445BD06}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CCA5CA7A-2591-47B1-B532-38271445BD06}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CCA5CA7A-2591-47B1-B532-38271445BD06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCA5CA7A-2591-47B1-B532-38271445BD06}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCA5CA7A-2591-47B1-B532-38271445BD06}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
