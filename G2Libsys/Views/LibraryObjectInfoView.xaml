@@ -24,7 +24,7 @@
                 Style="{StaticResource MaterialDesignToolButton}"
                 Height="{Binding (FrameworkElement.ActualHeight)}"
                 Width="{Binding (FrameworkElement.ActualWidth)}"
-                Command="{Binding ExitButtonCommand}"
+                Command="{Binding CancelCommand}"
                 Cursor="Arrow" />
 
         <materialDesign:Card

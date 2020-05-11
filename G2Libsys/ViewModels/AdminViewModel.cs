@@ -111,7 +111,7 @@ namespace G2Libsys.ViewModels
         }
         private async void GetUserTypes()
         {
-            //UserTypes = new ObservableCollection<UserType>(await _repoUT.GetAllAsync());
+            UserTypes = new ObservableCollection<UserType>(await _repoUT.GetAllAsync());
         }
         public async void Search()
         {

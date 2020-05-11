@@ -76,7 +76,6 @@ namespace G2Libsys.ViewModels
             FrontPage = true;
             LibraryObjects = new ObservableCollection<LibraryObject>();
             FpLibraryObjects = new ObservableCollection<LibraryObject>();
-            _repo = new GeneralRepository();
             GetLibraryObjects();
             GetFpLibraryObjects();
             BookButton = new RelayCommand(x => BookButtonClick());
@@ -85,7 +84,7 @@ namespace G2Libsys.ViewModels
 
         public LibraryObject SelectedLibraryObject
         {
-            set => NavService.HostScreen.SubViewModel = NavService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
+            set => NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
         }
         public void BookButtonClick()
         {
@@ -96,7 +95,7 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void GetLibraryObjects()
         {
-            //LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
+            LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
         }
 
 
@@ -117,6 +116,7 @@ namespace G2Libsys.ViewModels
 
         private async void GetLibraryObjects(int id)
         {
+            FrontPage = false;
             LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
         }
 

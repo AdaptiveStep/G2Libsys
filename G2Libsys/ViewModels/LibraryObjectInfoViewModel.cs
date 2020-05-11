@@ -11,10 +11,9 @@ namespace G2Libsys.ViewModels
 {
 
     // Visa info om ett libraryobject med lånemöjligheter 
-    public class LibraryObjectInfoViewModel : BaseViewModel, IViewModel
+    public class LibraryObjectInfoViewModel : BaseViewModel, ISubViewModel
     {
-        private ICommand exitButtonCommand;
-        public ICommand ExitButtonCommand => exitButtonCommand ??= new RelayCommand(x => ExitButton());
+        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
 
         public ObservableCollection<LibraryObject> currentBook;
 
@@ -30,9 +29,6 @@ namespace G2Libsys.ViewModels
             currentBook.Add(libraryObject);
         }
 
-        private void ExitButton()
-        {
-            NavService.HostScreen.SubViewModel = null;
-        }
+        
     }
 }
