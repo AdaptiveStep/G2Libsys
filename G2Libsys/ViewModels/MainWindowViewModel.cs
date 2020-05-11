@@ -21,10 +21,9 @@ namespace G2Libsys.ViewModels
         #region Private Fields
 
         private readonly IRepository _repo;
-        private Dispatcher dispatcher;
         private User currentUser;
         private IViewModel currentViewModel;
-        private IViewModel subViewModel;
+        private ISubViewModel subViewModel;
         private ICommand goToFrontPage;
         private ICommand logOutCommand;
 
@@ -81,7 +80,7 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Sets the active subviewmodel
         /// </summary>
-        public IViewModel SubViewModel
+        public ISubViewModel SubViewModel
         {
             get => subViewModel;
             set
@@ -103,6 +102,9 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public bool IsLoggedIn => CurrentUser == null ? false : CurrentUser.LoggedIn;
 
+        /// <summary>
+        /// Check if in developermode
+        /// </summary>
         public bool DeveloperMode { get; private set; }
 
         #endregion
@@ -159,7 +161,7 @@ namespace G2Libsys.ViewModels
 
             // Enable dev menu
             DeveloperMode = true;
-            DevelopSetup();
+            if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
             CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
@@ -167,14 +169,11 @@ namespace G2Libsys.ViewModels
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();
 
-            // Set dispatcher
-            dispatcher = Application.Current.Dispatcher;
-
             // Aplication closing event handler
             Application.Current.MainWindow.Closing
                 += new CancelEventHandler((o, e) =>
                 {
-                    LogOut();
+                    dispatcher.Invoke(LogOut);
                 });
         }
 

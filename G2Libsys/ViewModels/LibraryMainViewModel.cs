@@ -83,7 +83,7 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void GetLibraryObjects()
         {
-            LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
+            //LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
         }
     }
 }

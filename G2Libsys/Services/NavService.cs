@@ -8,6 +8,7 @@ namespace G2Libsys.Services
 {
     /// <summary>
     /// Viewmodel navigation handler
+    /// TODO: Remove static and implement through dependancy injection
     /// </summary>
     public static class NavService
     {
@@ -19,7 +20,7 @@ namespace G2Libsys.Services
         /// <summary>
         /// Viewmodel navigation stack
         /// </summary>
-        private static List<IViewModel> ViewModels { get; set; }
+        private static IList<IViewModel> ViewModels { get; set; }
 
         /// <summary>
         /// NavService setup where vm is HostScreen
@@ -30,7 +31,7 @@ namespace G2Libsys.Services
             // Set hostscreen
             HostScreen = vm;
 
-            // Initiate stack
+            // Initialize stack
             ViewModels ??= new List<IViewModel>();
         }
 

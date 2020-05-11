@@ -22,8 +22,7 @@ namespace G2Libsys
         {
             base.OnStartup(e);
 
-            MainWindow app = new MainWindow();
-            app.DataContext = new MainWindowViewModel();
+            var app = new MainWindow { DataContext = new MainWindowViewModel() };
             app.Show();
         }
     }

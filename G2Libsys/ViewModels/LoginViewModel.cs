@@ -1,22 +1,28 @@
-﻿using G2Libsys.Commands;
-using G2Libsys.Data.Repository;
-using G2Libsys.Library;
-using G2Libsys.Models;
-using System;
-using System.Collections.Generic;
-using System.Windows.Input;
-using G2Libsys.Library.Extensions;
-using System.Collections.ObjectModel;
-using System.Windows;
-using G2Libsys.Services;
-using System.Linq;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
-    public class LoginViewModel : BaseViewModel, IViewModel
+    #region Namespaces
+    using G2Libsys.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Input;
+    using G2Libsys.Library.Extensions;
+    using System.Collections.ObjectModel;
+    using System.Windows;
+    using G2Libsys.Services;
+    using System.Linq;
+    using G2Libsys.Commands;
+    using G2Libsys.Data.Repository;
+    using G2Libsys.Library;
+    #endregion
+
+    /// <summary>
+    /// Viewmodel for logging in user
+    /// </summary>
+    public class LoginViewModel : BaseViewModel, ISubViewModel
     {
         #region Private Fields
         private readonly IUserRepository _repo;
+        private readonly IDialogService _dialog;
         private string username;
         private string password;
         private string emailValidationMessage;
@@ -109,6 +115,8 @@ namespace G2Libsys.ViewModels
               && !string.IsNullOrWhiteSpace(NewUser.Email)
               && !string.IsNullOrWhiteSpace(NewUser.Password);
 
+        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+
         #endregion
 
         #region Constructor
@@ -118,6 +126,8 @@ namespace G2Libsys.ViewModels
         public LoginViewModel()
         {
             if (base.IsInDesignMode) return;
+
+            _dialog = new DialogService();
 
             _repo = new UserRepository();
 
@@ -131,6 +141,7 @@ namespace G2Libsys.ViewModels
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Verify user credentials and login
         /// </summary>
@@ -139,7 +150,11 @@ namespace G2Libsys.ViewModels
             // Check for user with correct credentials
             var user = await _repo.VerifyLoginAsync(Username, Password);
 
-            if (user != null)
+            if (user is null)
+            {
+                _dialog.Alert("Fel lösenord", "Försök igen.");
+            }
+            else
             {
                 // Set userstatus to logged in
                 user.LoggedIn = true;
@@ -152,6 +167,9 @@ namespace G2Libsys.ViewModels
 
                 // On successfull login go to frontpage
                 NavService.GoToAndReset(new LibraryMainViewModel());
+
+                // Exit LoginViewModel
+                CancelCommand.Execute(null);
             }
 
             // Reset new user
@@ -191,12 +209,12 @@ namespace G2Libsys.ViewModels
             {
                 // Insert new user
                 await _repo.AddAsync(NewUser);
-                MessageBox.Show("Registrerad, logga in med: \n" + NewUser.Email);
+                _dialog.Alert("Registrerad", "Logga in med: " + NewUser.Email);
             }
             catch (Exception ex)
             {
                 // Insert failed
-                MessageBox.Show("Kunde inte lägga till användare\n" + ex.Message);
+                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare:\n" + ex.Message);
             }
             finally
             {

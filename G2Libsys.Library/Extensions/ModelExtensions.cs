@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-
-namespace G2Libsys.Library.Extensions
+﻿namespace G2Libsys.Library.Extensions
 {
+    using System;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
     public static class ModelExtensions
     {
         /// <summary>

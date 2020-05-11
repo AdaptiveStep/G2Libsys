@@ -1,34 +1,41 @@
-﻿using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
-using G2Libsys.Commands;
-using G2Libsys.Services;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
+    #region Namespaces
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Threading;
+    using G2Libsys.Commands;
+    using G2Libsys.Services;
+    #endregion
+
     public abstract class BaseViewModel : BaseNotificationClass
     {
-        #region Commands
+        #region Fields
         /// <summary>
-        /// Command for navigating to another ViewModel
+        /// Provides services for managing the queue of work on the current thread
         /// </summary>
-        public ICommand NavigateToVM { get; protected set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public ICommand OpenSubVM { get; protected set; }
-        #endregion
+        protected Dispatcher dispatcher;
 
         /// <summary>
         /// Check if in design mode
         /// </summary>
-        public bool IsInDesignMode =>
-            (bool)DependencyPropertyDescriptor
-            .FromProperty(DesignerProperties.IsInDesignModeProperty, typeof(FrameworkElement))
-            .Metadata.DefaultValue;
+        protected bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
+        #endregion
+
+        #region Commands
+        /// <summary>
+        /// Set CurrentViewModel
+        /// </summary>
+        public ICommand NavigateToVM { get; protected set; }
+
+        /// <summary>
+        /// Set SubViewModel
+        /// </summary>
+        public ICommand OpenSubVM { get; protected set; }
+        #endregion
 
         #region Constructor
         /// <summary>
@@ -38,13 +45,33 @@ namespace G2Libsys.ViewModels
         {
             if (IsInDesignMode) return;
 
+            // Set dispatcher
+            dispatcher = Application.Current.Dispatcher;
+
             // Navigate to vm where vm = ViewModel
             NavigateToVM = new RelayCommand<Type>(vm =>
             {
                 try
                 {
-                    // Create new ViewModel
-                    NavService.HostScreen.CurrentViewModel = NavService.GetViewModel((IViewModel)Activator.CreateInstance(vm));
+                    // Create viewmodel
+                    var viewModel = (IViewModel)Activator.CreateInstance(vm);
+
+                    // Set CurrentViewModel
+                    NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(viewModel);
+                }
+                catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
+            });
+
+            // Navigate to vm where vm = ViewModel
+            OpenSubVM = new RelayCommand<Type>(vm =>
+            {
+                try
+                {
+                    // Create viewmodel
+                    var viewModel = (ISubViewModel)Activator.CreateInstance(vm);
+
+                    // Set SubViewModel
+                    NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.GetViewModel(viewModel);
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });
