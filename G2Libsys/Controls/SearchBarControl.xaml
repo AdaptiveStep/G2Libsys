@@ -1,0 +1,104 @@
+﻿<UserControl x:Class="G2Libsys.Controls.SearchBarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:G2Libsys.Controls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="700">
+    
+    <Grid MaxWidth="700" MaxHeight="200">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel 
+                    VerticalAlignment="Bottom"
+                    Grid.Column="1"
+                    >
+        <TextBox
+                   Grid.Column="1"
+                   Background="{StaticResource light_background}"
+                   materialDesign:HintAssist.Hint="Ange ett eller flera sökord"
+                   Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                   VerticalAlignment="Center"
+                   Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                   Height="40"
+                   Margin="0 0 0 1.5"
+                   
+            >
+            <TextBox.InputBindings>
+            <!--Clear vid esc-->
+                <KeyBinding Command="{Binding ClearSearchCommand}" Key="Esc" />
+            <!-- Sök vid enter -->
+                <KeyBinding Command="{Binding SearchCommand}" Key="Return" />
+                </TextBox.InputBindings>
+            </TextBox>
+        
+        <TextBlock Text="Avancerad sökning"
+                   Grid.Column="1"
+                   VerticalAlignment="Bottom"
+                   HorizontalAlignment="Left"
+                   Foreground="{StaticResource accent_light}" 
+                   FontFamily="{StaticResource MaterialDesignFont}"
+                   />
+        </StackPanel>
+        
+        
+        <ComboBox
+                   Grid.Column="2"
+                   Foreground="MintCream"
+                   FontWeight="Bold"
+                   Background="{StaticResource accent_light}"
+                   materialDesign:HintAssist.Hint="Böcker"
+                   VerticalAlignment="Bottom"
+                   Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                   materialDesign:HintAssist.HelperText="Vad letar du efter?"
+                   Margin="0 0 0 16"
+                   
+                   >
+            <ComboBoxItem>
+                Seminarium
+            </ComboBoxItem>
+            <ComboBoxItem>
+                Anställda
+            </ComboBoxItem>
+            <ComboBoxItem>
+                Mina Lån
+            </ComboBoxItem>
+            
+        </ComboBox>
+
+        <materialDesign:Card Grid.Column="3"
+                             Background="{StaticResource accent_light}"
+                             Height="39"
+                             Width="55"
+                             HorizontalAlignment="Left"
+                   
+                             VerticalAlignment="Bottom"
+                             Margin="0 0 0 16.5">
+            
+        <Button 
+                   x:Name="SearchButton"
+                   Grid.Column="3"
+                   Height="40"
+                   Width="55"
+                   Style="{StaticResource MaterialDesignFlatAccentBgButton}"
+                   HorizontalAlignment="Left"
+                   
+                   VerticalAlignment="Bottom"
+                   Content="Sök"
+                   Command="{Binding SearchCommand}"
+        >
+        </Button>
+        </materialDesign:Card>
+
+    </Grid>
+</UserControl>

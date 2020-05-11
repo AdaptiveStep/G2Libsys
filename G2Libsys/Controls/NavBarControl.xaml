@@ -1,0 +1,270 @@
+﻿<UserControl
+    x:Class="G2Libsys.Controls.NavBarControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:G2Libsys.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:G2Libsys.Controls"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+    d:DesignHeight="50"
+    d:DesignWidth="1000"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="MenuItemStyle" TargetType="{x:Type MenuItem}">
+            <Setter Property="Width" Value="140" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0,-10,0,0" />
+            <Setter Property="Header" Value="{Binding Title}" />
+            <Setter Property="Command" Value="{Binding Action}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type MenuItem}">
+                        <Border
+                            x:Name="Bd"
+                            Uid="Border_38"
+                            Margin="0"
+                            Padding="16,8"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter
+                                x:Name="ContentPresenter"
+                                Uid="ContentPresenter_33"
+                                Grid.Column="1"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Header}"
+                                ContentSource="Header"
+                                RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="Bd" Property="Background">
+                                    <Setter.Value>
+                                        <SolidColorBrush Opacity="0.4" Color="{StaticResource Primary800}" />
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter TargetName="Bd" Property="BorderBrush">
+                                    <Setter.Value>
+                                        <SolidColorBrush Opacity="0.3" Color="{StaticResource Primary800}" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    <Grid Background="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="120" />
+            <ColumnDefinition Width="140" />
+        </Grid.ColumnDefinitions>
+
+        <!--  Logo/Home Button  -->
+        <Button
+            Height="45"
+            Padding="0"
+            HorizontalAlignment="Left"
+            Command="{Binding GoToFrontPage}"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="C:\Users\CM\source\repos\AdaptiveStep\G2Libsys\G2Libsys\Resources\Images\LIBSYS.png" Stretch="Fill" />
+                    <TextBlock
+                        Margin="10,0,0,4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        FontSize="20"
+                        FontWeight="Regular"
+                        Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                        Style="{StaticResource MaterialDesignHeadline6TextBlock}">
+                        <Run
+                            FontSize="26"
+                            Foreground="{StaticResource PrimaryHueLightBrush}"
+                            Text="G2" /><Run Text="Libsys" />
+                    </TextBlock>
+                </StackPanel>
+            </Button.Content>
+        </Button>
+
+        <!--  Middle Space  -->
+
+        <!--  Secret Dev Menu  -->
+        <Grid Grid.Column="1" HorizontalAlignment="Right">
+            <ListView
+                x:Name="ViewListBox"
+                Width="auto"
+                Height="auto"
+                Margin="20,0,30,0"
+                FontSize="12"
+                FontWeight="DemiBold"
+                Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                ItemsSource="{Binding ViewModelList}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                SelectedItem="{Binding SelectedDevItem}"
+                SelectionMode="Single"
+                ToolTip="DevMenu"
+                Visibility="{Binding DeveloperMode, Converter={converter:BoolToVisibilityConverter}}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Margin="4" Text="{Binding Title}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </Grid>
+
+
+        <!--  Some Button  -->
+        <!--<Button
+            Grid.Column="2"
+            Height="45"
+            Padding="0"
+            Command="{Binding NavigateToVM}"
+            CommandParameter="{x:Type vm:TestVM}"
+            Style="{StaticResource MaterialDesignFlatButton}">
+            <Button.Content>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    FontSize="20"
+                    FontWeight="Regular"
+                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    Text="Fråga oss!" />
+            </Button.Content>
+        </Button>-->
+
+        <!--  Login Button  -->
+        <Button
+            Grid.Column="3"
+            Height="45"
+            Padding="0"
+            Command="{Binding OpenSubVM}"
+            CommandParameter="{x:Type vm:LoginViewModel}"
+            Style="{StaticResource MaterialDesignFlatButton}"
+            Visibility="{Binding CanLogIn, Converter={converter:BoolToVisibilityConverter}}">
+            <Button.Content>
+                <TextBlock
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    FontSize="20"
+                    FontWeight="Regular"
+                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    Text="Logga in" />
+            </Button.Content>
+        </Button>
+
+        <Grid Grid.Column="3" Visibility="{Binding IsLoggedIn, Converter={converter:BoolToVisibilityConverter}}">
+
+            <!--<Menu
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                Background="Black"
+                FlowDirection="RightToLeft"
+                FontSize="20">
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid />
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                <MenuItem
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    ItemContainerStyle="{StaticResource MenuItemStyle}">
+                    <MenuItem.Header>
+                        <Border
+                            Margin="0,0,-70,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Transparent">
+                            <TextBlock Text="Mina sidor" />
+                        </Border>
+                    </MenuItem.Header>
+                    <MenuItem
+                        Width="160"
+                        Margin="0,-10,0,0"
+                        Command="{Binding NavigateToVM}"
+                        CommandParameter="{x:Type vm:TestVM}">
+                        <MenuItem.Header>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="Profil" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <MenuItem Width="160" Command="{Binding Path=MenuItems[0].Action}">
+                        <MenuItem.Header>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{Binding Path=MenuItems[0].Title}" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                    <Separator Padding="0" />
+                    <MenuItem Command="{Binding LogOutCommand}">
+                        <MenuItem.Header>
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="Logout" />
+                        </MenuItem.Header>
+                    </MenuItem>
+                </MenuItem>
+            </Menu>-->
+
+            <Menu
+                Padding="0"
+                HorizontalAlignment="Stretch"
+                Background="Black"
+                BorderBrush="Transparent"
+                FlowDirection="RightToLeft"
+                FontSize="20"
+                IsMainMenu="true">
+                <Menu.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Grid />
+                    </ItemsPanelTemplate>
+                </Menu.ItemsPanel>
+                <MenuItem
+                    Padding="0"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    ItemContainerStyle="{StaticResource MenuItemStyle}"
+                    ItemsSource="{Binding MenuItems}">
+                    <MenuItem.Header>
+                        <Border
+                            Margin="0,0,-70,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="Transparent">
+                            <TextBlock
+                                Margin="0,0,-70,0"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="Mina sidor" />
+                        </Border>
+                    </MenuItem.Header>
+                </MenuItem>
+            </Menu>
+
+        </Grid>
+    </Grid>
+</UserControl>
