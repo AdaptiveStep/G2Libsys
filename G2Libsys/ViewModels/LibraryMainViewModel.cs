@@ -70,6 +70,8 @@ namespace G2Libsys.ViewModels
         public LibraryMainViewModel()
         {
             if (base.IsInDesignMode) return;
+            _repo = new GeneralRepository();
+            GetCategories();
 
             FrontPage = true;
             LibraryObjects = new ObservableCollection<LibraryObject>();
@@ -78,7 +80,7 @@ namespace G2Libsys.ViewModels
             GetLibraryObjects();
             GetFpLibraryObjects();
             BookButton = new RelayCommand(x => BookButtonClick());
-            
+
         }
 
         public LibraryObject SelectedLibraryObject
@@ -95,6 +97,44 @@ namespace G2Libsys.ViewModels
         private async void GetLibraryObjects()
         {
             //LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private async void GetLibraryObjects(int id)
+        {
+            LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
+        }
+
+        public ObservableCollection<Category> Categories { get; private set; }
+
+        public Category SelectedCategory { set => GetLibraryObjects(value.ID); }
+
+        private async void GetCategories()
+        {
+            try
+            {
+                Categories = new ObservableCollection<Category>(await _repo.GetAllAsync<Category>());
+                if (Categories?.Count > 0) Categories[0].Name = "Böcker";
+            }
+            catch
+            {
+                Categories = new ObservableCollection<Category>() { new Category() { ID = 1, Name = "Saknas" } };
+            }
         }
         private async void GetFpLibraryObjects()
         {
