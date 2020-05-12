@@ -67,4 +67,8 @@
         <dialog:ConfirmDialogView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialog:LibraryObjectDialogViewModel}">
+        <dialog:LibraryObjectDialogView />
+    </DataTemplate>
+
 </ResourceDictionary>
