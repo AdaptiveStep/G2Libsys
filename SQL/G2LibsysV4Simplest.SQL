@@ -102,7 +102,7 @@ CREATE TABLE Users(
 	ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,                  		--Candidatekey
 	LoanID AS (ID+100) * 2867585817934888 % 8687931395129801, 			--Calculated with (mod p) . Inverse is 7654321234567890 . Always unique due to being Finite Field.
 
-	[Email] VARCHAR(20) 	   NOT NULL DEFAULT 'UNNAMED',
+	[Email] VARCHAR(20) 	   NOT NULL UNIQUE,
 	[Password] VARCHAR(20) NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
 	Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
 	Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
@@ -261,34 +261,85 @@ CREATE TABLE Cards(
 
 
 ---------------simple users ---------------------
+Create proc usp_getall_users
+    as
+    begin
+        select * from users;
+    end
+    GO
 
 --Add User
-CREATE PROC usp_insert_users
-    @Email varchar(20),
+Create proc usp_insert_users
+	@ID int = null,
+	@LoanID numeric = null,
+	@Email varchar(100),
+	@Password varchar(20),
+	@Firstname varchar(20),
+	@Lastname varchar(20),
+	@UserType int,
+	@LoggedIn bit,
+	@NewID int Output
+	as
+	begin
+	    insert into users (Email, [Password], Firstname, Lastname, UserType, LoggedIn)
+	    values (@Email, @Password, @Firstname, @Lastname, @UserType, @LoggedIn);
+	    select @NewID = SCOPE_IDENTITY();
+	end
+	GO
+
+--Remove user
+Create proc usp_remove_users
+    @ID int
+    as
+    begin
+		delete from users where ID = @ID
+    end
+    GO
+
+--Update user . Dapper requires all attributes when handling entire objects.
+Create proc usp_update_users
+    @ID int,
+    @LoanID numeric = null,
+    @Email varchar(100),
     @Password varchar(20),
     @Firstname varchar(20),
     @Lastname varchar(20),
     @UserType int,
-    @NewID int Output
+    @LoggedIn bit
     as
     begin
-        insert into users (Email, [Password], Firstname, Lastname, UserType)
-        values (@Email, @Password, @Firstname, @Lastname, @UserType);
-        select @NewID = SCOPE_IDENTITY();
+		Update users
+		Set Email = @Email, 
+			[Password] = @Password, 
+			Firstname = @Firstname, 
+			Lastname = @Lastname, 
+			UserType = @UserType, 
+			LoggedIn = @LoggedIn
+		Where ID = @ID;
     end
     GO
 
---Delete user
-CREATE PROC usp_delete_users
-    @ID int = null
-    AS
-    begin
-		IF (@ID IS NOT NULL)	--Only delete user if there is a userID provided
-   	    	BEGIN
-			DELETE FROM Users WHERE ID=@ID; 		--Might still crash if there is no user with this userid
-			END
-    END
+Create proc usp_verifylogin_users
+	@Email varchar(100),
+	@Password varchar(20)
+	as
+	begin
+		SELECT * FROM Users WHERE
+		CAST(Email as varbinary(100)) = CAST(@Email as varbinary(100))
+		AND CAST([Password] as varbinary(100)) = CAST(@Password as varbinary(100))
+		AND Email = @Email 
+		AND [Password] = @Password
+	end
     GO
+
+Create proc usp_verifyemail_users
+    @Email varchar(100)
+    as
+    begin
+        select count(1) from users where email = @email;
+    end
+    GO
+
 
 ---------------Usertype ---------------------
 --Change usertype for user
@@ -408,7 +459,27 @@ CREATE PROC usp_add_cards
     END
     GO
 
----------------Search structures ---------------------
+
+-------------LIBRARY OBJECTS ------------
+Create proc usp_getall_libraryobjects
+    @ID int
+    as
+    begin
+		select * from libraryobjects where ID = @ID
+    end
+    GO
+
+
+-------------Category -------------------
+create proc usp_getall_category
+    as
+    begin
+        select * from Categories;
+    end
+    GO
+
+------------------------------------------------------
+---------------Search/Data structures ----------------
 --Dynamic search of users
 	--TODO : make it look for  --
 	--				loandID LIKE %bla
