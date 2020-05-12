@@ -1,6 +1,7 @@
 ﻿using G2Libsys.Commands;
 using G2Libsys.Data.Repository;
 using G2Libsys.Library.Models;
+using G2Libsys.Services;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -21,11 +22,7 @@ namespace G2Libsys.ViewModels
         public ObservableCollection<LibraryObject> FpLibraryObjects
         {
             get => fpLibObjects;
-            set
-            {
-                fpLibObjects = value;
-                OnPropertyChanged(nameof(FpLibraryObjects));
-            }
+            set { fpLibObjects = value;}
         }
         public ObservableCollection<LibraryObject> LibraryObjects
         {

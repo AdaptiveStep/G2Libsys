@@ -89,8 +89,8 @@ namespace G2Libsys.ViewModels
             UserTypes = new ObservableCollection<UserType>();
             GetUserTypes();
 
-            GetUsers();
 
+            GetUsers();
             AddUserCommand = new RelayCommand(x => AddUser());
             RemoveUserCommand = new RelayCommand(x => RemoveUser());
             searchbutton = new RelayCommand(x => Search());

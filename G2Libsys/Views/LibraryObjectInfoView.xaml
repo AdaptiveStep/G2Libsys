@@ -30,6 +30,7 @@
         <materialDesign:Card
             Margin="30"
             Width="750"
+            UniformCornerRadius="10"
             Background="{StaticResource light_background}">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -56,61 +57,68 @@
                     Grid.Row="1"
                     Grid.RowSpan="5"
                     Margin="0 0 10 0"
-                    Source="https://www.blue.se/wp-content/uploads/2019/06/Nytt-land_600.jpg"
+                    Source="{Binding LibraryObjects[0].ImageSource,  Converter={converter:PathToImageConverter}}"
                     Stretch="Uniform" />
 
                 <TextBlock Text="Av: Författare"
                            Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                            Grid.Row="2"
-                           Grid.Column="2" />
+                           Grid.Column="2"
+                           VerticalAlignment="Top"/>
 
-                <TextBlock Text="Titel"
+
+                <TextBlock Text="{Binding LibraryObjects[0].Title}" 
                            Style="{StaticResource MaterialDesignHeadline3TextBlock}"
                            Grid.Row="1"
                            Grid.ColumnSpan="2"
-                           Grid.Column="2" />
+                           Grid.Column="2"
+                           VerticalAlignment="Bottom"
+                           
+                           />
                 <TextBlock
-                    Text="1874 är den finska landsbygden utarmad efter år av missväxt och svält. Aksel har sett många familjer försvinna eller gå under, och han vet att han har havet att tacka för att de ännu är vid liv. Hans älskade hustru och deras ­dotter.
-
-De har ingenting annat än fisket att leva av.­ ­Drömmen om ett drägligare liv åt familjen har fått honom att blicka långt bortom horisonten. Mot ­Sverige.
-
-Aksel står inför ett livsavgörande val. Ett oåter­kalleligt beslut måste fattas. Ett som kommer att sätta hans envishet, hustruns styrka och deras kärlek på prov.
-
-Han ser bara en möjlighet. Att ensam ge sig ut över havet och lämna de han älskar bakom sig.
-
-Nytt land baserar sig på en sann historia."
+                    Text="{Binding LibraryObjects[0].Description}"
                     Style="{StaticResource MaterialDesignTextBlock}"
                     Grid.Row="3"
                     Grid.Column="2"
                     Grid.ColumnSpan="3"
                     Grid.RowSpan="3"
-                    TextWrapping="Wrap" />
+                    TextWrapping="Wrap"
+                    Margin="5 0 5 0"/>
+                
                 <materialDesign:Card Grid.Row="6"
                                      Grid.Column="1"
                                      Grid.ColumnSpan="1"
-                                     Margin="0 0 16 0"
+                                     UniformCornerRadius="10"
+                                     Margin="0 0 16 5"
                                      Background="{StaticResource light_background}">
                     <Grid>
 
                         <StackPanel VerticalAlignment="Top"
                                     >
 
-                            <TextBlock Text="Utgiven år:" />
-                            <TextBlock Text="Antal sidor:" />
-                            <TextBlock Text="Format:" />
-                            <TextBlock Text="Publisher:" />
+                            <TextBlock Text="{Binding LibraryObjects[0].PurchasePrice}" />
+                            <TextBlock Text="{Binding LibraryObjects[0].Category}" />
+                            <TextBlock Text="{Binding LibraryObjects[0].DeweyDecimal}" />
+                            <TextBlock Text="{Binding LibraryObjects[0].Title}" />
+                            
                         </StackPanel>
+                        
                     </Grid>
+                    
                 </materialDesign:Card>
+                
                 <TextBlock Text="Om författaren:"
                            Grid.Row="2"
                            Grid.Column="5"
                            Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                           Grid.ColumnSpan="2" />
+                           Grid.ColumnSpan="2"
+                           VerticalAlignment="Bottom"
+                           />
+                
                 <materialDesign:Card Grid.Row="3"
                                      Grid.Column="5"
                                      Grid.RowSpan="5"
-                                     Grid.ColumnSpan="2"
+                                     Grid.ColumnSpan="3"
                                      Height="auto"
                                      Background="Transparent"
                                      
@@ -122,48 +130,50 @@ Nytt land baserar sig på en sann historia."
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition  Height="2*" />
-                            <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition  Height="120" />
+                            <RowDefinition  Height="20"/>
+                            <RowDefinition  Height="3*"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
                         <Image
-                        Source="https://upload.wikimedia.org/wikipedia/commons/f/f0/Fuglesang_heiaSverigeNorge.jpg" />
+                        VerticalAlignment="Top"
+                        Source="{Binding AuthorObjects[1].ImageSource,  Converter={converter:PathToImageConverter}}"/>
                         <StackPanel Grid.Column="1"
                                     Grid.ColumnSpan="2">
 
-                            <TextBlock Text="Author name"
+                            <TextBlock Text="{Binding LibraryObjects[1].Author}"
+                                       Margin="0 0 10 0"
                                    TextWrapping="Wrap"
                                    FontWeight="DemiBold" />
-                            <TextBlock Text="Bla bla bla bla yadayadayada bla bla bla "
-                                   TextWrapping="Wrap" />
 
-                            <Border
-                                  Background="{DynamicResource MaterialDesignDivider}"
-                                  Width="1"
-                                  VerticalAlignment="Stretch"
-                                  SnapsToDevicePixels="True" />
+
+                            
+
+                            
                         </StackPanel>
-                        <Expander
+                        
+                        <ScrollViewer
                                 Grid.Row="1"
                                 Grid.ColumnSpan="3"
                                 Grid.RowSpan="4"
                                 HorizontalAlignment="Stretch"
-                                Header="Expander Example 1a"
                                 Background="Transparent"
                             >
                             <StackPanel
                                 Orientation="Vertical"
                                 TextBlock.Foreground="Black"
-                                Margin="24,8,24,16">
+                                >
+                                
                                 <TextBlock
-                                 Text="Your Content" />
+                                 Text="{Binding LibraryObjects[0].Title}" />
+                                
                                 <TextBlock
                                  Opacity=".68"
-                                 Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                 Text="{Binding AuthorObjects[1].Biography}"
                                  TextWrapping="Wrap" />
+                                
                             </StackPanel>
-                        </Expander>
+                        </ScrollViewer>
                     </Grid>
                     
                 </materialDesign:Card>

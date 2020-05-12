@@ -20,7 +20,7 @@ namespace G2Libsys.Library.Models
           public int AddedBy { get; set; }
           public DateTime LastEdited { get; set; }
           public DateTime DateAdded { get; set; }
-          public string ImageSource { get; set; }
+        public string ImageSource { get; set; }
           public string Author { get; set; }
 
 
