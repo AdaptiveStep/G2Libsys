@@ -1,15 +1,8 @@
 ﻿using G2Libsys.Commands;
 using G2Libsys.Data.Repository;
-using G2Libsys.Library;
 using G2Libsys.Library.Models;
-using G2Libsys.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

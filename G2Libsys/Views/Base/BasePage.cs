@@ -1,8 +1,5 @@
 ﻿using G2Libsys.Services;
 using G2Libsys.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Controls;
 
 namespace G2Libsys.Views

@@ -1,7 +1,5 @@
 ﻿namespace G2Libsys.Library.Extensions
 {
-    using System;
-
     public static class StringExtensions
     {
         /// <summary>

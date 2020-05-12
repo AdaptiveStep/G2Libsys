@@ -3,16 +3,11 @@ using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Models;
 using G2Libsys.Services;
-using G2Libsys.Views;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace G2Libsys.ViewModels
 {

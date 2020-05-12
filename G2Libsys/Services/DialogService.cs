@@ -26,22 +26,26 @@
         /// </summary>
         /// <param name="title">Display Title with character limit</param>
         /// <param name="msg">Display message with character limit</param>
-        public bool? Confirm(string title = null, string msg = null)
+        public bool Confirm(string title = null, string msg = null)
         {
             var viewModel = new ConfirmDialogViewModel(title.LimitLength(20), msg.LimitLength(80));
-            return ShowDialog(viewModel);
+
+            // Return dialogresult
+            return ShowDialog(viewModel) ?? false;
         }
 
         /// <summary>
-        /// Return generic result
+        /// Return T result
         /// </summary>
         /// <typeparam name="T">Return type</typeparam>
         /// <param name="viewModel">New dialogviewmodel</param>
         /// <returns><typeparam name="T"/> DialogResult</returns>
         public T Show<T>(BaseDialogViewModel<T> viewModel)
         {
-            ShowDialog(viewModel);
-            return viewModel.DialogResult;
+            bool? result = ShowDialog(viewModel);
+
+            // Return null or bool result
+            return !result.HasValue ? default : result.Value ? viewModel.DialogResult : default;
         }
 
         /// <summary>

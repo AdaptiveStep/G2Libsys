@@ -1,10 +1,6 @@
 ﻿using G2Libsys.Commands;
 using G2Libsys.Services;
 using G2Libsys.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 
 namespace G2Libsys.Models

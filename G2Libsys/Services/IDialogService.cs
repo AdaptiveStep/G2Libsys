@@ -12,7 +12,7 @@ namespace G2Libsys.Services
         /// <summary>
         /// Return Confirmation bool? result
         /// </summary>
-        public bool? Confirm(string title, string message);
+        public bool Confirm(string title, string message);
 
         /// <summary>
         /// Return generic result

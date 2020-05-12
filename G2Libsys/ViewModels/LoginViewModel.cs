@@ -1,15 +1,10 @@
 ﻿namespace G2Libsys.ViewModels
 {
     #region Namespaces
-    using G2Libsys.Models;
     using System;
-    using System.Collections.Generic;
     using System.Windows.Input;
     using G2Libsys.Library.Extensions;
-    using System.Collections.ObjectModel;
-    using System.Windows;
     using G2Libsys.Services;
-    using System.Linq;
     using G2Libsys.Commands;
     using G2Libsys.Data.Repository;
     using G2Libsys.Library;
