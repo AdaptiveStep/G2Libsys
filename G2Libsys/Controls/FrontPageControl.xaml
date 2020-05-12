@@ -25,7 +25,9 @@
         <ScrollViewer
             Grid.Row="1"
             Grid.Column="1"
-            Grid.ColumnSpan="3">
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
+            MaxHeight="{Binding }">
 
             <WrapPanel Orientation="Vertical">
                 <TextBlock
