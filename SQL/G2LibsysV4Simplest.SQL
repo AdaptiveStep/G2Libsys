@@ -91,10 +91,10 @@ CREATE TABLE UserTypes(
 			INSERT INTO UserTypes(ID,[Name]) 
 			VALUES 
 				(1,'Bibliotekschef'),
-				(2,'Lokalspersonal'),
+				(2,'Bibliotikarie'),
 				(3,'Användare'),
-				(4,'Avstängd'),
-				(5,'Städerska')
+				(4,'Avstängd')
+				
 			SET IDENTITY_INSERT [Usertypes] OFF
 			GO
 
@@ -125,7 +125,7 @@ CREATE TABLE Cards(
 	ActivationDate 	DATETIME 			NOT NULL DEFAULT SYSDATETIME(),
 	ValidUntil AS	DATEADD(year, 1, ActivationDate),
 	Activated 		BIT 				NOT NULL DEFAULT 1,
-	[Owner] 		INT 			   	NOT NULL FOREIGN KEY REFERENCES Users(ID), 					--Many2One
+	[Owner] 		INT 			   	NOT NULL FOREIGN KEY REFERENCES Users(ID) ON DELETE CASCADE, 					--Many2One
 
 	--Calculated Column
 	CardNumber AS FORMAT(ID * 2867585817934888 % 8687931395129801, '0000-0000-0000-0000') --Calculated with (mod p) . Inverse is 7654321234567890
@@ -168,6 +168,7 @@ CREATE TABLE Cards(
 	CREATE TABLE LibraryObjects(
 		ID 				INT 		IDENTITY(1,1) 				PRIMARY KEY,		--Candidatekey
 		Title 			VARCHAR(50) NOT NULL 	DEFAULT 'UNNAMED', 
+		Author			VARCHAR(50) NOT NULL 	DEFAULT 'UNNAMED',
 		[Description] 	varchar(500) 			DEFAULT 'No Description',
 		ISBN 			BIGINT 		NOT NULL 	DEFAULT 0,
 		Publisher		VARCHAR(100) 			DEFAULT 'UNNAMED',
@@ -187,16 +188,18 @@ CREATE TABLE Cards(
 		);
 	--SAMPLE INSERTS
 	SET IDENTITY_INSERT 	LibraryObjects on
-		INSERT INTO 		LibraryObjects (ID,[Title], [Description], ISBN, Publisher, DeweyDecimal, PurchasePrice, Category, ActivityDate) 
+		INSERT INTO 		LibraryObjects (ID, [Title], [Author], [Description], ISBN, Publisher, DeweyDecimal, PurchasePrice, Category, ActivityDate) 
 				VALUES 
-				(1, 'Harry Potter'							,'Bra skick och bok för ungdomar'			,7599999999999,'BonniersBöcker'	 	,435	,350, 1,SYSDATETIME()),		--Does ID really have to be inserted? 
-				(2, 'Sagan om Ringen'						,'Bra skick och bok för ungdomar. Poppis'	,9999229999999,'Penguin Classics'	,100	,350, 1,SYSDATETIME()),
-				(3, 'Sagan om Ringen - Bilbo Ljudboken!'	,'Våran första ljudbok i lager'				,9974324423999,'Coola Förlaget'		,415	,350, 3,SYSDATETIME()),
-				(4, 'Game of Thrones Ebook!'				,'Från tittande till lyssnande!'			,9979999423999,'Amazon'				,215	,350, 2,SYSDATETIME()),
-				(5, 'Eva mår bra! Ljudblogbok'				,'Bra skick och ljudbok för alla!'			,9999992343999,'Evas Förlag'		,500	,350, 3,SYSDATETIME()),
-				(6, 'Tjäna pengar med flumkurser!'			,'Otroligt seminarie om modern utbildning!' ,9999999423999,'StadsBiblioteketAB'	,19999	,350, 5, '2020-06-01'),
-				(7, 'The Hulk'								,'Senaste filmen från hollywood!'			,9996439994999,'WarnerBrothers'		,200	,350, 4,SYSDATETIME()),
-				(8, 'Starta Eget'							,'Den bästa seminarien om starta eget.'		,9999999423999,'StadsBiblioteketAB'	,600	,350, 5,'2020-06-11');
+				(1, 'Harry Potter'							,'Bra skick och bok för ungdomar'			, 'Harry',7599999999999,'BonniersBöcker'	 	,435	,350, 1,SYSDATETIME()),		--Does ID really have to be inserted? 
+				(2, 'Sagan om Ringen'						,'Bra skick och bok för ungdomar. Poppis'	,'Larry',9999229999999,'Penguin Classics'	,100	,350, 1,SYSDATETIME()),
+				(3, 'Sagan om Ringen - Bilbo Ljudboken!'	,'Våran första ljudbok i lager'				,'magnus',9974324423999,'Coola Förlaget'		,415	,350, 3,SYSDATETIME()),
+				(4, 'Game of Thrones Ebook!'				,'Från tittande till lyssnande!'			,'fia',9979999423999,'Amazon'				,215	,350, 2,SYSDATETIME()),
+				(5, 'Eva mår bra! Ljudblogbok'				,'Bra skick och ljudbok för alla!'			,'fjutt',9999992343999,'Evas Förlag'		,500	,350, 3,SYSDATETIME()),
+				(6, 'Tjäna pengar med flumkurser!'			,'Otroligt seminarie om modern utbildning!' ,'göran',9999999423999,'StadsBiblioteketAB'	,19999	,350, 5,SYSDATETIME()),
+				(7, 'The Hulk'								,'Senaste filmen från hollywood!'			,'göransson',9996439994999,'WarnerBrothers'		,200	,350, 4,SYSDATETIME()),
+				(8, 'Starta Eget'							,'Den bästa seminarien om starta eget.'		,'Anders',9999999423999,'StadsBiblioteketAB'	,600	,350, 5,SYSDATETIME()),
+				(1, 'Nytt land'							,'Bra skick och bok för ungdomar'			,'dennis',7599999999999,'BonniersBöcker'	 	,435	,350, 1,SYSDATETIME()),
+				(1, 'Harry Potter 2'							,'Bra skick och bok för ungdomar'			,'brunte',7599999999999,'BonniersBöcker'	 	,435	,350, 1,SYSDATETIME();
 		SET IDENTITY_INSERT LibraryObjects OFF
 		GO
 
@@ -464,6 +467,21 @@ CREATE PROC usp_simplesearch_LibraryObjects
 			Title LIKE '%' + @Partialword + '%' Or
 			[Description] LIKE '%' + @Partialword + '%' OR
 			[Publisher] LIKE '%' + @Partialword + '%';
+    END
+    GO
+
+    --Dynamic search of objects - only one keyword
+CREATE PROC usp_simplesearch_LibraryObjects
+	@Partialword VARCHAR(20) = ''
+
+    AS
+    BEGIN
+		SELECT *
+		FROM LibraryObjects
+		WHERE 
+			[Firstname] LIKE '%' + @Partialword + '%' Or
+			[Lastname] LIKE '%' + @Partialword + '%' OR
+			[Email] LIKE '%' + @Partialword + '%';
     END
     GO
 

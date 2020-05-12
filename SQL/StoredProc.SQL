@@ -83,4 +83,10 @@ create proc usp_getall_category
         select * from Categories;
     end
     GO
+create proc usp_getall_usertypes
+    as
+    begin
+        select * from UserTypes;
+    end
+    GO
 -------------------------------------------------------------
