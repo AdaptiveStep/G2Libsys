@@ -53,25 +53,25 @@
                     <StackPanel Width="130">
                         <Label Content="Title" />
                         <TextBox
-                            Width="120"
+                            Width="110"
                             Margin="10,0,10,0"
                             Background="WhiteSmoke"
                             Text="{Binding LibraryObject.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="ISBN" />
                         <TextBox
-                            Width="120"
+                            Width="110"
                             Margin="10,0,10,0"
                             Background="WhiteSmoke"
                             Text="{Binding LibraryObject.ISBN, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="Publisher" />
                         <TextBox
-                            Width="120"
+                            Width="110"
                             Margin="10,0,10,0"
                             Background="WhiteSmoke"
                             Text="{Binding LibraryObject.Publisher, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="DeweyDecimal" />
                         <TextBox
-                            Width="120"
+                            Width="110"
                             Margin="10,0,10,0"
                             Background="WhiteSmoke"
                             Text="{Binding LibraryObject.DeweyDecimal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
@@ -80,7 +80,7 @@
                     <StackPanel Grid.Column="2" Width="130">
                         <Label Content="Kategori" />
                         <ComboBox
-                            Width="120"
+                            Width="110"
                             Height="24"
                             Margin="10,0,10,0"
                             Padding="0"
@@ -95,20 +95,28 @@
                         </ComboBox>
                         <Label Content="Bildlänk" />
                         <TextBox
-                            Width="120"
+                            Width="110"
                             Margin="10,0,10,0"
                             Background="WhiteSmoke"
                             Text="{Binding LibraryObject.ImageSource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="Beskrivning" />
                         <TextBox
-                            Width="120"
-                            Height="70"
-                            MaxWidth="120"
+                            Width="110"
+                            MaxWidth="110"
                             Margin="10,0,10,0"
+                            materialDesign:ScrollBarAssist.ThumbWidth="2"
+                            AcceptsReturn="true"
                             Background="WhiteSmoke"
-                            Text="{Binding LibraryObject.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            TextWrapping="Wrap"
-                            VerticalScrollBarVisibility="Auto" />
+                            Text="{Binding LibraryObject.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Inköpspris" />
+                        <TextBox
+                            Width="110"
+                            MaxWidth="110"
+                            Margin="10,0,10,0"
+                            materialDesign:ScrollBarAssist.ThumbWidth="2"
+                            AcceptsReturn="true"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.PurchasePrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </StackPanel>
 
                     <Button
