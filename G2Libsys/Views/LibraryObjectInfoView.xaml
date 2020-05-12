@@ -14,7 +14,7 @@
     x:TypeArguments="vm:LibraryObjectInfoViewModel"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid >
         <Rectangle Opacity="0.5">
             <Rectangle.Fill>
                 <SolidColorBrush Color="Black" />
@@ -29,10 +29,10 @@
 
         <materialDesign:Card
             Margin="30"
-            Width="750"
+            MaxWidth="750"
             UniformCornerRadius="10"
             Background="{StaticResource light_background}">
-            <Grid>
+            <Grid ShowGridLines="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
                     <ColumnDefinition Width="2*" />
@@ -41,6 +41,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
+                    <ColumnDefinition Width="25"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
@@ -50,7 +51,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
-                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="25"/>
                 </Grid.RowDefinitions>
                 <Image
                     Grid.Column="1"
@@ -66,15 +67,18 @@
                            Grid.Column="2"
                            VerticalAlignment="Top"/>
 
-
-                <TextBlock Text="{Binding LibraryObjects[0].Title}" 
-                           Style="{StaticResource MaterialDesignHeadline3TextBlock}"
-                           Grid.Row="1"
-                           Grid.ColumnSpan="2"
+                <Viewbox   Grid.Row="1"
+                           Grid.ColumnSpan="3"
                            Grid.Column="2"
+                           MaxHeight="30"
+                           VerticalAlignment="Bottom">
+                    
+                <TextBlock Text="{Binding LibraryObjects[0].Title}" 
+                           Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                            VerticalAlignment="Bottom"
                            
                            />
+                </Viewbox>
                 <TextBlock
                     Text="{Binding LibraryObjects[0].Description}"
                     Style="{StaticResource MaterialDesignTextBlock}"
@@ -153,9 +157,10 @@
                         </StackPanel>
                         
                         <ScrollViewer
+                                VerticalScrollBarVisibility="Auto"
                                 Grid.Row="1"
-                                Grid.ColumnSpan="3"
-                                Grid.RowSpan="4"
+                                Grid.ColumnSpan="2"
+                                Grid.RowSpan="3"
                                 HorizontalAlignment="Stretch"
                                 Background="Transparent"
                             >
@@ -170,7 +175,8 @@
                                 <TextBlock
                                  Opacity=".68"
                                  Text="{Binding AuthorObjects[1].Biography}"
-                                 TextWrapping="Wrap" />
+                                 TextWrapping="Wrap"
+                                 Margin="0 0 0 5"/>
                                 
                             </StackPanel>
                         </ScrollViewer>
