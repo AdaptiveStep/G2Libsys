@@ -1,36 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Windows.Input;
-using System.Windows.Navigation;
-using G2Libsys.Commands;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
-    public class BaseViewModel : INotifyPropertyChanged
+    #region Namespaces
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Threading;
+    using G2Libsys.Commands;
+    using G2Libsys.Services;
+    #endregion
+
+    public abstract class BaseViewModel : BaseNotificationClass
     {
-        #region PropertyChangedEvent
+        #region Fields
         /// <summary>
-        /// Property changed event handler
+        /// Provides services for managing the queue of work on the current thread
         /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
+        protected Dispatcher dispatcher;
 
         /// <summary>
-        /// Raise property changed event
+        /// Check if in design mode
         /// </summary>
-        /// <param name="propertyName"></param>
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        protected bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
         #endregion
 
-        #region Public Commands
+        #region Commands
         /// <summary>
-        /// Command for navigating to another ViewModel
+        /// Set CurrentViewModel
         /// </summary>
-        public virtual ICommand NavigateToVM { get; protected set; }
+        public ICommand NavigateToVM { get; protected set; }
+
+        /// <summary>
+        /// Set SubViewModel
+        /// </summary>
+        public ICommand OpenSubVM { get; protected set; }
         #endregion
 
         #region Constructor
@@ -39,15 +43,38 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public BaseViewModel()
         {
+            if (IsInDesignMode) return;
+
+            // Set dispatcher
+            dispatcher = Application.Current.Dispatcher;
+
             // Navigate to vm where vm = ViewModel
             NavigateToVM = new RelayCommand<Type>(vm =>
             {
                 try
                 {
-                    // Create new ViewModel
-                    MainWindowViewModel.HostScreen.CurrentViewModel = Activator.CreateInstance(vm);
+                    // Create viewmodel
+                    var viewModel = (IViewModel)Activator.CreateInstance(vm);
+
+                    // Set CurrentViewModel
+                    NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(viewModel);
+                    NavService.HostScreen.SubViewModel = null;
                 }
-                catch { throw new Exception("Couldn't find " + vm.ToString()); }
+                catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
+            });
+
+            // Navigate to vm where vm = ViewModel
+            OpenSubVM = new RelayCommand<Type>(vm =>
+            {
+                try
+                {
+                    // Create viewmodel
+                    var viewModel = (ISubViewModel)Activator.CreateInstance(vm);
+
+                    // Set SubViewModel
+                    NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.GetViewModel(viewModel);
+                }
+                catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });
         }
         #endregion

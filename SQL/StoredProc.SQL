@@ -76,4 +76,11 @@ Create proc usp_getall_users
         select * from users;
     end
     GO
+
+create proc usp_getall_category
+    as
+    begin
+        select * from Categories;
+    end
+    GO
 -------------------------------------------------------------

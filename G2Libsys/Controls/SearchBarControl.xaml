@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="700">
     
-    <Grid>
+    <Grid MaxWidth="700" MaxHeight="200">
         <Grid.RowDefinitions>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
@@ -31,6 +31,7 @@
                    VerticalAlignment="Center"
                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                    Height="40"
+                   Margin="0 0 0 1.5"
                    
             >
             <TextBox.InputBindings>
@@ -49,6 +50,8 @@
                    FontFamily="{StaticResource MaterialDesignFont}"
                    />
         </StackPanel>
+        
+        
         <ComboBox
                    Grid.Column="2"
                    Foreground="MintCream"
@@ -73,18 +76,29 @@
             
         </ComboBox>
 
+        <materialDesign:Card Grid.Column="3"
+                             Background="{StaticResource accent_light}"
+                             Height="39"
+                             Width="55"
+                             HorizontalAlignment="Left"
+                   
+                             VerticalAlignment="Bottom"
+                             Margin="0 0 0 16.5">
+            
         <Button 
                    x:Name="SearchButton"
                    Grid.Column="3"
                    Height="40"
                    Width="55"
+                   Style="{StaticResource MaterialDesignFlatAccentBgButton}"
                    HorizontalAlignment="Left"
+                   
                    VerticalAlignment="Bottom"
                    Content="Sök"
-                   Margin="0 0 0 16"
                    Command="{Binding SearchCommand}"
         >
         </Button>
+        </materialDesign:Card>
 
     </Grid>
 </UserControl>

@@ -1,18 +1,23 @@
-﻿using G2Libsys.Commands;
-using G2Libsys.Data.Repository;
-using G2Libsys.Library;
-using G2Libsys.Models;
-using System;
-using System.Windows.Input;
-using G2Libsys.Library.Extensions;
-using System.Windows;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
-    public class LoginViewModel : BaseViewModel
+    #region Namespaces
+    using System;
+    using System.Windows.Input;
+    using G2Libsys.Library.Extensions;
+    using G2Libsys.Services;
+    using G2Libsys.Commands;
+    using G2Libsys.Data.Repository;
+    using G2Libsys.Library;
+    #endregion
+
+    /// <summary>
+    /// Viewmodel for logging in user
+    /// </summary>
+    public class LoginViewModel : BaseViewModel, ISubViewModel
     {
         #region Private Fields
         private readonly IUserRepository _repo;
+        private readonly IDialogService _dialog;
         private string username;
         private string password;
         private string emailValidationMessage;
@@ -20,6 +25,7 @@ namespace G2Libsys.ViewModels
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// User email
         /// </summary>
@@ -74,6 +80,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(EmailValidationMessage));
             }
         }
+
         #endregion
 
         #region Commands
@@ -83,7 +90,7 @@ namespace G2Libsys.ViewModels
         public ICommand LogIn { get; set; }
 
         /// <summary>
-        /// Verify if canExecute command
+        /// Verify if canExecute login command
         /// </summary>
         private Predicate<object> CanLogin =>
             o => !string.IsNullOrWhiteSpace(Username)
@@ -95,13 +102,15 @@ namespace G2Libsys.ViewModels
         public ICommand Register { get; set; }
 
         /// <summary>
-        /// Verify if canExecute command
+        /// Verify if canExecute Register command
         /// </summary>
         private Predicate<object> CanRegister =>
             o => !string.IsNullOrWhiteSpace(NewUser.Firstname)
               && !string.IsNullOrWhiteSpace(NewUser.Lastname)
               && !string.IsNullOrWhiteSpace(NewUser.Email)
               && !string.IsNullOrWhiteSpace(NewUser.Password);
+
+        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
 
         #endregion
 
@@ -111,6 +120,10 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public LoginViewModel()
         {
+            if (base.IsInDesignMode) return;
+
+            _dialog = new DialogService();
+
             _repo = new UserRepository();
 
             EmailValidationMessage = string.Empty;
@@ -123,17 +136,20 @@ namespace G2Libsys.ViewModels
         #endregion
 
         #region Private Methods
+
         /// <summary>
         /// Verify user credentials and login
         /// </summary>
         private async void VerifyLogin()
         {
-            var hostScreen = MainWindowViewModel.HostScreen;
-
             // Check for user with correct credentials
             var user = await _repo.VerifyLoginAsync(Username, Password);
 
-            if (user != null)
+            if (user is null)
+            {
+                _dialog.Alert("Fel lösenord", "Försök igen.");
+            }
+            else
             {
                 // Set userstatus to logged in
                 user.LoggedIn = true;
@@ -142,13 +158,13 @@ namespace G2Libsys.ViewModels
                 await _repo.UpdateAsync(user).ConfigureAwait(false);
 
                 // Set current active user
-                hostScreen.CurrentUser = user;
-
-                // Get useraccess based on usertype
-                hostScreen.MenuItem = GetUserAccess(user.ID);
+                NavService.HostScreen.CurrentUser = user;
 
                 // On successfull login go to frontpage
-                NavigateToVM.Execute(typeof(FrontPageViewModel));
+                NavService.GoToAndReset(new LibraryMainViewModel());
+
+                // Exit LoginViewModel
+                CancelCommand.Execute(null);
             }
 
             // Reset new user
@@ -188,12 +204,12 @@ namespace G2Libsys.ViewModels
             {
                 // Insert new user
                 await _repo.AddAsync(NewUser);
-                MessageBox.Show("Registrerad, logga in med: \n" + NewUser.Email);
+                _dialog.Alert("Registrerad", "Logga in med: " + NewUser.Email);
             }
             catch (Exception ex)
             {
                 // Insert failed
-                MessageBox.Show("Kunde inte lägga till användare\n" + ex.Message);
+                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare:\n" + ex.Message);
             }
             finally
             {
@@ -201,18 +217,6 @@ namespace G2Libsys.ViewModels
                 NewUser = new User();
             }
         }
-
-        /// <summary>
-        /// Switch expression that returns user viewmodel access based on UserType
-        /// </summary>
-        /// <param name="id">UserTypeID</param>
-        private UserMenuItem GetUserAccess(int id) => id switch
-        {
-            1 => new UserMenuItem(new AdminViewModel(), "Admin"), // Case 1
-            2 => new UserMenuItem(new TestVM(), "Bibliotekarie"), // Case 2
-            3 => new UserMenuItem(new TestVM(), "Mina lån"), // Case 3
-            _ => new UserMenuItem(new TestVM(), "Fel"), // Default
-        };
 
         #endregion
     }

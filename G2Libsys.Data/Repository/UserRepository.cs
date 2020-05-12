@@ -7,7 +7,6 @@
     /// </summary>
     #region Namespaces
     using G2Libsys.Library;
-    using System;
     using System.Data;
     using System.Threading.Tasks;
     #endregion
@@ -30,7 +29,7 @@
         /// </summary>
         public async Task<User> VerifyLoginAsync(string email, string password)
         {
-            using IDbConnection _db = base.Connection;
+            using IDbConnection _db = base.GetConnection();
 
             // Fetch user with correct username and password
             return await _db.QueryFirstOrDefaultAsync<User>(
@@ -46,7 +45,7 @@
         /// <param name="password"></param>
         public async Task<bool> VerifyEmailAsync(string email)
         {
-            using IDbConnection _db = base.Connection;
+            using IDbConnection _db = base.GetConnection();
 
             // Return true if email exist in db
             return await _db.ExecuteScalarAsync<bool>(

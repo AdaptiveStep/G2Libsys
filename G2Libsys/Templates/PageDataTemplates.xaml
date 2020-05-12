@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dialog="clr-namespace:G2Libsys.Dialogs"
     xmlns:local="clr-namespace:G2Libsys"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
     xmlns:vs="clr-namespace:G2Libsys.Views">
@@ -20,6 +21,54 @@
 
     <DataTemplate DataType="{x:Type vm:AdminViewModel}">
         <vs:AdminView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LibraryMainViewModel}">
+        <vs:LibraryMainView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LibraryObjectViewModel}">
+        <vs:LibraryObjectView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LibraryObjectInfoViewModel}">
+        <vs:LibraryObjectInfoView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LibraryObjectAdministrationViewModel}">
+        <vs:LibraryObjectAdministrationView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UserReservationsViewModel}">
+        <vs:UserReservationsView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UserProfileViewModel}">
+        <vs:UserProfileView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:UserAdministrationViewModel}">
+        <vs:UserAdministrationView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LibrarianViewModel}">
+        <vs:LibrarianView />
+    </DataTemplate>
+
+
+
+
+    <!--  Dialogs  -->
+    <DataTemplate DataType="{x:Type dialog:AlertDialogViewModel}">
+        <dialog:AlertDialogView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type dialog:ConfirmDialogViewModel}">
+        <dialog:ConfirmDialogView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type dialog:LibraryObjectDialogViewModel}">
+        <dialog:LibraryObjectDialogView />
     </DataTemplate>
 
 </ResourceDictionary>

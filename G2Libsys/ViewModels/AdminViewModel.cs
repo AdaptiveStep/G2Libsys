@@ -1,22 +1,30 @@
 ﻿using G2Libsys.Commands;
 using G2Libsys.Data.Repository;
 using G2Libsys.Library;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace G2Libsys.ViewModels
 {
-    public class AdminViewModel : BaseViewModel
+    public class AdminViewModel : BaseViewModel, IViewModel
     {
         private readonly IUserRepository _repo;
+        private readonly IRepository<UserType> _repoUT;
         private User newUser;
         private User selectedUser;
         private ObservableCollection<User> users;
+        private ObservableCollection<UserType> _userTypes;
+        private string searchstring;
 
+        public string SearchString
+        {
+            get => searchstring;
+            set
+            {
+                searchstring = value;
+                OnPropertyChanged(nameof(SearchString));
+            }
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -55,6 +63,8 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SelectedUser));
             }
         }
+        public ICommand searchbutton { get; private set; }
+        public ICommand cancelsearch { get; private set; }
 
         /// <summary>
         /// 
@@ -69,16 +79,42 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// 
         /// </summary>
+        /// 
         public AdminViewModel()
         {
+            if (base.IsInDesignMode) return;
+
             _repo = new UserRepository();
+            _repoUT = new GeneralRepository<UserType>();
+            UserTypes = new ObservableCollection<UserType>();
+            GetUserTypes();
 
             GetUsers();
 
             AddUserCommand = new RelayCommand(x => AddUser());
             RemoveUserCommand = new RelayCommand(x => RemoveUser());
+            searchbutton = new RelayCommand(x => Search());
+            cancelsearch = new RelayCommand(x => GetUsers());
         }
-
+        public ObservableCollection<UserType> UserTypes
+        {
+            get => _userTypes;
+            set
+            {
+                _userTypes = value;
+                OnPropertyChanged(nameof(UserType));
+            }
+        }
+        private async void GetUserTypes()
+        {
+            //UserTypes = new ObservableCollection<UserType>(await _repoUT.GetAllAsync());
+        }
+        public async void Search()
+        {
+            Users.Clear();
+            Users = new ObservableCollection<User>((await _repo.GetRangeAsync(SearchString)));
+            OnPropertyChanged(nameof(Users));
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -93,7 +129,7 @@ namespace G2Libsys.ViewModels
         /// </summary>
         private async void RemoveUser()
         {
-            await _repo.RemoveAsync(SelectedUser);
+            await _repo.DeleteByIDAsync(SelectedUser.ID);
             Users.Remove(SelectedUser);
 
             // Reset NewUser

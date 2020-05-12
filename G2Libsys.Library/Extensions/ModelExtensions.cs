@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-
-namespace G2Libsys.Library.Extensions
+﻿namespace G2Libsys.Library.Extensions
 {
+    using System;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
     public static class ModelExtensions
     {
         /// <summary>
@@ -16,7 +14,7 @@ namespace G2Libsys.Library.Extensions
         {
             string result = model.Name.ToLower();
 
-            if (result.Last().Equals("s"))
+            if (result.Last().Equals('s') || result.Last().Equals('y'))
                 return result;
             else
             {
