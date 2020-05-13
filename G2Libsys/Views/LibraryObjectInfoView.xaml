@@ -79,21 +79,28 @@
                            
                            />
                 </Viewbox>
+                <ScrollViewer 
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Grid.ColumnSpan="3"
+                            Grid.RowSpan="3"
+                            VerticalScrollBarVisibility="Auto"
+                            >
+                    
                 <TextBlock
-                    Text="{Binding LibraryObjects[0].Description}"
-                    Style="{StaticResource MaterialDesignTextBlock}"
-                    Grid.Row="3"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="3"
-                    Grid.RowSpan="3"
-                    TextWrapping="Wrap"
-                    Margin="5 0 5 0"/>
+                            Text="{Binding LibraryObjects[0].Description}"
+                            Style="{StaticResource MaterialDesignTextBlock}"
+                            TextWrapping="Wrap"
+                            Margin="5 0 5 0" 
+                    />
+                    
+                </ScrollViewer>
                 
                 <materialDesign:Card Grid.Row="6"
                                      Grid.Column="1"
                                      Grid.ColumnSpan="1"
                                      UniformCornerRadius="10"
-                                     Margin="0 0 16 5"
+                                     Margin="5 5 16 5"
                                      Background="{StaticResource light_background}">
                     <Grid>
 
@@ -147,8 +154,8 @@
 
                             <TextBlock Text="{Binding LibraryObjects[1].Author}"
                                        Margin="0 0 10 0"
-                                   TextWrapping="Wrap"
-                                   FontWeight="DemiBold" />
+                                       TextWrapping="Wrap"
+                                       FontWeight="DemiBold" />
 
 
                             

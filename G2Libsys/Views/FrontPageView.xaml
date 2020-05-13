@@ -29,7 +29,8 @@
         <ScrollViewer Grid.Column="1" 
                       Grid.Row="1" 
                       Grid.ColumnSpan="3"
-                      Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"
+                      Height="{Binding Path=ActualHeight, 
+                      RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"
 >
             
         <WrapPanel
