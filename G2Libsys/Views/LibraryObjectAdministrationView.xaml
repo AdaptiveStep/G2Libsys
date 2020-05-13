@@ -14,5 +14,57 @@
     x:TypeArguments="vm:LibraryObjectAdministrationViewModel"
     mc:Ignorable="d">
 
-    <Grid />
+    <Grid>
+        <materialDesign:Card
+            MaxWidth="600"
+            MaxHeight="400"
+            Margin="10,10,10,10">
+            <StackPanel>
+                <materialDesign:Card Margin="10,10,10,10">
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label VerticalAlignment="Center" Content="Sök efter användare" />
+                        <TextBox
+                            Width="140"
+                            Margin="10,10,10,10"
+                            Background="Wheat"
+                            Text="{Binding SearchString}" />
+                        <Button
+                            Margin="0,0,10,0"
+                            Command="{Binding searchbutton}"
+                            Content="Sök" />
+                        <Button Command="{Binding cancelsearch}" Content="Avbryt" />
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <DataGrid
+                    x:Name="ObjectDataGrid"
+                    MinWidth="400"
+                    Margin="10,10,10,10"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    DataContext="{Binding}"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding LibraryObjects}"
+                    SelectedItem="{Binding SelectedItem}"
+                    SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
+                        <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
+                        <DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
+                        <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                        <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
+                    </DataGrid.Columns>
+                    <DataGrid.InputBindings>
+                        <MouseBinding
+                            Command="{Binding EditItem}"
+                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
+                            Gesture="LeftDoubleClick" />
+                    </DataGrid.InputBindings>
+                </DataGrid>
+
+            </StackPanel>
+        </materialDesign:Card>
+    </Grid>
 </local:BasePage>
