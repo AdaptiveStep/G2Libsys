@@ -91,6 +91,7 @@
 ------------------------------------------------------------------------
 --SQL DEFINITIONSFILE --------------------------------------------------
 
+	DROP TABLE IF EXISTS dbo.Libraries	
 	CREATE TABLE Libraries(
 		ID INT IDENTITY(1,1) PRIMARY KEY NOT NULL, 
 		[Name] VARCHAR(50) NOT NULL DEFAULT 'UNNAMED',
@@ -101,6 +102,7 @@
 				SET IDENTITY_INSERT [Libraries] OFF
 				GO
 
+	DROP TABLE IF EXISTS dbo.UserTypes	
 	CREATE TABLE UserTypes(
 		ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,
 		[Name] VARCHAR(50) 	 NOT NULL DEFAULT 'UNNAMED',
@@ -117,6 +119,7 @@
 				SET IDENTITY_INSERT [Usertypes] OFF
 				GO
 
+	DROP TABLE IF EXISTS dbo.Users
 	CREATE TABLE Users(
 		ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  		--Candidatekey
 		LoanID AS (ID+100) * 2867585817934888 % 8687931395129801, 			--Calculated with (mod p) . Inverse is 7654321234567890 . Always unique due to being Finite Field.
@@ -138,7 +141,7 @@
 						(3, 'Joppan@johanna.com',123		,'Joan'		,'Sacrebleu'	,3);
 				SET IDENTITY_INSERT Users OFF
 				GO
-
+	DROP TABLE IF EXISTS dbo.Authors	
 	CREATE TABLE Authors(
 		ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  							--Candidatekey
 		Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
@@ -159,7 +162,7 @@
 						(4, 'Jörgen'		,'Backelin'							);
 				SET IDENTITY_INSERT Authors OFF
 				GO
-
+	DROP TABLE IF EXISTS dbo.Seminars	
 	CREATE TABLE Seminars(
 		ID 				INT IDENTITY(1,1) 	NOT NULL 	PRIMARY KEY 						,   --Candidatekey
 		[Title] 		VARCHAR(200)  		NOT NULL 				DEFAULT 'UNNAMED'		,
@@ -183,6 +186,7 @@
 
 					--(8, 'Starta Eget'							,'Den bästa seminarien om starta eget.'		,9999999423999,'StadsBiblioteketAB'	,600	,350 ,4 ,1);
 
+	DROP TABLE IF EXISTS dbo.Cards				
 	CREATE TABLE Cards(
 		ID 				INT IDENTITY(1,1) 	NOT NULL PRIMARY KEY,									  	--Candidatekey
 		ActivationDate 	DATETIME 			NOT NULL DEFAULT SYSDATETIME(),
@@ -205,6 +209,7 @@
 				GO
 
 	--Relationship USER-2-OBJECT ; M2M
+	DROP TABLE IF EXISTS dbo.Categories
 	CREATE TABLE Categories(
 		ID				INT IDENTITY(1,1)	NOT NULL PRIMARY KEY,															--Candidatekey
 		Name 			VARCHAR(50) 		NOT NULL 				DEFAULT 'UNNAMED' UNIQUE, 								--Candidatekey
@@ -220,14 +225,26 @@
 					(4, 'Film'		,'Filmer som går att låna eller ladda ner'		);
 			SET IDENTITY_INSERT Categories OFF
 			GO
-	--
+	
+	DROP TABLE IF EXISTS dbo.DeweyDecimals
+	CREATE TABLE DeweyDecimals(
+		ID 				INT IDENTITY(1,1) 		NOT NULL PRIMARY KEY 	,
+		DeweyINT 		INT 					NOT NULL UNIQUE 		,
+		[Description] 	VARCHAR(300) 			NOT NULL 				,
+		
+		--Shows 004 correctly
+		DeweyDecimal AS FORMAT(DeweyINT, '000')
+		); 
+		GO
+
+	DROP TABLE IF EXISTS dbo.LibraryObjects
 	CREATE TABLE LibraryObjects(
 		ID 				INT 		IDENTITY(1,1) 				PRIMARY KEY,												--Candidatekey
 		Title 			VARCHAR(50) NOT NULL 	DEFAULT 'UNNAMED', 
 		[Description] 	varchar(500) 			DEFAULT 'No Description',
 		ISBN 			BIGINT 		NOT NULL 	DEFAULT 0,
 		Publisher		VARCHAR(100) 			DEFAULT 'UNNAMED',
-		DeweyDecimal	INT 		NOT NULL 	DEFAULT 0,					 												--NEEDS CHECK 0-999 
+		Dewey			INT 	 			 					FOREIGN KEY REFERENCES DeweyDecimals(DeweyINT),
 		PurchasePrice 	FLOAT 					DEFAULT 300,
 
 		Category 		INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Categories(ID) 	ON DELETE SET NULL,
@@ -244,18 +261,18 @@
 		[DateAdded] 	DATETIME 	NOT NULL 	DEFAULT SYSDATETIME()
 		--Constraints
 		);
+		GO
+
 		--SAMPLE INSERTS
 		SET IDENTITY_INSERT 	LibraryObjects on
-			INSERT INTO 		LibraryObjects (ID, Title, [Description], ISBN, Publisher, DeweyDecimal, PurchasePrice, Category, Author) 
+			INSERT INTO 		LibraryObjects (ID, Title, [Description], ISBN, Publisher, PurchasePrice, Category, Author) 
 					VALUES 
-					(1, 'Harry Potter'							,'Bra skick och bok för ungdomar'			,7599999999999,'BonniersBöcker'	 	,435	,350 ,1 ,1),		--Does ID really have to be inserted? 
-					(2, 'Sagan om Ringen'						,'Bra skick och bok för ungdomar. Poppis'	,9999229999999,'Penguin Classics'	,100	,350 ,1 ,2),
-					(3, 'Sagan om Ringen - Bilbo Ljudboken!'	,'Våran första ljudbok i lager'				,9974324423999,'Coola Förlaget'		,415	,350 ,3 ,2),
-					(4, 'Game of Thrones Ebook!'				,'Från tittande till lyssnande!'			,9979999423999,'Amazon'				,215	,350 ,2 ,1),
-					(5, 'Eva mår bra! Ljudblogbok'				,'Bra skick och ljudbok för alla!'			,9999992343999,'Evas Förlag'		,500	,350 ,3 ,1),
-					--(6, 'Tjäna pengar med flumkurser!'			,'Otroligt seminarie om modern utbildning!' ,9999999423999,'StadsBiblioteketAB'	,19999	,350 ,5 ,1),
-					(7, 'The Hulk'								,'Senaste filmen från hollywood!'			,9996439994999,'WarnerBrothers'		,200	,350 ,4 ,1);
-					--(8, 'Starta Eget'							,'Den bästa seminarien om starta eget.'		,9999999423999,'StadsBiblioteketAB'	,600	,350 ,4 ,1);
+					(1, 'Harry Potter'							,'Bra skick och bok för ungdomar'			,7599999999999,'BonniersBöcker'	 		,350 ,1 ,1),		--Does ID really have to be inserted? 
+					(2, 'Sagan om Ringen'						,'Bra skick och bok för ungdomar. Poppis'	,9999229999999,'Penguin Classics'		,350 ,1 ,2),
+					(3, 'Sagan om Ringen - Bilbo Ljudboken!'	,'Våran första ljudbok i lager'				,9974324423999,'Coola Förlaget'			,350 ,3 ,2),
+					(4, 'Game of Thrones Ebook!'				,'Från tittande till lyssnande!'			,9979999423999,'Amazon'					,350 ,2 ,1),
+					(5, 'Eva mår bra! Ljudblogbok'				,'Bra skick och ljudbok för alla!'			,9999992343999,'Evas Förlag'			,350 ,3 ,1),
+					(7, 'The Hulk'								,'Senaste filmen från hollywood!'			,9996439994999,'WarnerBrothers'			,350 ,4 ,1);
 			SET IDENTITY_INSERT LibraryObjects OFF
 			GO
 	--
@@ -273,6 +290,7 @@
 		--isLate
 	 	CONSTRAINT UC_CardObjectCombo UNIQUE (CardID,ObjectID)
 		);
+		GO
 
 	--Relationship User-2-Seminar ; M2M
 	CREATE TABLE SeminarBookings(
@@ -685,18 +703,7 @@
 
 ------------------------------------------------------------------------
 --SQL DATA CONSTANTS ---------------------------------------------------
--------DEWEY DECIMAL TABLES - USED TO CATALOG LIBRARY OBJECTS-----------
-	CREATE TABLE DeweyDecimals(
-		ID 				INT IDENTITY(1,1) 		NOT NULL PRIMARY KEY 	,
-		DeweyINT 		INT 					NOT NULL UNIQUE 		,
-		[Description] 	VARCHAR(300) 			NOT NULL 				,
-		
-		--Shows 004 correctly
-		DeweyDecimal AS FORMAT(DeweyINT, '000')
-		); 
-
-
-		--STANDARD INSERTS
+-------DEWEY DECIMAL INSERTS-----------
 			--SET IDENTITY_INSERT [Usertypes] on
 				INSERT INTO DeweyDecimals(DeweyINT ,[Description]) 
 				VALUES 
