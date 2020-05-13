@@ -1,4 +1,4 @@
-﻿namespace G2Libsys.Library.Models
+﻿namespace G2Libsys.Library
 {
     public class Category
     {

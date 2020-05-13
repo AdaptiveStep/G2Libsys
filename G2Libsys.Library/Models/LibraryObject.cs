@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace G2Libsys.Library.Models
+namespace G2Libsys.Library
 {
     /// <summary>
     /// Library object model, ex. bok, film etc
