@@ -141,6 +141,7 @@
 						(3, 'Joppan@johanna.com',123		,'Joan'		,'Sacrebleu'	,3);
 				SET IDENTITY_INSERT Users OFF
 				GO
+	
 	DROP TABLE IF EXISTS dbo.Authors	
 	CREATE TABLE Authors(
 		ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  							--Candidatekey
@@ -162,6 +163,7 @@
 						(4, 'Jörgen'		,'Backelin'							);
 				SET IDENTITY_INSERT Authors OFF
 				GO
+	
 	DROP TABLE IF EXISTS dbo.Seminars	
 	CREATE TABLE Seminars(
 		ID 				INT IDENTITY(1,1) 	NOT NULL 	PRIMARY KEY 						,   --Candidatekey
@@ -237,19 +239,25 @@
 		); 
 		GO
 
+
+
+	--
+	--
+
+
 	DROP TABLE IF EXISTS dbo.LibraryObjects
 	CREATE TABLE LibraryObjects(
-		ID 				INT 		IDENTITY(1,1) 				PRIMARY KEY,												--Candidatekey
+		ID 				INT 		IDENTITY(1,1) 				PRIMARY KEY,	--Candidatekey1
 		Title 			VARCHAR(50) NOT NULL 	DEFAULT 'UNNAMED', 
 		[Description] 	varchar(500) 			DEFAULT 'No Description',
-		ISBN 			BIGINT 		NOT NULL 	DEFAULT 0,
+		ISBN 			BIGINT 				 	DEFAULT 0,						
 		Publisher		VARCHAR(100) 			DEFAULT 'UNNAMED',
-		Dewey			INT 	 			 					FOREIGN KEY REFERENCES DeweyDecimals(DeweyINT),
 		PurchasePrice 	FLOAT 					DEFAULT 300,
-
-		Category 		INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Categories(ID) 	ON DELETE SET NULL,
-		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
 		Pages 			INT 					DEFAULT 0,
+
+		Dewey			INT 	 			 					FOREIGN KEY REFERENCES DeweyDecimals(DeweyINT),
+		Category 		INT 		NOT NULL	DEFAULT 1 		FOREIGN KEY REFERENCES Categories(ID) ,
+		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
 
 		--Hardcover 		INT 					DEFAULT 1 		FOREIGN KEY REFERENCES Covers(ID) 		ON DELETE SET NULL,
 		--Genre 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Genres(ID) 		ON DELETE SET NULL,
@@ -275,6 +283,9 @@
 					(7, 'The Hulk'								,'Senaste filmen från hollywood!'			,9996439994999,'WarnerBrothers'			,350 ,4 ,1);
 			SET IDENTITY_INSERT LibraryObjects OFF
 			GO
+	
+
+
 	--
 	--Relationship Card-2-OBJECT ; M2M
 	CREATE TABLE Loans(
@@ -409,23 +420,6 @@
 
 ------------------------------------------------------------------------
 ---------------Usertypes -----------------------------------------------
-	--Change usertype for user
-
-		--Överflödig
-		-- CREATE PROC usp_changeUsertype_users
-		--	 @UserID int = null,
-		--	 @UsertypeID int = null
-		--	 AS
-		--	 BEGIN
-		--			IF (@UserID IS NOT NULL and @UsertypeID is NOT NULL)
-		--				BEGIN
-		-- 				UPDATE Users
-		-- 				SET Usertype = @UsertypeID
-		-- 				WHERE ID=@UserID; 
-		-- 			END
-		--	 END
-		--	 GO
-
 	--Delete Usertype
 	CREATE PROC usp_delete_usertypes
 		@ID int = null
@@ -437,23 +431,34 @@
 				END
 		END
 		GO
-
 	--Add Usertype
-	CREATE PROC usp_insert_usertype
-		@ID INT = null,
-		@Name VARCHAR(50)
+	CREATE PROC usp_insert_usertypes
+		@ID 	INT = null,
+		@Name 	VARCHAR(50)
 		AS
 		BEGIN
 			insert into UserType ([Name])
 			values (@Name);
 		END
 		GO
-
+	--
+	CREATE PROC usp_update_usertypes
+		@ID 	INT ,
+		@Name 	VARCHAR(50)	= null
+		AS
+		BEGIN
+			UPDATE 	UserTypes
+			SET 	Name = @Name
+			WHERE 	ID = @ID; 
+		END
+		GO
 ------------------------------------------------------------------------
 ---------------Loans ---------------------------------------------------
 	--ADD Loans for objectID: using a cardID and a LoansDate.
-	CREATE PROC usp_add_Loans
-		@LoanDate 		DATE,
+	CREATE PROC usp_insert_loans
+		@ID int 				 = null,
+		@Returned 		BIT 	 = null,
+		@LoanDate 		DATETIME = null,
 		@ObjectID		INT,
 		@CardID			INT
 		AS
@@ -463,9 +468,9 @@
 			VALUES (@LoanDate, @ObjectID, @CardID);
 		END
 		GO
-
+	
 	--DELETE Loans for user
-	CREATE PROC usp_delete_Loans
+	CREATE PROC usp_delete_loans
 		@ID int = null
 		AS
 		BEGIN
@@ -475,16 +480,14 @@
 				END
 		END
 		GO
-
-
-	--Slå ihop med nedan(?)
+	
 	--Edit Loans: Change Loansdate, returned value etc..
-	CREATE PROC usp_update_Loans
+	CREATE PROC usp_update_loans
 		@ID 			 	INT  	= null,
 		@LoanDate		 	DATE	= null,
 		@ObjectID 			INT 	= null,
 		@CardID				INT 	= null, 
-		@Returned 			BIT
+		@Returned 			BIT 	= null
 
 		AS
 		BEGIN
@@ -496,7 +499,6 @@
 			WHERE ID=@ID; 
 		END
 		GO
-
 ------------------------------------------------------------------------
 ---------------Cards ---------------------------------------------------
 	--Delete the card for user
@@ -512,7 +514,8 @@
 		GO
 
 		--Just add a new card. Only userID required.
-	CREATE PROC usp_add_cards
+	--
+	CREATE PROC usp_insert_cards
 		@ID 			int 		=null,
 		@ActivationDate DATETIME 	=null,
 		@Activated 		BIT 		=null,	
@@ -526,13 +529,14 @@
 		GO
 
 		--Disable a specific card. 
-	
-	CREATE PROC usp_update_Cards
+	--
+	CREATE PROC usp_update_cards
 		@ID 			int 		=null,
 		@ActivationDate DATETIME 	=null,
 		@Activated 		BIT 		=null,	
-		@Owner 			INT 		=null
-
+		@Owner 			INT 		=null,
+		@ValidUntil		DateTime 	=null,
+		@cardnumber 	Varchar(30) = null
 		AS
 		BEGIN
 			UPDATE Cards
@@ -543,29 +547,90 @@
 		END
 		GO
 
-
-	CREATE PROC usp_disableByID_cards
-		@CardID 	INT,
-		@Activated 	BIT = 1
-
-		AS
-			BEGIN
-				Update Cards
-				Set Activated = @Activated
-				Where ID = @CardID;
-			END
-		GO
-
 ------------------------------------------------------------------------
 ---------------LIBRARY OBJECTS -----------------------------------------
 	Create proc usp_getall_libraryobjects
+		as
+		BEGIN
+			select * from libraryobjects
+		END
+		GO
+	Create proc usp_getbyID_libraryobjects
 		@ID int
 		as
 		BEGIN
 			select * from libraryobjects where ID = @ID
 		END
+		GO	
+	
+	Create proc usp_remove_libraryobjects
+	    @ID INT
+	    AS
+	    BEGIN
+	        DELETE FROM libraryobjects where ID = @ID
+	    END
+	    GO
+	CREATE PROC usp_insert_libraryobjects
+		@ID 			INT				= null,
+		@Title			INT 				,
+		@Description 	VARCHAR(500)	= null,
+		@ISBN			BIGINT			= null,
+		@Publisher		VARCHAR(100)	= null,
+		@PurchasePrice	FLOAT			= null,
+		@Pages			INT				= null,
+		@Dewey			INT				= null,
+		@Category		INT	      		  	,	
+		@Author			INT				= null,
+		
+		@Library		INT				= null,
+		@AddedBy		INT				= null,
+		@LastEdited	DATETIME			= null,
+		@DateAdded	DATETIME			= null
+		AS
+		BEGIN
+			INSERT INTO 
+			LibraryObjects(Title, [Description], ISBN, Publisher, PurchasePrice, Pages, Dewey, Category, Author, [Library], AddedBy, LastEdited, DateAdded) 
+			VALUES 
+			(@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Pages, @Dewey, @Category, @Author, @Library, @AddedBy, @LastEdited, @DateAdded);
+		END
 		GO
+	CREATE PROC usp_update_libraryobjects
+		@ID 			INT,
+		@Title			INT,
+		@Description 	Varchar(500)	= null,
+		@ISBN			BIGINT			= null,
+		@Publisher		VARCHAR(100)	= null,
+		@PurchasePrice	FLOAT			= null,
+		@Pages			INT				= null,
+		@Dewey			INT				= null,
+		@Category		INT,	
+		@Author			INT				= null,
+		
+		@Library		INT				= null,
+		@AddedBy		INT				= null,
+		@LastEdited	DATETIME		= null,
+		@DateAdded	DATETIME		= null
 
+		AS
+		BEGIN
+		Update LibraryObjects 
+		SET
+			Title 			= @Title,
+			[Description] 	= @Description,
+			ISBN 			= @ISBN,
+			Publisher 		= @Publisher,
+			PurchasePrice 	= @PurchasePrice,
+			Pages 			= @Pages,
+			Dewey 			= @Dewey,
+			Category 		= @Category,
+			Author 			= @Author,
+			[Library] 		= @Library,
+			AddedBy 		= @AddedBy,
+			LastEdited 		= @LastEdited,
+			DateAdded 		= @DateAdded
+		WHERE ID=@ID; 
+		END
+		GO
 ------------------------------------------------------------------------
 ---------------Category ------------------------------------------------
 	create proc usp_getall_category
@@ -583,7 +648,7 @@
 		-- 				or card owner for CARD LIKE %bla543
 
 	--search with multiple parameters and filter
-	CREATE PROC usp_findusersadv_users
+	CREATE PROC usp_filtersearch_users
 		@PartialName VARCHAR(20) = '',
 		@PartialLastName VARCHAR(20) = '',
 		@PartialEmail VARCHAR(300) = ''
@@ -601,7 +666,7 @@
 
 
 	--Simple search users
-	CREATE PROC usp_findusers_users
+	CREATE PROC usp_simplesearch_users
 		@search VARCHAR(20) = ''
 
 		AS
@@ -615,9 +680,9 @@
 		END
 		GO
 
-	--------BELOW IS STILL UNDER CONSTRUCITON:
+	-------- BELOW IS STILL UNDER CONSTRUCITON:
 	--Dynamic search of objects - multiple keywords (i.e conjunctive filter search)
-	CREATE PROC usp_findobject_LibraryObjects
+	CREATE PROC usp_filtersearch_LibraryObjects
 		@PartialTitle VARCHAR(20) = '',
 		@PartialDescription VARCHAR(20) = '',
 		@PartialPublisher VARCHAR(20) = ''
@@ -626,20 +691,20 @@
 		--@PriceRange INT = null,
 		--@Category INT = null
 
-
 		AS
 		BEGIN
 			SELECT *
 			FROM LibraryObjects
 			WHERE 
-				Title LIKE '%' + @PartialTitle + '%' AND
-				[Description] LIKE '%' + @PartialDescription + '%' AND
-				[Publisher] LIKE '%' + @PartialPublisher + '%';
+				Title 			LIKE '%' 	+ @PartialTitle 		+ '%' AND
+				[Description] 	LIKE '%' 	+ @PartialDescription 	+ '%' AND
+				[Publisher] 	LIKE '%' 	+ @PartialPublisher 	+ '%';
 		END
 		GO
 
+	--TODO , Search with partial ISBN too !!
 	--Dynamic search of objects - only one keyword
-	CREATE PROC usp_getrange_libraryobjects
+	CREATE PROC usp_simplesearch_libraryobjects
 		@Partialword VARCHAR(20) = ''
 
 		AS
@@ -647,9 +712,13 @@
 			SELECT *
 			FROM LibraryObjects
 			WHERE 
-				Title LIKE '%' + @Partialword + '%' Or
-				[Description] LIKE '%' + @Partialword + '%' OR
-				[Publisher] LIKE '%' + @Partialword + '%';
+				Title 			LIKE '%' + @Partialword + '%' Or
+				[Description] 	LIKE '%' + @Partialword + '%' OR
+				[Publisher] 	LIKE '%' + @Partialword + '%' ;
+				--ISBN 			LIKE '%' + @PartialISBN + '%' ;   			  --FIX THIS
+				--Author.fname 	LIKE '%' + @PartialAuthorfirstname 	+ '%' ;   --FIX THIS
+				--Author.lname 	LIKE '%' + @PartialAuthorlastname 	+ '%' ;   --FIX THIS
+
 		END
 		GO
 

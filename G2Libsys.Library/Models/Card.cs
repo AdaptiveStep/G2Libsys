@@ -16,8 +16,8 @@ namespace G2Libsys.Library
 
         /// <summary>
         /// Calculated column from the database
-        /// Has the form 4444-4444-4444-4444
+        /// Has the form '4444-4444-4444-4444'
         /// </summary>
-        public int CardNumber { get; set; }
+        public string CardNumber { get; set; }
     }
 }

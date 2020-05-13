@@ -16,13 +16,9 @@ namespace G2Libsys.Library.Models
           public double? PurchasePrice { get; set; }          
           public DateTime LastEdited { get; set; }
           public DateTime DateAdded { get; set; }
-
-
-
-
-          //TODO
-          //WRONG TYPE. Must be DeweyDecimal Type
-          public int DeweyDecimal { get; set; }
+          
+          
+          public DeweyDecimal DeweyDecimal { get; set; }
          
           //TODO
           //WRONG TYPE. Must be Category type

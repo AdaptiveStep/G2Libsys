@@ -1,4 +1,5 @@
 ﻿using G2Libsys.Library.Models;
+using System.Collections.Generic;
 
 namespace G2Libsys.Library
 {
@@ -14,6 +15,9 @@ namespace G2Libsys.Library
         public string Firstname { get; set; }
         public string Lastname { get; set; }
         public bool LoggedIn { get; set; } = false;
+
+        //public List<Card> Usercards { get; set; }
+
 
         //TODO . WRONG TYPE. fix this
         public int UserType { get; set; } = 3;
