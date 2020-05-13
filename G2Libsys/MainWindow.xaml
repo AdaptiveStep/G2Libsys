@@ -14,6 +14,7 @@
     MinHeight="440"
     ResizeMode="CanResizeWithGrip"
     SizeToContent="Manual"
+    SnapsToDevicePixels="True"
     WindowStartupLocation="CenterScreen"
     WindowStyle="SingleBorderWindow">
     <WindowChrome.WindowChrome>

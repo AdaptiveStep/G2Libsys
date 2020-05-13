@@ -2,11 +2,11 @@
 
 namespace G2Libsys.Library.Models
 {
+    /// <summary>
+    /// Library object model, ex. bok, film etc
+    /// </summary>
     public class LibraryObject
     {
-     /// <summary>
-     /// Library object model, ex. bok, film etc
-     /// </summary>
           public int ID { get; set; }
           public string Title { get; set; }
           public string Description { get; set; }
@@ -21,8 +21,5 @@ namespace G2Libsys.Library.Models
           public DateTime LastEdited { get; set; }
           public DateTime DateAdded { get; set; }
           public string ImageSource { get; set; }
-
-
-
     }
 }
