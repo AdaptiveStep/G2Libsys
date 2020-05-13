@@ -14,8 +14,12 @@
     x:TypeArguments="vm:LibraryObjectAdministrationViewModel"
     SnapsToDevicePixels="True"
     mc:Ignorable="d">
-
     <Grid>
+        <Button
+            VerticalAlignment="Top"
+            Command="{Binding Reset}"
+            IsCancel="True"
+            Visibility="Collapsed" />
         <materialDesign:Card
             MaxWidth="600"
             MaxHeight="400"
@@ -34,29 +38,38 @@
                                 Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <Button
                                 Margin="5"
-                                Command="{Binding SearchCommand}"
+                                Command="{Binding Search}"
                                 Content="Sök"
                                 IsDefault="True" />
                         </StackPanel>
-                        <ComboBox
-                            Width="120"
-                            Height="32"
-                            Margin="5"
-                            Padding="0"
+                        <StackPanel
                             HorizontalAlignment="Right"
-                            Background="WhiteSmoke"
                             DockPanel.Dock="Right"
-                            ItemsSource="{Binding Categories}"
-                            ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                            ScrollViewer.VerticalScrollBarVisibility="Auto"
-                            SelectedIndex="{Binding LibraryObject.Category}"
-                            Style="{StaticResource MaterialDesignFloatingHintComboBox}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
+                            Orientation="Horizontal">
+                            <ComboBox
+                                Width="120"
+                                Height="32"
+                                Margin="5"
+                                Padding="0"
+                                Background="WhiteSmoke"
+                                ItemsSource="{Binding Categories}"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                SelectedIndex="{Binding LibraryObject.Category}"
+                                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <Button
+                                Margin="10,5,5,5"
+                                Padding="5,0"
+                                Command="{Binding CreateItem}"
+                                Content="Lägg Till"
+                                IsDefault="True" />
+                        </StackPanel>
                     </DockPanel>
                 </materialDesign:Card>
 
@@ -70,6 +83,7 @@
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
                     CanUserDeleteRows="False"
+                    ColumnHeaderStyle="{StaticResource MaterialDesignDataGridColumnHeader}"
                     DataContext="{Binding}"
                     IsReadOnly="True"
                     ItemsSource="{Binding LibraryObjects}"
@@ -106,6 +120,10 @@
                             Command="{Binding EditItem}"
                             CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
                             Gesture="LeftDoubleClick" />
+                        <KeyBinding
+                            Key="Delete"
+                            Command="{Binding DeleteItem}"
+                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
                     </DataGrid.InputBindings>
                 </DataGrid>
 
