@@ -1,4 +1,6 @@
-﻿namespace G2Libsys.Library
+﻿using G2Libsys.Library.Models;
+
+namespace G2Libsys.Library
 {
     /// <summary>
     /// User model
@@ -11,7 +13,9 @@
         public string Password { get; set; }
         public string Firstname { get; set; }
         public string Lastname { get; set; }
-        public int UserType { get; set; } = 3;
         public bool LoggedIn { get; set; } = false;
+
+        //TODO . WRONG TYPE. fix this
+        public int UserType { get; set; } = 3;
     }
 }
