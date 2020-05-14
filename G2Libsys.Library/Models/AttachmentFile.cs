@@ -1,5 +1,3 @@
-using System;
-
 namespace G2Libsys.Library
 {
 	public class AttachetmentFile
@@ -11,6 +9,5 @@ namespace G2Libsys.Library
 		/// File is on the database ?
 		/// </summary>
 		public string FilePayLoad { get; set; }
-
 	}
 }
