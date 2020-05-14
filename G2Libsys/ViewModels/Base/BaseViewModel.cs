@@ -41,7 +41,7 @@
         /// <summary>
         /// Default constructor
         /// </summary>
-        public BaseViewModel()
+        protected BaseViewModel()
         {
             if (IsInDesignMode) return;
 
@@ -58,6 +58,7 @@
 
                     // Set CurrentViewModel
                     NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(viewModel);
+
                     NavService.HostScreen.SubViewModel = null;
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }

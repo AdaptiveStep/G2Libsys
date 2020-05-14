@@ -57,41 +57,38 @@
         }
 
         #endregion
-        #region Connection
-
-        #endregion
-        #region Connection
-
-        #endregion
 
         #region Connection
 
         //protected virtual IDbConnection GetConnection => new SqlConnection(_connectionString);
 
         // Temporär lösning för flera connectionstrings
-        protected virtual IDbConnection GetConnection()
+        protected virtual IDbConnection Connection
         {
-            try
-            {
-                var conn = new SqlConnection(_connectionString);
-                conn.Open();
-                return conn;
-            }
-            catch
+            get
             {
                 try
                 {
-                    bkupString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
-                    var conn = new SqlConnection(bkupString);
+                    var conn = new SqlConnection(_connectionString);
                     conn.Open();
                     return conn;
                 }
                 catch
                 {
-                    bkupString = ConfigurationManager.ConnectionStrings["sqlcustom"].ConnectionString;
-                    var conn = new SqlConnection(bkupString);
-                    conn.Open();
-                    return conn;
+                    try
+                    {
+                        bkupString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
+                        var conn = new SqlConnection(bkupString);
+                        conn.Open();
+                        return conn;
+                    }
+                    catch
+                    {
+                        bkupString = ConfigurationManager.ConnectionStrings["sqlcustom"].ConnectionString;
+                        var conn = new SqlConnection(bkupString);
+                        conn.Open();
+                        return conn;
+                    }
                 }
             }
         }
@@ -112,12 +109,12 @@
                  direction: ParameterDirection.Output);
 
             // Open connection
-            using IDbConnection _db = GetConnection();
+            using IDbConnection _db = Connection;
 
             // Insert mapped item and set NewID to created item ID
             await _db.ExecuteScalarAsync<int>(
-                        sql: GetProcedureName<T>("insert"), 
-                      param: parameters, 
+                        sql: GetProcedureName<T>("insert"),
+                      param: parameters,
                 commandType: CommandType.StoredProcedure);
 
             // Return the ID of inserted item
@@ -126,7 +123,7 @@
 
         public virtual async Task AddRangeAsync<T>(IEnumerable<T> items)
         {
-            using IDbConnection _db = GetConnection();
+            using IDbConnection _db = Connection;
 
             // Start transaction
             using IDbTransaction transaction = _db.BeginTransaction();
@@ -150,67 +147,67 @@
 
         public virtual async Task<T> GetByIdAsync<T>(int id)
         {
-            using IDbConnection _db = GetConnection();
+            using IDbConnection _db = Connection;
 
             // Return item with matching id
             return await _db.QueryFirstOrDefaultAsync<T>(
-                        sql: GetProcedureName<T>("getbyid"), 
-                      param: new { id }, 
+                        sql: GetProcedureName<T>("getbyid"),
+                      param: new { id },
                 commandType: CommandType.StoredProcedure);
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync<T>()
         {
-            using IDbConnection _db = GetConnection();
+            using IDbConnection _db = Connection;
 
             // Return all items of type T
             return await _db.QueryAsync<T>(
                         sql: GetProcedureName<T>("getall"),
-                      param: new { }, 
+                      param: new { },
                 commandType: CommandType.StoredProcedure);
         }
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(string search)
         {
-            using IDbConnection _db = GetConnection();
+            using IDbConnection _db = Connection;
 
             // Return all items matching search
             return await _db.QueryAsync<T>(
-                        sql: GetProcedureName<T>("getrange"), 
-                      param: new { search }, 
+                        sql: GetProcedureName<T>("simplesearch"),
+                      param: new { search },
                 commandType: CommandType.StoredProcedure);
         }
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(T item)
         {
-            using IDbConnection _db = GetConnection();
+            using IDbConnection _db = Connection;
 
             // Return all items matching search with multiple filters
             return await _db.QueryAsync<T>(
-                        sql: GetProcedureName<T>("filtersearch"), 
-                      param: item, 
+                        sql: GetProcedureName<T>("filtersearch"),
+                      param: item,
                 commandType: CommandType.StoredProcedure);
         }
 
         public virtual async Task UpdateAsync<T>(T item)
         {
-            using IDbConnection _db = GetConnection();
+            using IDbConnection _db = Connection;
 
             // Update item in database
             await _db.ExecuteAsync(
-                        sql: GetProcedureName<T>("update"), 
-                      param: item, 
+                        sql: GetProcedureName<T>("update"),
+                      param: item,
                 commandType: CommandType.StoredProcedure);
         }
 
         public virtual async Task DeleteByIDAsync<T>(int id)
         {
-            using IDbConnection _db = GetConnection();
+            using IDbConnection _db = Connection;
 
             // Remove item from database
             await _db.ExecuteAsync(
-                        sql: GetProcedureName<T>("remove"), 
-                      param: new { id }, 
+                        sql: GetProcedureName<T>("remove"),
+                      param: new { id },
                 commandType: CommandType.StoredProcedure);
         }
 
@@ -228,7 +225,7 @@
         {
             string table = _tableName ?? typeof(T).ToTableName();
             return $"{_prefix}_{action}_{table}";
-        }             
+        }
 
         #endregion
     }
@@ -238,7 +235,7 @@
     /// NOTE: Use for specific model
     /// </summary>
     /// <typeparam name="T">Model</typeparam>
-    public abstract class GenericRepository<T> : GenericRepository, IRepository<T> 
+    public abstract class GenericRepository<T> : GenericRepository, IRepository<T>
         where T : class
     {
         #region Constructor
@@ -247,7 +244,7 @@
         /// Default constructor where tableName = target table in database <para/>
         /// Note: Only specify tablename if needed
         /// </summary>
-        public GenericRepository(string tableName = null) 
+        public GenericRepository(string tableName = null)
             : base(tableName) { }
 
         #endregion
@@ -264,7 +261,7 @@
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync(string search) => await base.GetRangeAsync<T>(search);
 
-        public virtual async Task<IEnumerable<T>> GetRangeAsync(T item)  => await base.GetRangeAsync(item);
+        public virtual async Task<IEnumerable<T>> GetRangeAsync(T item) => await base.GetRangeAsync(item);
 
         public virtual async Task UpdateAsync(T item) => await base.UpdateAsync(item);
 
