@@ -7,7 +7,7 @@
     using System.Text;
     using System.Windows.Input;
     using G2Libsys.Commands;
-    using G2Libsys.Library.Models;
+    using G2Libsys.Library;
     #endregion
 
     /// <summary>
