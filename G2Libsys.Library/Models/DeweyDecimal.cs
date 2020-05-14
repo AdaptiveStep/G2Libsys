@@ -12,7 +12,7 @@ namespace G2Libsys.Library
 		/// <summary>
 		/// Is calculated from the DeweyINT column in the database
 		/// </summary>
-		public int DeweyDecimal { get; set; }
+		//public int DeweyDecimal { get; set; }
 
 
 		//TODO Några är inte helt korrekt översatta. Kan vara värt att kolla upp?

@@ -73,7 +73,8 @@
                                 Padding="5,0"
                                 Command="{Binding CreateItem}"
                                 Content="Lägg Till"
-                                IsDefault="True" />
+                                IsDefault="False"
+                                IsTabStop="False" />
                         </StackPanel>
                     </DockPanel>
                 </materialDesign:Card>

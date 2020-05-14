@@ -99,12 +99,12 @@
         /// <summary>
         /// Enable execute if an Item is selected
         /// </summary>
-        Predicate<object> CanExecute => _ => SelectedItem != null;
+        private Predicate<object> CanExecute => _ => SelectedItem != null;
 
         /// <summary>
         /// Search for LibraryObject
         /// </summary>
-        public ICommand Search => search ??= new RelayCommand(async _ => await SearchLibraryObject());
+        public ICommand Search => search ??= new RelayCommand(async _ => await SearchLibraryObject(), _ => !string.IsNullOrWhiteSpace(SearchString));
 
         /// <summary>
         /// Create new LibraryObject
@@ -145,7 +145,7 @@
 
         #endregion
 
-        #region Tasks
+        #region Methods
 
         private async Task Initialize()
         {
@@ -195,28 +195,65 @@
             }
         }
 
-        private void CreateLibraryObject()
+        private async void CreateLibraryObject()
         {
-            dialogViewModel = new LibraryObjectDialogViewModel(null, ItemCategories, "Skapa ny");
+            dialogViewModel = new LibraryObjectDialogViewModel(new LibraryObject(), ItemCategories, "Lägg till ny");
 
-            var result = _dialog.Show(dialogViewModel);
+            LibraryObject newItem = _dialog.Show(dialogViewModel);
+
+            if (newItem == null) return;
+
+            try
+            {
+                await _repo.AddAsync(newItem);
+                await dispatcher.InvokeAsync(GetLibraryObjects);
+            }
+            catch (Exception ex)
+            {
+                _dialog.Alert("Error", "Ändringarna sparades ej, försök igen");
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         private void EditLibraryObject()
         {
-            dialogViewModel = new LibraryObjectDialogViewModel(SelectedItem, ItemCategories, "Ändra info");
+            dialogViewModel = new LibraryObjectDialogViewModel(SelectedItem, ItemCategories, "Ändra detaljer");
 
-            var result = _dialog.Show(dialogViewModel);
+            LibraryObject editedItem = _dialog.Show(dialogViewModel);
+
+            if (editedItem == null)
+            {
+                dispatcher.InvokeAsync(GetLibraryObjects);
+                return;
+            }
+
+            try
+            {
+                _repo.UpdateAsync(editedItem).ConfigureAwait(false);
+                SelectedItem = editedItem;
+            }
+            catch (Exception ex)
+            {
+                _dialog.Alert("Error", "Ändringarna sparades ej, försök igen");
+                Debug.WriteLine(ex.Message);
+            }
         }
 
         private void DeleteLibraryObject()
         {
             bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
 
-            if (result)
+            if (!result) return;
+
+            try
             {
                 _repo.DeleteByIDAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
                 LibraryObjects.Remove(SelectedItem);
+            }
+            catch (Exception ex)
+            {
+                _dialog.Alert("Error", "Borttagning misslyckades, försök igen");
+                Debug.WriteLine(ex.Message);
             }
         }
 

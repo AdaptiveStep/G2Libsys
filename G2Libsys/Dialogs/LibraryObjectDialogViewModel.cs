@@ -4,10 +4,12 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Text;
     using System.Windows.Input;
     using G2Libsys.Commands;
     using G2Libsys.Library;
+    using G2Libsys.Services;
     #endregion
 
     /// <summary>
@@ -39,7 +41,7 @@
         /// </summary>
         public Category SelectedCategory
         {
-            get => category;
+            get => category ?? Categories.First();
             set
             {
                 category = value;
@@ -88,6 +90,8 @@
             }
 
             LibraryObject.LastEdited = DateTime.Now;
+            LibraryObject.Category = SelectedCategory.ID;
+            LibraryObject.AddedBy = NavService.HostScreen.CurrentUser?.ID ?? 1;
 
             base.DialogResult = LibraryObject;
             base.OKCommand.Execute(param);

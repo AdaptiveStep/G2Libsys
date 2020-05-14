@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace G2Libsys.Library
+﻿namespace G2Libsys.Library
 {
+	using System;
+
 	public class Author
 	{
 		public int ID { get; set; }
@@ -10,6 +10,5 @@ namespace G2Libsys.Library
 
 		//Todo maybe make it into type URI or something similar
 		public string ImageSRC { get; set; }
-
 	}
 }
