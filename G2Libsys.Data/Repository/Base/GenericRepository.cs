@@ -176,7 +176,7 @@
 
             // Return all items matching search
             return await _db.QueryAsync<T>(
-                        sql: GetProcedureName<T>("simplesearch"), 
+                        sql: GetProcedureName<T>("getrange"), 
                       param: new { search }, 
                 commandType: CommandType.StoredProcedure);
         }
