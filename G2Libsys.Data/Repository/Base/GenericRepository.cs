@@ -56,6 +56,8 @@
             _connectionString = ConfigurationManager.ConnectionStrings["sqldefault"].ConnectionString;
         }
 
+        #endregion
+
         #region Connection
 
         //protected virtual IDbConnection GetConnection => new SqlConnection(_connectionString);
