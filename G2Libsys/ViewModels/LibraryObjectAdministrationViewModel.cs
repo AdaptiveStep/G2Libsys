@@ -50,7 +50,7 @@
                     selectedCategory = value;
                     OnPropertyChanged(nameof(SelectedCategory));
 
-                    dispatcher.InvokeAsync(GetLibraryObjects);
+                    ResetLists();
                 }
             }
         }
@@ -206,7 +206,7 @@
             try
             {
                 await _repo.AddAsync(newItem);
-                await dispatcher.InvokeAsync(GetLibraryObjects);
+                ResetLists();
             }
             catch (Exception ex)
             {
@@ -223,14 +223,13 @@
 
             if (editedItem == null)
             {
-                dispatcher.InvokeAsync(GetLibraryObjects);
+                ResetLists();
                 return;
             }
 
             try
             {
                 _repo.UpdateAsync(editedItem).ConfigureAwait(false);
-                SelectedItem = editedItem;
             }
             catch (Exception ex)
             {
