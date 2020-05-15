@@ -1,4 +1,6 @@
-﻿using G2Libsys.ViewModels;
+﻿using G2Libsys.Services;
+using G2Libsys.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
 namespace G2Libsys
@@ -14,6 +16,15 @@ namespace G2Libsys
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            var serviceProvider = new ServiceCollection();
+
+            serviceProvider.AddSingleton<INavigationService<IViewModel>, NavigationService>();
+
+            serviceProvider.BuildServiceProvider();
+
+
+
 
             var app = new MainWindow { DataContext = new MainWindowViewModel() };
             app.Show();
