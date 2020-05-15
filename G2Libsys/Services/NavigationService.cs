@@ -11,7 +11,7 @@
     #endregion
 
     /// <summary>
-    /// Default
+    /// Viewmodel navigation handler
     /// </summary>
     public class NavigationService : INavigationService<IViewModel>
     {

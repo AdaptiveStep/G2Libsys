@@ -22,8 +22,9 @@ namespace G2Libsys.Views
 
         public BasePage()
         {
+            var navService = new NavigationService();
             var b = typeof(VM);
-            ViewModel = b.Locate() ?? new VM();
+            ViewModel = navService.Locate(b) ?? new VM();
             this.DataContext = ViewModel;
         }
     }

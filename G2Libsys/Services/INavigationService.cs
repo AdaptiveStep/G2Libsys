@@ -1,6 +1,7 @@
 ﻿namespace G2Libsys.Services
 {
     using G2Libsys.ViewModels;
+    using System;
     using System.Collections.Generic;
 
     public interface INavigationService<TViewModel>
@@ -20,6 +21,12 @@
         /// </summary>
         /// <param name="vm">HostScreen</param>
         void Setup(IHostScreen vm);
+
+        /// <summary>
+        /// Look for viewmodel in navigationstack
+        /// </summary>
+        /// <param name="vm">Viewmodel Type</param>
+        IViewModel Locate(Type vm);
 
         /// <summary>
         /// Return viewmodel from stack or add new to stack
