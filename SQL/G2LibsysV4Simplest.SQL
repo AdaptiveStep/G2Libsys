@@ -148,6 +148,7 @@
 		Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
 		Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
 		ImageSRC VARCHAR(300),
+		Biography VARCHAR(5000)
 		);
 		GO
 
@@ -259,6 +260,7 @@
 		Category 		INT 		NOT NULL	DEFAULT 1 		FOREIGN KEY REFERENCES Categories(ID) ,
 		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
 
+		imagesrc VARCHAR(500), 
 		--Hardcover 		INT 					DEFAULT 1 		FOREIGN KEY REFERENCES Covers(ID) 		ON DELETE SET NULL,
 		--Genre 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Genres(ID) 		ON DELETE SET NULL,
 		-- META attributes -- Must be here due to the 1..1 -> 1..1 relationship. Cannot be in separate Table.
