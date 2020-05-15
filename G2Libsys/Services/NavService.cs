@@ -7,6 +7,7 @@ namespace G2Libsys.Services
 {
     /// <summary>
     /// Viewmodel navigation handler
+    /// TODO: Remove static and implement through dependancy injection
     /// </summary>
     public static class NavService
     {
@@ -18,7 +19,7 @@ namespace G2Libsys.Services
         /// <summary>
         /// Viewmodel navigation stack
         /// </summary>
-        private static List<BaseViewModel> ViewModels { get; set; }
+        private static IList<IViewModel> ViewModels { get; set; }
 
         /// <summary>
         /// NavService setup where vm is HostScreen
@@ -26,40 +27,30 @@ namespace G2Libsys.Services
         /// <param name="vm">HostScreen</param>
         public static void Setup(IHostScreen vm)
         {
+            // Set hostscreen
             HostScreen = vm;
-            if (ViewModels is null) ViewModels = new List<BaseViewModel>();
+
+            // Initialize stack
+            ViewModels ??= new List<IViewModel>();
         }
 
         /// <summary>
         /// Look for viewmodel in navigationstack
         /// </summary>
         /// <param name="vm">Viewmodel Type</param>
-        public static BaseViewModel Locate(this Type vm) => ViewModels != null ? 
-            ViewModels.Where(x => x.GetType().Name == vm.Name).FirstOrDefault() : null;
+        public static IViewModel Locate(this Type vm) => ViewModels?.Where(x => x.GetType().Name == vm.Name).FirstOrDefault();
 
         /// <summary>
-        /// Set Hostscreen active viewmodel and reset stack
+        /// Return viewmodel from stack or add new to stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        public static void GoToAndReset(BaseViewModel vm)
-        {
-            if (ViewModels is null) ViewModels = new List<BaseViewModel>();
-            ViewModels.Clear();
-            ViewModels.Add(vm);
-            HostScreen.CurrentViewModel = vm;
-        }
-
-        /// <summary>
-        /// Remove existing one from stack and add a new one
-        /// </summary>
-        /// <param name="vm">Viewmodel to navigate to</param>
-        public static BaseViewModel GoToNewInstance(BaseViewModel vm)
+        public static IViewModel GetViewModel(IViewModel vm)
         {
             var viewModel = vm.GetType().Locate();
 
             if (viewModel != null)
             {
-                ViewModels.Remove(viewModel);
+                return viewModel;
             }
 
             ViewModels.Add(vm);
@@ -68,16 +59,27 @@ namespace G2Libsys.Services
         }
 
         /// <summary>
-        /// Go to viewmodel in stack or add new to stack
+        /// Set main viewmodel and clear stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        public static BaseViewModel GoTo(BaseViewModel vm)
+        public static void GoToAndReset(IViewModel vm)
+        {
+            ViewModels.Clear();
+            ViewModels.Add(vm);
+            HostScreen.CurrentViewModel = vm;
+        }
+
+        /// <summary>
+        /// Return new instance of the VM and remove previous from stack
+        /// </summary>
+        /// <param name="vm">Viewmodel to navigate to</param>
+        public static IViewModel CreateNewInstance(IViewModel vm)
         {
             var viewModel = vm.GetType().Locate();
 
             if (viewModel != null)
             {
-                return viewModel;
+                ViewModels.Remove(viewModel);
             }
 
             ViewModels.Add(vm);

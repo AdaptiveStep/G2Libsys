@@ -76,4 +76,52 @@ Create proc usp_getall_users
         select * from users;
     end
     GO
+
+create proc usp_getall_category
+    as
+    begin
+        select * from Categories;
+    end
+    GO
+
+create proc usp_getall_libraryobjects
+    as
+    begin
+        select * from LibraryObjects;
+    end
+    GO
+
+Create proc usp_remove_libraryobjects
+    @ID int
+    as
+    begin
+		delete from libraryobjects where ID = @ID
+    end
+    GO
 -------------------------------------------------------------
+
+ALTER PROC [dbo].[usp_insert_libraryobjects]
+		@ID 			INT				= null,
+		@Title			VARCHAR(100)	,
+		@Description 	VARCHAR(500)	= null,
+		@ISBN			BIGINT			= null,
+		@Publisher		VARCHAR(100)	= null,
+		@PurchasePrice	FLOAT			= null,
+		@Pages			INT				= null,
+		@Dewey			INT				= null,
+		@Category		INT	      		,	
+		@Author			INT				= null,
+		
+		@Library		INT				= null,
+		@AddedBy		INT				,
+		@LastEdited		DATETIME		= null,
+		@DateAdded		DATETIME		= null,
+		@NewID			INT	OUTPUT
+		AS
+		BEGIN
+			INSERT INTO 
+			LibraryObjects(Title, [Description], ISBN, Publisher, PurchasePrice, Pages, Dewey, Category, Author, [Library], AddedBy, LastEdited, DateAdded) 
+			VALUES 
+			(@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Pages, @Dewey, @Category, @Author, @Library, @AddedBy, @LastEdited, @DateAdded);
+			SELECT @NewID = SCOPE_IDENTITY();
+		END

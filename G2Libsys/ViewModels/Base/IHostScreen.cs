@@ -1,18 +1,13 @@
-﻿using G2Libsys.Library;
-using G2Libsys.Models;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
+    using G2Libsys.Library;
+
     public interface IHostScreen
     {
-        public BaseViewModel CurrentViewModel { get; set; }
+        public IViewModel CurrentViewModel { get; set; }
+
+        public ISubViewModel SubViewModel { get; set; }
 
         public User CurrentUser { get; set; }
-
-        public ObservableCollection<UserMenuItem> MenuItems { get; set; }
     }
 }

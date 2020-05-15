@@ -1,0 +1,150 @@
+﻿<UserControl
+    x:Class="G2Libsys.Dialogs.LibraryObjectDialogView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:G2Libsys.Dialogs"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <Grid>
+        <materialDesign:Card
+            Width="280"
+            Height="270"
+            Margin="20"
+            Padding="0"
+            materialDesign:ShadowAssist.ShadowDepth="Depth5"
+            BorderBrush="Black"
+            BorderThickness="2"
+            FontSize="11"
+            UniformCornerRadius="18">
+            <materialDesign:Card.Background>
+                <SolidColorBrush Opacity="0.7" Color="{StaticResource MaterialDesignShadow}" />
+            </materialDesign:Card.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Border Background="Black" Opacity="0.2" />
+                <TextBlock
+                    Height="26"
+                    Margin="2"
+                    Padding="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="16"
+                    FontWeight="DemiBold"
+                    Foreground="{StaticResource accent_light}"
+                    Style="{StaticResource MaterialDesignBody2TextBlock}"
+                    Text="{Binding Title}" />
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Width="130">
+                        <Label Content="Title" />
+                        <TextBox
+                            Width="110"
+                            Margin="10,0,10,0"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="ISBN" />
+                        <TextBox
+                            Width="110"
+                            Margin="10,0,10,0"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.ISBN, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Publisher" />
+                        <TextBox
+                            Width="110"
+                            Margin="10,0,10,0"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.Publisher, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="DeweyDecimal" />
+                        <TextBox
+                            Width="110"
+                            Margin="10,0,10,0"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.DeweyDecimal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="2" Width="130">
+                        <Label Content="Kategori" />
+                        <ComboBox
+                            Width="110"
+                            Height="24"
+                            Margin="10,0,10,0"
+                            Padding="0"
+                            Background="WhiteSmoke"
+                            ItemsSource="{Binding Categories}"
+                            SelectedIndex="{Binding LibraryObject.Category}"
+                            SelectedItem="{Binding SelectedCategory}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" />
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <Label Content="Bildlänk" />
+                        <TextBox
+                            Width="110"
+                            Margin="10,0,10,0"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.ImageSource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Beskrivning" />
+                        <TextBox
+                            Width="110"
+                            MaxWidth="110"
+                            Margin="10,0,10,0"
+                            materialDesign:ScrollBarAssist.ThumbWidth="2"
+                            AcceptsReturn="true"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Inköpspris" />
+                        <TextBox
+                            Width="110"
+                            MaxWidth="110"
+                            Margin="10,0,10,0"
+                            materialDesign:ScrollBarAssist.ThumbWidth="2"
+                            AcceptsReturn="true"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.PurchasePrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    </StackPanel>
+
+                    <Button
+                        Grid.Row="1"
+                        Height="28"
+                        Margin="0,0,8,0"
+                        Padding="0"
+                        Command="{Binding SaveCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                        Content="Spara"
+                        FontSize="18"
+                        Opacity="0.8"
+                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                    <Button
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Height="28"
+                        Margin="8,0,0,0"
+                        Padding="0"
+                        Command="{Binding CancelCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+                        Content="Avbryt"
+                        FontSize="18"
+                        Opacity="0.8"
+                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                </Grid>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

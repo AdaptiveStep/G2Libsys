@@ -1,11 +1,4 @@
-﻿using G2Libsys.Services;
-using G2Libsys.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using G2Libsys.ViewModels;
 using System.Windows;
 
 namespace G2Libsys
@@ -22,9 +15,7 @@ namespace G2Libsys
         {
             base.OnStartup(e);
 
-            MainWindow app = new MainWindow();
-            NavService.Setup(new MainWindowViewModel());
-            app.DataContext = NavService.HostScreen;
+            var app = new MainWindow { DataContext = new MainWindowViewModel() };
             app.Show();
         }
     }

@@ -1,31 +1,31 @@
-﻿using G2Libsys.Commands;
-using G2Libsys.Data.Repository;
-using G2Libsys.Library;
-using G2Libsys.Models;
-using G2Libsys.Services;
-using G2Libsys.Views;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
+    #region Namespaces
+    using G2Libsys.Commands;
+    using G2Libsys.Data.Repository;
+    using G2Libsys.Library;
+    using G2Libsys.Models;
+    using G2Libsys.Services;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Input;
+    #endregion
+
+    /// <summary>
+    /// Main ViewModel
+    /// </summary>
     public class MainWindowViewModel : BaseViewModel, IHostScreen
     {
         #region Private Fields
-
         private readonly IRepository _repo;
         private User currentUser;
-        private UserMenuItem menuItem;
-        private ObservableCollection<UserMenuItem> menuItems;
-        private BaseViewModel currentViewModel;
-        private bool developerMode = false;
-
+        private IViewModel currentViewModel;
+        private ISubViewModel subViewModel;
+        private ICommand goToFrontPage;
+        private ICommand logOutCommand;
+        private ICommand cancelCommand;
         #endregion
 
         #region Public Properties
@@ -33,13 +33,22 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Viewmodels for developer menu
         /// </summary>
-        public ObservableCollection<UserMenuItem> ViewModelList { get; set; }
+        public List<UserMenuItem> ViewModelList { get; set; }
 
         /// <summary>
         /// Quick navigation for devmenu
         /// </summary>
-        public UserMenuItem SelectedDevItem { set => NavigateToVM.Execute(value.VMType); }
+        public UserMenuItem SelectedDevItem {
+            set
+            {
+                value.Action.Execute(null);
+                SubViewModel = null;
+            }
+        }
 
+        /// <summary>
+        /// Active user
+        /// </summary>
         public User CurrentUser
         {
             get => currentUser;
@@ -49,42 +58,40 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(CurrentUser));
                 OnPropertyChanged(nameof(CanLogIn));
                 OnPropertyChanged(nameof(IsLoggedIn));
+
+                // Set user viewmodel access
+                if (value != null) dispatcher.Invoke(SetUserAccess);
             }
         }
 
         /// <summary>
-        /// 
+        /// User navigation access
         /// </summary>
-        public UserMenuItem MenuItem
-        {
-            get => menuItem;
-            set
-            {
-                menuItem = value;
-                OnPropertyChanged(nameof(MenuItem));
-            }
-        }
-
-        public ObservableCollection<UserMenuItem> MenuItems
-        {
-            get => menuItems;
-            set
-            {
-                menuItems = value;
-                OnPropertyChanged(nameof(MenuItems));
-            }
-        }
+        public ObservableCollection<UserMenuItem> MenuItems { get; private set; }
 
         /// <summary>
         /// Sets the active viewmodel
         /// </summary>
-        public BaseViewModel CurrentViewModel
+        public IViewModel CurrentViewModel
         {
             get => currentViewModel;
             set
             {
                 currentViewModel = value;
                 OnPropertyChanged(nameof(CurrentViewModel));
+            }
+        }
+
+        /// <summary>
+        /// Sets the active subviewmodel
+        /// </summary>
+        public ISubViewModel SubViewModel
+        {
+            get => subViewModel;
+            set
+            {
+                subViewModel = value;
+                OnPropertyChanged(nameof(SubViewModel));
             }
         }
 
@@ -100,15 +107,10 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public bool IsLoggedIn => CurrentUser == null ? false : CurrentUser.LoggedIn;
 
-        public bool DeveloperMode
-        {
-            get => developerMode;
-            set
-            {
-                developerMode = value;
-                OnPropertyChanged(nameof(DeveloperMode));
-            }
-        }
+        /// <summary>
+        /// Check if in developermode
+        /// </summary>
+        public bool DeveloperMode { get; private set; }
 
         #endregion
 
@@ -119,18 +121,30 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Call logout method
         /// </summary>
-        public ICommand LogOutCommand { get; private set; }
+        public ICommand LogOutCommand => logOutCommand ??= new RelayCommand(_ => LogOut());
 
-        public ICommand GoToFrontPage => new RelayCommand(_ =>
+        /// <summary>
+        /// Navigate to frontpage
+        /// </summary>
+        public ICommand GoToFrontPage => goToFrontPage ??= new RelayCommand(_ =>
         {
+            SubViewModel = null;
+
             if (!(CurrentViewModel is LibraryMainViewModel))
-                NavService.GoToAndReset(new LibraryMainViewModel());
+            {
+                NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
+            }
             else
             {
                 var viewModel = (LibraryMainViewModel)CurrentViewModel;
                 viewModel.FrontPage = true;
             }
         });
+
+        /// <summary>
+        /// Reset Subviewmodel
+        /// </summary>
+        public ICommand CancelCommand => cancelCommand ??= new RelayCommand(_ => SubViewModel = null);
 
         #endregion
 
@@ -141,6 +155,8 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public MainWindowViewModel()
         {
+            if (base.IsInDesignMode) return;
+
             _repo = new GeneralRepository();
 
             Initialize();
@@ -148,29 +164,98 @@ namespace G2Libsys.ViewModels
 
         #endregion
 
-        public void Initialize()
+        #region Initialization
+        /// <summary>
+        /// Initial setup
+        /// </summary>
+        private void Initialize()
         {
+            // Initialize navservice and set hostscreen to this MainWindowViewModel
+            NavService.Setup(this);
+
             // Enable dev menu
             DeveloperMode = true;
-            SetDevViewModels();
+            if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
-            CurrentViewModel = new LibraryMainViewModel();
+            CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
 
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();
-
-            // Set logout command
-            LogOutCommand = new RelayCommand(x => LogOut());
 
             // Aplication closing event handler
             Application.Current.MainWindow.Closing
                 += new CancelEventHandler((o, e) =>
                 {
-                    LogOut();
+                    dispatcher.Invoke(LogOut);
                 });
         }
 
+        /// <summary>
+        /// Setup user navigation access
+        /// </summary>
+        private void SetUserAccess()
+        {
+            MenuItems ??= new ObservableCollection<UserMenuItem>();
+
+            if (MenuItems.Count > 0)
+            {
+                MenuItems.Clear();
+            }
+
+            // Create UserMenuItems
+            MenuItems.Add(new UserMenuItem(new UserProfileViewModel(), "Profil"));
+            MenuItems.Add(new UserMenuItem(new UserReservationsViewModel(), "Mina lån"));
+
+            (CurrentUser.UserType switch
+            {
+                1 => new List<UserMenuItem>() // Admin
+                {
+                    new UserMenuItem(new AdminViewModel(), "Användare"),
+                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Produkter"),
+                },
+                2 => new List<UserMenuItem>() // Librarian
+                {
+                    new UserMenuItem(new LibrarianViewModel(), "Användare"),
+                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Produkter"),
+                },
+                3 => new List<UserMenuItem>() // Visitor
+                {
+                    // Implementera eventuella unika viewmodels för endast användare
+                },
+                _ => new List<UserMenuItem>() // Other
+                {
+                    new UserMenuItem(new TestVM(), "Saknas")
+                }
+            }).ForEach(u => MenuItems.Add(u));
+
+            MenuItems.Add(new UserMenuItem(new FrontPageViewModel(), "Logga ut", LogOutCommand));
+        }
+
+        /// <summary>
+        /// Set viewmodels for developer menu
+        /// </summary>
+        private void DevelopSetup()
+        {
+            // Fill with needed viewmodels
+            ViewModelList = new List<UserMenuItem>
+            {
+                new UserMenuItem(new AdminViewModel()),
+                new UserMenuItem(new LibraryObjectInfoViewModel(), "ObjectInfo"),
+                new UserMenuItem(new LibraryObjectAdministrationViewModel(), "ObjectsAdmin"),
+                new UserMenuItem(new UserProfileViewModel(), "Profile"),
+                new UserMenuItem(new UserReservationsViewModel(), "UserLoans"),
+                new UserMenuItem(new LibrarianViewModel(), "UserManagement")
+            };
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Execution logic for user logout
+        /// </summary>
         private void LogOut()
         {
             if (CurrentUser is null) return;
@@ -181,21 +266,6 @@ namespace G2Libsys.ViewModels
             NavigateToVM.Execute(typeof(LibraryMainViewModel));
         }
 
-        /// <summary>
-        /// Set viewmodels for developer menu
-        /// </summary>
-        private void SetDevViewModels()
-        {
-            // Fill with needed viewmodels
-            ViewModelList = new ObservableCollection<UserMenuItem>
-            {
-                new UserMenuItem(new AdminViewModel()),
-                new UserMenuItem(new LibraryObjectInfoViewModel(), "ObjectInfo"),
-                new UserMenuItem(new LibraryObjectAdministrationViewModel(), "ObjectsAdmin"),
-                new UserMenuItem(new UserProfileViewModel(), "Profile"),
-                new UserMenuItem(new UserReservationsViewModel(), "UserLoans"),
-                new UserMenuItem(new LibrarianViewModel(), "UserManagement")
-            };
-        }
+        #endregion
     }
 }
