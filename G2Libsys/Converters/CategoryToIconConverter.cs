@@ -7,15 +7,15 @@ namespace G2Libsys.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((int)value switch
+            return (int)value switch
             {
+                0 => "EventWeek",
                 1 => "Bookshelf",
                 2 => "Books",
                 3 => "Headphones",
                 4 => "LocalMovies",
-                5 => "EventWeek",
-                _ => value.ToString()
-            });
+                _ => "RomanNumeral" + value
+            };
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

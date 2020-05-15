@@ -29,7 +29,7 @@
         /// </summary>
         public async Task<User> VerifyLoginAsync(string email, string password)
         {
-            using IDbConnection _db = base.GetConnection();
+            using IDbConnection _db = base.Connection;
 
             // Fetch user with correct username and password
             return await _db.QueryFirstOrDefaultAsync<User>(
@@ -45,7 +45,7 @@
         /// <param name="password"></param>
         public async Task<bool> VerifyEmailAsync(string email)
         {
-            using IDbConnection _db = base.GetConnection();
+            using IDbConnection _db = base.Connection;
 
             // Return true if email exist in db
             return await _db.ExecuteScalarAsync<bool>(

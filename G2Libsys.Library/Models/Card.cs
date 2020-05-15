@@ -1,7 +1,7 @@
-using System;
-
 namespace G2Libsys.Library
 {
+    using System;
+
     public class Card
     {
         public int ID { get; set; }
