@@ -167,14 +167,14 @@
                 commandType: CommandType.StoredProcedure);
         }
 
-        public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(string partialword)
+        public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(string search)
         {
             using IDbConnection _db = Connection;
 
             // Return all items matching search
             return await _db.QueryAsync<T>(
                         sql: GetProcedureName<T>("simplesearch"),
-                      param: new { partialword },
+                      param: new { search },
                 commandType: CommandType.StoredProcedure);
         }
 
