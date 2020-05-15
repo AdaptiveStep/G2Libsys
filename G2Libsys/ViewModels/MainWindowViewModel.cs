@@ -159,7 +159,7 @@ namespace G2Libsys.ViewModels
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
-            CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
+            CurrentViewModel = NavService.GetViewModel(new UserAdministrationViewModel());
 
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();

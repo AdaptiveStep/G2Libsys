@@ -11,8 +11,108 @@
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    MinWidth="800"
+    MinHeight="450"
     x:TypeArguments="vm:UserAdministrationViewModel"
+    Background="White"
+    FontSize="16"
     mc:Ignorable="d">
 
-    <Grid />
+    <Grid Background="#FF750489">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"  Background="White" CornerRadius="15" Height="400" Width="350" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+            <StackPanel Height="380" Width="320" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Border Width="70" Height="70" CornerRadius="50" Background="#FFA64B4B"/>
+                <Border>
+                    <TextBlock Text="Admin" FontSize="16" Margin="10" FontFamily="Segoe UI" FontWeight="Normal" HorizontalAlignment="Center">
+
+                    </TextBlock>
+                </Border>
+                <Border Width="295"/>
+                <Border Width="104"  HorizontalAlignment="Right"/>
+                <Border Height="170" Width="300" VerticalAlignment="Bottom" Margin="10" >
+                    <GroupBox Header="Aktiva lån"/>
+                </Border>
+
+                <StackPanel Orientation="Horizontal"  Height="30" Margin="10 0 0 0">
+                    <TextBlock Text="Kort ID:" Width="55"/>
+                    <TextBlock Text="" Width="100"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Width="296" Margin="10">
+                    <Button
+                        Margin="0 0 40 0"
+                        
+                      Style="{StaticResource MaterialDesignRaisedButton}"
+                        Content="Spärra kort"
+                         ToolTip="Resource name: MaterialDesignRaisedButton" Background="#FF009688" Width="130" Height="30"/>
+                    <Button
+                      Style="{StaticResource MaterialDesignRaisedButton}"
+                        Content="Aktivera kort"
+                         ToolTip="Resource name: MaterialDesignRaisedButton" Background="#FF009688" Width="130" Height="30"/>
+
+                </StackPanel>
+
+
+
+            </StackPanel>
+        </Border>
+
+
+
+
+        <Border Grid.Column="1"  Background="White" CornerRadius="15" Height="400" Width="350" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left">
+                <Border/>
+                <StackPanel Orientation="Horizontal" Margin="0 30 10 0">
+                    <PasswordBox 
+                        Margin="0 0 46 0"
+                        materialDesign:HintAssist.Hint="Lösenord"
+                        materialDesign:TextFieldAssist.HasClearButton="True" Width="140"
+                        />
+                    <PasswordBox 
+                        materialDesign:HintAssist.Hint="Nytt lösenord"
+                        materialDesign:TextFieldAssist.HasClearButton="True" Width="140"
+                         />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0 30 10 0">
+                    <TextBox
+                        Margin="0 0 66 0"
+                    materialDesign:HintAssist.Hint="Användarnamn" Width="120">
+                    </TextBox>
+                    <TextBox
+                    materialDesign:HintAssist.Hint="Nytt Användarnamn" Width="120"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0 30 10 0">
+                    <TextBox
+                        Margin="0 0 68 0"
+                    materialDesign:HintAssist.Hint="E-post" Width="120">
+                    </TextBox>
+                    <TextBox
+                    materialDesign:HintAssist.Hint="Ny E-post" Width="120"/>
+                </StackPanel>
+
+                <StackPanel Margin="0 30 0 0">
+                    <Button  
+                        HorizontalAlignment="Left"
+                      Style="{StaticResource MaterialDesignRaisedButton}"
+                        Content="Bekräfta"
+                         ToolTip="Resource name: MaterialDesignRaisedButton" Background="#FF009688" Width="130" Height="30"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal"  Height="30" Margin="0 10 0 0" >
+                    <TextBlock Text="Kort ID:" Width="55"/>
+                    <TextBlock Text="" Width="100"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
 </local:BasePage>
