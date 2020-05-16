@@ -205,7 +205,6 @@
 
             // Create UserMenuItems
             MenuItems.Add(new UserMenuItem(new UserProfileViewModel(), "Profil"));
-            MenuItems.Add(new UserMenuItem(new UserReservationsViewModel(), "Mina lån"));
 
             (CurrentUser.UserType switch
             {
