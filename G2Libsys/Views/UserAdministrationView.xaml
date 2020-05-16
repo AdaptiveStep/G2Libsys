@@ -28,7 +28,14 @@
         <Border Grid.Column="0"  Background="White" CornerRadius="15" Height="400" Width="350" VerticalAlignment="Center" HorizontalAlignment="Center">
 
             <StackPanel Height="380" Width="320" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center">
-                <Border Width="70" Height="70" CornerRadius="50" Background="#FFA64B4B"/>
+                <StackPanel Orientation="Horizontal">
+                    <Button Margin="0 0 93 0">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/Views/nedladdning.png"/>
+                        </Button.Background>
+                    </Button>
+                    <Border Width="70" Height="70" CornerRadius="50" Background="#FFA64B4B"/>
+                </StackPanel>
                 <Border>
                     <TextBlock Text="Admin" FontSize="16" Margin="10" FontFamily="Segoe UI" FontWeight="Normal" HorizontalAlignment="Center">
 
@@ -44,7 +51,7 @@
                     <TextBlock Text="Kort ID:" Width="55"/>
                     <TextBlock Text="" Width="100"/>
                 </StackPanel>
-                
+
                 <StackPanel Orientation="Horizontal" Width="296" Margin="10">
                     <Button
                         Margin="0 0 40 0"

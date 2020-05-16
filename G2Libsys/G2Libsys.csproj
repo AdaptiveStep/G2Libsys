@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="Resources\Images\LIBSYS.png" />
+    <None Remove="Views\back-icon-isolated-on-white-background-back-icon-vector-26555694.jpg" />
+    <None Remove="Views\nedladdning.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +26,8 @@
 
   <ItemGroup>
     <Resource Include="Resources\Images\LIBSYS.png" />
+    <Resource Include="Views\back-icon-isolated-on-white-background-back-icon-vector-26555694.jpg" />
+    <Resource Include="Views\nedladdning.png" />
   </ItemGroup>
 
   <ItemGroup>
