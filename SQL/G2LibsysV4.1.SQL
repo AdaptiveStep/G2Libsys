@@ -122,7 +122,7 @@
 	DROP TABLE IF EXISTS dbo.Users
 	CREATE TABLE Users(
 		ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  		--Candidatekey
-		LoanID AS (ID+100) * 2867585817934888 % 8687931395129801, 			--Calculated with (mod p) . Inverse is 7654321234567890 . Always unique due to being Finite Field.
+		--Usernumber AS (ID+100) * 2867585817934888 % 8687931395129801, 			--Calculated with (mod p) . Inverse is 7654321234567890 . Always unique due to being Finite Field.
 
 		[Email] VARCHAR(300) 	   	NOT NULL UNIQUE,
 		[Password] VARCHAR(20) 		NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
@@ -508,6 +508,44 @@
 			WHERE ID=@ID; 
 		END
 		GO
+
+
+	CREATE PROC usp_getloanobjects_users(@ID INT)
+	AS
+    BEGIN
+
+        SELECT *
+        FROM LibraryObjects
+        WHERE ID IN
+        (
+            SELECT ObjectID
+            FROM LOANS
+            WHERE  Loans.CardID IN
+            (
+                SELECT Cards.ID
+                FROM Cards
+                WHERE Cards.Owner = @ID
+            )
+        )
+    END
+    GO
+
+    Create PROC usp_getloans_users(
+    @ID INT)
+    AS
+    BEGIN
+        SELECt *
+        FROM Loans
+        WHERE CardID IN 
+                ( 
+                SELECT CardID
+                FROM Cards as C
+                WHERE Loans.CardID = C.ID and c.ID = @ID
+                )
+
+    END
+    GO
+
 ------------------------------------------------------------------------
 ---------------Cards ---------------------------------------------------
 	--Delete the card for user
@@ -694,25 +732,57 @@
 
 	-------- BELOW IS STILL UNDER CONSTRUCITON:
 	--Dynamic search of objects - multiple keywords (i.e conjunctive filter search)
-	CREATE PROC usp_filtersearch_LibraryObjects
-		@PartialTitle VARCHAR(20) = '',
-		@PartialDescription VARCHAR(20) = '',
-		@PartialPublisher VARCHAR(20) = ''
-		--@PartialISBN INT = 0, 					-----TODO; ADD MORE SEARCH OPTIONS
-		--@DeweyDecimal INT = null,
-		--@PriceRange INT = null,
-		--@Category INT = null
 
-		AS
-		BEGIN
-			SELECT *
-			FROM LibraryObjects
-			WHERE 
-				Title 			LIKE '%' 	+ @PartialTitle 		+ '%' AND
-				[Description] 	LIKE '%' 	+ @PartialDescription 	+ '%' AND
-				[Publisher] 	LIKE '%' 	+ @PartialPublisher 	+ '%';
-		END
-		GO
+IF OBJECT_ID('smart_filter_Search', 'P') IS NOT NULL
+    DROP PROCEDURE smart_filter_Search;
+    GO
+
+CREATE PROC smart_filter_Search(
+    @Title          VARCHAR(MAX) = NULL , 
+    @Description    VARCHAR(MAX) = NULL, 
+    @ISBN           INT          = NULL, 
+    @Publisher      VARCHAR(MAX) = NULL, 
+    @Dewey          INT          = NULL, 
+    @Category       INT          = NULL, 
+    @Author         INT			 = NULL
+	)
+    AS
+    BEGIN
+    DECLARE @tmpsql VARCHAR(MAX) = ' 1=1 '
+    
+    IF @Title is NOT NULL
+        SET @tmpsql = @tmpsql   +  ' AND Title          LIKE + ''%'   + @Title         + '%'''
+    IF @Description is NOT NULL
+        SET @tmpsql = @tmpsql   +  ' AND [Description]  LIKE + ''%'   + @Description   + '%''' 
+    
+    IF @ISBN is NOT NULL
+        SET @tmpsql = @tmpsql   + ' AND ISBN              =  + '    + @ISBN
+    IF @Publisher is NOT NULL
+        SET @tmpsql = @tmpsql   + ' AND Publisher       LIKE + ''%'   + @Publisher     + '%'''       
+    
+    IF @Dewey is NOT NULL
+        SET @tmpsql = @tmpsql   + ' AND Dewey             =  + '    + @Dewey     
+    IF @Category is NOT NULL
+        SET @tmpsql =  @tmpsql  + ' AND Category        LIKE + ''%'   + @Category      + '%'''        
+    
+    IF @Author is NOT NULL
+        SET @tmpsql =  @tmpsql  + ' AND Author          LIKE + ''%'   + @Author        + '%'''         
+  
+
+
+    DECLARE  @tmpsql2 VARCHAR(MAX);
+    SET @tmpsql2 = 'SELECT * FROM LibraryObjects WHERE' + @tmpsql;
+
+    EXEC(@tmpsql2 )
+
+
+
+	END
+	
+GO
+
+
+
 
 	--TODO , Search with partial ISBN too !!
 	--Dynamic search of objects - only one keyword
