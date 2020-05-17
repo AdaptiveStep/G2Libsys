@@ -1,6 +1,4 @@
-﻿using G2Libsys.Services;
-using G2Libsys.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
+﻿using G2Libsys.ViewModels;
 using System.Windows;
 
 namespace G2Libsys
@@ -17,14 +15,8 @@ namespace G2Libsys
         {
             base.OnStartup(e);
 
-            var serviceProvider = new ServiceCollection();
-
-            serviceProvider.AddSingleton<INavigationService<IViewModel>, NavigationService>();
-
-            serviceProvider.BuildServiceProvider();
-
-
-
+            // Initiate the inversion of control for serviceprovider
+            IoC.SetUp();
 
             var app = new MainWindow { DataContext = new MainWindowViewModel() };
             app.Show();

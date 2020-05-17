@@ -9,6 +9,7 @@
     using System.Windows.Threading;
     using G2Libsys.Commands;
     using G2Libsys.Services;
+    using Microsoft.Extensions.DependencyInjection;
     #endregion
 
     public abstract class BaseViewModel : BaseNotificationClass
@@ -37,6 +38,8 @@
         public ICommand OpenSubVM { get; protected set; }
         #endregion
 
+        protected INavigationService navigationService;
+
         #region Constructor
         /// <summary>
         /// Default constructor
@@ -44,6 +47,8 @@
         protected BaseViewModel()
         {
             if (IsInDesignMode) return;
+
+            navigationService = IoC.ServiceProvider.GetService<INavigationService>();
 
             // Set dispatcher
             dispatcher = Application.Current.Dispatcher;
@@ -57,9 +62,9 @@
                     var viewModel = (IViewModel)Activator.CreateInstance(vm);
 
                     // Set CurrentViewModel
-                    NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(viewModel);
+                    navigationService.HostScreen.CurrentViewModel = navigationService.GetViewModel(viewModel);
 
-                    NavService.HostScreen.SubViewModel = null;
+                    navigationService.HostScreen.SubViewModel = null;
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });
@@ -73,7 +78,7 @@
                     var viewModel = (ISubViewModel)Activator.CreateInstance(vm);
 
                     // Set SubViewModel
-                    NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.GetViewModel(viewModel);
+                    navigationService.HostScreen.SubViewModel = (ISubViewModel)navigationService.GetViewModel(viewModel);
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });

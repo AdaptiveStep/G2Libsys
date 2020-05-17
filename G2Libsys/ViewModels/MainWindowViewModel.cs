@@ -6,6 +6,7 @@
     using G2Libsys.Library;
     using G2Libsys.Models;
     using G2Libsys.Services;
+    using Microsoft.Extensions.DependencyInjection;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
@@ -132,7 +133,7 @@
 
             if (!(CurrentViewModel is LibraryMainViewModel))
             {
-                NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
+                navigationService.HostScreen.CurrentViewModel = navigationService.GetViewModel(new LibraryMainViewModel());
             }
             else
             {
@@ -171,14 +172,14 @@
         private void Initialize()
         {
             // Initialize navservice and set hostscreen to this MainWindowViewModel
-            NavService.Setup(this);
+            navigationService.Setup(this);
 
             // Enable dev menu
             DeveloperMode = true;
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
-            CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
+            CurrentViewModel = navigationService.GetViewModel(new LibraryMainViewModel());
 
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();

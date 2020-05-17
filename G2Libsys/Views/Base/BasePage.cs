@@ -1,9 +1,10 @@
-﻿using G2Libsys.Services;
-using G2Libsys.ViewModels;
-using System.Windows.Controls;
-
-namespace G2Libsys.Views
+﻿namespace G2Libsys.Views
 {
+    using G2Libsys.Services;
+    using G2Libsys.ViewModels;
+    using System.Windows.Controls;
+    using Microsoft.Extensions.DependencyInjection;
+
     public class BasePage<VM> : UserControl where VM : IViewModel, new()
     {
         private object viewModel;
@@ -22,9 +23,10 @@ namespace G2Libsys.Views
 
         public BasePage()
         {
-            var navService = new NavigationService();
+            var navigationService = IoC.ServiceProvider.GetService<INavigationService>();
+
             var b = typeof(VM);
-            ViewModel = navService.Locate(b) ?? new VM();
+            ViewModel = navigationService.Locate(b) ?? new VM();
             this.DataContext = ViewModel;
         }
     }

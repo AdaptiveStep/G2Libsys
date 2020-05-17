@@ -13,7 +13,7 @@
     /// <summary>
     /// Viewmodel navigation handler
     /// </summary>
-    public class NavigationService : INavigationService<IViewModel>
+    public class NavigationService : INavigationService
     {
         /// <summary>
         /// Main viewmodel

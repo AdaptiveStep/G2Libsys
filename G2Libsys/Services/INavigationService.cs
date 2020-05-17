@@ -4,7 +4,7 @@
     using System;
     using System.Collections.Generic;
 
-    public interface INavigationService<TViewModel>
+    public interface INavigationService
     {
         /// <summary>
         /// Main viewmodel
@@ -14,7 +14,7 @@
         /// <summary>
         /// Viewmodel navigation stack
         /// </summary>
-        IList<TViewModel> ViewModels { get; }
+        IList<IViewModel> ViewModels { get; }
 
         /// <summary>
         /// NavService setup where vm is HostScreen
@@ -32,18 +32,18 @@
         /// Return viewmodel from stack or add new to stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        TViewModel GetViewModel(TViewModel vm);
+        IViewModel GetViewModel(IViewModel vm);
 
         /// <summary>
         /// Set main viewmodel and clear stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        void GoToAndReset(TViewModel vm);
+        void GoToAndReset(IViewModel vm);
 
         /// <summary>
         /// Return new instance of the VM and remove previous from stack
         /// </summary>
         /// <param name="vm">Viewmodel to navigate to</param>
-        TViewModel CreateNewInstance(TViewModel vm);
+        IViewModel CreateNewInstance(IViewModel vm);
     }
 }
