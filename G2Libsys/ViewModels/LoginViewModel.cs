@@ -17,7 +17,6 @@
     {
         #region Private Fields
         private readonly IUserRepository _repo;
-        private readonly IDialogService _dialog;
         private string username;
         private string password;
         private string emailValidationMessage;
@@ -121,8 +120,6 @@
         public LoginViewModel()
         {
             if (base.IsInDesignMode) return;
-
-            _dialog = new DialogService();
 
             _repo = new UserRepository();
 

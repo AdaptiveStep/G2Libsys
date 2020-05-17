@@ -16,6 +16,16 @@
     {
         #region Fields
         /// <summary>
+        /// Navigation service
+        /// </summary>
+        protected readonly INavigationService _navigationService;
+
+        /// <summary>
+        /// Dialog service
+        /// </summary>
+        protected readonly IDialogService _dialog;
+
+        /// <summary>
         /// Provides services for managing the queue of work on the current thread
         /// </summary>
         protected Dispatcher dispatcher;
@@ -38,7 +48,6 @@
         public ICommand OpenSubVM { get; protected set; }
         #endregion
 
-        protected INavigationService _navigationService;
 
         #region Constructor
         /// <summary>
@@ -49,6 +58,8 @@
             if (IsInDesignMode) return;
 
             _navigationService = IoC.ServiceProvider.GetService<INavigationService>();
+            _dialog            = IoC.ServiceProvider.GetService<IDialogService>()
+                               ?? new DialogService();
 
             // Set dispatcher
             dispatcher = Application.Current.Dispatcher;

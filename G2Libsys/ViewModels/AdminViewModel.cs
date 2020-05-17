@@ -15,7 +15,6 @@
         #region Fields
         private readonly IUserRepository _userRepo;
         private readonly IRepository _repo;
-        private readonly IDialogService _dialog;
         private User newUser;
         private User selectedUser;
         private ObservableCollection<User> users;
@@ -121,7 +120,7 @@
         public ICommand GoToUser => goToUser ??=
             new RelayCommand(_ =>
             {
-                NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.CreateNewInstance(new UserAdministrationViewModel(SelectedUser));
+                _navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new UserAdministrationViewModel(SelectedUser));
             }, _ => SelectedUser != null);
 
         #endregion
@@ -137,7 +136,6 @@
 
             _userRepo = new UserRepository();
             _repo = new GeneralRepository();
-            _dialog = new DialogService();
 
             GetUserTypes();
             GetUsers();

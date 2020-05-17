@@ -30,7 +30,7 @@
         }
 
         /// <summary>
-        /// Setup service collection
+        /// Create service collection
         /// </summary>
         private static IServiceCollection Services()
         {

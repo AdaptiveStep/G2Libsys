@@ -11,7 +11,6 @@
     public class UserAdministrationViewModel : BaseViewModel, ISubViewModel
     {
         #region Fields
-        private readonly IDialogService _dialog;
         private User activeUser;
 
         #endregion
@@ -38,7 +37,7 @@
         /// <summary>
         /// Close SubViewModel
         /// </summary>
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         #endregion
 
@@ -49,8 +48,6 @@
         public UserAdministrationViewModel(User user)
         {
             this.ActiveUser = user;
-
-            _dialog = new DialogService();
 
             _dialog.Alert("Test", ActiveUser.Firstname);
         }

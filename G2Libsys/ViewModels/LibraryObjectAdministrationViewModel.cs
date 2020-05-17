@@ -14,6 +14,7 @@
     using G2Libsys.Dialogs;
     using G2Libsys.Library.Extensions;
     using System.Diagnostics;
+    using Microsoft.Extensions.DependencyInjection;
     #endregion
 
     /// <summary>
@@ -23,7 +24,6 @@
     {
         #region Fields
         private readonly IRepository _repo;
-        private readonly IDialogService _dialog;
         private LibraryObjectDialogViewModel dialogViewModel;
         private ICommand search;
         private ICommand createItem;
@@ -42,7 +42,7 @@
 
         public Category SelectedCategory
         {
-            get => selectedCategory;
+            get => selectedCategory ?? Categories.First();
             set
             {
                 if (selectedCategory != value)
@@ -138,7 +138,6 @@
             if (base.IsInDesignMode) return;
 
             _repo = new GeneralRepository();
-            _dialog = new DialogService();
 
             dispatcher.InvokeAsync(Initialize);
         }
@@ -167,6 +166,11 @@
 
         private async Task GetLibraryObjects()
         {
+            if (Categories == null)
+            {
+                return;
+            }
+
             var objects = new List<LibraryObject>();
 
             (SelectedCategory.ID switch
