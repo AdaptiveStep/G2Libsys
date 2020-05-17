@@ -91,7 +91,7 @@
 
             LibraryObject.LastEdited = DateTime.Now;
             LibraryObject.Category = SelectedCategory.ID;
-            LibraryObject.AddedBy = NavService.HostScreen.CurrentUser?.ID ?? 1;
+            LibraryObject.AddedBy = _navigationService.HostScreen.CurrentUser?.ID ?? 1;
 
             base.DialogResult = LibraryObject;
             base.OKCommand.Execute(param);

@@ -15,6 +15,9 @@
     /// </summary>
     public static class IoC
     {
+        /// <summary>
+        /// Access services collection
+        /// </summary>
         public static ServiceProvider ServiceProvider { get; private set; }
 
         /// <summary>

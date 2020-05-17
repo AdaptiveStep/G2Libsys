@@ -27,6 +27,7 @@
 
         /// <summary>
         /// NavService setup where vm is HostScreen
+        /// NOTE: Must be initiated in the hostscreen constructor
         /// </summary>
         /// <param name="vm">HostScreen</param>
         public void Setup(IHostScreen vm)
@@ -50,7 +51,7 @@
         /// <param name="vm">Viewmodel to navigate to</param>
         public IViewModel GetViewModel(IViewModel vm)
         {
-            var viewModel = vm.GetType().Locate();
+            var viewModel = Locate(vm.GetType());
 
             if (viewModel != null)
             {
@@ -79,7 +80,7 @@
         /// <param name="vm">Viewmodel to navigate to</param>
         public IViewModel CreateNewInstance(IViewModel vm)
         {
-            var viewModel = vm.GetType().Locate();
+            var viewModel = Locate(vm.GetType());
 
             if (viewModel != null)
             {

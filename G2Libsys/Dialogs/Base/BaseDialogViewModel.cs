@@ -1,13 +1,17 @@
 ﻿using G2Libsys.Commands;
 using G2Libsys.Events;
+using G2Libsys.Services;
 using G2Libsys.ViewModels;
 using System;
 using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace G2Libsys.Dialogs
 {
     public class BaseDialogViewModel<T> : BaseNotificationClass, IDialogRequestClose
     {
+        protected readonly INavigationService _navigationService;
+
         public string Title { get; set; }
         public string Message { get; set; }
         public T DialogResult { get; set; }
@@ -21,6 +25,8 @@ namespace G2Libsys.Dialogs
 
         public BaseDialogViewModel(string title = null, string message = null)
         {
+            _navigationService = IoC.ServiceProvider.GetService<INavigationService>();
+
             Title = title;
             Message = message;
         }

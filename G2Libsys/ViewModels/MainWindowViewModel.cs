@@ -133,7 +133,7 @@
 
             if (!(CurrentViewModel is LibraryMainViewModel))
             {
-                navigationService.HostScreen.CurrentViewModel = navigationService.GetViewModel(new LibraryMainViewModel());
+                _navigationService.HostScreen.CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
             }
             else
             {
@@ -172,14 +172,14 @@
         private void Initialize()
         {
             // Initialize navservice and set hostscreen to this MainWindowViewModel
-            navigationService.Setup(this);
+            _navigationService.Setup(this);
 
             // Enable dev menu
             DeveloperMode = true;
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
-            CurrentViewModel = navigationService.GetViewModel(new LibraryMainViewModel());
+            CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
 
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();

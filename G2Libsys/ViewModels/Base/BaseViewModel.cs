@@ -38,7 +38,7 @@
         public ICommand OpenSubVM { get; protected set; }
         #endregion
 
-        protected INavigationService navigationService;
+        protected INavigationService _navigationService;
 
         #region Constructor
         /// <summary>
@@ -48,7 +48,7 @@
         {
             if (IsInDesignMode) return;
 
-            navigationService = IoC.ServiceProvider.GetService<INavigationService>();
+            _navigationService = IoC.ServiceProvider.GetService<INavigationService>();
 
             // Set dispatcher
             dispatcher = Application.Current.Dispatcher;
@@ -62,9 +62,9 @@
                     var viewModel = (IViewModel)Activator.CreateInstance(vm);
 
                     // Set CurrentViewModel
-                    navigationService.HostScreen.CurrentViewModel = navigationService.GetViewModel(viewModel);
+                    _navigationService.HostScreen.CurrentViewModel = _navigationService.GetViewModel(viewModel);
 
-                    navigationService.HostScreen.SubViewModel = null;
+                    _navigationService.HostScreen.SubViewModel = null;
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });
@@ -78,7 +78,7 @@
                     var viewModel = (ISubViewModel)Activator.CreateInstance(vm);
 
                     // Set SubViewModel
-                    navigationService.HostScreen.SubViewModel = (ISubViewModel)navigationService.GetViewModel(viewModel);
+                    _navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.GetViewModel(viewModel);
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });
