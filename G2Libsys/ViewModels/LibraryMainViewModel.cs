@@ -1,7 +1,7 @@
 ﻿#region NameSpaces
 using G2Libsys.Commands;
 using G2Libsys.Data.Repository;
-using G2Libsys.Library.Models;
+using G2Libsys.Library;
 using G2Libsys.Services;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -27,6 +27,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SearchObjects));
             }
         }
+        private ObservableCollection<LibraryObject> fpLibObjects;
         private ObservableCollection<LibraryObject> libObjects;
 
 
@@ -35,7 +36,7 @@ namespace G2Libsys.ViewModels
         /// En lista med Categories
         /// </summary>
         public ObservableCollection<Category> Categories { get; private set; }
-        public Category SelectedCategory { set => GetLibraryObjects(value.ID); }
+        public Category NavigateCategory { set => GetLibraryObjects(value.ID); }
 
 
         /// <summary>
@@ -99,29 +100,18 @@ namespace G2Libsys.ViewModels
 
             SearchCommand = new RelayCommand(x=>GetSearchObjects());
 
-            BookButton = new RelayCommand(x => BookButtonClick());
 
         }
         /// <summary>
         /// Vid klick av library object, gå till ny vy av objektet
         /// </summary>
-        private LibraryObject selectedLibraryObject;
         public LibraryObject SelectedLibraryObject
         {
-            get => selectedLibraryObject;
-            set
-            {
-                selectedLibraryObject = value;
-                
-                OnPropertyChanged(nameof(SelectedLibraryObject));
-            }
-        }
             set => NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
+         
         }
-        public void BookButtonClick()
-        {
-            MessageBox.Show("test");
-        }
+
+
 
         #endregion
 
@@ -129,24 +119,15 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// hämtar alla library objects ifrån databasen
         /// </summary>
-        //private async void GetLibraryObjects(int id)
-        //{
-        //    LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
-        //}
+        private async void GetLibraryObjects(int id)
+        {
+            FrontPage = false;
+            LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
+        }
         private async void GetLibraryObjects()
         {
             LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
         }
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -165,14 +146,12 @@ namespace G2Libsys.ViewModels
         private async void GetSearchObjects()
         {
             FrontPage = false;
-            LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
-            Search();
+            //LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
             
             //SearchObjects.Clear();
-            SearchObjects = new ObservableCollection<LibraryObject>((await _repo.GetRangeAsync<LibraryObject>(SearchText)).Where(o => o.Category == SelectedCategory.ID));
+            LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetRangeAsync<LibraryObject>(SearchText)).Where(o => o.Category == SelectedCategory.ID));
         }
 
-        public ObservableCollection<Category> Categories { get; private set; }
 
         private Category selectedCatagory;
         public Category SelectedCategory
@@ -186,9 +165,6 @@ namespace G2Libsys.ViewModels
             }
         }
     
-    private async void GetCategories()
-       
-
         private async void GetCategories()
         {
             try
@@ -206,14 +182,8 @@ namespace G2Libsys.ViewModels
             var list = (await _repo.GetAllAsync<LibraryObject>()).Where(x => x.Category == 1).ToList();
             FpLibraryObjects = new ObservableCollection<LibraryObject>(list.GetRange(0,2));
         }
-        private void Search()
-        {
-            if (FrontPage)
-                FrontPage = false;
-            else
-                FrontPage = true;
-           
-        }
+        
         #endregion
     }
 }
+

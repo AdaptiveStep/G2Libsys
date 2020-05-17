@@ -722,6 +722,15 @@
 		END
 		GO
 
+	CREATE proc usp_getbyID_authors
+		@ID int
+		as
+		BEGIN
+			select * from Authors where ID = @ID
+		END
+
+		GO
+
 	--Dynamic search of Loans
 		-- CREATE PROC usp_findusers_Loans
 		-- 	@dateStart DateTime =  DATEADD(year, -1,GETDATE()), --default intervall is +-1 year from now.

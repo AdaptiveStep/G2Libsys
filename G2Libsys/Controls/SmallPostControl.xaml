@@ -94,37 +94,10 @@
                     
                 </WrapPanel>
 
-     <!--Expander-->
-                <Grid
-                    Grid.Column="0"
-                    Grid.Row="2"
-                    Grid.ColumnSpan="3"
-                    >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <Expander
-                        Grid.RowSpan="3"
-                        Background="{StaticResource MaterialDesignBodyLight}"
-                        HorizontalAlignment="Stretch"
-                        Header="Läs Mer">
-                        <StackPanel
-                        Orientation="Vertical"
-                        TextBlock.Foreground="Black"
-      >
-                        <TextBlock
-                        Opacity=".68"
-                        Text="{Binding FpLibraryObjects[0].Description}"
-                        TextWrapping="Wrap" />
-                        </StackPanel>
-                    </Expander>
-
-                </Grid>
+     
 
                 <TextBlock
-                    Text="{Binding FpLibraryObjects[0].DateAdded}"
+                   Text="{Binding FpLibraryObjects[0].DateAdded}"
                    Grid.Row="2"
                    VerticalAlignment="Bottom"
                    FontSize="7"

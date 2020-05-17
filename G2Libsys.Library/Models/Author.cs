@@ -10,5 +10,6 @@
 
 		//Todo maybe make it into type URI or something similar
 		public string ImageSRC { get; set; }
+		public string Biography { get; set; }
 	}
 }

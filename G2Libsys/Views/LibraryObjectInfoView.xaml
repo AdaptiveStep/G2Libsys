@@ -32,7 +32,7 @@
             MaxWidth="750"
             UniformCornerRadius="10"
             Background="{StaticResource light_background}">
-            <Grid ShowGridLines="True">
+            <Grid ShowGridLines="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25" />
                     <ColumnDefinition Width="2*" />
@@ -58,22 +58,22 @@
                     Grid.Row="1"
                     Grid.RowSpan="5"
                     Margin="0 0 10 0"
-                    Source="{Binding LibraryObjects[0].ImageSource,  Converter={converter:PathToImageConverter}}"
+                    Source="{Binding LibraryObject.imagesrc, Converter={converter:PathToImageConverter}}"
                     Stretch="Uniform" />
 
-                <TextBlock Text="Av: Författare"
+                <!--<TextBlock Text="Av: Författare"
                            Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                            Grid.Row="2"
                            Grid.Column="2"
-                           VerticalAlignment="Top"/>
+                           VerticalAlignment="Top"/>-->
 
+   <!--Titel / description libobject-->
                 <Viewbox   Grid.Row="1"
                            Grid.ColumnSpan="3"
                            Grid.Column="2"
                            MaxHeight="30"
                            VerticalAlignment="Bottom">
-                    
-                <TextBlock Text="{Binding LibraryObjects[0].Title}" 
+                <TextBlock Text="{Binding LibraryObject.Title}" 
                            Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                            VerticalAlignment="Bottom"
                            
@@ -88,7 +88,7 @@
                             >
                     
                 <TextBlock
-                            Text="{Binding LibraryObjects[0].Description}"
+                            Text="{Binding LibraryObject.Description}"
                             Style="{StaticResource MaterialDesignTextBlock}"
                             TextWrapping="Wrap"
                             Margin="5 0 5 0" 
@@ -106,11 +106,11 @@
 
                         <StackPanel VerticalAlignment="Top"
                                     >
-
-                            <TextBlock Text="{Binding LibraryObjects[0].PurchasePrice}" />
-                            <TextBlock Text="{Binding LibraryObjects[0].Category}" />
-                            <TextBlock Text="{Binding LibraryObjects[0].DeweyDecimal}" />
-                            <TextBlock Text="{Binding LibraryObjects[0].Title}" />
+<!--Infobox-->
+                            <TextBlock Text="{Binding LibraryObject.PurchasePrice}" Margin="5 0 0 0" />
+                            <TextBlock Text="{Binding LibraryObject.ISBN}" Margin="5 0 0 0" />
+                            <TextBlock Text="{Binding LibraryObject.Pages}" Margin="5 0 0 0" />
+                            <TextBlock Text="{Binding LibraryObject.DateAdded}" Margin="5 0 0 0" />
                             
                         </StackPanel>
                         
@@ -119,14 +119,15 @@
                 </materialDesign:Card>
                 
                 <TextBlock Text="Om författaren:"
-                           Grid.Row="2"
+                           Grid.Row="1"
                            Grid.Column="5"
                            Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                            Grid.ColumnSpan="2"
                            VerticalAlignment="Bottom"
                            />
                 
-                <materialDesign:Card Grid.Row="3"
+ <!--Author-->
+                <materialDesign:Card Grid.Row="2"
                                      Grid.Column="5"
                                      Grid.RowSpan="5"
                                      Grid.ColumnSpan="3"
@@ -148,11 +149,11 @@
                         </Grid.RowDefinitions>
                         <Image
                         VerticalAlignment="Top"
-                        Source="{Binding AuthorObjects[1].ImageSource,  Converter={converter:PathToImageConverter}}"/>
+                        Source="{Binding AuthorObject.ImageSRC,  Converter={converter:PathToImageConverter}}"/>
                         <StackPanel Grid.Column="1"
                                     Grid.ColumnSpan="2">
 
-                            <TextBlock Text="{Binding LibraryObjects[1].Author}"
+                            <TextBlock Text="{Binding LibraryObject.Author}"
                                        Margin="0 0 10 0"
                                        TextWrapping="Wrap"
                                        FontWeight="DemiBold" />
@@ -162,7 +163,6 @@
 
                             
                         </StackPanel>
-                        
                         <ScrollViewer
                                 VerticalScrollBarVisibility="Auto"
                                 Grid.Row="1"
@@ -177,11 +177,11 @@
                                 >
                                 
                                 <TextBlock
-                                 Text="{Binding LibraryObjects[0].Title}" />
+                                 Text="{Binding LibraryObject.Title}" />
                                 
                                 <TextBlock
                                  Opacity=".68"
-                                 Text="{Binding AuthorObjects[1].Biography}"
+                                 Text="{Binding AuthorObject.Biography}"
                                  TextWrapping="Wrap"
                                  Margin="0 0 0 5"/>
                                 
