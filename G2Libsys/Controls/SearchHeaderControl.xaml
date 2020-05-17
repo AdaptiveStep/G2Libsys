@@ -12,9 +12,10 @@
           MinHeight="100" 
           MinWidth="400" MaxHeight="250">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="6*" />
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition MinWidth="100" MaxWidth="220"/>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition MinWidth="100" MaxWidth="220" />
+
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30" />
@@ -32,14 +33,18 @@
         </Image>
 
         <StackPanel Grid.Row="1" 
-                    Grid.Column="1" 
+                    Grid.Column="0" 
                     VerticalAlignment="Center"
+                    Grid.ColumnSpan="3"
+                    
                     >
             <materialDesign:Card
                 Background="{StaticResource primary_dark}" 
                 materialDesign:ShadowAssist.ShadowDepth="Depth5"
                 materialDesign:ShadowAssist.ShadowEdges="All"
                 MaxWidth="750"
+                Margin="10 0"
+                
                 >
         <Border 
             BorderThickness="3" 
@@ -50,8 +55,7 @@
 
 
             <local:SearchBarControl 
-                Grid.Column="1"
-                Grid.Row="1"
+                
                 DataContext="{Binding}" 
                 x:Name="searchbar"
                 Margin="20"

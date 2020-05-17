@@ -17,6 +17,7 @@
         public int? Dewey { get; set; }
         public int Category { get; set; }
         public int? Author { get; set; }
+        public string imagesrc { get; set; }
         public int? Library { get; set; }
         public int AddedBy { get; set; }
         public DateTime LastEdited { get; set; }

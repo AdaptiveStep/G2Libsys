@@ -53,7 +53,7 @@
         public GenericRepository(string tableName = null)
         {
             _tableName = tableName;
-            _connectionString = ConfigurationManager.ConnectionStrings["sqldefault"].ConnectionString;
+            _connectionString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
         }
 
         #endregion

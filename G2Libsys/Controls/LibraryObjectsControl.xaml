@@ -23,14 +23,17 @@
                 
                 SelectionMode="Single"
                 HorizontalAlignment="Left"
-                ItemsSource="{Binding SearchObjects}"
-                SelectedItem="{Binding SelectedLibraryObject}">
+                ItemsSource="{Binding LibraryObjects}"
+                SelectedItem="{Binding SelectedLibraryObject}"
+                IsSynchronizedWithCurrentItem="False"
+                Margin="5"
+            >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Background="{StaticResource accent_light}">
+                    <!--<Grid Background="{StaticResource accent_light}">
                         
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock 
+                    <StackPanel Orientation="Horizontal">-->
+                        <!--<TextBlock 
                                 Margin="10 10 10 10 "
                                 FontSize="22"
                                 FontWeight="DemiBold"
@@ -41,17 +44,18 @@
                                 FontSize="22"
                                 FontWeight="DemiBold"
                                 Foreground="Black"
-                                Text="{Binding Publisher}"/>
+                                Text="{Binding Publisher}"/>-->
 
-                        <!--<Image 
-                                Source="{Binding ImageSource, Converter={convert:PathToImageConverter}}"/>-->
 
-                    </StackPanel>
-                    </Grid>
+                        <!--</StackPanel>
+                    </Grid>-->
+                            <Image 
+                                MaxHeight="180"
+                                Source="{Binding imagesrc, Converter={convert:PathToImageConverter}}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
 
-            <!--<ListView.ItemsPanel>
+            <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
                                    RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
@@ -62,7 +66,7 @@
                                    RelativeSource={RelativeSource AncestorType=ListView}}"
                                    MaxWidth="720"/>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>-->
+            </ListView.ItemsPanel>
         </ListView>
     </StackPanel>
 </UserControl>

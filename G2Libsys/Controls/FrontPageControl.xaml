@@ -25,7 +25,9 @@
         <ScrollViewer
             Grid.Row="1"
             Grid.Column="1"
-            Grid.ColumnSpan="3">
+            Grid.ColumnSpan="3"
+            HorizontalAlignment="Center"
+            MaxHeight="{Binding }">
 
             <WrapPanel Orientation="Vertical">
                 <TextBlock
@@ -35,7 +37,8 @@
                     FontFamily="{StaticResource MaterialDesignFont}"
                     FontSize="30"
                     FontWeight="Regular"
-                    Text="Heta Boktips!" />
+                    Text="Nyheter"
+                    />
                 <local:SmallPostControl
                     x:Name="smallpostcontrol"
                     Margin="0,0,40,0"
