@@ -15,7 +15,7 @@
     <Grid>
         <StackPanel Grid.Column="1" Orientation="Horizontal">
 
-            <materialDesign:Card Margin="10,10,10,10">
+            <materialDesign:Card Height="430" Margin="10,10,10,10">
                 <StackPanel>
                     <materialDesign:Card Margin="10,10,10,10">
                         <StackPanel Orientation="Horizontal">
@@ -35,6 +35,7 @@
                     </materialDesign:Card>
 
                     <DataGrid
+                        Height="320"
                         MinWidth="400"
                         Margin="10,10,10,10"
                         AutoGenerateColumns="False"
@@ -43,6 +44,8 @@
                         DataContext="{Binding}"
                         IsReadOnly="True"
                         ItemsSource="{Binding Users}"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
                         SelectedItem="{Binding SelectedUser}"
                         SelectionMode="Single">
                         <DataGrid.Columns>
@@ -52,6 +55,16 @@
                             <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
                             <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
                         </DataGrid.Columns>
+                        <DataGrid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding GoToUser}"
+                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
+                                Gesture="LeftDoubleClick" />
+                            <KeyBinding
+                                Key="Delete"
+                                Command="{Binding RemoveUserCommand}"
+                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
+                        </DataGrid.InputBindings>
                     </DataGrid>
 
                 </StackPanel>
@@ -90,10 +103,11 @@
                             Width="100"
                             Margin="10,0,10,0"
                             Background="Wheat"
-                            ItemsSource="{Binding UserTypes}" >
+                            ItemsSource="{Binding UserTypes}"
+                            SelectedItem="{Binding SelectedUserType}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock  Text="{Binding Name}"/>
+                                    <TextBlock Text="{Binding Name}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>

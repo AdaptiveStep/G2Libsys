@@ -422,6 +422,13 @@
 
 ------------------------------------------------------------------------
 ---------------Usertypes -----------------------------------------------
+	Create proc usp_getall_usertypes
+		as
+		BEGIN
+			select * from usertypes;
+		END
+		GO
+
 	--Delete Usertype
 	CREATE PROC usp_delete_usertypes
 		@ID int = null
@@ -572,28 +579,30 @@
 	        DELETE FROM libraryobjects where ID = @ID
 	    END
 	    GO
+
+
 	CREATE PROC usp_insert_libraryobjects
 		@ID 			INT				= null,
-		@Title			INT 				,
+		@Title			INT 			,
 		@Description 	VARCHAR(500)	= null,
 		@ISBN			BIGINT			= null,
 		@Publisher		VARCHAR(100)	= null,
 		@PurchasePrice	FLOAT			= null,
 		@Pages			INT				= null,
 		@Dewey			INT				= null,
-		@Category		INT	      		  	,	
+		@Category		INT	      		,	
 		@Author			INT				= null,
-		
+		@Imagesrc 		VARCHAR(500)	= null,
 		@Library		INT				= null,
 		@AddedBy		INT				= null,
-		@LastEdited	DATETIME			= null,
-		@DateAdded	DATETIME			= null
+		@LastEdited		DATETIME		= null,
+		@DateAdded		DATETIME		= null
 		AS
 		BEGIN
 			INSERT INTO 
-			LibraryObjects(Title, [Description], ISBN, Publisher, PurchasePrice, Pages, Dewey, Category, Author, [Library], AddedBy, LastEdited, DateAdded) 
+			LibraryObjects(Title, [Description], ISBN, Publisher, PurchasePrice, Pages, Dewey, Category, Author, imagesrc, [Library], AddedBy, LastEdited, DateAdded) 
 			VALUES 
-			(@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Pages, @Dewey, @Category, @Author, @Library, @AddedBy, @LastEdited, @DateAdded);
+			(@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Pages, @Dewey, @Category, @Author,@Imagesrc, @Library, @AddedBy, @LastEdited, @DateAdded);
 		END
 		GO
 	CREATE PROC usp_update_libraryobjects
@@ -607,7 +616,7 @@
 		@Dewey			INT				= null,
 		@Category		INT,	
 		@Author			INT				= null,
-		
+		@Imagesrc 		VARCHAR(500)	= null,
 		@Library		INT				= null,
 		@AddedBy		INT				= null,
 		@LastEdited	DATETIME		= null,
@@ -626,6 +635,7 @@
 			Dewey 			= @Dewey,
 			Category 		= @Category,
 			Author 			= @Author,
+			imagesrc		= @Imagesrc,
 			[Library] 		= @Library,
 			AddedBy 		= @AddedBy,
 			LastEdited 		= @LastEdited,
@@ -707,30 +717,21 @@
 	--TODO , Search with partial ISBN too !!
 	--Dynamic search of objects - only one keyword
 	CREATE PROC usp_simplesearch_libraryobjects
-		@Partialword VARCHAR(20) = ''
+		@search VARCHAR(20) = ''
 
 		AS
 		BEGIN
 			SELECT *
 			FROM LibraryObjects
 			WHERE 
-				Title 			LIKE '%' + @Partialword + '%' Or
-				[Description] 	LIKE '%' + @Partialword + '%' OR
-				[Publisher] 	LIKE '%' + @Partialword + '%' ;
+				Title 			LIKE '%' + @search + '%' Or
+				[Description] 	LIKE '%' + @search + '%' OR
+				[Publisher] 	LIKE '%' + @search + '%' ;
 				--ISBN 			LIKE '%' + @PartialISBN + '%' ;   			  --FIX THIS
 				--Author.fname 	LIKE '%' + @PartialAuthorfirstname 	+ '%' ;   --FIX THIS
 				--Author.lname 	LIKE '%' + @PartialAuthorlastname 	+ '%' ;   --FIX THIS
 
 		END
-		GO
-
-	CREATE proc usp_getbyID_authors
-		@ID int
-		as
-		BEGIN
-			select * from Authors where ID = @ID
-		END
-
 		GO
 
 	--Dynamic search of Loans

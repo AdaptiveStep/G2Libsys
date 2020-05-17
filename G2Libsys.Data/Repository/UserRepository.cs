@@ -21,8 +21,31 @@
         /// <summary>
         /// Default constructor
         /// </summary>
-        public UserRepository() 
-            : base() { }
+        public UserRepository() { }
+
+        public override async Task<int> AddAsync(User item)
+        {
+            // Map item
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.AddDynamicParams(item);
+
+            // Create ID parameter for output
+            parameters.Add("NewID",
+                    dbType: DbType.Int32,
+                 direction: ParameterDirection.Output);
+
+            // Open connection
+            using IDbConnection _db = Connection;
+
+            // Insert mapped item and set NewID to created item ID
+            await _db.ExecuteScalarAsync<int>(
+                        sql: GetProcedureName<User>("insert"),
+                      param: parameters,
+                commandType: CommandType.StoredProcedure);
+
+            // Return the ID of inserted item
+            return parameters.Get<int>("NewID");
+        }
 
         /// <summary>
         /// Example User specific query

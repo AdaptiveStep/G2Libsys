@@ -42,7 +42,7 @@
 
         public Category SelectedCategory
         {
-            get => selectedCategory ?? Categories.First();
+            get => selectedCategory;
             set
             {
                 if (selectedCategory != value)
@@ -161,6 +161,8 @@
 
             categoryList.Result.ToList().ForEach(c => Categories    .Add(c));
             itemList    .Result.ToList().ForEach(i => LibraryObjects.Add(i));
+
+            OnPropertyChanged(nameof(Categories));
         }
 
         private async Task GetLibraryObjects()
@@ -246,7 +248,7 @@
 
             try
             {
-                _repo.DeleteByIDAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
+                _repo.DeleteAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
                 LibraryObjects.Remove(SelectedItem);
             }
             catch (Exception ex)
