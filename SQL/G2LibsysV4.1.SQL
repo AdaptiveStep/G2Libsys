@@ -671,7 +671,7 @@
 			FROM Users
 			WHERE 
 				Firstname LIKE '%' + @PartialName + '%' AND
-				Firstname LIKE '%' + @PartialLastName + '%' AND
+				Lastname LIKE '%' + @PartialLastName + '%' AND
 				[Email] LIKE '%' + @PartialEmail + '%';
 		END
 		GO
@@ -686,8 +686,8 @@
 			SELECT *
 			FROM Users
 			WHERE 
-				Firstname LIKE '%' + @search + '%' AND
-				Firstname LIKE '%' + @search + '%' AND
+				Firstname LIKE '%' + @search + '%' OR
+				Lastname LIKE '%' + @search + '%' OR
 				[Email] LIKE '%' + @search + '%';
 		END
 		GO
