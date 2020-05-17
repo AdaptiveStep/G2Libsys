@@ -11,24 +11,60 @@ namespace G2Libsys.ViewModels
     // Hantera användarens egna info
     public class UserProfileViewModel : BaseViewModel, IViewModel
     {
-        public ICommand Changebutton { get; private set; }
+        private readonly IDialogService _dialog;
+        public ICommand Showbutton { get; private set; }
         public ICommand SavePasswordbutton { get; private set; }
         public ICommand SaveEmailbutton { get; private set; }
         public ICommand Cancelbutton { get; private set; }
 
         private readonly IRepository _repo;
-        private string newValues;
+        private readonly IUserRepository _userrepo;
 
-        public string NewValues
+        private string newValuesP;
+
+        public string NewValuesP
         {
-            get => newValues;
+            get => newValuesP;
             set
             {
-                newValues = value;
-                OnPropertyChanged(nameof(NewValues));
+                newValuesP = value;
+                OnPropertyChanged(nameof(NewValuesP));
             }
         }
-        
+        private string newValuessP;
+
+        public string NewValuessP
+        {
+            get => newValuessP;
+            set
+            {
+                newValuessP = value;
+                OnPropertyChanged(nameof(NewValuessP));
+            }
+        }
+        private string newValuesE;
+
+        public string NewValuesE
+        {
+            get => newValuesE;
+            set
+            {
+                newValuesE = value;
+                OnPropertyChanged(nameof(NewValuesP));
+            }
+        }
+        private string newValuessE;
+
+        public string NewValuessE
+        {
+            get => newValuessE;
+            set
+            {
+                newValuessE = value;
+                OnPropertyChanged(nameof(NewValuessE));
+            }
+        }
+
         private User currentUser;
         public User CurrentUser
         {
@@ -46,28 +82,57 @@ namespace G2Libsys.ViewModels
             set
             {
                 loanObjects = value;
-                OnPropertyChanged(nameof(CurrentUser));
+                OnPropertyChanged(nameof(LoanObjects));
+            }
+        }
+        private ObservableCollection<LibraryObject> libObjects;
+        public ObservableCollection<LibraryObject> LibraryObjects
+        {
+            get => libObjects;
+            set
+            {
+                libObjects = value;
+                OnPropertyChanged(nameof(LibraryObjects));
             }
         }
 
         public UserProfileViewModel()
         {
+            _dialog = new DialogService();
+            if (base.IsInDesignMode) return;
             CurrentUser = NavService.HostScreen.CurrentUser;
             _repo = new GeneralRepository();
-            //CurrentUser = 
-            //Changebutton = new RelayCommand(x => );
-            //Cancelbutton = new RelayCommand(x => );
+            _userrepo = new UserRepository();
+
             SavePasswordbutton = new RelayCommand(x => ChangePassword());
+            Showbutton = new RelayCommand(x => GetLoans());
             SaveEmailbutton = new RelayCommand(x => ChangeEmail());
+            
         }
 
         public async void ChangePassword()
         {
-           await _repo.UpdateAsync(CurrentUser);
+            if (NewValuesP == NewValuessP && NewValuesP != null)
+            {
+                CurrentUser.Password = NewValuesP;
+                await _repo.UpdateAsync(CurrentUser);
+                NewValuesP = null;
+                NewValuessP = null;
+                _dialog.Alert("", "Ditt Lösenord har Uppdaterats");
+            }
+            else _dialog.Alert("", "Båda fälten stämmer inte överens");
         }
         public async void ChangeEmail()
         {
-            await _repo.UpdateAsync(CurrentUser);
+            if (NewValuesE == NewValuessE && NewValuesE != null) 
+            {
+                CurrentUser.Email = NewValuesE;
+                await _repo.UpdateAsync(CurrentUser);
+                NewValuesE = null;
+                NewValuesE = null;
+                _dialog.Alert("", "Din Email har Uppdaterats");
+            }
+            else _dialog.Alert("", "Båda fälten stämmer inte överens");
         }
         //public async void GetCurrentUser()
         //{ 
@@ -76,7 +141,9 @@ namespace G2Libsys.ViewModels
         //}
         public async void GetLoans()
         {
-            LoanObjects = new ObservableCollection<Loan>((await _repo.GetAllAsync<Loan>()).Where(o => o.Card.ID == CurrentUser.ID));
+            LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(CurrentUser.ID));
+            LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(CurrentUser.ID));
         }
+       
     }
 }
