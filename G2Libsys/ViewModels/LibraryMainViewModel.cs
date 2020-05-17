@@ -36,7 +36,13 @@ namespace G2Libsys.ViewModels
         /// En lista med Categories
         /// </summary>
         public ObservableCollection<Category> Categories { get; private set; }
-        public Category NavigateCategory { set => GetLibraryObjects(value.ID); }
+        public Category NavigateCategory
+        {
+            set
+            {
+                GetLibraryObjects(value.ID);
+            }
+        }
 
 
         /// <summary>
@@ -107,8 +113,14 @@ namespace G2Libsys.ViewModels
         /// </summary>
         public LibraryObject SelectedLibraryObject
         {
-            set => NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
-         
+
+            set
+            {
+                if (value != null)
+                {
+                    NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
+                }
+            }
         }
 
 

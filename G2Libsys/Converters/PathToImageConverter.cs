@@ -13,7 +13,7 @@ namespace G2Libsys.Converters
                 return new BitmapImage(new Uri(@"pack://application:,,,/Resources/Images/Bild_saknas.png"));
             }
 
-            return new BitmapImage(new Uri(value.ToString(), UriKind.Absolute));
+            return new BitmapImage(new Uri(value.ToString()));
 
 
         }

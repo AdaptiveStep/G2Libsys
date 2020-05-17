@@ -24,7 +24,10 @@
                 SelectionMode="Single"
                 HorizontalAlignment="Left"
                 ItemsSource="{Binding LibraryObjects}"
-                SelectedItem="{Binding SelectedLibraryObject}">
+                SelectedItem="{Binding SelectedLibraryObject}"
+                IsSynchronizedWithCurrentItem="False"
+                Margin="5"
+            >
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <!--<Grid Background="{StaticResource accent_light}">
