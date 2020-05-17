@@ -37,7 +37,7 @@
             IServiceCollection services = new ServiceCollection();
 
             services.AddSingleton<INavigationService, NavigationService>();
-            services.AddScoped<IDialogService, DialogService>();
+            services.AddTransient<IDialogService, DialogService>();
 
             return services;
         }
