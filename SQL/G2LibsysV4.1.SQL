@@ -154,14 +154,14 @@
 
 		--STANDARD INSERTS
 			SET IDENTITY_INSERT 	Authors on
-				INSERT INTO 		Authors (ID,Firstname, Lastname) 
+				INSERT INTO 		Authors (ID,Firstname, Lastname, ImageSRC, Biography) 
 						VALUES 
-						(0, 'Okänt'	,'Okänt'									),				--Does ID really have to be inserted? 
+						(0, 'Okänt'	,'Okänt', 'http://ifmetall-alimak.se/onewebmedia/bild-saknas%20herr.gif', 'Ingen biografi hittades'									),				--Does ID really have to be inserted? 
 
-						(1, 'JK Rowling'	,'Rowling'							),				--Does ID really have to be inserted? 
-						(2, 'GRR Martin'	,'Martin'							),
-						(3, 'JRR Tolkien'	,'Tolkien'							),
-						(4, 'Jörgen'		,'Backelin'							);
+						(1, 'JK - Joanne'	,'Rowling'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/J._K._Rowling_2010.jpg/330px-J._K._Rowling_2010.jpg', 'Joanne Rowling, better known by her pen name J. K. Rowling, is a British author, film producer, television producer, screenwriter, and philanthropist. She is best known for writing the Harry Potter fantasy series, which has won multiple awards and sold more than 500 million copies, becoming the best-selling book series in history.'	), 
+						(2, 'George R. R'	,'Martin'	, 'https://duckduckgo.com/i/e6ce7885.jpg', 'George Raymond Richard Martin, also known as GRRM, is an American novelist and short story writer in the fantasy, horror, and science fiction genres, screenwriter, and television producer. He is writing the series of epic fantasy novels A Song of Ice and Fire, which was adapted into the HBO series Game of Thrones'	),
+						(3, 'JRR Tolkien'	,'Tolkien'	, 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Tolkien_1916.jpg', 'John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic. He was the author of the classic high fantasy works The Hobbit and The Lord of the Rings'						),
+						(4, 'Jan'			,'Guillou'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg/330px-Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg', 'Jan Oskar Sverre Lucien Henri Guillou is a French-Swedish author and journalist. Among his books are a series of spy fiction novels about a spy named Carl Hamilton, and a trilogy of historical fiction novels about a Knight Templar, Arn Magnusson'	);
 				SET IDENTITY_INSERT Authors OFF
 				GO
 	
@@ -222,7 +222,7 @@
 		SET IDENTITY_INSERT 	Categories on
 			INSERT INTO 		Categories (ID,[Name], Description) 
 					VALUES 
-					(1, 'Papers Bok','Alla typer av böcker'							),										--Does ID really have to be inserted? 
+					(1, 'Bok'		,'Alla typer av böcker'							),										--Does ID really have to be inserted? 
 					(2, 'Ebok'	  	,'Eböcker som går att ladda ner.'				),
 					(3, 'Ljudbok'	,'Ljudböcker som går att lyssna på'				),
 					(4, 'Film'		,'Filmer som går att låna eller ladda ner'		);
@@ -275,14 +275,18 @@
 
 		--SAMPLE INSERTS
 		SET IDENTITY_INSERT 	LibraryObjects on
-			INSERT INTO 		LibraryObjects (ID, Title, [Description], ISBN, Publisher, PurchasePrice, Category, Author) 
+			INSERT INTO 		LibraryObjects (ID, Title, [Description], ISBN, Publisher, PurchasePrice, Category, Author, imagesrc) 
 					VALUES 
-					(1, 'Harry Potter'							,'Bra skick och bok för ungdomar'			,7599999999999,'BonniersBöcker'	 		,350 ,1 ,1),		--Does ID really have to be inserted? 
-					(2, 'Sagan om Ringen'						,'Bra skick och bok för ungdomar. Poppis'	,9999229999999,'Penguin Classics'		,350 ,1 ,2),
-					(3, 'Sagan om Ringen - Bilbo Ljudboken!'	,'Våran första ljudbok i lager'				,9974324423999,'Coola Förlaget'			,350 ,3 ,2),
-					(4, 'Game of Thrones Ebook!'				,'Från tittande till lyssnande!'			,9979999423999,'Amazon'					,350 ,2 ,1),
-					(5, 'Eva mår bra! Ljudblogbok'				,'Bra skick och ljudbok för alla!'			,9999992343999,'Evas Förlag'			,350 ,3 ,1),
-					(7, 'The Hulk'								,'Senaste filmen från hollywood!'			,9996439994999,'WarnerBrothers'			,350 ,4 ,1);
+					(1, 'Harry Potter och De vises sten'			,'Plötsligt händer det märkliga ting i den lilla staden! Mystiska stjärnskott på himlen och svärmar av ugglor mitt på dagen, katter som läser kartor och underliga människor som står i gathörnen och viskar. De viskar om en viss Harry Potter ... Föräldralöse Harry Potter bor hos sina elaka styvföräldrar och deras vidrige son. En helt ny värld öppnar sig för Harry när det visar sig att han egentligen är en trollkarl och börjar Hogwarths Skola för Häxkonster och Trolldom, en värld full av magi och spännande äventyr!'	,7599999888999,'Rabén Sjögren'	 ,350 ,1 ,1, 'https://s1.adlibris.com/images/54131168/harry-potter-och-de-vises-sten.jpg'),		--Does ID really have to be inserted? 
+					(2, 'Harry Potter och Hemligheternas kammare '	,'Sommarlovet är äntligen över! Harry Potter har längtat tillbaka till sitt andra år på Hogwarts skola för häxkonster och trolldom. Men hur ska han stå ut med den omåttligt stroppige professor Lockman? Vad döljer Hagrids förflutna? Och vem är egentligen Missnöjda Myrtle? De verkliga problemen börjar när någon, eller något, förstenar den ena Hogwartseleven efter den andra. Är det Harrys fiende, Draco Malfoy, som ligger bakom? Eller är det den som alla på Hogwarts misstänker - Harry Potter själv?'	,799919449999,'Rabén Sjögren'	 ,350 ,1 ,1, 'https://s1.adlibris.com/images/54131167/harry-potter-och-hemligheternas-kammare.jpg'),		
+					(3, 'Harry Potter och de vises sten'			,'Sexton år efter utgivningen av den första Harry Potter-boken i Sverige kommer nu en alldeles ny, genomillustrerad utgåva. Harry Potters fantastiska värld fångas mästerligt i Jim Kays makalösa bilder. Låt dig sugas in i en magisk upplevelse! Böckerna om Harry Potter har sålt i hundratals miljoner exemplar världen över. Den föräldralöse pojken som visar sig vara en trollkarl tog världen med storm, och lämnade ingen oberörd. Böckerna har blivit klassiker, och fortsätter att förtrolla nya generationer läsare.'	,7593399119999,'Rabén Sjögren'	 ,350 ,1 ,1, 'https://s1.adlibris.com/images/52391138/harry-potter-och-dodsrelikerna.jpg'),		
+					(4, 'Sagan om Ringen'							,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'	,9229229999999,'Penguin Classics'		,350 ,1 ,3, 'https://s2.adlibris.com/images/43135545/ringens-brodraskap.jpg'),
+					(5, 'Sagan om de två tornen'					,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'	,9329228888899,'Penguin Classics'		,350 ,1 ,3, 'https://s1.adlibris.com/images/42903698/de-tva-tornen.jpg'),
+					(6, 'Konungens återkomst'						,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'	,9529228333899,'Penguin Classics'		,350 ,1 ,3, 'https://s1.adlibris.com/images/43138299/konungens-aterkomst.jpg'),
+					(7, 'Hobbiten - Ljudbok'						,'Den lille hobbiten Bilbo Secker dras av trollkarlen Gandalf grå med på äventyr tillsammans med tretton dvärgar, ledda av den sturske Thorin Ekensköld. De ska röva bort en stor guldskatt som vaktas av den eldsprutande draken Smaug. På vägen stöter de på ruskiga troll och vättar, men också hjälpsamma varelser som alver, jätteörnar och den store Beorn. Bilbo träffar också den slemmige Gollum som håller till i en mörk grotta uppe i bergen. Gollum utmanar Bilbo på en tävling och blir där av med sin magiska osynlighetsring. En ring som kommer att spela en viktig roll i berättelsen.'				,9174322223999,'Coola Förlaget'			,350 ,3 ,3, 'https://s1.adlibris.com/images/42934038/hobbiten-eller-bort-och-hem-igen.jpg'),
+					(8, 'Game of Thrones Ljudbok'					,'Äventyr och hjältedåd, vänskap, kärlek och förräderi i en magisk medeltida värld. Robert Baratheon och Eddard Stark befriade en gång i tiden de sju konungarikena från den galne draklorden, och det blev Robert som besteg järntronen medan Eddard drog sig tillbaka till sitt Vinterhed. Efter en lång tid av fred samlar sig kung Roberts fiender både i Norden och i Södern. Hans närmaste rådgivare har dött under mystiska omständigheter och till och med hans egen drottning smider i hemlighet onda planer. Kung Robert ber Eddard Stark om hjälp och Eddard och hans familj dras obönhörligt in i maktspelet kring järntronen. Intrigerna leder till ett regelrätt krig mellan olika ätter och deras lorder. Men det största hotet mot kung Robert är draklordens två barn, en son och en dotter som nu har vuxit upp. De lever i exil och har fått en fristad hos hövdingen över Dothrakiens grässlätter. Med hjälp av honom och hans fyrtiotusen krigare ska åter en ättling av drakens blod härska över de sju konungarikena. Men kampen om järntronen har bara börjat … Den första boken i Sagan om is och eld.',9279229423999,'Amazon'	,75 ,2 ,2, 'https://s2.adlibris.com/images/625724/game-of-thrones---kampen-om-jarntronen.jpg'),
+					(9, 'Den andra dödssynden Ljudbok'				,'Det är dags för en ny generation Lauritzen att ta över. Fastighetsbranschen lockar dem och enorma vinster väntar. Eller avgrunden. Samtidigt ställs Eric Letangs advokat­byrå inför helt andra påfrestningar. 1980-talet är decenniet som kommer att skörda rader av oskyldiga offer i rättssalarna. De vildsint egoistiska stämningarna är på väg att bli det socialdemokratiska folkhemmets svanesång. Allt kan hända. Och det händer. Den andra dödssynden är den nionde delen i Jan Guillous romansvit Det stora århundradet, en berättelse om mänsklighetens största, grymmaste och blodigaste århundrade. '			,993333343999,'Evas Förlag'			,350 ,3 ,4, 'https://s1.adlibris.com/images/55340502/den-andra-dodssynden.jpg'),
+					(10, 'The Hulk'									,'Bruce Banner, a scientist on the run from the U.S. Government, must find a cure for the monster he turns into whenever he loses his temper.'			,9996229994999,'WarnerBrothers'			,350 ,4 ,1, 'https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_SY1000_CR0,0,674,1000_AL_.jpg');
 			SET IDENTITY_INSERT LibraryObjects OFF
 			GO
 	
