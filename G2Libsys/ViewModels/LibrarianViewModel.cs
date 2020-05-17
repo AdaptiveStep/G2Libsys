@@ -17,6 +17,7 @@ namespace G2Libsys.ViewModels
 
         //binda knapparna från viewen
         //skapa datagrid
+
         private ObservableCollection<User> _users;
         private string searchstring;
 
@@ -121,6 +122,7 @@ namespace G2Libsys.ViewModels
            await _repo.AddAsync(NewUser);
             GetUsers();
         }
+
         //lista av besökare
         //ta bort besökare funktion
         //lägga till besökare funktion
