@@ -17,7 +17,16 @@ namespace G2Libsys.ViewModels
         private readonly IRepository _repo;
 
         private bool frontPage;
-        private ObservableCollection<LibraryObject> fpLibObjects;
+        private ObservableCollection<LibraryObject> searchObjects;
+        public ObservableCollection<LibraryObject> SearchObjects
+        {
+            get => searchObjects;
+            set
+            {
+                searchObjects = value;
+                OnPropertyChanged(nameof(SearchObjects));
+            }
+        }
         private ObservableCollection<LibraryObject> libObjects;
 
 
@@ -64,12 +73,17 @@ namespace G2Libsys.ViewModels
         public bool SearchPage => !FrontPage;
 
 
-        public ICommand SearchCommand => new RelayCommand(_ => Search());
+        public ICommand SearchCommand { get; private set; }
 
-       
-        /// <summary>
-        /// basic Constructor
-        /// </summary>
+        private void Search()
+        {
+            if (FrontPage)
+                FrontPage = false;
+
+            else
+                FrontPage = true;
+        }
+
         public LibraryMainViewModel()
         {
             if (base.IsInDesignMode) return;
@@ -81,14 +95,27 @@ namespace G2Libsys.ViewModels
             FpLibraryObjects = new ObservableCollection<LibraryObject>();
             GetLibraryObjects();
             GetFpLibraryObjects();
+            SearchObjects = new ObservableCollection<LibraryObject>();
+
+            SearchCommand = new RelayCommand(x=>GetSearchObjects());
+
             BookButton = new RelayCommand(x => BookButtonClick());
 
         }
         /// <summary>
         /// Vid klick av library object, gå till ny vy av objektet
         /// </summary>
+        private LibraryObject selectedLibraryObject;
         public LibraryObject SelectedLibraryObject
         {
+            get => selectedLibraryObject;
+            set
+            {
+                selectedLibraryObject = value;
+                
+                OnPropertyChanged(nameof(SelectedLibraryObject));
+            }
+        }
             set => NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
         }
         public void BookButtonClick()
@@ -102,6 +129,10 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// hämtar alla library objects ifrån databasen
         /// </summary>
+        //private async void GetLibraryObjects(int id)
+        //{
+        //    LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
+        //}
         private async void GetLibraryObjects()
         {
             LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
@@ -110,12 +141,52 @@ namespace G2Libsys.ViewModels
 
 
 
-        private async void GetLibraryObjects(int id)
+
+
+
+
+
+
+
+
+
+        private string searchtext;
+        public string SearchText
+        {
+            get => searchtext;
+            set
+            {
+                searchtext = value;
+                OnPropertyChanged(nameof(SearchText));
+            }
+        }
+
+
+        private async void GetSearchObjects()
         {
             FrontPage = false;
             LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
+            Search();
+            
+            //SearchObjects.Clear();
+            SearchObjects = new ObservableCollection<LibraryObject>((await _repo.GetRangeAsync<LibraryObject>(SearchText)).Where(o => o.Category == SelectedCategory.ID));
         }
 
+        public ObservableCollection<Category> Categories { get; private set; }
+
+        private Category selectedCatagory;
+        public Category SelectedCategory
+        {
+            get => selectedCatagory;
+            set
+            {
+                
+                selectedCatagory = value;
+                OnPropertyChanged(nameof(SelectedCategory));
+            }
+        }
+    
+    private async void GetCategories()
        
 
         private async void GetCategories()
@@ -141,6 +212,7 @@ namespace G2Libsys.ViewModels
                 FrontPage = false;
             else
                 FrontPage = true;
+           
         }
         #endregion
     }

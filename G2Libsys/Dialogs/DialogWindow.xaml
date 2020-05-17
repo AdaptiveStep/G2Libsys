@@ -26,6 +26,7 @@
             Background="Transparent"
             Command="{Binding CancelCommand}"
             Cursor="Arrow"
+            IsCancel="True"
             Style="{StaticResource MaterialDesignToolForegroundButton}" />
 
         <ContentControl x:Name="ContentPresenter" Content="{Binding}" />

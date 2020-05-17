@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace G2Libsys.Library.Models
+﻿namespace G2Libsys.Library
 {
-    public class Author
-    {
-        public int ID { get; set; }
+	using System;
 
-        public string Name { get; set; }
+	public class Author
+	{
+		public int ID { get; set; }
+		public string Firstname { get; set; }
+		public string Lastname { get; set; }
 
-        public string ImageSource { get; set; }
-
-        public string Biography { get; set; }
-    }
+		//Todo maybe make it into type URI or something similar
+		public string ImageSRC { get; set; }
+	}
 }

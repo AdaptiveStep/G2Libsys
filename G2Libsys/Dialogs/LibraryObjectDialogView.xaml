@@ -86,7 +86,8 @@
                             Padding="0"
                             Background="WhiteSmoke"
                             ItemsSource="{Binding Categories}"
-                            SelectedIndex="{Binding LibraryObject.Category}">
+                            SelectedIndex="{Binding LibraryObject.Category}"
+                            SelectedItem="{Binding SelectedCategory}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" />
