@@ -19,6 +19,6 @@ namespace G2Libsys.Library
 
 
         //TODO . WRONG TYPE. fix this
-        public int UserType { get; set; } = 3;
+        public int UserType { get; set; }
     }
 }

@@ -99,26 +99,14 @@
 
         public virtual async Task<int> AddAsync<T>(T item)
         {
-            // Map item
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.AddDynamicParams(item);
-
-            // Create ID parameter for output
-            parameters.Add("NewID",
-                    dbType: DbType.Int32,
-                 direction: ParameterDirection.Output);
-
             // Open connection
             using IDbConnection _db = Connection;
 
-            // Insert mapped item and set NewID to created item ID
-            await _db.ExecuteScalarAsync<int>(
+            // Insert item and return affected rows
+            return await _db.ExecuteAsync(
                         sql: GetProcedureName<T>("insert"),
-                      param: parameters,
+                      param: item,
                 commandType: CommandType.StoredProcedure);
-
-            // Return the ID of inserted item
-            return parameters.Get<int>("NewID");
         }
 
         public virtual async Task AddRangeAsync<T>(IEnumerable<T> items)
@@ -200,7 +188,7 @@
                 commandType: CommandType.StoredProcedure);
         }
 
-        public virtual async Task DeleteByIDAsync<T>(int id)
+        public virtual async Task DeleteAsync<T>(int id)
         {
             using IDbConnection _db = Connection;
 
@@ -265,7 +253,7 @@
 
         public virtual async Task UpdateAsync(T item) => await base.UpdateAsync(item);
 
-        public virtual async Task DeleteByIDAsync(int id) => await base.DeleteByIDAsync<T>(id);
+        public virtual async Task DeleteByIDAsync(int id) => await base.DeleteAsync<T>(id);
 
         #endregion
     }

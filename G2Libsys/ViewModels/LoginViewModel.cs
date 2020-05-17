@@ -93,7 +93,7 @@
         /// Verify if canExecute login command
         /// </summary>
         private Predicate<object> CanLogin =>
-            o => !string.IsNullOrWhiteSpace(Username)
+            _ => !string.IsNullOrWhiteSpace(Username)
               && !string.IsNullOrWhiteSpace(Password);
 
         /// <summary>
@@ -105,7 +105,7 @@
         /// Verify if canExecute Register command
         /// </summary>
         private Predicate<object> CanRegister =>
-            o => !string.IsNullOrWhiteSpace(NewUser.Firstname)
+            _ => !string.IsNullOrWhiteSpace(NewUser.Firstname)
               && !string.IsNullOrWhiteSpace(NewUser.Lastname)
               && !string.IsNullOrWhiteSpace(NewUser.Email)
               && !string.IsNullOrWhiteSpace(NewUser.Password);
