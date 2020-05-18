@@ -42,7 +42,7 @@
 
         public Category SelectedCategory
         {
-            get => selectedCategory;
+            get => selectedCategory ?? Categories?.First();
             set
             {
                 if (selectedCategory != value)
@@ -167,6 +167,11 @@
 
         private async Task GetLibraryObjects()
         {
+            if (Categories?.Count < 1)
+            {
+                return;
+            }
+
             var objects = new List<LibraryObject>();
 
             (SelectedCategory.ID switch
@@ -217,7 +222,7 @@
             }
         }
 
-        private void EditLibraryObject()
+        private async void EditLibraryObject()
         {
             dialogViewModel = new LibraryObjectDialogViewModel(SelectedItem, ItemCategories, "Ändra detaljer");
 
@@ -231,7 +236,7 @@
 
             try
             {
-                _repo.UpdateAsync(editedItem).ConfigureAwait(false);
+                await _repo.UpdateAsync(editedItem);
             }
             catch (Exception ex)
             {

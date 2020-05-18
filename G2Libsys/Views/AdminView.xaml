@@ -13,17 +13,21 @@
     x:TypeArguments="vm:AdminViewModel"
     mc:Ignorable="d">
     <Grid>
-        <StackPanel Grid.Column="1" Orientation="Horizontal">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="auto"/>
 
-            <materialDesign:Card Height="430" Margin="10,10,10,10">
+		</Grid.ColumnDefinitions>
+
+		<materialDesign:Card  Margin="10" Grid.Column="0">
                 <StackPanel>
-                    <materialDesign:Card Margin="10,10,10,10">
+                    <materialDesign:Card Margin="10">
                         <StackPanel Orientation="Horizontal">
 
                             <Label VerticalAlignment="Center" Content="Sök efter användare" />
                             <TextBox
                                 Width="140"
-                                Margin="10,10,10,10"
+                                Margin="10"
                                 Background="Wheat"
                                 Text="{Binding SearchString}" />
                             <Button
@@ -70,7 +74,7 @@
                 </StackPanel>
             </materialDesign:Card>
 
-            <StackPanel Orientation="Vertical">
+		<StackPanel Orientation="Vertical" Grid.Column="1"  Margin="0 10 10 10">
                 <Label Content="Lägg till medlem" Foreground="Black" />
                 <materialDesign:Card>
                     <StackPanel>
@@ -132,6 +136,5 @@
             </StackPanel>
 
 
-        </StackPanel>
     </Grid>
 </local:BasePage>
