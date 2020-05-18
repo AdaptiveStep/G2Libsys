@@ -11,8 +11,8 @@
     mc:Ignorable="d">
     <Grid>
         <materialDesign:Card
-            Width="280"
-            Height="270"
+            MaxWidth="280"
+            MaxHeight="370"
             Margin="20"
             Padding="0"
             materialDesign:ShadowAssist.ShadowDepth="Depth5"
@@ -69,12 +69,24 @@
                             Margin="10,0,10,0"
                             Background="WhiteSmoke"
                             Text="{Binding LibraryObject.Publisher, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Antal sidor" />
+                        <TextBox
+                            Width="110"
+                            Margin="10,0,10,0"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.Pages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="DeweyDecimal" />
                         <TextBox
                             Width="110"
                             Margin="10,0,10,0"
                             Background="WhiteSmoke"
-                            Text="{Binding LibraryObject.DeweyDecimal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding LibraryObject.Dewey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <!--<Label Content="Förnamn författare" />
+                        <TextBox
+                            Width="110"
+                            Margin="10,0,10,0"
+                            Background="WhiteSmoke"
+                            Text="{Binding AuthorObject.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Width="130">
@@ -99,7 +111,7 @@
                             Width="110"
                             Margin="10,0,10,0"
                             Background="WhiteSmoke"
-                            Text="{Binding LibraryObject.ImageSource, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                            Text="{Binding LibraryObject.imagesrc, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="Beskrivning" />
                         <TextBox
                             Width="110"
@@ -114,10 +126,23 @@
                             Width="110"
                             MaxWidth="110"
                             Margin="10,0,10,0"
-                            materialDesign:ScrollBarAssist.ThumbWidth="2"
                             AcceptsReturn="true"
                             Background="WhiteSmoke"
                             Text="{Binding LibraryObject.PurchasePrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Bildadress" />
+                        <TextBox
+                            Width="110"
+                            MaxWidth="110"
+                            Margin="10,0,10,0"
+                            AcceptsReturn="true"
+                            Background="WhiteSmoke"
+                            Text="{Binding LibraryObject.imagesrc, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <!--<Label Content="Författare Efternamn" />
+                        <TextBox
+                            Width="110"
+                            Margin="10,0,10,0"
+                            Background="WhiteSmoke"
+                            Text="{Binding AuthorObject.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
                     </StackPanel>
 
                     <Button
