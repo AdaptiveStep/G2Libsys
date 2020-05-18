@@ -7,6 +7,7 @@
     /// </summary>
     #region Namespaces
     using G2Libsys.Library;
+    using System.Collections.Generic;
     using System.Data;
     using System.Threading.Tasks;
     #endregion
@@ -76,5 +77,26 @@
                       param: new { email },
                 commandType: CommandType.StoredProcedure);
         }
+        public virtual async Task<IEnumerable<Loan>> GetLoansAsync(int id)
+        {
+            using IDbConnection _db = Connection;
+
+            // Return all items of type T
+            return await _db.QueryAsync<Loan>(
+                        sql: GetProcedureName<User>("getloans"),
+                      param: new { id },
+                commandType: CommandType.StoredProcedure);
+        }
+        public virtual async Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id)
+        {
+            using IDbConnection _db = Connection;
+
+            // Return all items of type T
+            return await _db.QueryAsync<LibraryObject>(
+                        sql: GetProcedureName<User>("getloanobjects"),
+                      param: new { id },
+                commandType: CommandType.StoredProcedure);
+        }
+
     }
 }
