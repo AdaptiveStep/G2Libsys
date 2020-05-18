@@ -26,8 +26,7 @@
 
   <ItemGroup>
     <Resource Include="Resources\Images\LIBSYS.png" />
-    <Resource Include="Views\back-icon-isolated-on-white-background-back-icon-vector-26555694.jpg" />
-    <Resource Include="Views\nedladdning.png" />
+    <Resource Include="Resources\Images\nedladdning.png" />
   </ItemGroup>
 
   <ItemGroup>
