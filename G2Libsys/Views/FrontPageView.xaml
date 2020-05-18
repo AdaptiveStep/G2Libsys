@@ -26,18 +26,17 @@
         </Grid.RowDefinitions>
 
         <!--Header-->
-        <ScrollViewer Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3">
+        <ScrollViewer Grid.Column="1" 
+                      Grid.Row="1" 
+                      Grid.ColumnSpan="3"
+                      Height="{Binding Path=ActualHeight, 
+                      RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}"
+>
             
         <WrapPanel
                    Orientation="Vertical"
                    >
-        <TextBlock Text="Heta Boktips!"
-                   FontSize="30"
-                   Grid.Column="1"
-                   Grid.Row="0"
-                   HorizontalAlignment="Left"
-                   FontFamily="{StaticResource MaterialDesignFont}"
-                   FontWeight="Regular"/>
+        
         <uc:SmallPostControl 
                 
                 DataContext="{Binding}" 
@@ -45,30 +44,28 @@
                 Margin="0 0 40 0"
                 />
 
-                <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" />
+        <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" />
             
-                <uc:BigPostControl 
-                
+        <uc:BigPostControl 
                 DataContext="{Binding}" 
                 x:Name="bigpostctrl"
                 Grid.ColumnSpan="2"
-                    
                 />
 
-                <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" Height="50"/>
+        <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" 
+                              Height="50"/>
 
-
-                <uc:SmallPostControl 
+        <uc:SmallPostControl 
                 
                 DataContext="{Binding}" 
                 x:Name="smallpostonrl"
                 />
+            
         <uc:SmallPostControl 
-                
                 DataContext="{Binding}" 
                 x:Name="smallpostCntrl"
                 />
-            </WrapPanel>
+        </WrapPanel>
 
         </ScrollViewer>
     </Grid>

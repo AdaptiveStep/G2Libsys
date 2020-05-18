@@ -139,49 +139,35 @@
 		[ValueType] VARCHAR(50)			NOT NULL DEFAULT 'UNNAMED', 
 		);
 
+
+	-- CREATE PROCEDURE GetVTwithID @pID nvarchar(30)
+	-- 		AS
+	-- 		BEGIN
+	-- 		SELECT ValueType FROM Details WHERE [ID] = @pID
+	-- 		END;
+	-- 	GO
+
+	CREATE FUNCTION dbo.GetVTwithID(@pID INT)
+		RETURNS VARCHAR(50)
+		AS
+		BEGIN 
+			DECLARE @vt VARCHAR(50);
+			SET @vt = (SELECT ValueType FROM DETAILS as a WHERE a.ID = @pID);
+			RETURN @vt;
+		END 
+		GO			
 	CREATE TABLE ObjectHasDetailValues(
 		ID			INT IDENTITY(1,1)	NOT NULL,    --Candidatekey
 		[Object]	INT					NOT NULL FOREIGN KEY REFERENCES LibObjects(ID),
 		[Detail]	INT					NOT NULL FOREIGN KEY REFERENCES Details(ID),
 		[Value]		VARCHAR(50),
-		ParsedValT AS (SELECT a.ValueType FROM DETAILS as a WHERE a.ValueType = Detail) 
+		ParsedValT AS dbo.GetVTwithID(Detail),
+
+		CHECK(operation = 'INS' or operation='DEL')
 		);
 
-		CREATE PROCEDURE GetVTwithDetailName @pName nvarchar(30)
-			AS
-			BEGIN
-			SELECT * FROM Details WHERE [Name] = @pName
-			END;
-		GO
-----------------------------------------------------------------------------------------------------
---För att garantera typsäkerheten i en dynamiskt typad relationsdatabas.
--- Kan komma till nytta ifall klient vill kunna lägga till egna Typer utan att schemat ska behöva ändras
--- Skriven av mig april 2020.
 
 
-Create PROCEDURE ValidateTypeProc(
-	@name nvarchar(MAX), 
-    @tname nvarchar(MAX),
-	@res BIT OUTPUT)
-AS
-BEGIN
-	--DECLARE @res BIT
-	DECLARE @ParmDefinition nvarchar(500);  
-    DECLARE @mycommand NVARCHAR(MAX);
-    SET @mycommand = N' 
-                        IF Try_CAST( ''%s'' AS %s ) IS NULL 
-						  SET @mybit = 0;
-                        ELSE 
-						  SET @mybit = 1;
-                     ';
-    declare @query nVARCHAR(MAX)
-    SET @query = FORMATMESSAGE(@mycommand, @name, @tname);
-    
-    SET @ParmDefinition = N'@mybit varchar(30) OUTPUT';  
-  
-	EXECUTE sp_executesql @query, @ParmDefinition, @mybit= @res OUTPUT;  
-	SELECT @res;  
-END;
 
 ------------------------------------------------------------------------
 --- OTHER SQL BATCH INSERTS --------------------------------------------

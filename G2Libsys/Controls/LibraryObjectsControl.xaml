@@ -4,43 +4,60 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:G2Libsys.Controls"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:convert="clr-namespace:G2Libsys.Converters"
-    d:DesignHeight="200"
+    d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-        <ScrollViewer 
-            Background="Transparent"
-            
-            >
-            <ListView
-                ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                ScrollViewer.CanContentScroll="True"
-                Margin="10"
-                DataContext="{Binding}"
+    <StackPanel Orientation="Vertical">
+
+        <Label
+                
+                HorizontalAlignment="Center"
+                FontSize="22"
+                FontWeight="DemiBold"
+                Foreground="Black"
+                Content="Resultat"/>
+        <ListView
+                
+                SelectionMode="Single"
+                HorizontalAlignment="Left"
                 ItemsSource="{Binding LibraryObjects}"
                 SelectedItem="{Binding SelectedLibraryObject}"
-                MaxHeight="200"
-                SelectionMode="Single"
-                >
-                
+                IsSynchronizedWithCurrentItem="False"
+                Margin="5"
+            >
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <materialDesign:Card MaxHeight="180" UniformCornerRadius="4" Background="Transparent">
+                    <!--<Grid Background="{StaticResource accent_light}">
                         
-                    <Image 
-                        Margin="1"
-                        Source="{Binding ImageSource, Converter={convert:PathToImageConverter}}"/>
-                    </materialDesign:Card>
+                    <StackPanel Orientation="Horizontal">-->
+                        <!--<TextBlock 
+                                Margin="10 10 10 10 "
+                                FontSize="22"
+                                FontWeight="DemiBold"
+                                Foreground="Black"
+                                Text="{Binding Title}"/>
+                        <TextBlock    
+                                Margin="10 10 10 10 "
+                                FontSize="22"
+                                FontWeight="DemiBold"
+                                Foreground="Black"
+                                Text="{Binding Publisher}"/>-->
+
+
+                        <!--</StackPanel>
+                    </Grid>-->
+                            <Image 
+                                MaxHeight="180"
+                                Source="{Binding imagesrc, Converter={convert:PathToImageConverter}}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
 
             <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+                <ItemsPanelTemplate>
+                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
                                    RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
                                    ItemWidth="{Binding (ListView.View).ItemWidth, 
                                    RelativeSource={RelativeSource AncestorType=ListView}}"
@@ -48,15 +65,8 @@
                                    ItemHeight="{Binding (ListView.View).ItemHeight, 
                                    RelativeSource={RelativeSource AncestorType=ListView}}"
                                    MaxWidth="720"/>
-                    
-                    
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-               
-            </ListView>
-        </ScrollViewer>
-
-
-
-
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
+    </StackPanel>
 </UserControl>

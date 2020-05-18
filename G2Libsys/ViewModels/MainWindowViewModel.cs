@@ -1,27 +1,31 @@
-﻿using G2Libsys.Commands;
-using G2Libsys.Data.Repository;
-using G2Libsys.Library;
-using G2Libsys.Models;
-using G2Libsys.Services;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Input;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
+    #region Namespaces
+    using G2Libsys.Commands;
+    using G2Libsys.Data.Repository;
+    using G2Libsys.Library;
+    using G2Libsys.Models;
+    using G2Libsys.Services;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.ComponentModel;
+    using System.Windows;
+    using System.Windows.Input;
+    #endregion
+
+    /// <summary>
+    /// Main ViewModel
+    /// </summary>
     public class MainWindowViewModel : BaseViewModel, IHostScreen
     {
         #region Private Fields
-
         private readonly IRepository _repo;
         private User currentUser;
         private IViewModel currentViewModel;
         private ISubViewModel subViewModel;
         private ICommand goToFrontPage;
         private ICommand logOutCommand;
-
+        private ICommand cancelCommand;
         #endregion
 
         #region Public Properties
@@ -34,7 +38,13 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Quick navigation for devmenu
         /// </summary>
-        public UserMenuItem SelectedDevItem { set => value.Action.Execute(null); }
+        public UserMenuItem SelectedDevItem {
+            set
+            {
+                value.Action.Execute(null);
+                SubViewModel = null;
+            }
+        }
 
         /// <summary>
         /// Active user
@@ -111,21 +121,30 @@ namespace G2Libsys.ViewModels
         /// <summary>
         /// Call logout method
         /// </summary>
-        public ICommand LogOutCommand => logOutCommand ??= new RelayCommand(x => LogOut());
+        public ICommand LogOutCommand => logOutCommand ??= new RelayCommand(_ => LogOut());
 
         /// <summary>
         /// Navigate to frontpage
         /// </summary>
         public ICommand GoToFrontPage => goToFrontPage ??= new RelayCommand(_ =>
         {
+            SubViewModel = null;
+
             if (!(CurrentViewModel is LibraryMainViewModel))
+            {
                 NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
+            }
             else
             {
                 var viewModel = (LibraryMainViewModel)CurrentViewModel;
                 viewModel.FrontPage = true;
             }
         });
+
+        /// <summary>
+        /// Reset Subviewmodel
+        /// </summary>
+        public ICommand CancelCommand => cancelCommand ??= new RelayCommand(_ => SubViewModel = null);
 
         #endregion
 
@@ -145,7 +164,7 @@ namespace G2Libsys.ViewModels
 
         #endregion
 
-        #region Setup Methods
+        #region Initialization
         /// <summary>
         /// Initial setup
         /// </summary>
@@ -186,7 +205,6 @@ namespace G2Libsys.ViewModels
 
             // Create UserMenuItems
             MenuItems.Add(new UserMenuItem(new UserProfileViewModel(), "Profil"));
-            MenuItems.Add(new UserMenuItem(new UserReservationsViewModel(), "Mina lån"));
 
             (CurrentUser.UserType switch
             {
@@ -231,7 +249,7 @@ namespace G2Libsys.ViewModels
 
         #endregion
 
-        #region Functions
+        #region Methods
 
         /// <summary>
         /// Execution logic for user logout

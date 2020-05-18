@@ -13,8 +13,7 @@
     d:DesignWidth="800"
     x:TypeArguments="vm:LibraryMainViewModel"
     mc:Ignorable="d">
-    <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
+  
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
@@ -26,23 +25,25 @@
                     <ColumnDefinition MinWidth="100" MaxWidth="220" />
                     <ColumnDefinition Width="4*" />
                 </Grid.ColumnDefinitions>
-
+                
+                
                 <userControl:LeftNavBarControl DataContext="{Binding}" />
 
                 <userControl:SearchHeaderControl Grid.Column="1" DataContext="{Binding}" />
             </Grid>
 
             
-            <userControl:LibraryObjectsControl
-                Grid.Row="1"
-                DataContext="{Binding}"
-                Visibility="{Binding SearchPage, Converter={converter:BoolToVisibilityConverter}}" />
-
             <userControl:FrontPageControl
                 Grid.Row="1"
                 DataContext="{Binding}"
                 Visibility="{Binding FrontPage, Converter={converter:BoolToVisibilityConverter}}" />
+            <userControl:LibraryObjectsControl
+                Grid.Row="1"
+                
+                DataContext="{Binding}"
+                Visibility="{Binding SearchPage, Converter={converter:BoolToVisibilityConverter}}" />
+
 
         </Grid>
-    </ScrollViewer>
+   
 </local:BasePage>

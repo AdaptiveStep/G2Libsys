@@ -70,7 +70,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Task DeleteByIDAsync<T>(int id);
+        public Task DeleteAsync<T>(int id);
     }
 
     /// <summary>

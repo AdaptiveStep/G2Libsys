@@ -13,17 +13,21 @@
     x:TypeArguments="vm:AdminViewModel"
     mc:Ignorable="d">
     <Grid>
-        <StackPanel Grid.Column="1" Orientation="Horizontal">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="auto"/>
 
-            <materialDesign:Card Margin="10,10,10,10">
+		</Grid.ColumnDefinitions>
+
+		<materialDesign:Card  Margin="10" Grid.Column="0">
                 <StackPanel>
-                    <materialDesign:Card Margin="10,10,10,10">
+                    <materialDesign:Card Margin="10">
                         <StackPanel Orientation="Horizontal">
 
                             <Label VerticalAlignment="Center" Content="Sök efter användare" />
                             <TextBox
                                 Width="140"
-                                Margin="10,10,10,10"
+                                Margin="10"
                                 Background="Wheat"
                                 Text="{Binding SearchString}" />
                             <Button
@@ -35,6 +39,7 @@
                     </materialDesign:Card>
 
                     <DataGrid
+                        Height="320"
                         MinWidth="400"
                         Margin="10,10,10,10"
                         AutoGenerateColumns="False"
@@ -43,6 +48,8 @@
                         DataContext="{Binding}"
                         IsReadOnly="True"
                         ItemsSource="{Binding Users}"
+                        ScrollViewer.CanContentScroll="True"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto"
                         SelectedItem="{Binding SelectedUser}"
                         SelectionMode="Single">
                         <DataGrid.Columns>
@@ -52,12 +59,22 @@
                             <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
                             <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
                         </DataGrid.Columns>
+                        <DataGrid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding GoToUser}"
+                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
+                                Gesture="LeftDoubleClick" />
+                            <KeyBinding
+                                Key="Delete"
+                                Command="{Binding RemoveUserCommand}"
+                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
+                        </DataGrid.InputBindings>
                     </DataGrid>
 
                 </StackPanel>
             </materialDesign:Card>
 
-            <StackPanel Orientation="Vertical">
+		<StackPanel Orientation="Vertical" Grid.Column="1"  Margin="0 10 10 10">
                 <Label Content="Lägg till medlem" Foreground="Black" />
                 <materialDesign:Card>
                     <StackPanel>
@@ -90,10 +107,11 @@
                             Width="100"
                             Margin="10,0,10,0"
                             Background="Wheat"
-                            ItemsSource="{Binding UserTypes}" >
+                            ItemsSource="{Binding UserTypes}"
+                            SelectedItem="{Binding SelectedUserType}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
-                                    <TextBlock  Text="{Binding Name}"/>
+                                    <TextBlock Text="{Binding Name}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
@@ -118,6 +136,5 @@
             </StackPanel>
 
 
-        </StackPanel>
     </Grid>
 </local:BasePage>

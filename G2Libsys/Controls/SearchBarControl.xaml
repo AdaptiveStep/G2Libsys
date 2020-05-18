@@ -53,27 +53,32 @@
         
         
         <ComboBox
+                   SelectedItem="{Binding SelectedCategory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    Grid.Column="2"
                    Foreground="MintCream"
                    FontWeight="Bold"
                    Background="{StaticResource accent_light}"
-                   materialDesign:HintAssist.Hint="Böcker"
+                   materialDesign:HintAssist.Hint="Kategori"
                    VerticalAlignment="Bottom"
                    Style="{StaticResource MaterialDesignFloatingHintComboBox}"
                    materialDesign:HintAssist.HelperText="Vad letar du efter?"
                    Margin="0 0 0 16"
-                   
-                   >
-            <ComboBoxItem>
-                Seminarium
-            </ComboBoxItem>
-            <ComboBoxItem>
-                Anställda
-            </ComboBoxItem>
-            <ComboBoxItem>
-                Mina Lån
-            </ComboBoxItem>
+                   ItemsSource="{Binding Categories}"
             
+                   >
+            <ComboBox.ItemTemplate>
+                
+                <DataTemplate>
+                    
+            <TextBlock Text="{Binding Name}" IsEnabled="False"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+
+
+
+
+
+
         </ComboBox>
 
         <materialDesign:Card Grid.Column="3"
@@ -92,7 +97,6 @@
                    Width="55"
                    Style="{StaticResource MaterialDesignFlatAccentBgButton}"
                    HorizontalAlignment="Left"
-                   
                    VerticalAlignment="Bottom"
                    Content="Sök"
                    Command="{Binding SearchCommand}"

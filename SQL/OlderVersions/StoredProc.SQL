@@ -83,4 +83,19 @@ create proc usp_getall_category
         select * from Categories;
     end
     GO
+
+create proc usp_getall_libraryobjects
+    as
+    begin
+        select * from LibraryObjects;
+    end
+    GO
+
+Create proc usp_remove_libraryobjects
+    @ID int
+    as
+    begin
+		delete from libraryobjects where ID = @ID
+    end
+    GO
 -------------------------------------------------------------
