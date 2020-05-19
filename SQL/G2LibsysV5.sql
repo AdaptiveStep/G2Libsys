@@ -184,7 +184,9 @@
 		ID 				INT IDENTITY(1,1) 	NOT NULL PRIMARY KEY,									  	--Candidatekey
 		ActivationDate 	DATETIME 			NOT NULL DEFAULT SYSDATETIME(),
 		Activated 		BIT 				NOT NULL DEFAULT 1,
-		[Owner] 		INT 			   	NOT NULL FOREIGN KEY REFERENCES Users(ID), 					--Many2One
+		[Owner] 		INT 			   	NOT NULL FOREIGN KEY REFERENCES Users(ID) UNIQUE, 					--Many2One
+
+ 
 
 		--Calculated Column
 		ValidUntil AS	DATEADD(year, 1, ActivationDate),
@@ -395,6 +397,21 @@
 		END
 		GO
 
+	CREATE PROC usp_OwnsCard(
+		@ID int
+		)
+		AS
+		BEGIN
+			SELECT *
+			FROM Cards
+			WHERE  Cards.Owner IN 
+				(
+				SELECT ID
+				FROM Users
+				WHERE ID=@ID
+				);
+		END
+		GO
 ------------------------------------------------------------------------
 ---------------Usertypes -----------------------------------------------
 	Create proc usp_getall_usertypes
@@ -454,7 +471,7 @@
 		GO
 	
 	--DELETE Loans for user
-	CREATE PROC usp_delete_loans
+	CREATE PROC usp_remove_loans
 		@ID int = null
 		AS
 		BEGIN
@@ -524,7 +541,7 @@
 ------------------------------------------------------------------------
 ---------------Cards ---------------------------------------------------
 	--Delete the card for user
-	CREATE PROC usp_delete_cards
+	CREATE PROC usp_remove_cards
 		@ID int = null
 		AS
 		BEGIN
@@ -546,7 +563,7 @@
 		AS
 		BEGIN
 			INSERT INTO 
-			Cards(Owner) VALUES (@Owner);
+			Cards([Owner]) VALUES (@Owner);
 		END
 		GO
 
@@ -718,7 +735,7 @@
 	    DROP PROCEDURE smart_filter_Search;
 	    GO
 
-	    --Needs more parameters and cant search with INT-parameters yet. Also results in two tables.
+	    --Dynamic Search directly to table
 	CREATE PROC smart_filter_Search(
 	    @Title          VARCHAR(MAX) = NULL , 
 	    @Description    VARCHAR(MAX) = NULL, 
@@ -726,41 +743,63 @@
 	    @Publisher      VARCHAR(MAX) = NULL, 
 	    @Dewey          INT          = NULL, 
 	    @Category       INT          = NULL, 
-	    @Author         INT			 = NULL
+	    @Author         INT			 = NULL,
+		@Library 		INT			 = NULL,
+		@AddedBy 		INT			 = NULL,
+		
+		--All that that were added since this date
+		@DateAdded DateTime			 = NULL,
+
+		--All that were edited since this date
+		@LastEdited Datetime		 = NULL
 		)
 	    AS
 	    BEGIN
+
+   		--To initiate the predicate with simple tautology.
 	    DECLARE @tmpsql VARCHAR(MAX) = ' 1=1 '
 	    
 	    --Build up a string
 	    IF @Title is NOT NULL
-	        SET @tmpsql = @tmpsql   +  ' AND Title          LIKE + ''%'   + @Title         + '%'''
+	        SET @tmpsql = @tmpsql   +  ' AND Title          LIKE + ''%'   +       @Title         + '%'''
 	    IF @Description is NOT NULL
-	        SET @tmpsql = @tmpsql   +  ' AND [Description]  LIKE + ''%'   + @Description   + '%''' 
+	        SET @tmpsql = @tmpsql   +  ' AND [Description]  LIKE + ''%'   +       @Description   + '%''' 
 	    
 	    IF @ISBN is NOT NULL
-	        SET @tmpsql = @tmpsql   + ' AND ISBN              =  + '    + @ISBN
+	        SET @tmpsql = @tmpsql   + ' AND ISBN              =  + '      + CAST( @ISBN as VARCHAR(MAX))
 	    IF @Publisher is NOT NULL
-	        SET @tmpsql = @tmpsql   + ' AND Publisher       LIKE + ''%'   + @Publisher     + '%'''       
+	        SET @tmpsql = @tmpsql   + ' AND Publisher       LIKE + '      +       @Publisher     + '%'''       
 	    
 	    IF @Dewey is NOT NULL
-	        SET @tmpsql = @tmpsql   + ' AND Dewey             =  + '    + @Dewey     
-	    IF @Category is NOT NULL
-	        SET @tmpsql =  @tmpsql  + ' AND Category        LIKE + ''%'   + @Category      + '%'''        
+	        SET @tmpsql = @tmpsql   + ' AND Dewey             =  + '      +  CAST(@Dewey   as VARCHAR(MAX))      
+	    
+		IF @Category is NOT NULL
+	        SET @tmpsql =  @tmpsql  + ' AND Category          =  + '      +  CAST(@Category as VARCHAR(MAX))        
 	    
 	    IF @Author is NOT NULL
-	        SET @tmpsql =  @tmpsql  + ' AND Author          LIKE + ''%'   + @Author        + '%'''         
-	  
+	        SET @tmpsql =  @tmpsql  + ' AND Author            =  + '      +  CAST(@Author as VARCHAR(MAX))             
+
+	    IF @Library is NOT NULL
+	        SET @tmpsql =  @tmpsql  + ' AND Library             =  + '     + CAST(@Library as VARCHAR(MAX))             
+
+	    IF @AddedBy is NOT NULL
+	        SET @tmpsql =  @tmpsql  + ' AND AddedBy            =  + '      +  CAST(@AddedBy as VARCHAR(MAX))             
+
+
+	    IF @DateAdded is NOT NULL
+	        SET @tmpsql = @tmpsql   + ' AND [DateAdded] BETWEEN '' ' + CAST(@DateAdded  as VARCHAR(MAX))  + ' '' AND  SYSDATETIME() ' 
+	    
+		IF @LastEdited is NOT NULL
+	        SET @tmpsql = @tmpsql   + ' AND [LastEdited] BETWEEN '' ' + CAST(@LastEdited  as VARCHAR(MAX))  + ' '' AND  SYSDATETIME() ' 
+
 	    DECLARE  @tmpsql2 VARCHAR(MAX);
 	    SET @tmpsql2 = 'SELECT * FROM LibraryObjects WHERE' + @tmpsql;
+	 
 
 	    --Execute the string
-	    EXEC(@tmpsql2 )
-
-
-	    --Result in another empty table?
-		END
+	    EXEC(@tmpsql2)
 		
+		END
 		GO
 
 	--TODO , Search with partial ISBN too !!
@@ -1602,7 +1641,5 @@
 				(10, 'The Hulk'									,'Bruce Banner, a scientist on the run from the U.S. Government, must find a cure for the monster he turns into whenever he loses his temper.'			,9996229994999,'WarnerBrothers'			,350 ,4 ,1, 'https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_SY1000_CR0,0,674,1000_AL_.jpg', 100);
 		SET IDENTITY_INSERT LibraryObjects OFF
 		GO
-
-
 
 ------------------------------------------------------------------------
