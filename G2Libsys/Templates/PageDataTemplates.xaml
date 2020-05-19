@@ -39,10 +39,6 @@
         <vs:LibraryObjectAdministrationView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type vm:UserReservationsViewModel}">
-        <vs:UserReservationsView />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type vm:UserProfileViewModel}">
         <vs:UserProfileView />
     </DataTemplate>

@@ -79,7 +79,7 @@
             Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="C:\Users\CM\source\repos\AdaptiveStep\G2Libsys\G2Libsys\Resources\Images\LIBSYS.png" Stretch="Fill" />
+                    <Image Source="..\Resources\Images\LIBSYS.png" Stretch="Fill" />
                     <TextBlock
                         Margin="10,0,0,4"
                         HorizontalAlignment="Center"

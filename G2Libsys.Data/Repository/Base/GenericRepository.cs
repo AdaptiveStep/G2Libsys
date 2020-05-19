@@ -77,7 +77,7 @@
                 {
                     try
                     {
-                        bkupString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
+                        bkupString = ConfigurationManager.ConnectionStrings["sqldefault"].ConnectionString;
                         var conn = new SqlConnection(bkupString);
                         conn.Open();
                         return conn;
