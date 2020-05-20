@@ -765,7 +765,7 @@
 	    IF @ISBN is NOT NULL
 	        SET @tmpsql = @tmpsql   + ' AND ISBN              =  + '      + CAST( @ISBN as VARCHAR(MAX))
 	    IF @Publisher is NOT NULL
-	        SET @tmpsql = @tmpsql   + ' AND Publisher       LIKE + '      +       @Publisher     + '%'''       
+	        SET @tmpsql = @tmpsql   + ' AND Publisher       LIKE + ''%'   +       @Publisher     + '%'''       
 	    
 	    IF @Dewey is NOT NULL
 	        SET @tmpsql = @tmpsql   + ' AND Dewey             =  + '      +  CAST(@Dewey   as VARCHAR(MAX))      
@@ -774,13 +774,13 @@
 	        SET @tmpsql =  @tmpsql  + ' AND Category          =  + '      +  CAST(@Category as VARCHAR(MAX))        
 	    
 	    IF @Author is NOT NULL
-	        SET @tmpsql =  @tmpsql  + ' AND Author            =  + '      +  CAST(@Author as VARCHAR(MAX))             
+	        SET @tmpsql = @tmpsql   + ' AND Author       LIKE + ''%'   	  +       @Author     + '%'''       
 
 	    IF @Library is NOT NULL
-	        SET @tmpsql =  @tmpsql  + ' AND Library             =  + '     + CAST(@Library as VARCHAR(MAX))             
+	        SET @tmpsql =  @tmpsql  + ' AND Library             =  + '    +  CAST(@Library as VARCHAR(MAX))             
 
 	    IF @AddedBy is NOT NULL
-	        SET @tmpsql =  @tmpsql  + ' AND AddedBy            =  + '      +  CAST(@AddedBy as VARCHAR(MAX))             
+	        SET @tmpsql =  @tmpsql  + ' AND AddedBy            =  + '     +  CAST(@AddedBy as VARCHAR(MAX))             
 
 
 	    IF @DateAdded is NOT NULL
