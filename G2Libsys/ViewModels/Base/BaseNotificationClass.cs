@@ -2,7 +2,7 @@
 
 namespace G2Libsys.ViewModels
 {
-    public class BaseNotificationClass : INotifyPropertyChanged
+    public abstract class BaseNotificationClass : INotifyPropertyChanged
     {
         #region PropertyChangedEvent
         /// <summary>

@@ -98,15 +98,15 @@ namespace G2Libsys.ViewModels
 
         public UserProfileViewModel()
         {
-            _dialog = new DialogService();
             if (base.IsInDesignMode) return;
-            CurrentUser = NavService.HostScreen.CurrentUser;
+
+            CurrentUser = _navigationService.HostScreen.CurrentUser;
             _repo = new GeneralRepository();
             _userrepo = new UserRepository();
 
-            SavePasswordbutton = new RelayCommand(x => ChangePassword());
-            Showbutton = new RelayCommand(x => GetLoans());
-            SaveEmailbutton = new RelayCommand(x => ChangeEmail());
+            SavePasswordbutton = new RelayCommand(_ => ChangePassword());
+            Showbutton = new RelayCommand(_ => GetLoans());
+            SaveEmailbutton = new RelayCommand(_ => ChangeEmail());
             
         }
 

@@ -12,12 +12,12 @@ namespace G2Libsys.Converters
     public abstract class BaseValueConverter<T> : MarkupExtension, IValueConverter where T : class, new()
     {
         /// <summary>
-        /// 
+        /// Current converter
         /// </summary>
         private readonly T _converter;
 
         /// <summary>
-        /// 
+        /// Initiate converter
         /// </summary>
         /// <param name="provider"></param>
         public override object ProvideValue(IServiceProvider provider)
@@ -26,7 +26,7 @@ namespace G2Libsys.Converters
         }
 
         /// <summary>
-        /// 
+        /// Convert value
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>
@@ -35,7 +35,7 @@ namespace G2Libsys.Converters
         public abstract object Convert(object value, Type targetType, object parameter, CultureInfo culture);
 
         /// <summary>
-        /// 
+        /// Convert value back
         /// </summary>
         /// <param name="value"></param>
         /// <param name="targetType"></param>

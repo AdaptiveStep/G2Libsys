@@ -6,6 +6,7 @@
     using G2Libsys.Library;
     using G2Libsys.Models;
     using G2Libsys.Services;
+    using Microsoft.Extensions.DependencyInjection;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
@@ -132,7 +133,7 @@
 
             if (!(CurrentViewModel is LibraryMainViewModel))
             {
-                NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
+                _navigationService.HostScreen.CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
             }
             else
             {
@@ -171,14 +172,14 @@
         private void Initialize()
         {
             // Initialize navservice and set hostscreen to this MainWindowViewModel
-            NavService.Setup(this);
+            _navigationService.Setup(this);
 
             // Enable dev menu
             DeveloperMode = false;
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
-            CurrentViewModel = NavService.GetViewModel(new LibraryMainViewModel());
+            CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
 
             // Initiate menuitems list
             MenuItems = new ObservableCollection<UserMenuItem>();
@@ -205,6 +206,7 @@
 
             // Create UserMenuItems
             MenuItems.Add(new UserMenuItem(new UserProfileViewModel(), "Profil"));
+            //MenuItems.Add(new UserMenuItem(new UserReservationsViewModel(), "Mina lån"));
 
             (CurrentUser.UserType switch
             {
@@ -228,7 +230,7 @@
                 }
             }).ForEach(u => MenuItems.Add(u));
 
-            MenuItems.Add(new UserMenuItem(new FrontPageViewModel(), "Logga ut", LogOutCommand));
+            MenuItems.Add(new UserMenuItem(new LibraryMainViewModel(), "Logga ut", LogOutCommand));
         }
 
         /// <summary>

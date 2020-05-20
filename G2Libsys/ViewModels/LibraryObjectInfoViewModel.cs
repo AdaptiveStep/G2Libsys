@@ -15,7 +15,7 @@ namespace G2Libsys.ViewModels
     public class LibraryObjectInfoViewModel : BaseViewModel, ISubViewModel
     {
         private readonly IRepository _repo;
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         private LibraryObject currentBook;
 
