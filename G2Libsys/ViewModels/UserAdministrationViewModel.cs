@@ -13,7 +13,6 @@
     public class UserAdministrationViewModel : BaseViewModel, ISubViewModel
     {
         #region Fields
-        private readonly IDialogService _dialog;
         private User activeUser;
         private Card userCard;
         private ObservableCollection<Loan> loanObjects;
@@ -72,7 +71,7 @@
         /// <summary>
         /// Close SubViewModel
         /// </summary>
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
         public ICommand Savebutton { get; private set; }
         public ICommand ChangeCardStatusbutton { get; private set; }
         #endregion
@@ -83,16 +82,13 @@
 
         public UserAdministrationViewModel(User user)
         {
-            this.ActiveUser = user;
-            
-            _dialog = new DialogService();
-
-            _dialog.Alert("Test", ActiveUser.Firstname);
-
-            Savebutton = new RelayCommand(x => Save());
-            ChangeCardStatusbutton = new RelayCommand(x => ChangeCardStatus());
             _userrepo = new UserRepository();
             _repo = new GeneralRepository();
+
+            this.ActiveUser = user;
+
+            Savebutton = new RelayCommand(_ => Save());
+            ChangeCardStatusbutton = new RelayCommand(_ => ChangeCardStatus());
         }
 
 

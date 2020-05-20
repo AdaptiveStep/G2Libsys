@@ -51,7 +51,7 @@
                 <!--Bild-->
 
                     <Image
-               Source="{Binding FpLibraryObjects[0].ImageSource}"
+               Source="https://s1.adlibris.com/images/54131167/harry-potter-och-hemligheternas-kammare.jpg"
                Stretch="Uniform"
                Margin="5"
                Grid.RowSpan="3"
@@ -63,7 +63,8 @@
   <!--Stackpanel för Boktitel, författare & beskrivning-->
 
                     
-                <StackPanel Margin="5 5 0 0">
+                <StackPanel Margin="5"
+                            Grid.ColumnSpan="2">
    <!--Titel-->
                     <TextBlock
                    Text="{Binding FpLibraryObjects[0].Title}"
@@ -75,7 +76,7 @@
                     <TextBlock
                    FontSize="7"
                    FontWeight="SemiBold"
-                   Text="{Binding FpLibraryObjects[0].Author}"
+                   Text="{Binding FpLibraryObjects[0].Publisher}"
                    Style="{StaticResource MaterialDesignBody2TextBlock}" />
                 </StackPanel>
                     

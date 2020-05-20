@@ -1,4 +1,5 @@
-﻿using G2Libsys.Commands;
+﻿#region Namespaces
+using G2Libsys.Commands;
 using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Services;
@@ -7,29 +8,32 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
-
+#endregion
 namespace G2Libsys.ViewModels
 {
 
     // Visa info om ett libraryobject med lånemöjligheter 
     public class LibraryObjectInfoViewModel : BaseViewModel, ISubViewModel
     {
+        #region Fields
         private readonly IRepository _repo;
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         private LibraryObject currentBook;
 
-        private Author author;
+        //private Author author;
 
-        private async void GetAuthor()
-        {
-            if (LibraryObject?.Author == null)
-            {
-                return;
-            }
+        //private async void GetAuthor()
+        //{
+        //    if (LibraryObject?.Author == null)
+        //    {
+        //        return;
+        //    }
             
-            AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
-        }
+        //    AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
+        //}
+        #endregion       
+        #region Constructor
         public LibraryObjectInfoViewModel()
         {
 
@@ -40,22 +44,30 @@ namespace G2Libsys.ViewModels
         public LibraryObjectInfoViewModel(LibraryObject libraryObject)
         {
             _repo = new GeneralRepository();
-            author = new Author();
+            //author = new Author();
             currentBook = libraryObject;
-            GetAuthor();
+            //GetAuthor();
            
         }
-
-
-        public Author AuthorObject
+        #endregion
+        #region Methods
+        private async void GetAuthor()
         {
-            get => author;
-            set
+            if (LibraryObject?.Author == null)
             {
-                author = value;
-                OnPropertyChanged(nameof(AuthorObject));
+                return;
             }
-        }
+
+
+        //public Author AuthorObject
+        //{
+        //    get => author;
+        //    set
+        //    {
+        //        author = value;
+        //        OnPropertyChanged(nameof(AuthorObject));
+        //    }
+        //}
         
         public LibraryObject LibraryObject
         {
@@ -66,6 +78,6 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LibraryObject));
             }
         }
-
+        #endregion
     }
 }

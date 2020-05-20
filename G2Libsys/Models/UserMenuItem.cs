@@ -1,10 +1,11 @@
-﻿using G2Libsys.Commands;
-using G2Libsys.Services;
-using G2Libsys.ViewModels;
-using System.Windows.Input;
-
-namespace G2Libsys.Models
+﻿namespace G2Libsys.Models
 {
+    using G2Libsys.Commands;
+    using G2Libsys.Services;
+    using G2Libsys.ViewModels;
+    using Microsoft.Extensions.DependencyInjection;
+    using System.Windows.Input;
+
     /// <summary>
     /// Item for navigation based on UserType
     /// </summary>
@@ -25,17 +26,19 @@ namespace G2Libsys.Models
         /// </summary>
         /// <param name="vm"></param>
         /// <param name="title"></param>
-        public UserMenuItem(IViewModel vm, string title = null, ICommand action = null)
+        public UserMenuItem(IViewModel vm, string title = null, ICommand action = null, INavigationService service = null)
         {
+            var navigationService = service ?? IoC.ServiceProvider.GetService<INavigationService>();
+
             // Set Title to title or viewmodel name
             this.Title = title ?? vm.GetType().Name.Replace("ViewModel", null);
 
             // Create new instance of vm in NavService
-            var viewmodel = NavService.CreateNewInstance(vm);
+            var viewmodel = navigationService.CreateNewInstance(vm);
 
             Action = action ?? new RelayCommand(_ => 
             {
-                NavService.HostScreen.CurrentViewModel = viewmodel;
+                navigationService.HostScreen.CurrentViewModel = viewmodel;
             });
         }
     }

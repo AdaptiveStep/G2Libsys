@@ -15,6 +15,9 @@ namespace G2Libsys
         {
             base.OnStartup(e);
 
+            // Initiate the inversion of control for serviceprovider
+            IoC.SetUp();
+
             var app = new MainWindow { DataContext = new MainWindowViewModel() };
             app.Show();
         }
