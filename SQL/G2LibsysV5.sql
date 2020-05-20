@@ -8,9 +8,9 @@
 
 --KVAR ATT GÖRA---------------------------------------------------------
 	--lätta saker
-	-- Fixa syntax överallt
 	-- Views for reports
-		--WHich views? View for 
+		--WHich views? View for - Loaned objects
+		-- 						- Deleted objects
 
 	-- Kolla default värden för alla Procedures
 	-- Dummy Reservations
@@ -31,9 +31,7 @@
 --LATEST EDITS:---------------------------------------------------------
 	--DONE:
 
-	-- Added some procedures for handling loans.
-	-- Added a better Advanced search procedure, for libraryobjects (still needs work)
-	-- Fixed SQL folder
+	-- Working advanced search procedure (uses dynamic sql execution)
 
 ------------------------------------------------------------------------
 --SQL RESET -------------WARNING--------------WARNING-------------------
@@ -162,15 +160,15 @@
 		[Description] 	VARCHAR(500)   								DEFAULT 'UNNAMED'		,
 		PlannedDate 	DATETIME 			NOT NULL 	DEFAULT SYSDATETIME()				,
 		ImageSRC 		VARCHAR(300)														,
-		Author			INT 				NOT NULL 	FOREIGN KEY REFERENCES Authors(ID)
+		Author 			VARCHAR(500)   								DEFAULT 'UNNAMED'		
 		);
 		--STANDARD INSERTS
 			SET IDENTITY_INSERT 	Seminars on
 				INSERT INTO 		Seminars (ID, [Title], [Description], PlannedDate, Author ) 
 						VALUES 
-						(1, 'Tjäna pengar med flumkurser'	,'Otroligt seminarie om modern utbildning!'	, '2020-06-10T15:00:00.000', 1),				--Does ID really have to be inserted? 
-						(2, 'Starta Eget'					,'Den bästa seminarien om starta eget.'		, '2020-08-10T10:00:00.000', 1),
-						(3, 'Zombiehantering 101'			,'En snabbkurs inför jordens undergång!'	, '2020-02-10T20:00:00.000', 1);
+						(1, 'Tjäna pengar med flumkurser'	,'Otroligt seminarie om modern utbildning!'	, '2020-06-10T15:00:00.000', 'Jörgen Backelin'),				--Does ID really have to be inserted? 
+						(2, 'Starta Eget'					,'Den bästa seminarien om starta eget.'		, '2020-08-10T10:00:00.000', 'Fredrik Stenmark'),
+						(3, 'Zombiehantering 101'			,'En snabbkurs inför jordens undergång!'	, '2020-02-10T20:00:00.000', 'Knut Munter');
 				SET IDENTITY_INSERT Seminars OFF
 				GO
 
@@ -232,11 +230,8 @@
 		); 
 		GO
 
-
-
 	--
 	--
-
 
 	DROP TABLE IF EXISTS dbo.LibraryObjects
 	CREATE TABLE LibraryObjects(
@@ -247,12 +242,14 @@
 		Publisher		VARCHAR(100) 			DEFAULT 'UNNAMED',
 		PurchasePrice 	FLOAT 					DEFAULT 300,
 		Pages 			INT 					DEFAULT 0,
+		Author 			varchar(MAX) 			DEFAULT 'No Description',
 
 		Dewey			INT 	 			 					FOREIGN KEY REFERENCES DeweyDecimals(DeweyINT),
 		Category 		INT 		NOT NULL	DEFAULT 1 		FOREIGN KEY REFERENCES Categories(ID) ,
-		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
-
-		imagesrc VARCHAR(500), 
+--		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
+		
+		Disabled 		BIT NOT NULL DEFAULT 1,
+		imagesrc 		VARCHAR(500), 
 		--Hardcover 		INT 					DEFAULT 1 		FOREIGN KEY REFERENCES Covers(ID) 		ON DELETE SET NULL,
 		--Genre 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Genres(ID) 		ON DELETE SET NULL,
 		-- META attributes -- Must be here due to the 1..1 -> 1..1 relationship. Cannot be in separate Table.
@@ -588,13 +585,13 @@
 
 ------------------------------------------------------------------------
 ---------------Authors--------------------------------------------------
-	Create proc usp_getbyID_authors
-		@ID int
-		as
-		BEGIN
-			select * from authors where ID = @ID
-		END
-		GO	
+	-- Create proc usp_getbyID_authors
+	-- 	@ID int
+	-- 	as
+	-- 	BEGIN
+	-- 		select * from authors where ID = @ID
+	-- 	END
+	-- 	GO	
 ------------------------------------------------------------------------
 ---------------LIBRARY OBJECTS -----------------------------------------
 	Create proc usp_getall_libraryobjects

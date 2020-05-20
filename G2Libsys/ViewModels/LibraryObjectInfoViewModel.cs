@@ -19,17 +19,17 @@ namespace G2Libsys.ViewModels
 
         private LibraryObject currentBook;
 
-        private Author author;
+        //private Author author;
 
-        private async void GetAuthor()
-        {
-            if (LibraryObject?.Author == null)
-            {
-                return;
-            }
+        //private async void GetAuthor()
+        //{
+        //    if (LibraryObject?.Author == null)
+        //    {
+        //        return;
+        //    }
             
-            AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
-        }
+        //    AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
+        //}
         public LibraryObjectInfoViewModel()
         {
 
@@ -40,22 +40,22 @@ namespace G2Libsys.ViewModels
         public LibraryObjectInfoViewModel(LibraryObject libraryObject)
         {
             _repo = new GeneralRepository();
-            author = new Author();
+            //author = new Author();
             currentBook = libraryObject;
-            GetAuthor();
+            //GetAuthor();
            
         }
 
 
-        public Author AuthorObject
-        {
-            get => author;
-            set
-            {
-                author = value;
-                OnPropertyChanged(nameof(AuthorObject));
-            }
-        }
+        //public Author AuthorObject
+        //{
+        //    get => author;
+        //    set
+        //    {
+        //        author = value;
+        //        OnPropertyChanged(nameof(AuthorObject));
+        //    }
+        //}
         
         public LibraryObject LibraryObject
         {

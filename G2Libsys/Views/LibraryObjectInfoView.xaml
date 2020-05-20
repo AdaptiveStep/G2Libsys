@@ -67,7 +67,7 @@
                            Grid.Column="2"
                            VerticalAlignment="Top"/>-->
 
-   <!--Titel / description libobject-->
+                <!--Titel / description libobject-->
                 <Viewbox   Grid.Row="1"
                            Grid.ColumnSpan="3"
                            Grid.Column="2"
@@ -118,78 +118,7 @@
                     
                 </materialDesign:Card>
                 
-                <TextBlock Text="Om författaren:"
-                           Grid.Row="1"
-                           Grid.Column="5"
-                           Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                           Grid.ColumnSpan="2"
-                           VerticalAlignment="Bottom"
-                           />
                 
- <!--Author-->
-                <materialDesign:Card Grid.Row="2"
-                                     Grid.Column="5"
-                                     Grid.RowSpan="5"
-                                     Grid.ColumnSpan="3"
-                                     Height="auto"
-                                     Background="Transparent"
-                                     
-                                     >
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition  Height="120" />
-                            <RowDefinition  Height="20"/>
-                            <RowDefinition  Height="3*"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Image
-                        VerticalAlignment="Top"
-                        Source="{Binding AuthorObject.ImageSRC,  Converter={converter:PathToImageConverter}}"/>
-                        <StackPanel Grid.Column="1"
-                                    Grid.ColumnSpan="2">
-
-                            <TextBlock Text="{Binding LibraryObject.Author}"
-                                       Margin="0 0 10 0"
-                                       TextWrapping="Wrap"
-                                       FontWeight="DemiBold" />
-
-
-                            
-
-                            
-                        </StackPanel>
-                        <ScrollViewer
-                                VerticalScrollBarVisibility="Auto"
-                                Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Grid.RowSpan="3"
-                                HorizontalAlignment="Stretch"
-                                Background="Transparent"
-                            >
-                            <StackPanel
-                                Orientation="Vertical"
-                                TextBlock.Foreground="Black"
-                                >
-                                
-                                <TextBlock
-                                 Text="{Binding LibraryObject.Title}" />
-                                
-                                <TextBlock
-                                 Opacity=".68"
-                                 Text="{Binding AuthorObject.Biography}"
-                                 TextWrapping="Wrap"
-                                 Margin="0 0 0 5"/>
-                                
-                            </StackPanel>
-                        </ScrollViewer>
-                    </Grid>
-                    
-                </materialDesign:Card>
             </Grid>
         </materialDesign:Card>
     </Grid>
