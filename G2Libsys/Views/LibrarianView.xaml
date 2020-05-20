@@ -27,7 +27,7 @@
                         
                     <Label Content="Sök efter användare" VerticalAlignment="Center"/>
                         <TextBox Background="Wheat" Text="{Binding SearchString}"  Margin="10 10 10 10" Width="140"/>
-                        <Button Margin="0 0 10 0" Content="Sök" Command="{Binding searchbutton}"/>
+                        <Button IsDefault="True"  Margin="0 0 10 0" Content="Sök" Command="{Binding searchbutton}"/>
                         <Button Content="Avbryt" Command="{Binding cancelsearch}"/>
                     </StackPanel>
                     </materialDesign:Card>

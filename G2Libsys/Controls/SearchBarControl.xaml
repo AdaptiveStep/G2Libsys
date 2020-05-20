@@ -97,7 +97,6 @@
                    Width="55"
                    Style="{StaticResource MaterialDesignFlatAccentBgButton}"
                    HorizontalAlignment="Left"
-                   
                    VerticalAlignment="Bottom"
                    Content="Sök"
                    Command="{Binding SearchCommand}"

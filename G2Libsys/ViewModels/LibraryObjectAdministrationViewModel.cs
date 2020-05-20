@@ -166,7 +166,7 @@
 
         private async Task GetLibraryObjects()
         {
-            if (Categories == null)
+            if (Categories?.Count < 1)
             {
                 return;
             }
@@ -221,7 +221,7 @@
             }
         }
 
-        private void EditLibraryObject()
+        private async void EditLibraryObject()
         {
             dialogViewModel = new LibraryObjectDialogViewModel(SelectedItem, ItemCategories, "Ändra detaljer");
 
@@ -235,7 +235,7 @@
 
             try
             {
-                _repo.UpdateAsync(editedItem).ConfigureAwait(false);
+                await _repo.UpdateAsync(editedItem);
             }
             catch (Exception ex)
             {

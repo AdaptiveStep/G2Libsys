@@ -9,10 +9,117 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControl="clr-namespace:G2Libsys.Controls"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
-    d:DesignHeight="450"
+    d:DesignHeight="500"
     d:DesignWidth="800"
     x:TypeArguments="vm:LibraryObjectInfoViewModel"
     mc:Ignorable="d">
 
-    <Grid />
+    <Grid >
+        <Rectangle Opacity="0.5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Black" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Button Background="Transparent"
+                Style="{StaticResource MaterialDesignToolButton}"
+                Height="{Binding (FrameworkElement.ActualHeight)}"
+                Width="{Binding (FrameworkElement.ActualWidth)}"
+                Command="{Binding CancelCommand}"
+                Cursor="Arrow" />
+
+        <materialDesign:Card
+            Margin="30"
+            MaxWidth="750"
+            UniformCornerRadius="10"
+            Background="{StaticResource light_background}">
+            <Grid ShowGridLines="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="25"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition />
+                    <RowDefinition Height="40" />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <Image
+                    Grid.Column="1"
+                    Grid.Row="1"
+                    Grid.RowSpan="5"
+                    Margin="0 0 10 0"
+                    Source="{Binding LibraryObject.imagesrc, Converter={converter:PathToImageConverter}}"
+                    Stretch="Uniform" />
+
+                <!--<TextBlock Text="Av: Författare"
+                           Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                           Grid.Row="2"
+                           Grid.Column="2"
+                           VerticalAlignment="Top"/>-->
+
+                <!--Titel / description libobject-->
+                <Viewbox   Grid.Row="1"
+                           Grid.ColumnSpan="3"
+                           Grid.Column="2"
+                           MaxHeight="30"
+                           VerticalAlignment="Bottom">
+                <TextBlock Text="{Binding LibraryObject.Title}" 
+                           Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                           VerticalAlignment="Bottom"
+                           
+                           />
+                </Viewbox>
+                <ScrollViewer 
+                            Grid.Row="3"
+                            Grid.Column="2"
+                            Grid.ColumnSpan="3"
+                            Grid.RowSpan="3"
+                            VerticalScrollBarVisibility="Auto"
+                            >
+                    
+                <TextBlock
+                            Text="{Binding LibraryObject.Description}"
+                            Style="{StaticResource MaterialDesignTextBlock}"
+                            TextWrapping="Wrap"
+                            Margin="5 0 5 0" 
+                    />
+                    
+                </ScrollViewer>
+                
+                <materialDesign:Card Grid.Row="6"
+                                     Grid.Column="1"
+                                     Grid.ColumnSpan="1"
+                                     UniformCornerRadius="10"
+                                     Margin="5 5 16 5"
+                                     Background="{StaticResource light_background}">
+                    <Grid>
+
+                        <StackPanel VerticalAlignment="Top"
+                                    >
+<!--Infobox-->
+                            <TextBlock Text="{Binding LibraryObject.PurchasePrice}" Margin="5 0 0 0" />
+                            <TextBlock Text="{Binding LibraryObject.ISBN}" Margin="5 0 0 0" />
+                            <TextBlock Text="{Binding LibraryObject.Pages}" Margin="5 0 0 0" />
+                            <TextBlock Text="{Binding LibraryObject.DateAdded}" Margin="5 0 0 0" />
+                            
+                        </StackPanel>
+                        
+                    </Grid>
+                    
+                </materialDesign:Card>
+                
+                
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
 </local:BasePage>

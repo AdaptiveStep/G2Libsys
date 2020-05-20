@@ -175,7 +175,7 @@
             _navigationService.Setup(this);
 
             // Enable dev menu
-            DeveloperMode = true;
+            DeveloperMode = false;
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
@@ -213,12 +213,12 @@
                 1 => new List<UserMenuItem>() // Admin
                 {
                     new UserMenuItem(new AdminViewModel(), "Användare"),
-                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Produkter"),
+                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Katalog"),
                 },
                 2 => new List<UserMenuItem>() // Librarian
                 {
                     new UserMenuItem(new LibrarianViewModel(), "Användare"),
-                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Produkter"),
+                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Katalog"),
                 },
                 3 => new List<UserMenuItem>() // Visitor
                 {
@@ -242,10 +242,8 @@
             ViewModelList = new List<UserMenuItem>
             {
                 new UserMenuItem(new AdminViewModel()),
-                new UserMenuItem(new LibraryObjectInfoViewModel(), "ObjectInfo"),
                 new UserMenuItem(new LibraryObjectAdministrationViewModel(), "ObjectsAdmin"),
                 new UserMenuItem(new UserProfileViewModel(), "Profile"),
-                new UserMenuItem(new UserReservationsViewModel(), "UserLoans")
             };
         }
 

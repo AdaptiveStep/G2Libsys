@@ -2,17 +2,210 @@
     x:Class="G2Libsys.Views.UserProfileView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:converter="clr-namespace:G2Libsys.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:G2Libsys.Views"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:userControl="clr-namespace:G2Libsys.Controls"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="vm:UserProfileViewModel"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    >
+    
+    
+    <Grid>
 
-    <Grid />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border   Grid.Column="0"  Background="White" CornerRadius="15">
+            <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Top"  Margin="15">
+                <Border Width="100" Height="100" CornerRadius="50">
+                    <!--<Border.Background>
+                        --><!--<ImageBrush ImageSource="/Views/imagesHLRD3NHV.png"/>--><!--
+                    </Border.Background>-->
+                </Border>
+                <TextBlock Text="{Binding CurrentUser.Firstname}" FontSize="14" Width="276" />
+                <TextBlock Text="{Binding CurrentUser.Email}" FontSize="14" Width="277" />
+                <Button
+                HorizontalAlignment="Center"
+                        Margin="10"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding Showbutton}"
+                Height="25"
+                Width="90"
+                materialDesign:ButtonAssist.CornerRadius="10">
+                    <TextBlock
+                Text="Visa Lån" 
+                        />
+                </Button>
+
+                <Grid Background="{StaticResource accent_light}">
+                        <Label Foreground="Black"  Content="Lånade böcker:"   />
+                        <Label Foreground="Black"  Content="Lånat Datum:"   HorizontalAlignment="Right" />
+                        
+                        <StackPanel Orientation="Horizontal" Margin="10 30 10 10">
+                            <ListView
+                
+                SelectionMode="Single"
+                HorizontalAlignment="Left"
+                ItemsSource="{Binding LibraryObjects}"
+                >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid >
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock 
+                                
+                                
+                                FontWeight="DemiBold"
+                                Foreground="Black"
+                                Text="{Binding Title}"/>
+                                            
+
+                                            <!--<Image 
+                                Source="{Binding ImageSource, Converter={convert:PathToImageConverter}}"/>-->
+
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <!--<ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+                                   RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                                   ItemWidth="{Binding (ListView.View).ItemWidth, 
+                                   RelativeSource={RelativeSource AncestorType=ListView}}"
+                                   MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+                                   ItemHeight="{Binding (ListView.View).ItemHeight, 
+                                   RelativeSource={RelativeSource AncestorType=ListView}}"
+                                   MaxWidth="720"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>-->
+                        </ListView>
+                            <ListView
+                
+                SelectionMode="Single"
+                HorizontalAlignment="Left"
+                ItemsSource="{Binding LoanObjects}">
+
+                                <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock    
+                                
+                                
+                                FontWeight="DemiBold"
+                                Foreground="Black"
+                                Text="{Binding LoanDate}"/>
+
+                                            <!--<Image 
+                                Source="{Binding ImageSource, Converter={convert:PathToImageConverter}}"/>-->
+
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <!--<ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+                                   RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+                                   ItemWidth="{Binding (ListView.View).ItemWidth, 
+                                   RelativeSource={RelativeSource AncestorType=ListView}}"
+                                   MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+                                   ItemHeight="{Binding (ListView.View).ItemHeight, 
+                                   RelativeSource={RelativeSource AncestorType=ListView}}"
+                                   MaxWidth="720"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>-->
+                        </ListView>
+                        </StackPanel>
+                    </Grid>
+                
+
+            </StackPanel>
+        
+        </Border>
+
+
+
+
+
+        <Border Grid.Column="1" Margin="20 50 20 20" Background="White" CornerRadius="15">
+            <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10 10 0 0">
+                <Label Content="Ändra Lösenord" Foreground="Black" Background="{StaticResource accent_light}"/>
+                <Border Width="200" Height="40"  >
+                    <TextBox
+                       
+                    Text="{Binding NewValuesP, Mode=TwoWay}"
+                    materialDesign:HintAssist.Hint="Nytt Lösenord"
+                    >
+                    </TextBox>
+                </Border>
+                <Border Width="200" Height="40"  >
+                    <TextBox
+                       
+                    Text="{Binding NewValuessP, Mode=TwoWay}"
+                    materialDesign:HintAssist.Hint="Bekräfta Lösenord"
+                    >
+                    </TextBox>
+                </Border>
+                <Border Height="47" >
+                    <Button
+                HorizontalAlignment="Left"
+                        Margin="10"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding SavePasswordbutton}"
+                Height="25"
+                Width="90"
+                materialDesign:ButtonAssist.CornerRadius="10">
+                        <TextBlock
+                Text="Bekräfta" />
+                    </Button>
+                </Border>
+                <Label Content="Ändra Email" Foreground="Black" Background="{StaticResource accent_light}" Margin="0 0 0 20"/>
+                <Border Width="200" Height="40"  >
+                    <TextBox
+                       
+                    Text="{Binding NewValuesE, Mode=TwoWay}"
+                    materialDesign:HintAssist.Hint="Email"
+                    >
+                    </TextBox>
+                </Border>
+
+                <Border Width="200" Height="40"  >
+                    <TextBox
+                       
+                    Text="{Binding NewValuessE, Mode=TwoWay}"
+                    materialDesign:HintAssist.Hint="Ny Email"
+                    >
+                    </TextBox>
+                </Border>
+
+                <Border Height="47" >
+                    <Button
+                HorizontalAlignment="Left"
+                        Margin="10"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding SaveEmailbutton}"
+                Height="25"
+                Width="90"
+                materialDesign:ButtonAssist.CornerRadius="10">
+                        <TextBlock
+                Text="Bekräfta" />
+                    </Button>
+                </Border>
+            </StackPanel>
+        </Border>
+
+    </Grid>
 </local:BasePage>

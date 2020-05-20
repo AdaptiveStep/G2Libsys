@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Bild_saknas.png" />
     <None Remove="Resources\Images\LIBSYS.png" />
+    <None Remove="Views\back-icon-isolated-on-white-background-back-icon-vector-26555694.jpg" />
+    <None Remove="Views\nedladdning.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,7 +29,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Bild_saknas.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Images\LIBSYS.png" />
+    <Resource Include="Resources\Images\nedladdning.png" />
   </ItemGroup>
 
   <ItemGroup>

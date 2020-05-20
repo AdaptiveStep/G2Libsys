@@ -24,7 +24,7 @@
             ItemsSource="{Binding Categories}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
-            SelectedItem="{Binding SelectedCategory}"
+            SelectedItem="{Binding NavigateCategory}"
             SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
