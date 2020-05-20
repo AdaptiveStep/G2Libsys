@@ -176,6 +176,8 @@
         /// </summary>
         private async void RemoveUser()
         {
+            if (SelectedUser == null) return;
+
             bool result = _dialog.Confirm("Godkänn", $"Ta bort användaren:\n{SelectedUser.Firstname} {SelectedUser.Lastname}?");
 
             if (!result) return;
