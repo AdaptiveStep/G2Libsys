@@ -57,6 +57,7 @@ namespace G2Libsys.ViewModels
             {
                 return;
             }
+        }
 
 
         //public Author AuthorObject

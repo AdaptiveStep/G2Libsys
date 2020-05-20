@@ -17,11 +17,11 @@
                 <Border.InputBindings>
                     <MouseBinding
                         Command="{Binding NavigateToVM}"
-                        CommandParameter="{x:Type vm:FrontPageViewModel}"
+                        CommandParameter="{x:Type vm:LibraryMainViewModel}"
                         MouseAction="RightClick" />
                     <MouseBinding
                         Command="{Binding NavigateToVM}"
-                        CommandParameter="{x:Type vm:FrontPageViewModel}"
+                        CommandParameter="{x:Type vm:LibraryMainViewModel}"
                         MouseAction="LeftClick" />
                 </Border.InputBindings>
                 <TextBlock
