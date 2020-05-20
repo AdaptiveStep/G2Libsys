@@ -1,4 +1,5 @@
-﻿using G2Libsys.Commands;
+﻿#region Namespaces
+using G2Libsys.Commands;
 using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Services;
@@ -7,13 +8,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
-
+#endregion
 namespace G2Libsys.ViewModels
 {
 
     // Visa info om ett libraryobject med lånemöjligheter 
     public class LibraryObjectInfoViewModel : BaseViewModel, ISubViewModel
     {
+        #region Fields
         private readonly IRepository _repo;
         public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
 
@@ -21,15 +23,8 @@ namespace G2Libsys.ViewModels
 
         private Author author;
 
-        private async void GetAuthor()
-        {
-            if (LibraryObject?.Author == null)
-            {
-                return;
-            }
-            
-            AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
-        }
+        #endregion       
+        #region Constructor
         public LibraryObjectInfoViewModel()
         {
 
@@ -45,8 +40,17 @@ namespace G2Libsys.ViewModels
             GetAuthor();
            
         }
+        #endregion
+        #region Methods
+        private async void GetAuthor()
+        {
+            if (LibraryObject?.Author == null)
+            {
+                return;
+            }
 
-
+            AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
+        }
         public Author AuthorObject
         {
             get => author;
@@ -66,6 +70,6 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LibraryObject));
             }
         }
-
+        #endregion
     }
 }
