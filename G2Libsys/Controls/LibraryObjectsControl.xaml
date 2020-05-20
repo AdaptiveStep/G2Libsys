@@ -11,19 +11,28 @@
 	d:DesignWidth="800"
 	mc:Ignorable="d">
 
+    <StackPanel Orientation="Vertical">
 
-	<ListView
-		Height="auto"
-		Margin="5,10,5,10"
-		HorizontalAlignment="Left"
-		IsSynchronizedWithCurrentItem="False"
-		ItemsSource="{Binding LibraryObjects}"
-		SelectedItem="{Binding SelectedLibraryObject}"
-		SelectionMode="Single">
-		<ListView.ItemTemplate>
-			<DataTemplate>
-				<!--<Grid Background="{StaticResource accent_light}">
-
+        <Label
+                
+                HorizontalAlignment="Center"
+                FontSize="22"
+                FontWeight="DemiBold"
+                Foreground="Black"
+                Content="Resultat"/>
+        <ListView
+                
+                SelectionMode="Single"
+                HorizontalAlignment="Left"
+                ItemsSource="{Binding LibraryObjects}"
+                SelectedItem="{Binding SelectedLibraryObject}"
+                IsSynchronizedWithCurrentItem="False"
+                Margin="5"
+            >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <!--<Grid Background="{StaticResource accent_light}">
+                        
                     <StackPanel Orientation="Horizontal">-->
 				<!--<TextBlock
                                 Margin="10 10 10 10 "
