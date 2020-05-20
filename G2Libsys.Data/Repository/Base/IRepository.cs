@@ -41,7 +41,7 @@
         /// Get all items
         /// </summary>
         /// <returns></returns>
-        public Task<IEnumerable<T>> GetAllAsync<T>();
+        public Task<IEnumerable<T>> GetAllAsync<T>(int? id = null);
 
         /// <summary>
         /// Get all items matching search
@@ -70,7 +70,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Task DeleteAsync<T>(int id);
+        public Task RemoveAsync<T>(int id);
     }
 
     /// <summary>
@@ -104,7 +104,7 @@
         /// Get all items
         /// </summary>
         /// <returns></returns>
-        public Task<IEnumerable<T>> GetAllAsync();
+        public Task<IEnumerable<T>> GetAllAsync(int? id = null);
 
         /// <summary>
         /// Get all items matching search
@@ -132,6 +132,6 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Task DeleteByIDAsync(int id);
+        public Task RemoveAsync(int id);
     }
 }

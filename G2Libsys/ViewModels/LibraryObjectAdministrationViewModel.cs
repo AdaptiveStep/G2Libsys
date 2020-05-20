@@ -14,6 +14,7 @@
     using G2Libsys.Dialogs;
     using G2Libsys.Library.Extensions;
     using System.Diagnostics;
+    using Microsoft.Extensions.DependencyInjection;
     #endregion
 
     /// <summary>
@@ -23,7 +24,6 @@
     {
         #region Fields
         private readonly IRepository _repo;
-        private readonly IDialogService _dialog;
         private LibraryObjectDialogViewModel dialogViewModel;
         private ICommand search;
         private ICommand createItem;
@@ -138,7 +138,6 @@
             if (base.IsInDesignMode) return;
 
             _repo = new GeneralRepository();
-            _dialog = new DialogService();
 
             dispatcher.InvokeAsync(Initialize);
         }
@@ -253,7 +252,7 @@
 
             try
             {
-                _repo.DeleteAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
+                _repo.RemoveAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
                 LibraryObjects.Remove(SelectedItem);
             }
             catch (Exception ex)

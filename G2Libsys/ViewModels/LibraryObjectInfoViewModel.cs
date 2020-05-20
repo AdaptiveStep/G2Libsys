@@ -17,12 +17,21 @@ namespace G2Libsys.ViewModels
     {
         #region Fields
         private readonly IRepository _repo;
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         private LibraryObject currentBook;
 
-        private Author author;
+        //private Author author;
 
+        //private async void GetAuthor()
+        //{
+        //    if (LibraryObject?.Author == null)
+        //    {
+        //        return;
+        //    }
+            
+        //    AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
+        //}
         #endregion       
         #region Constructor
         public LibraryObjectInfoViewModel()
@@ -35,9 +44,9 @@ namespace G2Libsys.ViewModels
         public LibraryObjectInfoViewModel(LibraryObject libraryObject)
         {
             _repo = new GeneralRepository();
-            author = new Author();
+            //author = new Author();
             currentBook = libraryObject;
-            GetAuthor();
+            //GetAuthor();
            
         }
         #endregion
@@ -49,17 +58,16 @@ namespace G2Libsys.ViewModels
                 return;
             }
 
-            AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
-        }
-        public Author AuthorObject
-        {
-            get => author;
-            set
-            {
-                author = value;
-                OnPropertyChanged(nameof(AuthorObject));
-            }
-        }
+
+        //public Author AuthorObject
+        //{
+        //    get => author;
+        //    set
+        //    {
+        //        author = value;
+        //        OnPropertyChanged(nameof(AuthorObject));
+        //    }
+        //}
         
         public LibraryObject LibraryObject
         {

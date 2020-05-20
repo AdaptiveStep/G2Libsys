@@ -44,7 +44,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
-                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="25"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
@@ -54,7 +54,7 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
-                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25"/>
                 </Grid.RowDefinitions>
                 
                 <!--Viewbox för image-->
@@ -126,24 +126,24 @@
                     </StackPanel>
 
                 </materialDesign:Card>
-
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="5"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                    Text="Om författaren:" />
-
-                <!--  Author  -->
-                <materialDesign:Card
-                    Grid.Row="2"
-                    Grid.RowSpan="5"
-                    Grid.Column="5"
-                    Grid.ColumnSpan="3"
-                    Height="auto"
-                    Background="Transparent">
+                
+                <TextBlock Text="Om författaren:"
+                           Grid.Row="1"
+                           Grid.Column="5"
+                           Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                           Grid.ColumnSpan="2"
+                           VerticalAlignment="Bottom"
+                           />
+                
+ <!--Author-->
+                <materialDesign:Card Grid.Row="2"
+                                     Grid.Column="5"
+                                     Grid.RowSpan="5"
+                                     Grid.ColumnSpan="3"
+                                     Height="auto"
+                                     Background="Transparent"
+                                     
+                                     >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*" />
@@ -151,31 +151,53 @@
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="120" />
-                            <RowDefinition Height="20" />
-                            <RowDefinition Height="3*" />
-                            <RowDefinition Height="auto" />
+                            <RowDefinition  Height="120" />
+                            <RowDefinition  Height="20"/>
+                            <RowDefinition  Height="3*"/>
+                            <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Image VerticalAlignment="Top" Source="{Binding AuthorObject.ImageSRC, Converter={converter:PathToImageConverter}}" />
-                        <StackPanel Grid.Column="1" Grid.ColumnSpan="3" />
+                        <Image
+                        VerticalAlignment="Top"
+                        Source="{Binding AuthorObject.ImageSRC,  Converter={converter:PathToImageConverter}}"/>
+                        <StackPanel Grid.Column="1"
+                                    Grid.ColumnSpan="2">
+
+                            <TextBlock Text="{Binding LibraryObject.Author}"
+                                       Margin="0 0 10 0"
+                                       TextWrapping="Wrap"
+                                       FontWeight="DemiBold" />
+
+
+                            
+
+                            
+                        </StackPanel>
                         <ScrollViewer
-                            Grid.Row="1"
-                            Grid.RowSpan="3"
-                            Grid.ColumnSpan="2"
-                            HorizontalAlignment="Stretch"
-                            Background="Transparent"
-                            VerticalScrollBarVisibility="Auto">
-
+                                VerticalScrollBarVisibility="Auto"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Grid.RowSpan="3"
+                                HorizontalAlignment="Stretch"
+                                Background="Transparent"
+                            >
+                            <StackPanel
+                                Orientation="Vertical"
+                                TextBlock.Foreground="Black"
+                                >
+                                
                                 <TextBlock
-                                    Margin="0,0,0,5"
-                                    Opacity=".68"
-                                    Text="{Binding AuthorObject.Biography}"
-                                    Style="{StaticResource MaterialDesignTextBlock}"
-                                    TextWrapping="Wrap" />
-
+                                 Text="{Binding LibraryObject.Title}" />
+                                
+                                <TextBlock
+                                 Opacity=".68"
+                                 Text="{Binding AuthorObject.Biography}"
+                                 TextWrapping="Wrap"
+                                 Margin="0 0 0 5"/>
+                                
+                            </StackPanel>
                         </ScrollViewer>
                     </Grid>
-
+                    
                 </materialDesign:Card>
             </Grid>
         </materialDesign:Card>
