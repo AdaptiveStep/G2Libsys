@@ -71,7 +71,7 @@
         /// <summary>
         /// Close SubViewModel
         /// </summary>
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
         public ICommand Savebutton { get; private set; }
         public ICommand ChangeCardStatusbutton { get; private set; }
         #endregion
@@ -83,8 +83,6 @@
         public UserAdministrationViewModel(User user)
         {
             this.ActiveUser = user;
-
-            _dialog.Alert("Test", ActiveUser.Firstname);
 
             Savebutton = new RelayCommand(x => Save());
             ChangeCardStatusbutton = new RelayCommand(x => ChangeCardStatus());

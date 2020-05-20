@@ -182,7 +182,7 @@
 
             try
             {
-                await _userRepo.DeleteByIDAsync(SelectedUser.ID);
+                await _userRepo.RemoveAsync(SelectedUser.ID);
                 Users.Remove(SelectedUser);
             }
             catch (Exception ex)

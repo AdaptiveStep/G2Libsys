@@ -252,7 +252,7 @@
 
             try
             {
-                _repo.DeleteAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
+                _repo.RemoveAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
                 LibraryObjects.Remove(SelectedItem);
             }
             catch (Exception ex)
