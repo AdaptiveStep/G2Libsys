@@ -11,28 +11,21 @@
 	d:DesignWidth="800"
 	mc:Ignorable="d">
 
-	<StackPanel Orientation="Vertical">
 
-		<Label
-			HorizontalAlignment="Center"
-			Content="Resultat"
-			FontSize="25"
-			FontWeight="DemiBold"
-			Foreground="Black" />
-
-		<ListView
-			Margin="5"
-			HorizontalAlignment="Left"
-			IsSynchronizedWithCurrentItem="False"
-			ItemsSource="{Binding LibraryObjects}"
-			SelectedItem="{Binding SelectedLibraryObject}"
-			SelectionMode="Single">
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<!--<Grid Background="{StaticResource accent_light}">
+	<ListView
+		Height="auto"
+		Margin="5,10,5,10"
+		HorizontalAlignment="Left"
+		IsSynchronizedWithCurrentItem="False"
+		ItemsSource="{Binding LibraryObjects}"
+		SelectedItem="{Binding SelectedLibraryObject}"
+		SelectionMode="Single">
+		<ListView.ItemTemplate>
+			<DataTemplate>
+				<!--<Grid Background="{StaticResource accent_light}">
 
                     <StackPanel Orientation="Horizontal">-->
-					<!--<TextBlock
+				<!--<TextBlock
                                 Margin="10 10 10 10 "
                                 FontSize="22"
                                 FontWeight="DemiBold"
@@ -46,30 +39,35 @@
                                 Text="{Binding Publisher}"/>-->
 
 
-					<!--</StackPanel>
+				<!--</StackPanel>
                     </Grid>-->
 
-					<materialDesign:Card
-						Width="200"
-						Padding="8"
-						Background="{DynamicResource PrimaryHueLightBrush}"
-						Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
-						<StackPanel>
-							<TextBlock FontSize="16" Text="{Binding Title}" />
+				<materialDesign:Card
+					Width="200"
+					Padding="8"
+					Background="{DynamicResource PrimaryHueLightBrush}"
+					Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
+					<StackPanel>
+						<TextBlock
+							FontSize="20"
+							Text="{Binding Title}"
+							TextWrapping="Wrap" />
 
 
-							<materialDesign:Card
-								Width="200" UniformCornerRadius="5"
-								Padding="8"
-								Background="{DynamicResource PrimaryHueLightBrush}"
-								Foreground="{DynamicResource PrimaryHueLightForegroundBrush}">
-								<Image MaxHeight="180" Source="{Binding imagesrc, Converter={convert:PathToImageConverter}}" />
+						<materialDesign:Card
+							Margin="10"
+							Padding="-5"
+							HorizontalAlignment="Center"
+							Background="{DynamicResource MaterialDesignToolTipBackground}"
+							Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
+							UniformCornerRadius="5">
+							<Image MaxHeight="180" Source="{Binding imagesrc, Converter={convert:PathToImageConverter}}" />
 
-							</materialDesign:Card>
+						</materialDesign:Card>
 
 
-						</StackPanel>
-						<!--<StackPanel Background="#FFD12828">
+					</StackPanel>
+					<!--<StackPanel Background="#FFD12828">
 							<Image MaxHeight="180" Source="{Binding imagesrc, Converter={convert:PathToImageConverter}}" />
 							<Label
 								HorizontalAlignment="Center"
@@ -78,21 +76,26 @@
 								FontWeight="DemiBold"
 								Foreground="Black" />
 						</StackPanel>-->
-					</materialDesign:Card>
+				</materialDesign:Card>
 
-				</DataTemplate>
-			</ListView.ItemTemplate>
+			</DataTemplate>
+		</ListView.ItemTemplate>
 
-			<ListView.ItemsPanel>
-				<ItemsPanelTemplate>
-					<WrapPanel
-						Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
-						MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
-						MaxWidth="720"
-						ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}"
-						ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}" />
-				</ItemsPanelTemplate>
-			</ListView.ItemsPanel>
-		</ListView>
-	</StackPanel>
+		<ListView.ItemsPanel>
+			<ItemsPanelTemplate>
+				<WrapPanel
+					Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
+					MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
+					MaxWidth="720"
+					ItemHeight="{Binding (ListView.View).ItemHeight, RelativeSource={RelativeSource AncestorType=ListView}}"
+					ItemWidth="{Binding (ListView.View).ItemWidth, RelativeSource={RelativeSource AncestorType=ListView}}" />
+			</ItemsPanelTemplate>
+		</ListView.ItemsPanel>
+	</ListView>
+
+
+
+
+
+
 </UserControl>
