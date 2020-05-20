@@ -82,12 +82,13 @@
 
         public UserAdministrationViewModel(User user)
         {
-            this.ActiveUser = user;
-
-            Savebutton = new RelayCommand(x => Save());
-            ChangeCardStatusbutton = new RelayCommand(x => ChangeCardStatus());
             _userrepo = new UserRepository();
             _repo = new GeneralRepository();
+
+            this.ActiveUser = user;
+
+            Savebutton = new RelayCommand(_ => Save());
+            ChangeCardStatusbutton = new RelayCommand(_ => ChangeCardStatus());
         }
 
 

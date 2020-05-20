@@ -230,7 +230,7 @@
                 }
             }).ForEach(u => MenuItems.Add(u));
 
-            MenuItems.Add(new UserMenuItem(new FrontPageViewModel(), "Logga ut", LogOutCommand));
+            MenuItems.Add(new UserMenuItem(new LibraryMainViewModel(), "Logga ut", LogOutCommand));
         }
 
         /// <summary>
