@@ -170,21 +170,7 @@
 
 
                         </StackPanel>
-                        <ScrollViewer
-                            Grid.Row="1"
-                            Grid.RowSpan="3"
-                            Grid.ColumnSpan="2"
-                            HorizontalAlignment="Stretch"
-                            Background="Transparent"
-                            VerticalScrollBarVisibility="Auto">
-                            <StackPanel Orientation="Vertical" TextBlock.Foreground="Black">
-
-                                <TextBlock Text="{Binding LibraryObject.Title}" />
-
-                                
-
-                            </StackPanel>
-                        </ScrollViewer>
+                      
                     </Grid>
 
                 </materialDesign:Card>
