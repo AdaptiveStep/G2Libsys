@@ -5,9 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:G2Libsys.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25" />
@@ -17,25 +16,26 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
-            <RowDefinition MinHeight="550" />
+            <RowDefinition />
 
         </Grid.RowDefinitions>
-
         <!--  Header  -->
         <ScrollViewer
             Grid.Row="1"
             Grid.Column="1"
             Grid.ColumnSpan="3"
-            HorizontalAlignment="Center"
             MaxHeight="{Binding }">
 
-            <WrapPanel Orientation="Vertical">
+
+            <WrapPanel Orientation="Vertical"
+                       >
+                    
                 <TextBlock
                     Grid.Row="0"
                     Grid.Column="1"
                     HorizontalAlignment="Left"
                     FontFamily="{StaticResource MaterialDesignFont}"
-                    FontSize="30"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                     FontWeight="Regular"
                     Text="Nyheter"
                     />
@@ -44,18 +44,15 @@
                     Margin="0,0,40,0"
                     DataContext="{Binding}" />
 
-                <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" />
 
                 <local:BigPostControl
                     x:Name="bigpostctrl"
                     Grid.ColumnSpan="2"
-                    DataContext="{Binding}" />
+                    DataContext="{Binding}"
+                    />
 
-                <GridSplitter Height="50" Style="{StaticResource MaterialDesignScrollBarThumb}" />
+  
 
-
-                <local:SmallPostControl x:Name="smallpostonrl" DataContext="{Binding}" />
-                <local:SmallPostControl x:Name="smallpostCntrl" DataContext="{Binding}" />
             </WrapPanel>
 
         </ScrollViewer>
