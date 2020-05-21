@@ -24,6 +24,10 @@
         /// </summary>
         public UserRepository() { }
 
+        /// <summary>
+        /// Insert new user and return ID
+        /// </summary>
+        /// <param name="item"></param>
         public override async Task<int> AddAsync(User item)
         {
             // Map item
@@ -77,7 +81,8 @@
                       param: new { email },
                 commandType: CommandType.StoredProcedure);
         }
-        public virtual async Task<IEnumerable<Loan>> GetLoansAsync(int id)
+
+        public async Task<IEnumerable<Loan>> GetLoansAsync(int id)
         {
             using IDbConnection _db = Connection;
 
@@ -87,7 +92,8 @@
                       param: new { id },
                 commandType: CommandType.StoredProcedure);
         }
-        public virtual async Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id)
+
+        public async Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id)
         {
             using IDbConnection _db = Connection;
 
@@ -97,6 +103,5 @@
                       param: new { id },
                 commandType: CommandType.StoredProcedure);
         }
-
     }
 }

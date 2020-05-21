@@ -17,7 +17,6 @@
     {
         #region Private Fields
         private readonly IUserRepository _repo;
-        private readonly IDialogService _dialog;
         private string username;
         private string password;
         private string emailValidationMessage;
@@ -110,7 +109,7 @@
               && !string.IsNullOrWhiteSpace(NewUser.Email)
               && !string.IsNullOrWhiteSpace(NewUser.Password);
 
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         #endregion
 
@@ -121,8 +120,6 @@
         public LoginViewModel()
         {
             if (base.IsInDesignMode) return;
-
-            _dialog = new DialogService();
 
             _repo = new UserRepository();
 
@@ -158,10 +155,10 @@
                 await _repo.UpdateAsync(user).ConfigureAwait(false);
 
                 // Set current active user
-                NavService.HostScreen.CurrentUser = user;
+                _navigationService.HostScreen.CurrentUser = user;
 
                 // On successfull login go to frontpage
-                NavService.GoToAndReset(new LibraryMainViewModel());
+                _navigationService.GoToAndReset(new LibraryMainViewModel());
 
                 // Exit LoginViewModel
                 CancelCommand.Execute(null);

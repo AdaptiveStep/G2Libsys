@@ -7,10 +7,6 @@
     xmlns:vs="clr-namespace:G2Libsys.Views">
 
     <!--  Match ViewModels To Views  -->
-    <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
-        <vs:FrontPageView />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type vm:TestVM}">
         <vs:TestView />
     </DataTemplate>
@@ -25,10 +21,6 @@
 
     <DataTemplate DataType="{x:Type vm:LibraryMainViewModel}">
         <vs:LibraryMainView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type vm:LibraryObjectViewModel}">
-        <vs:LibraryObjectView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:LibraryObjectInfoViewModel}">

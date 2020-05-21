@@ -144,14 +144,16 @@
                 commandType: CommandType.StoredProcedure);
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync<T>()
+        public virtual async Task<IEnumerable<T>> GetAllAsync<T>(int? id = null)
         {
+            var param = id == null ? (object)(new { }) : new { id };
+
             using IDbConnection _db = Connection;
 
             // Return all items of type T
             return await _db.QueryAsync<T>(
                         sql: GetProcedureName<T>("getall"),
-                      param: new { },
+                      param: param,
                 commandType: CommandType.StoredProcedure);
         }
 
@@ -188,7 +190,7 @@
                 commandType: CommandType.StoredProcedure);
         }
 
-        public virtual async Task DeleteAsync<T>(int id)
+        public virtual async Task RemoveAsync<T>(int id)
         {
             using IDbConnection _db = Connection;
 
@@ -245,7 +247,7 @@
 
         public virtual async Task<T> GetByIdAsync(int id) => await base.GetByIdAsync<T>(id);
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync() => await base.GetAllAsync<T>();
+        public virtual async Task<IEnumerable<T>> GetAllAsync(int? id = null) => await base.GetAllAsync<T>(id);
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync(string partialword) => await base.GetRangeAsync<T>(partialword);
 
@@ -253,7 +255,7 @@
 
         public virtual async Task UpdateAsync(T item) => await base.UpdateAsync(item);
 
-        public virtual async Task DeleteByIDAsync(int id) => await base.DeleteAsync<T>(id);
+        public virtual async Task RemoveAsync(int id) => await base.RemoveAsync<T>(id);
 
         #endregion
     }

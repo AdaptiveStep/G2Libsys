@@ -8,9 +8,9 @@
 
 --KVAR ATT GÖRA---------------------------------------------------------
 	--lätta saker
-	-- Fixa syntax överallt
 	-- Views for reports
-		--WHich views? View for 
+		--WHich views? View for - Loaned objects
+		-- 						- Deleted objects
 
 	-- Kolla default värden för alla Procedures
 	-- Dummy Reservations
@@ -31,9 +31,7 @@
 --LATEST EDITS:---------------------------------------------------------
 	--DONE:
 
-	-- Added some procedures for handling loans.
-	-- Added a better Advanced search procedure, for libraryobjects (still needs work)
-	-- Fixed SQL folder
+	-- Working advanced search procedure (uses dynamic sql execution)
 
 ------------------------------------------------------------------------
 --SQL RESET -------------WARNING--------------WARNING-------------------
@@ -162,15 +160,15 @@
 		[Description] 	VARCHAR(500)   								DEFAULT 'UNNAMED'		,
 		PlannedDate 	DATETIME 			NOT NULL 	DEFAULT SYSDATETIME()				,
 		ImageSRC 		VARCHAR(300)														,
-		Author			INT 				NOT NULL 	FOREIGN KEY REFERENCES Authors(ID)
+		Author 			VARCHAR(500)   								DEFAULT 'UNNAMED'		
 		);
 		--STANDARD INSERTS
 			SET IDENTITY_INSERT 	Seminars on
 				INSERT INTO 		Seminars (ID, [Title], [Description], PlannedDate, Author ) 
 						VALUES 
-						(1, 'Tjäna pengar med flumkurser'	,'Otroligt seminarie om modern utbildning!'	, '2020-06-10T15:00:00.000', 1),				--Does ID really have to be inserted? 
-						(2, 'Starta Eget'					,'Den bästa seminarien om starta eget.'		, '2020-08-10T10:00:00.000', 1),
-						(3, 'Zombiehantering 101'			,'En snabbkurs inför jordens undergång!'	, '2020-02-10T20:00:00.000', 1);
+						(1, 'Tjäna pengar med flumkurser'	,'Otroligt seminarie om modern utbildning!'	, '2020-06-10T15:00:00.000', 'Jörgen Backelin'),				--Does ID really have to be inserted? 
+						(2, 'Starta Eget'					,'Den bästa seminarien om starta eget.'		, '2020-08-10T10:00:00.000', 'Fredrik Stenmark'),
+						(3, 'Zombiehantering 101'			,'En snabbkurs inför jordens undergång!'	, '2020-02-10T20:00:00.000', 'Knut Munter');
 				SET IDENTITY_INSERT Seminars OFF
 				GO
 
@@ -184,7 +182,9 @@
 		ID 				INT IDENTITY(1,1) 	NOT NULL PRIMARY KEY,									  	--Candidatekey
 		ActivationDate 	DATETIME 			NOT NULL DEFAULT SYSDATETIME(),
 		Activated 		BIT 				NOT NULL DEFAULT 1,
-		[Owner] 		INT 			   	NOT NULL FOREIGN KEY REFERENCES Users(ID), 					--Many2One
+		[Owner] 		INT 			   	NOT NULL FOREIGN KEY REFERENCES Users(ID) UNIQUE, 					--Many2One
+
+ 
 
 		--Calculated Column
 		ValidUntil AS	DATEADD(year, 1, ActivationDate),
@@ -230,11 +230,8 @@
 		); 
 		GO
 
-
-
 	--
 	--
-
 
 	DROP TABLE IF EXISTS dbo.LibraryObjects
 	CREATE TABLE LibraryObjects(
@@ -245,12 +242,14 @@
 		Publisher		VARCHAR(100) 			DEFAULT 'UNNAMED',
 		PurchasePrice 	FLOAT 					DEFAULT 300,
 		Pages 			INT 					DEFAULT 0,
+		Author 			varchar(MAX) 			DEFAULT 'No Description',
 
 		Dewey			INT 	 			 					FOREIGN KEY REFERENCES DeweyDecimals(DeweyINT),
 		Category 		INT 		NOT NULL	DEFAULT 1 		FOREIGN KEY REFERENCES Categories(ID) ,
-		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
-
-		imagesrc VARCHAR(500), 
+--		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
+		
+		Disabled 		BIT NOT NULL DEFAULT 1,
+		imagesrc 		VARCHAR(500), 
 		--Hardcover 		INT 					DEFAULT 1 		FOREIGN KEY REFERENCES Covers(ID) 		ON DELETE SET NULL,
 		--Genre 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Genres(ID) 		ON DELETE SET NULL,
 		-- META attributes -- Must be here due to the 1..1 -> 1..1 relationship. Cannot be in separate Table.
@@ -395,6 +394,21 @@
 		END
 		GO
 
+	CREATE PROC usp_OwnsCard(
+		@ID int
+		)
+		AS
+		BEGIN
+			SELECT *
+			FROM Cards
+			WHERE  Cards.Owner IN 
+				(
+				SELECT ID
+				FROM Users
+				WHERE ID=@ID
+				);
+		END
+		GO
 ------------------------------------------------------------------------
 ---------------Usertypes -----------------------------------------------
 	Create proc usp_getall_usertypes
@@ -454,7 +468,7 @@
 		GO
 	
 	--DELETE Loans for user
-	CREATE PROC usp_delete_loans
+	CREATE PROC usp_remove_loans
 		@ID int = null
 		AS
 		BEGIN
@@ -524,7 +538,7 @@
 ------------------------------------------------------------------------
 ---------------Cards ---------------------------------------------------
 	--Delete the card for user
-	CREATE PROC usp_delete_cards
+	CREATE PROC usp_remove_cards
 		@ID int = null
 		AS
 		BEGIN
@@ -546,7 +560,7 @@
 		AS
 		BEGIN
 			INSERT INTO 
-			Cards(Owner) VALUES (@Owner);
+			Cards([Owner]) VALUES (@Owner);
 		END
 		GO
 
@@ -571,13 +585,13 @@
 
 ------------------------------------------------------------------------
 ---------------Authors--------------------------------------------------
-	Create proc usp_getbyID_authors
-		@ID int
-		as
-		BEGIN
-			select * from authors where ID = @ID
-		END
-		GO	
+	-- Create proc usp_getbyID_authors
+	-- 	@ID int
+	-- 	as
+	-- 	BEGIN
+	-- 		select * from authors where ID = @ID
+	-- 	END
+	-- 	GO	
 ------------------------------------------------------------------------
 ---------------LIBRARY OBJECTS -----------------------------------------
 	Create proc usp_getall_libraryobjects
@@ -718,7 +732,7 @@
 	    DROP PROCEDURE smart_filter_Search;
 	    GO
 
-	    --Needs more parameters and cant search with INT-parameters yet. Also results in two tables.
+	    --Dynamic Search directly to table
 	CREATE PROC smart_filter_Search(
 	    @Title          VARCHAR(MAX) = NULL , 
 	    @Description    VARCHAR(MAX) = NULL, 
@@ -726,41 +740,63 @@
 	    @Publisher      VARCHAR(MAX) = NULL, 
 	    @Dewey          INT          = NULL, 
 	    @Category       INT          = NULL, 
-	    @Author         INT			 = NULL
+	    @Author         INT			 = NULL,
+		@Library 		INT			 = NULL,
+		@AddedBy 		INT			 = NULL,
+		
+		--All that that were added since this date
+		@DateAdded DateTime			 = NULL,
+
+		--All that were edited since this date
+		@LastEdited Datetime		 = NULL
 		)
 	    AS
 	    BEGIN
+
+   		--To initiate the predicate with simple tautology.
 	    DECLARE @tmpsql VARCHAR(MAX) = ' 1=1 '
 	    
 	    --Build up a string
 	    IF @Title is NOT NULL
-	        SET @tmpsql = @tmpsql   +  ' AND Title          LIKE + ''%'   + @Title         + '%'''
+	        SET @tmpsql = @tmpsql   +  ' AND Title          LIKE + ''%'   +       @Title         + '%'''
 	    IF @Description is NOT NULL
-	        SET @tmpsql = @tmpsql   +  ' AND [Description]  LIKE + ''%'   + @Description   + '%''' 
+	        SET @tmpsql = @tmpsql   +  ' AND [Description]  LIKE + ''%'   +       @Description   + '%''' 
 	    
 	    IF @ISBN is NOT NULL
-	        SET @tmpsql = @tmpsql   + ' AND ISBN              =  + '    + @ISBN
+	        SET @tmpsql = @tmpsql   + ' AND ISBN              =  + '      + CAST( @ISBN as VARCHAR(MAX))
 	    IF @Publisher is NOT NULL
-	        SET @tmpsql = @tmpsql   + ' AND Publisher       LIKE + ''%'   + @Publisher     + '%'''       
+	        SET @tmpsql = @tmpsql   + ' AND Publisher       LIKE + ''%'   +       @Publisher     + '%'''       
 	    
 	    IF @Dewey is NOT NULL
-	        SET @tmpsql = @tmpsql   + ' AND Dewey             =  + '    + @Dewey     
-	    IF @Category is NOT NULL
-	        SET @tmpsql =  @tmpsql  + ' AND Category        LIKE + ''%'   + @Category      + '%'''        
+	        SET @tmpsql = @tmpsql   + ' AND Dewey             =  + '      +  CAST(@Dewey   as VARCHAR(MAX))      
+	    
+		IF @Category is NOT NULL
+	        SET @tmpsql =  @tmpsql  + ' AND Category          =  + '      +  CAST(@Category as VARCHAR(MAX))        
 	    
 	    IF @Author is NOT NULL
-	        SET @tmpsql =  @tmpsql  + ' AND Author          LIKE + ''%'   + @Author        + '%'''         
-	  
+	        SET @tmpsql = @tmpsql   + ' AND Author       LIKE + ''%'   	  +       @Author     + '%'''       
+
+	    IF @Library is NOT NULL
+	        SET @tmpsql =  @tmpsql  + ' AND Library             =  + '    +  CAST(@Library as VARCHAR(MAX))             
+
+	    IF @AddedBy is NOT NULL
+	        SET @tmpsql =  @tmpsql  + ' AND AddedBy            =  + '     +  CAST(@AddedBy as VARCHAR(MAX))             
+
+
+	    IF @DateAdded is NOT NULL
+	        SET @tmpsql = @tmpsql   + ' AND [DateAdded] BETWEEN '' ' + CAST(@DateAdded  as VARCHAR(MAX))  + ' '' AND  SYSDATETIME() ' 
+	    
+		IF @LastEdited is NOT NULL
+	        SET @tmpsql = @tmpsql   + ' AND [LastEdited] BETWEEN '' ' + CAST(@LastEdited  as VARCHAR(MAX))  + ' '' AND  SYSDATETIME() ' 
+
 	    DECLARE  @tmpsql2 VARCHAR(MAX);
 	    SET @tmpsql2 = 'SELECT * FROM LibraryObjects WHERE' + @tmpsql;
+	 
 
 	    --Execute the string
-	    EXEC(@tmpsql2 )
-
-
-	    --Result in another empty table?
-		END
+	    EXEC(@tmpsql2)
 		
+		END
 		GO
 
 	--TODO , Search with partial ISBN too !!
@@ -1602,7 +1638,5 @@
 				(10, 'The Hulk'									,'Bruce Banner, a scientist on the run from the U.S. Government, must find a cure for the monster he turns into whenever he loses his temper.'			,9996229994999,'WarnerBrothers'			,350 ,4 ,1, 'https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_SY1000_CR0,0,674,1000_AL_.jpg', 100);
 		SET IDENTITY_INSERT LibraryObjects OFF
 		GO
-
-
 
 ------------------------------------------------------------------------

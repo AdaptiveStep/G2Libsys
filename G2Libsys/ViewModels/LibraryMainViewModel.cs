@@ -104,7 +104,7 @@ namespace G2Libsys.ViewModels
             GetFpLibraryObjects();
             SearchObjects = new ObservableCollection<LibraryObject>();
 
-            SearchCommand = new RelayCommand(x=>GetSearchObjects());
+            SearchCommand = new RelayCommand(_=>GetSearchObjects());
 
 
         }
@@ -118,7 +118,7 @@ namespace G2Libsys.ViewModels
             {
                 if (value != null)
                 {
-                    NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
+                    _navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
                 }
             }
         }
@@ -136,6 +136,7 @@ namespace G2Libsys.ViewModels
             FrontPage = false;
             LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
         }
+
         private async void GetLibraryObjects()
         {
             LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
