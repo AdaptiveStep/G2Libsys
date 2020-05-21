@@ -11,16 +11,19 @@ namespace G2Libsys.ViewModels
     // Hantera användarens egna info
     public class UserProfileViewModel : BaseViewModel, IViewModel
     {
-        private readonly IDialogService _dialog;
-        public ICommand Showbutton { get; private set; }
-        public ICommand Savebutton { get; private set; }
+        
 
+        private ObservableCollection<LibraryObject> libObjects;
+        private ObservableCollection<Loan> loanObjects;
         private readonly IRepository _repo;
         private readonly IUserRepository _userrepo;
         private Card userCard;
         private User confirm;
         private User confirm2;
-
+        private User currentUser;
+        public ICommand Showbutton { get; private set; }
+        public ICommand Savebutton { get; private set; }
+        
         public Card UserCard
         {
             get => userCard;
@@ -49,7 +52,6 @@ namespace G2Libsys.ViewModels
             }
         }
 
-        private User currentUser;
         public User CurrentUser
         {
             get => currentUser;
@@ -59,7 +61,6 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(CurrentUser));
             }
         }
-        private ObservableCollection<Loan> loanObjects;
         public ObservableCollection<Loan> LoanObjects
         {
             get => loanObjects;
@@ -69,7 +70,6 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LoanObjects));
             }
         }
-        private ObservableCollection<LibraryObject> libObjects;
         public ObservableCollection<LibraryObject> LibraryObjects
         {
             get => libObjects;
@@ -79,12 +79,14 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LibraryObjects));
             }
         }
-
+        #region Construct
         public UserProfileViewModel()
         {
-            _dialog = new DialogService();
-            if (base.IsInDesignMode) return;
-            CurrentUser = NavService.HostScreen.CurrentUser;
+            
+           
+           
+
+            CurrentUser = _navigationService.HostScreen.CurrentUser;
             _repo = new GeneralRepository();
             _userrepo = new UserRepository();
             Savebutton = new RelayCommand(x => Save());
@@ -94,7 +96,8 @@ namespace G2Libsys.ViewModels
             GetLoans();
 
         }
-
+        #endregion
+        #region Methods
         public async void Save()
         {
             //PropertyInfo[] props = typeof(User).GetProperties();
@@ -146,6 +149,6 @@ namespace G2Libsys.ViewModels
             GetCard();
 
         }
-
+        #endregion 
     }
 }

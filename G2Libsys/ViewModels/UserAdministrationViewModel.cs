@@ -17,7 +17,7 @@
     public class UserAdministrationViewModel : BaseViewModel, ISubViewModel
     {
         #region Fields
-        private readonly IDialogService _dialog;
+        
         private User activeUser;
         private Card userCard;
         private Card newCard;
@@ -117,7 +117,7 @@
         /// <summary>
         /// Close SubViewModel
         /// </summary>
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
         public ICommand Savebutton { get; private set; }
         public ICommand ChangeCardStatusbutton { get; private set; }
         public ICommand CreateNewCardbutton { get; private set; }
@@ -132,7 +132,7 @@
             this.ActiveUser = user;
             Confirm = new User();
             Confirm2 = new User();
-            _dialog = new DialogService();
+            
             NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1)};
 
             NewCard.Owner = ActiveUser.ID;
@@ -156,7 +156,7 @@
         {
             if (UserCard != null)
             {
-                await _repo.DeleteAsync<Card>(UserCard.ID);
+                await _repo.RemoveAsync<Card>(UserCard.ID);
             }
             UserCard = NewCard;
             await _repo.AddAsync(NewCard);

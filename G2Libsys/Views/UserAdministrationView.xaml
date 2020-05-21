@@ -28,7 +28,7 @@
 
             <StackPanel Height="380" Width="320" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <Button Margin="0 0 93 0">
+                    <Button Margin="0 0 93 0" Command="{Binding CancelCommand}">
                         <Button.Background>
                             <ImageBrush ImageSource="..\Resources\Images\nedladdning.png"/>
                         </Button.Background>
