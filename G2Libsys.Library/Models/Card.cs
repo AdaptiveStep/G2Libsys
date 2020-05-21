@@ -7,8 +7,8 @@ namespace G2Libsys.Library
         public int ID { get; set; }
         public DateTime ActivationDate { get; set; }
         public bool Activated { get; set; }
-        public User Owner { get; set; }
-        
+        public int Owner { get; set; }
+
         /// <summary>
         /// Calculated in the database from Activationdate.
         /// </summary>
