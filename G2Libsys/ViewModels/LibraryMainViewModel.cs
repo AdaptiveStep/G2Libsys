@@ -169,7 +169,8 @@ namespace G2Libsys.ViewModels
 
         private async void GetUser()
         {
-            if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
+            
+            if (_navigationService.HostScreen.CurrentUser != null)
             {
                 CurrentUser = _navigationService.HostScreen.CurrentUser;
                 CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
@@ -261,10 +262,7 @@ namespace G2Libsys.ViewModels
             var list = (await _repo.GetAllAsync<LibraryObject>()).Where(x => x.Category == 1).ToList();
             FpLibraryObjects = new ObservableCollection<LibraryObject>(list.GetRange(0,2));
         }
-        private async void GetCard()
-        {
-            await _repo.GetByIdAsync<Card>()
-        }
+        
         
         #endregion
     }
