@@ -134,7 +134,7 @@
             Confirm2 = new User();
             _dialog = new DialogService();
             NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1)};
-            
+
             NewCard.Owner = ActiveUser.ID;
             
             
