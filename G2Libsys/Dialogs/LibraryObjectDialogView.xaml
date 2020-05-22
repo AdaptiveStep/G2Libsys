@@ -21,7 +21,7 @@
             FontSize="11"
             UniformCornerRadius="18">
             <materialDesign:Card.Background>
-                <SolidColorBrush Opacity="0.7" Color="{StaticResource MaterialDesignShadow}" />
+                <SolidColorBrush Opacity="0.7" Color="{StaticResource Primary700}" />
             </materialDesign:Card.Background>
             <Grid>
                 <Grid.RowDefinitions>
@@ -49,8 +49,13 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-
+                    <Grid.Resources>
+                        <Style TargetType="Label" >
+                            <Setter Property="Foreground" Value="White"/>
+                        </Style>
+                    </Grid.Resources>
                     <StackPanel Width="130">
+                        
                         <Label Content="Title" />
                         <TextBox
                             Width="110"
@@ -129,14 +134,7 @@
                             AcceptsReturn="true"
                             Background="WhiteSmoke"
                             Text="{Binding LibraryObject.PurchasePrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <Label Content="Bildadress" />
-                        <TextBox
-                            Width="110"
-                            MaxWidth="110"
-                            Margin="10,0,10,0"
-                            AcceptsReturn="true"
-                            Background="WhiteSmoke"
-                            Text="{Binding LibraryObject.imagesrc, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        
                         <!--<Label Content="Författare Efternamn" />
                         <TextBox
                             Width="110"
