@@ -4,6 +4,8 @@
     using G2Libsys.ViewModels;
     using System.Windows.Controls;
     using Microsoft.Extensions.DependencyInjection;
+    using System.ComponentModel;
+    using System.Windows;
 
     public class BasePage<VM> : UserControl where VM : IViewModel, new()
     {
@@ -20,14 +22,20 @@
                 }
             } 
         }
+        private bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
 
         public BasePage()
         {
+            if (IsInDesignMode) return;
+
+           
+        
             var navigationService = IoC.ServiceProvider.GetService<INavigationService>();
 
             var b = typeof(VM);
             ViewModel = navigationService.Locate(b) ?? new VM();
             this.DataContext = ViewModel;
         }
+
     }
 }
