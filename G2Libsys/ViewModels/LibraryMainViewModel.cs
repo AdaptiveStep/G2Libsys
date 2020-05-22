@@ -167,13 +167,13 @@ namespace G2Libsys.ViewModels
 
         #region Private methods
 
-        private async void GetUser()
+        private void GetUser()
         {
             
             if (_navigationService.HostScreen.CurrentUser != null)
             {
                 CurrentUser = _navigationService.HostScreen.CurrentUser;
-                CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
+                //CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
             }
         }
         public void AddToCart()
