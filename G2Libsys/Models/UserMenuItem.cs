@@ -4,6 +4,7 @@
     using G2Libsys.Services;
     using G2Libsys.ViewModels;
     using Microsoft.Extensions.DependencyInjection;
+    using System;
     using System.Windows.Input;
 
     /// <summary>
@@ -14,32 +15,42 @@
         /// <summary>
         /// Header title
         /// </summary>
-        public string Title { get; private set; }
+        public string Title { get; }
 
         /// <summary>
         /// MenuItem command
         /// </summary>
-        public ICommand Action { get; private set; }
+        public ICommand Action { get; }
 
         /// <summary>
-        /// Input the viewmodel and displayname Title, default title is viewmodel name
+        /// Constructor with input of typeof IViewModel, displayname Title, default title is viewmodel name
         /// </summary>
-        /// <param name="vm"></param>
-        /// <param name="title"></param>
-        public UserMenuItem(IViewModel vm, string title = null, ICommand action = null, INavigationService service = null)
+        /// <param name="viewModel">Typeof the attached IViewModel</param>
+        /// <param name="title">Display title</param>
+        /// <param name="action">Command</param>
+        /// <param name="service">Navigation service</param>
+        public UserMenuItem(Type viewModel, string title = null, ICommand action = null, INavigationService service = null)
         {
             var navigationService = service ?? IoC.ServiceProvider.GetService<INavigationService>();
 
             // Set Title to title or viewmodel name
-            this.Title = title ?? vm.GetType().Name.Replace("ViewModel", null);
+            this.Title = title ?? viewModel.GetType().Name.Replace("ViewModel", null);
 
-            // Create new instance of vm in NavService
-            var viewmodel = navigationService.CreateNewInstance(vm);
-
-            Action = action ?? new RelayCommand(_ => 
+            // Create new command if action is null
+            Action = action ?? new RelayCommand(_ =>
             {
-                navigationService.HostScreen.CurrentViewModel = viewmodel;
+                // Set CurrentViewModel to viewModel
+                navigationService.HostScreen.CurrentViewModel =
+                navigationService.CreateNewInstance((IViewModel)Activator.CreateInstance(viewModel));
             });
         }
+
+        /// <summary>
+        /// Constructor with custom command action input
+        /// </summary>
+        /// <param name="title">Display title</param>
+        /// <param name="action">Command</param>
+        public UserMenuItem(string title, ICommand action)
+            : this(null, title, action) { }
     }
 }
