@@ -27,5 +27,16 @@
         public Task<IEnumerable<Loan>> GetLoansAsync(int id);
 
         public Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id);
+
+        ///// <summary>
+        ///// Uses the AdvancedSearch stored procedure. Takes an Libraryobject that contains filtering parameters, 
+        ///// and gets all the Libraryobjects that match these conditions.
+        ///// For instance: if myBookobject.Title is "Harry" , then send myBookobject if you want all books that match that title.
+        ///// </summary>
+        ///// <param name="item"></param>
+        ///// <returns></returns>
+        //public Task<IEnumerable<LibraryObject>>
+        //       AdvancedSearchAsync(LibraryObject paramsInObject);
+
     }
 }

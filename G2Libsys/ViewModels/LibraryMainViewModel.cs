@@ -16,6 +16,7 @@ namespace G2Libsys.ViewModels
 {
     public class LibraryMainViewModel : BaseViewModel, IViewModel
     {
+        public ICommand AdvancedSearchCommand { get; private set; }
         public ICommand SearchCommand { get; private set; }
         public ICommand BookButton { get; private set; }
         public ICommand AddLoanButton { get; private set; }
@@ -23,7 +24,15 @@ namespace G2Libsys.ViewModels
         private ObservableCollection<Loan> loanCart;
         private bool frontPage;
         private ObservableCollection<LibraryObject> searchObjects;
+        private ObservableCollection<LibraryObject> AdvancedSearchParameters;
+
         private LibraryObject selectedLibraryObject;
+
+        /// <summary>
+        /// We create this object when doing an advanced search query. Its instanse-variables are used for the search method.
+        /// </summary>
+        private LibraryObject libraryObjectParams;
+
         private User currentUser;
         private Card currentUserCard;
 
@@ -36,6 +45,17 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(currentUserCard));
             }
         }
+
+        public LibraryObject LibraryObjectParams
+        {
+            get => libraryObjectParams;
+            set
+            {
+                libraryObjectParams = value;
+                OnPropertyChanged(nameof(libraryObjectParams));
+            }
+        }
+
         public User CurrentUser
         {
             get => currentUser;
@@ -139,7 +159,8 @@ namespace G2Libsys.ViewModels
             LoanCart = new ObservableCollection<Loan>();
             SearchObjects = new ObservableCollection<LibraryObject>();
             BookButton = new RelayCommand(_ => ConfirmLoan());
-            SearchCommand = new RelayCommand(_=>GetSearchObjects());
+            SearchCommand = new RelayCommand(_ => GetSearchObjects());
+            AdvancedSearchCommand = new RelayCommand(_ => GetAdvancedSearchObjects());
             AddLoanButton = new RelayCommand(_=> AddToCart());
 
 
@@ -169,12 +190,12 @@ namespace G2Libsys.ViewModels
 
         private async void GetUser()
         {
-            if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
-            {
-                CurrentUser = _navigationService.HostScreen.CurrentUser;
-                CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
-            }
-        }
+			if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
+			{
+				CurrentUser = _navigationService.HostScreen.CurrentUser;
+				CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
+			}
+		}
         public void AddToCart()
         {
             if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
@@ -231,6 +252,17 @@ namespace G2Libsys.ViewModels
             LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetRangeAsync<LibraryObject>(SearchText)).Where(o => o.Category == SelectedCategory.ID));
         }
 
+        /// <summary>
+        /// Uses the filtered search stored procedure to get libraryobjects. 
+        /// The stored procedure smart_filter_Search takes all the parameters the Libraryobject instanse has.
+        /// </summary>
+        private async void GetAdvancedSearchObjects()
+        {
+            FrontPage = false;
+
+            LibraryObject paramsInObject = new LibraryObject();
+            LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.AdvancedSearchAsync(paramsInObject));
+        }
 
         private Category selectedCatagory;
         public Category SelectedCategory
@@ -263,8 +295,9 @@ namespace G2Libsys.ViewModels
         }
         private async void GetCard()
         {
-            await _repo.GetByIdAsync<Card>()
-        }
+            //await _repo.GetByIdAsync<Card>();
+
+		}
         
         #endregion
     }

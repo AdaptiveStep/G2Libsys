@@ -5,7 +5,8 @@
     /// </summary>
     #region NameSpaces
     using Dapper;
-    using G2Libsys.Library.Extensions;
+	using G2Libsys.Library;
+	using G2Libsys.Library.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
@@ -201,6 +202,21 @@
                 commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(LibraryObject paramsInObject)
+        {
+            using (IDbConnection _db = Connection)
+            {
+
+                // Return all items of type T
+                var tmp = await _db.QueryAsync<LibraryObject>(
+                           sql: GetProcedureName<User>("smart_filter_Search"),
+                         param: paramsInObject,
+                   commandType: CommandType.StoredProcedure);
+
+                return tmp;
+            }
+        }
+
         #endregion
 
         #region Protected Methods
@@ -257,7 +273,7 @@
 
         public virtual async Task RemoveAsync(int id) => await base.RemoveAsync<T>(id);
 
-        #endregion
-    }
 
+    }
+    #endregion
 }

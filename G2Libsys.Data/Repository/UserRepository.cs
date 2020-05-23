@@ -1,107 +1,124 @@
 ﻿namespace G2Libsys.Data.Repository
 {
-    using Dapper;
+	using Dapper;
 
-    /// <summary>
-    /// Required namespaces
-    /// </summary>
-    #region Namespaces
-    using G2Libsys.Library;
-    using System.Collections.Generic;
-    using System.Data;
-    using System.Threading.Tasks;
-    #endregion
+	/// <summary>
+	/// Required namespaces
+	/// </summary>
 
-    // Ändringar här måste även göras i IUserRepository
+	#region Namespaces
 
-    /// <summary>
-    /// User repository for implementation of specific queries
-    /// </summary>
-    public class UserRepository : GenericRepository<User>, IUserRepository
-    {
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public UserRepository() { }
+	using G2Libsys.Library;
+	using System.Collections.Generic;
+	using System.Data;
+	using System.Threading.Tasks;
 
-        /// <summary>
-        /// Insert new user and return ID
-        /// </summary>
-        /// <param name="item"></param>
-        public override async Task<int> AddAsync(User item)
-        {
-            // Map item
-            DynamicParameters parameters = new DynamicParameters();
-            parameters.AddDynamicParams(item);
+	#endregion Namespaces
 
-            // Create ID parameter for output
-            parameters.Add("NewID",
-                    dbType: DbType.Int32,
-                 direction: ParameterDirection.Output);
+	// Ändringar här måste även göras i IUserRepository
 
-            // Open connection
-            using IDbConnection _db = Connection;
+	/// <summary>
+	/// User repository for implementation of specific queries
+	/// </summary>
+	public class UserRepository : GenericRepository<User>, IUserRepository
+	{
+		/// <summary>
+		/// Default constructor
+		/// </summary>
+		public UserRepository() { }
 
-            // Insert mapped item and set NewID to created item ID
-            await _db.ExecuteScalarAsync<int>(
-                        sql: GetProcedureName<User>("insert"),
-                      param: parameters,
-                commandType: CommandType.StoredProcedure);
+		/// <summary>
+		/// Insert new user and return ID
+		/// </summary>
+		/// <param name="item"></param>
+		public override async Task<int> AddAsync(User item)
+		{
+			// Map item
+			DynamicParameters parameters = new DynamicParameters();
+			parameters.AddDynamicParams(item);
 
-            // Return the ID of inserted item
-            return parameters.Get<int>("NewID");
-        }
+			// Create ID parameter for output
+			parameters.Add("NewID",
+					dbType: DbType.Int32,
+				 direction: ParameterDirection.Output);
 
-        /// <summary>
-        /// Example User specific query
-        /// </summary>
-        public async Task<User> VerifyLoginAsync(string email, string password)
-        {
-            using IDbConnection _db = base.Connection;
+			// Open connection
+			using IDbConnection _db = Connection;
 
-            // Fetch user with correct username and password
-            return await _db.QueryFirstOrDefaultAsync<User>(
-                        sql: GetProcedureName<User>("verifylogin"),
-                      param: new { email, password },
-                commandType: CommandType.StoredProcedure);
-        }
+			// Insert mapped item and set NewID to created item ID
+			await _db.ExecuteScalarAsync<int>(
+						sql: GetProcedureName<User>("insert"),
+					  param: parameters,
+				commandType: CommandType.StoredProcedure);
 
-        /// <summary>
-        /// Check if email already exist
-        /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
-        public async Task<bool> VerifyEmailAsync(string email)
-        {
-            using IDbConnection _db = base.Connection;
+			// Return the ID of inserted item
+			return parameters.Get<int>("NewID");
+		}
 
-            // Return true if email exist in db
-            return await _db.ExecuteScalarAsync<bool>(
-                        sql: GetProcedureName<User>("verifyemail"),
-                      param: new { email },
-                commandType: CommandType.StoredProcedure);
-        }
+		/// <summary>
+		/// Example User specific query
+		/// </summary>
+		public async Task<User> VerifyLoginAsync(string email, string password)
+		{
+			using IDbConnection _db = base.Connection;
 
-        public async Task<IEnumerable<Loan>> GetLoansAsync(int id)
-        {
-            using IDbConnection _db = Connection;
+			// Fetch user with correct username and password
+			return await _db.QueryFirstOrDefaultAsync<User>(
+						sql: GetProcedureName<User>("verifylogin"),
+					  param: new { email, password },
+				commandType: CommandType.StoredProcedure);
+		}
 
-            // Return all items of type T
-            return await _db.QueryAsync<Loan>(
-                        sql: GetProcedureName<User>("getloans"),
-                      param: new { id },
-                commandType: CommandType.StoredProcedure);
-        }
+		/// <summary>
+		/// Check if email already exist
+		/// </summary>
+		/// <param name="username"></param>
+		/// <param name="password"></param>
+		public async Task<bool> VerifyEmailAsync(string email)
+		{
+			using IDbConnection _db = base.Connection;
 
-        public async Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id)
-        {
-            using IDbConnection _db = Connection;
+			// Return true if email exist in db
+			return await _db.ExecuteScalarAsync<bool>(
+						sql: GetProcedureName<User>("verifyemail"),
+					  param: new { email },
+				commandType: CommandType.StoredProcedure);
+		}
 
-            // Return all items of type T
-            return await _db.QueryAsync<LibraryObject>(
-                        sql: GetProcedureName<User>("getloanobjects"),
-                      param: new { id },
-                commandType: CommandType.StoredProcedure);
-        }
-    }
+		public async Task<IEnumerable<Loan>> GetLoansAsync(int id)
+		{
+			using IDbConnection _db = Connection;
+
+			// Return all items of type T
+			return await _db.QueryAsync<Loan>(
+						sql: GetProcedureName<User>("getloans"),
+					  param: new { id },
+				commandType: CommandType.StoredProcedure);
+		}
+
+		public async Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id)
+		{
+			using IDbConnection _db = Connection;
+
+			// Return all items of type T
+			return await _db.QueryAsync<LibraryObject>(
+						sql: GetProcedureName<User>("getloanobjects"),
+					  param: new { id },
+				commandType: CommandType.StoredProcedure);
+		}
+
+		public async Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(LibraryObject paramsInObject)
+		{
+			using (IDbConnection _db = Connection) { 
+
+			// Return all items of type T
+			 var tmp = await _db.QueryAsync<LibraryObject>(
+						sql: GetProcedureName<User>("smart_filter_Search"),
+					  param: paramsInObject,
+				commandType: CommandType.StoredProcedure);
+
+				return tmp;
+			}
+		}
+	}
 }
