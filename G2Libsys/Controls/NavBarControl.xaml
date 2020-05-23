@@ -179,7 +179,6 @@
                 HorizontalAlignment="Stretch"
                 Background="Black"
                 BorderBrush="Transparent"
-                Foreground="White"
                 FlowDirection="RightToLeft"
                 FontSize="20"
                 Foreground="White"
