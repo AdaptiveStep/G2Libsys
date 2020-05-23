@@ -133,7 +133,7 @@
                     Grid.ColumnSpan="2"
                     VerticalAlignment="Bottom"
                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                    Text="Om författaren:" />
+                    Text="Författare:" />
 
                 <!--  Author  -->
                 
