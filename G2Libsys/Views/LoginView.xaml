@@ -27,14 +27,14 @@
 
         <materialDesign:Card
             Background="{StaticResource primary_mid}"
-            UniformCornerRadius="10"
+            UniformCornerRadius="15"
             Margin="50"
             Width="420"
             MaxHeight="350"
             MinHeight="200">
             
 
-            <Grid Height="{Binding (FrameworkElement.ActualHeight)}" ShowGridLines="True">
+            <Grid Height="{Binding (FrameworkElement.ActualHeight)}" ShowGridLines="False">
 
                 <Grid.ColumnDefinitions>
 
