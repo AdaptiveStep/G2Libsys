@@ -17,6 +17,11 @@
     <!--  Klickbar rectangle som stänger fönstret  -->
 
     <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+            </Style>
+        </Grid.Resources>
         <Rectangle Opacity="0.5">
             <Rectangle.Fill>
                 <SolidColorBrush Color="Black" />
@@ -133,7 +138,7 @@
                     Grid.ColumnSpan="2"
                     VerticalAlignment="Bottom"
                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                    Text="Om författaren:" />
+                    Text="Författare:" />
 
                 <!--  Author  -->
                 
@@ -146,18 +151,7 @@
                     Height="auto"
                     Background="Transparent">
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="120" />
-                            <RowDefinition Height="20" />
-                            <RowDefinition Height="3*" />
-                            <RowDefinition Height="auto" />
-                        </Grid.RowDefinitions>
-                        <StackPanel Grid.Column="1" Grid.ColumnSpan="2">
+                       
 
                             <TextBlock
                                 Margin="0,0,10,0"
@@ -169,8 +163,7 @@
 
 
 
-                        </StackPanel>
-                      
+                        
                     </Grid>
 
                 </materialDesign:Card>

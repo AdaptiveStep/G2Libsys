@@ -18,7 +18,15 @@
 			<ColumnDefinition Width="auto"/>
 
 		</Grid.ColumnDefinitions>
-
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+            </Style>
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+                
+            </Style>
+        </Grid.Resources>
 		<materialDesign:Card  Margin="10" Grid.Column="0">
                 <StackPanel>
                     <materialDesign:Card Margin="10">
@@ -75,7 +83,7 @@
             </materialDesign:Card>
 
 		<StackPanel Orientation="Vertical" Grid.Column="1"  Margin="0 10 10 10">
-                <Label Content="Lägg till medlem" Foreground="Black" />
+                <Label Content="Lägg till medlem" Foreground="White" />
                 <materialDesign:Card>
                     <StackPanel>
                         <Label Content="Namn" />
@@ -122,7 +130,7 @@
                     </StackPanel>
                 </materialDesign:Card>
 
-                <Label Content="Ta bort medlem" Foreground="Black" />
+                <Label Content="Ta bort medlem" Foreground="White" />
 
                 <materialDesign:Card>
                     <StackPanel>
