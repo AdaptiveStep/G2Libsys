@@ -16,24 +16,54 @@
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
-        <Button Grid.Column="0" Content="Medlemmar" VerticalAlignment="Top" Margin="10 50 10 0"/>
-        <StackPanel Grid.Column="1" Orientation="Horizontal" Background="{StaticResource accent_light}">
+        <Grid.Resources>
+            <Style TargetType="Label" >
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+            </Style>
+        </Grid.Resources>
+        <Button Grid.Column="0" 
+                Content="Medlemmar" 
+                VerticalAlignment="Top" 
+                Margin="10 50 10 0"/>
+        <StackPanel Grid.Column="1"
+                    Orientation="Horizontal"
+                    Background="{StaticResource accent_light}">
 
 
             <StackPanel>
                 <materialDesign:Card Margin="10 10 10 10">
                 <StackPanel Orientation="Horizontal">
                         
-                    <Label Content="Sök efter användare" VerticalAlignment="Center"/>
-                        <TextBox Background="Wheat" Text="{Binding SearchString}"  Margin="10 10 10 10" Width="140"/>
-                        <Button IsDefault="True"  Margin="0 0 10 0" Content="Sök" Command="{Binding searchbutton}"/>
-                        <Button Content="Avbryt" Command="{Binding cancelsearch}"/>
+                    <Label Content="Sök efter användare" 
+                           VerticalAlignment="Center"/>
+                    
+                        <TextBox Background="Wheat" 
+                                 Text="{Binding SearchString}" 
+                                 Margin="10 10 10 10" 
+                                 Width="140"/>
+                    
+                        <Button IsDefault="True"  
+                                Margin="0 0 10 0" 
+                                Content="Sök" 
+                                Command="{Binding searchbutton}"/>
+                    
+                        <Button Content="Avbryt" 
+                                Command="{Binding cancelsearch}"/>
+                    
                     </StackPanel>
+                    
                     </materialDesign:Card>
             <materialDesign:Card Margin="10 10 10 10">
 
-                    <DataGrid SelectedItem="{Binding OldUser}" CanUserAddRows="False" CanUserDeleteRows="False" Margin="10 10 10 10" MinWidth="400" ItemsSource="{Binding Users}" AutoGenerateColumns="False" IsReadOnly="True">
+                    <DataGrid SelectedItem="{Binding OldUser}" 
+                              CanUserAddRows="False" 
+                              CanUserDeleteRows="False" 
+                              Margin="10 10 10 10" 
+                              MinWidth="400" 
+                              ItemsSource="{Binding Users}" 
+                              AutoGenerateColumns="False" 
+                              IsReadOnly="True">
+                        
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
                         <DataGridTextColumn Header="Namn" Binding="{Binding Firstname}"/>

@@ -4,52 +4,69 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:G2Libsys.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="vm:UserProfileViewModel"
-    mc:Ignorable="d"
-    
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    >
+    mc:Ignorable="d">
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
+            </Style>
+        </Grid.Resources>
 
-        <Border Grid.Column="0"  Background="White" CornerRadius="15" MinHeight="400" MinWidth="350" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border
+            Grid.Column="0"
+            MinWidth="350"
+            MinHeight="400"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="White"
+            CornerRadius="15">
+            <StackPanel
+                Width="320"
+                Height="380"
+                Margin="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top">
+                <TextBlock
+                    Margin="10"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    Text="Min profil" />
+                <StackPanel Orientation="Horizontal" />
+                <TextBlock
+                    Margin="10"
+                    HorizontalAlignment="Center"
+                    FontSize="16"
+                    Text="{Binding CurrentUser.Email}" />
 
-            <StackPanel Height="380" Width="320" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                   
-                    <Border Width="70" Height="70" CornerRadius="50" Background="#FFA64B4B"/>
-                </StackPanel>
-                <Border>
-                    <TextBlock Text="{Binding CurrentUser.Email}"  FontSize="16" Margin="10" FontFamily="Segoe UI" FontWeight="Normal" HorizontalAlignment="Center">
 
-                    </TextBlock>
-                </Border>
-                <Border Width="295"/>
-                <Border Width="104"  HorizontalAlignment="Right"/>
-                <Border Height="170" Width="300" VerticalAlignment="Bottom" Margin="10" >
-                    <GroupBox Header="Aktiva lån">
-                        <ListView
-                            
-                            SelectionMode="Single"
-                            ItemsSource="{Binding LibraryObjects}">
+                <Border
+                    Width="300"
+                    Height="170"
+                    Margin="10"
+                    VerticalAlignment="Bottom">
+
+                    <GroupBox FontFamily="{StaticResource MaterialDesignFont}" Header="Aktiva lån">
+                        <ListView ItemsSource="{Binding LibraryObjects}" SelectionMode="Single">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
 
 
                                     <Grid Background="{StaticResource accent_light}">
 
-                                        <TextBlock 
-                                             FontWeight="DemiBold"
-                                             Foreground="Black"
-                                             Text="{Binding Title}"/>
+                                        <TextBlock
+                                            FontWeight="DemiBold"
+                                            Foreground="Black"
+                                            Text="{Binding Title}" />
                                     </Grid>
 
 
@@ -59,9 +76,13 @@
                     </GroupBox>
                 </Border>
 
-                <StackPanel Orientation="Horizontal"  Height="30" Margin="10 0 0 0">
-                    <TextBlock Text="Kort ID:" Width="55"/>
-                    <TextBlock Text="{Binding UserCard.CardNumber, Mode=OneWay, NotifyOnSourceUpdated=True}"/>
+                <StackPanel
+                    Height="30"
+                    Margin="10,0,0,0"
+                    Orientation="Horizontal">
+
+                    <TextBlock Width="55" Text="Kort ID:" />
+                    <TextBlock Text="{Binding UserCard.CardNumber, Mode=OneWay, NotifyOnSourceUpdated=True}" />
                 </StackPanel>
 
 
@@ -82,41 +103,50 @@
 
 
 
-        <Border Grid.Column="1" MinHeight="400" MinWidth="350" Background="White" CornerRadius="15"  VerticalAlignment="Center" HorizontalAlignment="Center" >
+        <Border
+            Grid.Column="1"
+            MinWidth="350"
+            MinHeight="400"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="White"
+            CornerRadius="10">
             <StackPanel Orientation="Vertical">
 
-                <Grid>
+                <TextBlock
+                    Margin="10"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    Text="Profilinställningar" />
+                <Grid Margin="0,55,0,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Border/>
-                    <StackPanel Grid.Column="0" Margin="10"  >
+                    <StackPanel Grid.Column="0" Margin="10">
 
                         <TextBox
-                    Text="{Binding Confirm.Firstname, Mode=OneWayToSource}"
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                    materialDesign:HintAssist.Hint=" Ändra förnamn"  Background="{StaticResource AttentionToActionBrush}" >
-                        </TextBox>
+                            materialDesign:HintAssist.Hint=" Ändra förnamn"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="{StaticResource AttentionToActionBrush}"
+                            Text="{Binding Confirm.Firstname, Mode=OneWayToSource}" />
                         <TextBox
-                            Text="{Binding Confirm.Lastname, Mode=OneWayToSource}"
-                         materialDesign:TextFieldAssist.HasClearButton="True" 
-                    materialDesign:HintAssist.Hint=" Ändra Efternamn"   Background="{StaticResource AttentionToActionBrush}">
-                        </TextBox>
+                            materialDesign:HintAssist.Hint=" Ändra Efternamn"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="{StaticResource AttentionToActionBrush}"
+                            Text="{Binding Confirm.Lastname, Mode=OneWayToSource}" />
+
                         <TextBox
-                            Text="{Binding Confirm.Password, Mode=OneWayToSource}"
-                         Background="{StaticResource AttentionToActionBrush}"
-                        materialDesign:HintAssist.Hint=" Nytt lösenord"
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                        />
+                            materialDesign:HintAssist.Hint=" Nytt lösenord"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="{StaticResource AttentionToActionBrush}"
+                            Text="{Binding Confirm.Password, Mode=OneWayToSource}" />
 
 
                         <TextBox
-                         Background="{StaticResource AttentionToActionBrush}"
-                    materialDesign:HintAssist.Hint=" Ny E-post"
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                        Text="{Binding Confirm.Email, Mode=OneWayToSource}">
-                        </TextBox>
+                            materialDesign:HintAssist.Hint=" Ny E-post"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="{StaticResource AttentionToActionBrush}"
+                            Text="{Binding Confirm.Email, Mode=OneWayToSource}" />
 
 
 
@@ -126,47 +156,50 @@
 
 
                         <TextBox
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                         Background="{StaticResource AttentionToActionBrush}"
-                    materialDesign:HintAssist.Hint=" Bekräfta förnamn"  Text="{Binding Confirm2.Firstname, Mode=OneWayToSource}"/>
+                            materialDesign:HintAssist.Hint=" Bekräfta förnamn"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="{StaticResource AttentionToActionBrush}"
+                            Text="{Binding Confirm2.Firstname, Mode=OneWayToSource}" />
                         <TextBox
-                            materialDesign:TextFieldAssist.HasClearButton="True" 
-                             Background="{StaticResource AttentionToActionBrush}"
-                    materialDesign:HintAssist.Hint=" Bekräfta efternamn"  Text="{Binding Confirm2.Lastname, Mode=OneWayToSource}"/>
-                        <TextBox 
-                            materialDesign:TextFieldAssist.HasClearButton="True" 
-                             Background="{StaticResource AttentionToActionBrush}"
-                            Text="{Binding Confirm2.Password, Mode=OneWayToSource}"
-                        materialDesign:HintAssist.Hint=" Bekräfta lösenord"
-                        
-                         />
+                            materialDesign:HintAssist.Hint=" Bekräfta efternamn"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="{StaticResource AttentionToActionBrush}"
+                            Text="{Binding Confirm2.Lastname, Mode=OneWayToSource}" />
+                        <TextBox
+                            materialDesign:HintAssist.Hint=" Bekräfta lösenord"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="{StaticResource AttentionToActionBrush}"
+                            Text="{Binding Confirm2.Password, Mode=OneWayToSource}" />
 
 
 
                         <TextBox
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                         Background="{StaticResource AttentionToActionBrush}"
-                    materialDesign:HintAssist.Hint=" Bekräfta E-post"
-                        Text="{Binding Confirm2.Email, Mode=OneWayToSource}"/>
+                            materialDesign:HintAssist.Hint=" Bekräfta E-post"
+                            materialDesign:TextFieldAssist.HasClearButton="True"
+                            Background="{StaticResource AttentionToActionBrush}"
+                            Text="{Binding Confirm2.Email, Mode=OneWayToSource}" />
 
                     </StackPanel>
+
                 </Grid>
-                <Button  Grid.ColumnSpan="2"
-                        
-                        Margin="0 20 0 10"
-                        
-                        Command="{Binding Savebutton}"
-                      Style="{StaticResource MaterialDesignRaisedButton}"
-                        Content="Bekräfta"
-                         ToolTip="Resource name: MaterialDesignRaisedButton" Background="#FF009688" Width="130" Height="30"/>
+                <Button
+                    Grid.ColumnSpan="2"
+                    Width="130"
+                    Height="30"
+                    Margin="0,20,0,10"
+                    Background="#FF009688"
+                    Command="{Binding Savebutton}"
+                    Content="Bekräfta"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    ToolTip="Resource name: MaterialDesignRaisedButton" />
                 <!--<TextBlock Text="Skapa nytt kort" HorizontalAlignment="Center"/>
 
 
 
 
-                <Button  
+                <Button
                         Margin="0 20 0 10"
-                       
+
                         Command="{Binding CreateNewCardbutton}"
                       Style="{StaticResource MaterialDesignRaisedButton}"
                         Content="Skapa"
@@ -185,9 +218,13 @@
         <Border   Grid.Column="0"  Background="White" CornerRadius="15">
             <StackPanel  HorizontalAlignment="Center" VerticalAlignment="Top"  Margin="15">
                 <Border Width="100" Height="100" CornerRadius="50">
-                    --><!--<Border.Background>
-                        --><!--<ImageBrush ImageSource="/Views/imagesHLRD3NHV.png"/>--><!--
-                    </Border.Background>--><!--
+    -->
+    <!--<Border.Background>
+    -->
+    <!--<ImageBrush ImageSource="/Views/imagesHLRD3NHV.png"/>-->
+    <!--
+                    </Border.Background>-->
+    <!--
                 </Border>
                 <TextBlock Text="{Binding CurrentUser.Firstname}" FontSize="14" Width="276" />
                 <TextBlock Text="{Binding CurrentUser.Email}" FontSize="14" Width="277" />
@@ -200,17 +237,17 @@
                 Width="90"
                 materialDesign:ButtonAssist.CornerRadius="10">
                     <TextBlock
-                Text="Visa Lån" 
+                Text="Visa Lån"
                         />
                 </Button>
 
                 <Grid Background="{StaticResource accent_light}">
                         <Label Foreground="Black"  Content="Lånade böcker:"   />
                         <Label Foreground="Black"  Content="Lånat Datum:"   HorizontalAlignment="Right" />
-                        
+
                         <StackPanel Orientation="Horizontal" Margin="10 30 10 10">
                             <ListView
-                
+
                 SelectionMode="Single"
                 HorizontalAlignment="Left"
                 ItemsSource="{Binding LibraryObjects}"
@@ -220,37 +257,41 @@
                                     <Grid >
 
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock 
-                                
-                                
+                                            <TextBlock
+
+
                                 FontWeight="DemiBold"
                                 Foreground="Black"
                                 Text="{Binding Title}"/>
-                                            
 
-                                            --><!--<Image 
-                                Source="{Binding ImageSource, Converter={convert:PathToImageConverter}}"/>--><!--
+
+    -->
+    <!--<Image
+                                Source="{Binding ImageSource, Converter={convert:PathToImageConverter}}"/>-->
+    <!--
 
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
 
-                            --><!--<ListView.ItemsPanel>
+    -->
+    <!--<ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
                                    RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
-                                   ItemWidth="{Binding (ListView.View).ItemWidth, 
+                                   ItemWidth="{Binding (ListView.View).ItemWidth,
                                    RelativeSource={RelativeSource AncestorType=ListView}}"
                                    MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
-                                   ItemHeight="{Binding (ListView.View).ItemHeight, 
+                                   ItemHeight="{Binding (ListView.View).ItemHeight,
                                    RelativeSource={RelativeSource AncestorType=ListView}}"
                                    MaxWidth="720"/>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>--><!--
+            </ListView.ItemsPanel>-->
+    <!--
                         </ListView>
                             <ListView
-                
+
                 SelectionMode="Single"
                 HorizontalAlignment="Left"
                 ItemsSource="{Binding LoanObjects}">
@@ -260,40 +301,44 @@
                                     <Grid>
 
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock    
-                                
-                                
+                                            <TextBlock
+
+
                                 FontWeight="DemiBold"
                                 Foreground="Black"
                                 Text="{Binding LoanDate}"/>
 
-                                            --><!--<Image 
-                                Source="{Binding ImageSource, Converter={convert:PathToImageConverter}}"/>--><!--
+    -->
+    <!--<Image
+                                Source="{Binding ImageSource, Converter={convert:PathToImageConverter}}"/>-->
+    <!--
 
                                         </StackPanel>
                                     </Grid>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
 
-                            --><!--<ListView.ItemsPanel>
+    -->
+    <!--<ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth), 
+                    <WrapPanel Width="{Binding (FrameworkElement.ActualWidth),
                                    RelativeSource={RelativeSource AncestorType={x:Type ListView}}}"
-                                   ItemWidth="{Binding (ListView.View).ItemWidth, 
+                                   ItemWidth="{Binding (ListView.View).ItemWidth,
                                    RelativeSource={RelativeSource AncestorType=ListView}}"
                                    MinWidth="{Binding ItemWidth, RelativeSource={RelativeSource Self}}"
-                                   ItemHeight="{Binding (ListView.View).ItemHeight, 
+                                   ItemHeight="{Binding (ListView.View).ItemHeight,
                                    RelativeSource={RelativeSource AncestorType=ListView}}"
                                    MaxWidth="720"/>
                 </ItemsPanelTemplate>
-            </ListView.ItemsPanel>--><!--
+            </ListView.ItemsPanel>-->
+    <!--
                         </ListView>
                         </StackPanel>
                     </Grid>
-                
+
 
             </StackPanel>
-        
+
         </Border>
 
 
@@ -305,7 +350,7 @@
                 <Label Content="Ändra Lösenord" Foreground="Black" Background="{StaticResource accent_light}"/>
                 <Border Width="200" Height="40"  >
                     <TextBox
-                       
+
                     Text="{Binding NewValuesP, Mode=TwoWay}"
                     materialDesign:HintAssist.Hint="Nytt Lösenord"
                     >
@@ -313,7 +358,7 @@
                 </Border>
                 <Border Width="200" Height="40"  >
                     <TextBox
-                       
+
                     Text="{Binding NewValuessP, Mode=TwoWay}"
                     materialDesign:HintAssist.Hint="Bekräfta Lösenord"
                     >
@@ -335,7 +380,7 @@
                 <Label Content="Ändra Email" Foreground="Black" Background="{StaticResource accent_light}" Margin="0 0 0 20"/>
                 <Border Width="200" Height="40"  >
                     <TextBox
-                       
+
                     Text="{Binding NewValuesE, Mode=TwoWay}"
                     materialDesign:HintAssist.Hint="Email"
                     >
@@ -344,7 +389,7 @@
 
                 <Border Width="200" Height="40"  >
                     <TextBox
-                       
+
                     Text="{Binding NewValuessE, Mode=TwoWay}"
                     materialDesign:HintAssist.Hint="Ny Email"
                     >
