@@ -188,14 +188,15 @@ namespace G2Libsys.ViewModels
 
         #region Private methods
 
-        private async void GetUser()
+        private void GetUser()
         {
-			if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
-			{
-				CurrentUser = _navigationService.HostScreen.CurrentUser;
-				CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
-			}
-		}
+            
+            if (_navigationService.HostScreen.CurrentUser != null)
+            {
+                CurrentUser = _navigationService.HostScreen.CurrentUser;
+                //CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
+            }
+        }
         public void AddToCart()
         {
             if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
@@ -293,11 +294,7 @@ namespace G2Libsys.ViewModels
             var list = (await _repo.GetAllAsync<LibraryObject>()).Where(x => x.Category == 1).ToList();
             FpLibraryObjects = new ObservableCollection<LibraryObject>(list.GetRange(0,2));
         }
-        private async void GetCard()
-        {
-            //await _repo.GetByIdAsync<Card>();
-
-		}
+        
         
         #endregion
     }

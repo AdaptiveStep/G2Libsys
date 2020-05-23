@@ -111,7 +111,7 @@
                         <DataGridTextColumn
                             MaxWidth="200"
                             Binding="{Binding Description}"
-                            Header="Beksrivning" />
+                            Header="Beskrivning" />
                         <DataGridTextColumn
                             MaxWidth="100"
                             Binding="{Binding DateAdded}"
@@ -120,7 +120,29 @@
                             MaxWidth="100"
                             Binding="{Binding LastEdited}"
                             Header="Ändrad" />
+                        <DataGridTextColumn 
+                            MaxWidth="100"
+                            Binding="{Binding Publisher}"
+                            Header="Publicerad av" />
+                        <DataGridTextColumn
+                            MaxWidth="100"
+                            Binding="{Binding PurchasePrice}"
+                            Header="Pris" />
+                        <DataGridTextColumn
+                            MaxWidth="100"
+                            Binding="{Binding Pages}"
+                            Header="Sidor"/>
+                        <DataGridTextColumn
+                            MaxWidth="100"
+                            Binding="{Binding Dewey}"
+                            Header="DeweyDecimal"/>
+                        <DataGridTextColumn
+                            MaxWidth="100"
+                            Binding="{Binding imagesrc}"
+                            Header="Bildadress" />
+
                     </DataGrid.Columns>
+                        
                     <DataGrid.InputBindings>
                         <MouseBinding
                             Command="{Binding EditItem}"

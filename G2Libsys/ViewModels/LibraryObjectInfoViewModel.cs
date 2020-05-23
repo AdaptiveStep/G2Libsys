@@ -51,13 +51,13 @@ namespace G2Libsys.ViewModels
         }
         #endregion
         #region Methods
-        private async void GetAuthor()
-        {
-            if (LibraryObject?.Author == null)
-            {
-                return;
-            }
-        }
+        //private async void GetAuthor()
+        //{
+        //    if (LibraryObject?.Author == null)
+        //    {
+        //        return;
+        //    }
+        //}
 
 
         //public Author AuthorObject

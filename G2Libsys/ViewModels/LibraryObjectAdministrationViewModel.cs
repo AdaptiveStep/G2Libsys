@@ -42,7 +42,7 @@
 
         public Category SelectedCategory
         {
-            get => selectedCategory ?? Categories?.First();
+            get => selectedCategory ?? Categories?.FirstOrDefault();
             set
             {
                 if (selectedCategory != value)

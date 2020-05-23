@@ -175,7 +175,7 @@
             _navigationService.Setup(this);
 
             // Enable dev menu
-            DeveloperMode =false;
+            DeveloperMode = false;
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
@@ -188,9 +188,14 @@
             Application.Current.MainWindow.Closing
                 += new CancelEventHandler((o, e) =>
                 {
+                    // Call logout method
                     dispatcher.Invoke(LogOut);
                 });
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Setup user navigation access
@@ -205,20 +210,19 @@
             }
 
             // Create UserMenuItems
-            MenuItems.Add(new UserMenuItem(new UserProfileViewModel(), "Profil"));
-            //MenuItems.Add(new UserMenuItem(new UserReservationsViewModel(), "Mina lån"));
+            MenuItems.Add(new UserMenuItem(typeof(UserProfileViewModel), "Profil"));
 
             (CurrentUser.UserType switch
             {
                 1 => new List<UserMenuItem>() // Admin
                 {
-                    new UserMenuItem(new AdminViewModel(), "Användare"),
-                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Katalog"),
+                    new UserMenuItem(typeof(AdminViewModel), "Användare"),
+                    new UserMenuItem(typeof(LibraryObjectAdministrationViewModel), "Katalog"),
                 },
                 2 => new List<UserMenuItem>() // Librarian
                 {
-                    new UserMenuItem(new LibrarianViewModel(), "Användare"),
-                    new UserMenuItem(new LibraryObjectAdministrationViewModel(), "Katalog"),
+                    new UserMenuItem(typeof(LibrarianViewModel), "Användare"),
+                    new UserMenuItem(typeof(LibraryObjectAdministrationViewModel), "Katalog"),
                 },
                 3 => new List<UserMenuItem>() // Visitor
                 {
@@ -226,11 +230,11 @@
                 },
                 _ => new List<UserMenuItem>() // Other
                 {
-                    new UserMenuItem(new TestVM(), "Saknas")
+                    new UserMenuItem(typeof(TestVM), "Saknas")
                 }
-            }).ForEach(u => MenuItems.Add(u));
+            }).ForEach(item => MenuItems.Add(item));
 
-            MenuItems.Add(new UserMenuItem(new LibraryMainViewModel(), "Logga ut", LogOutCommand));
+            MenuItems.Add(new UserMenuItem("Logga ut", LogOutCommand));
         }
 
         /// <summary>
@@ -241,15 +245,11 @@
             // Fill with needed viewmodels
             ViewModelList = new List<UserMenuItem>
             {
-                new UserMenuItem(new AdminViewModel()),
-                new UserMenuItem(new LibraryObjectAdministrationViewModel(), "ObjectsAdmin"),
-                new UserMenuItem(new UserProfileViewModel(), "Profile"),
+                new UserMenuItem(typeof(AdminViewModel)),
+                new UserMenuItem(typeof(LibraryObjectAdministrationViewModel), "ObjectsAdmin"),
+                new UserMenuItem(typeof(UserProfileViewModel), "Profile"),
             };
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Execution logic for user logout

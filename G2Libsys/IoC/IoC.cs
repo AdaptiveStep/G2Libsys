@@ -16,7 +16,7 @@
     public static class IoC
     {
         /// <summary>
-        /// Access services collection
+        /// Access service collection
         /// </summary>
         public static ServiceProvider ServiceProvider { get; private set; }
 
@@ -26,6 +26,7 @@
         /// </summary>
         public static void SetUp()
         {
+            // Build the serviceprovider with the provided service collection: Services()
             ServiceProvider = Services().BuildServiceProvider();
         }
 
