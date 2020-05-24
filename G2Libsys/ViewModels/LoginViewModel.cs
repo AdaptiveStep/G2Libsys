@@ -8,6 +8,7 @@
     using G2Libsys.Commands;
     using G2Libsys.Data.Repository;
     using G2Libsys.Library;
+    using System.Security;
     #endregion
 
     /// <summary>
@@ -18,7 +19,7 @@
         #region Private Fields
         private readonly IUserRepository _repo;
         private string username;
-        private string password;
+        private SecureString password;
         private string emailValidationMessage;
         private User newUser;
         #endregion
@@ -42,7 +43,7 @@
         /// User password
         /// TODO: Change to secure password and passwordbox
         /// </summary>
-        public string Password
+        public SecureString Password
         {
             get => password;
             set
@@ -62,7 +63,7 @@
             {
                 newUser = value;
                 Username = string.Empty;
-                Password = string.Empty;
+                Password = null;
                 OnPropertyChanged(nameof(NewUser));
             }
         }
@@ -93,7 +94,7 @@
         /// </summary>
         private Predicate<object> CanLogin =>
             _ => !string.IsNullOrWhiteSpace(Username)
-              && !string.IsNullOrWhiteSpace(Password);
+              && Password?.Length > 0;
 
         /// <summary>
         /// Register new user command
@@ -140,7 +141,7 @@
         private async void VerifyLogin()
         {
             // Check for user with correct credentials
-            var user = await _repo.VerifyLoginAsync(Username, Password);
+            var user = await _repo.VerifyLoginAsync(Username, Password.Unsecure());
 
             if (user is null)
             {
