@@ -131,10 +131,11 @@
                         Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                     <TextBlock HorizontalAlignment="Left" Text="Lösenord" />
-                    <TextBox
+                    <PasswordBox
+                        helper:PasswordAssist.BindablePassword="{Binding NewPassword, Mode=TwoWay}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         Background="WhiteSmoke"
-                        Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        Style="{StaticResource MaterialDesignPasswordBox}" />
 
                     <Button
                         Margin="10"

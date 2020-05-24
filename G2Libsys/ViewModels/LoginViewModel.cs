@@ -20,6 +20,7 @@
         private readonly IUserRepository _repo;
         private string username;
         private SecureString password;
+        private SecureString newPassword;
         private string emailValidationMessage;
         private User newUser;
         #endregion
@@ -54,6 +55,19 @@
         }
 
         /// <summary>
+        /// Password for new user
+        /// </summary>
+        public SecureString NewPassword
+        {
+            get => newPassword;
+            set
+            {
+                newPassword = value;
+                OnPropertyChanged(nameof(newPassword));
+            }
+        }
+
+        /// <summary>
         /// For registring new user
         /// </summary>
         public User NewUser
@@ -64,6 +78,7 @@
                 newUser = value;
                 Username = string.Empty;
                 Password = null;
+                NewPassword = null;
                 OnPropertyChanged(nameof(NewUser));
             }
         }
@@ -108,7 +123,7 @@
             _ => !string.IsNullOrWhiteSpace(NewUser.Firstname)
               && !string.IsNullOrWhiteSpace(NewUser.Lastname)
               && !string.IsNullOrWhiteSpace(NewUser.Email)
-              && !string.IsNullOrWhiteSpace(NewUser.Password);
+              && NewPassword?.Length > 0;
 
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
@@ -200,6 +215,8 @@
         {
             try
             {
+                NewUser.Password = NewPassword.Unsecure();
+
                 // Insert new user
                 await _repo.AddAsync(NewUser);
                 _dialog.Alert("Registrerad", "Logga in med: " + NewUser.Email);
