@@ -352,7 +352,7 @@
 			delete from users where ID = @ID
 		END
 		GO
-
+--------------------------------------------------------------------------------
 	--Update user . Dapper requires all attributes when handling entire objects.
 	Create proc usp_update_users
 		@ID int,
@@ -584,7 +584,7 @@
 		@Activated 		BIT 		=null,	
 		@Owner 			INT 		=null,
 		@ValidUntil		DateTime 	=null,
-		@cardnumber 	Varchar(30) = null
+		@cardnumber 	Varchar(30) =null
 		AS
 		BEGIN
 			UPDATE Cards
@@ -607,9 +607,17 @@
 ------------------------------------------------------------------------
 ---------------LIBRARY OBJECTS -----------------------------------------
 	Create proc usp_getall_libraryobjects
-		as
+		@ID int = null
+		AS
 		BEGIN
-			select * from libraryobjects
+			if (@ID is not null)
+			begin
+				SELECT * FROM libraryobjects WHERE Category = @ID;
+			end
+			else
+			begin
+				SELECT * FROM libraryobjects;
+			end
 		END
 		GO
 	Create proc usp_getbyID_libraryobjects

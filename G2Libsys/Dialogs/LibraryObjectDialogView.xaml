@@ -21,7 +21,7 @@
             FontSize="11"
             UniformCornerRadius="18">
             <materialDesign:Card.Background>
-                <SolidColorBrush Opacity="0.7" Color="{StaticResource MaterialDesignShadow}" />
+                <SolidColorBrush Opacity="0.7" Color="{StaticResource Primary700}" />
             </materialDesign:Card.Background>
             <Grid>
                 <Grid.RowDefinitions>
@@ -49,44 +49,33 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-
+                    <Grid.Resources>
+                        <Style TargetType="Label">
+                            <Setter Property="Foreground" Value="White" />
+                        </Style>
+                        <Style TargetType="TextBox" >
+                            <Setter Property="Background" Value="WhiteSmoke"/>
+                            <Setter Property="Width" Value="110"/>
+                            <Setter Property="Margin" Value="10, 0 10, 0"/>
+                        </Style>
+                    </Grid.Resources>
                     <StackPanel Width="130">
+
                         <Label Content="Title" />
                         <TextBox
-                            Width="110"
-                            Margin="10,0,10,0"
-                            Background="WhiteSmoke"
                             Text="{Binding LibraryObject.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="ISBN" />
                         <TextBox
-                            Width="110"
-                            Margin="10,0,10,0"
-                            Background="WhiteSmoke"
                             Text="{Binding LibraryObject.ISBN, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <Label Content="Publisher" />
+                        <Label Content="Bokförlag" />
                         <TextBox
-                            Width="110"
-                            Margin="10,0,10,0"
-                            Background="WhiteSmoke"
                             Text="{Binding LibraryObject.Publisher, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="Antal sidor" />
                         <TextBox
-                            Width="110"
-                            Margin="10,0,10,0"
-                            Background="WhiteSmoke"
                             Text="{Binding LibraryObject.Pages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="DeweyDecimal" />
                         <TextBox
-                            Width="110"
-                            Margin="10,0,10,0"
-                            Background="WhiteSmoke"
                             Text="{Binding LibraryObject.Dewey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <!--<Label Content="Förnamn författare" />
-                        <TextBox
-                            Width="110"
-                            Margin="10,0,10,0"
-                            Background="WhiteSmoke"
-                            Text="{Binding AuthorObject.FirstName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Width="130">
@@ -108,41 +97,32 @@
                         </ComboBox>
                         <Label Content="Bildlänk" />
                         <TextBox
-                            Width="110"
-                            Margin="10,0,10,0"
-                            Background="WhiteSmoke"
                             Text="{Binding LibraryObject.imagesrc, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="Beskrivning" />
                         <TextBox
-                            Width="110"
                             MaxWidth="110"
-                            Margin="10,0,10,0"
                             materialDesign:ScrollBarAssist.ThumbWidth="2"
                             AcceptsReturn="true"
-                            Background="WhiteSmoke"
                             Text="{Binding LibraryObject.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                         <Label Content="Inköpspris" />
                         <TextBox
-                            Width="110"
                             MaxWidth="110"
-                            Margin="10,0,10,0"
                             AcceptsReturn="true"
-                            Background="WhiteSmoke"
                             Text="{Binding LibraryObject.PurchasePrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <Label Content="Bildadress" />
+                        <Label Content="Författare" />
                         <TextBox
-                            Width="110"
                             MaxWidth="110"
-                            Margin="10,0,10,0"
                             AcceptsReturn="true"
-                            Background="WhiteSmoke"
-                            Text="{Binding LibraryObject.imagesrc, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <!--<Label Content="Författare Efternamn" />
-                        <TextBox
-                            Width="110"
-                            Margin="10,0,10,0"
-                            Background="WhiteSmoke"
-                            Text="{Binding AuthorObject.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />-->
+                            Text="{Binding LibraryObject.Author, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+
+                        <CheckBox
+                            Margin="10,5,0,0"
+                            VerticalAlignment="Center"
+                            Content="Aktiverad"
+                            Foreground="White"
+                            IsChecked="{Binding ActivatedCheckbox}"
+                            Style="{StaticResource MaterialDesignAccentCheckBox}" />
+
                     </StackPanel>
 
                     <Button

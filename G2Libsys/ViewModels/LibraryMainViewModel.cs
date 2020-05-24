@@ -227,23 +227,24 @@ namespace G2Libsys.ViewModels
 			else { _dialog.Alert("", "Vänligen logga in för att låna"); }
 		}
 
-		public async void ConfirmLoan()
-		{
-			foreach (Loan a in LoanCart)
-			{
-				await _repo.AddAsync(a);
-			}
-			_dialog.Alert("", "Dina lån är nu skapade");
-			LoanCart.Clear();
-		}
-		/// <summary>
-		/// hämtar alla library objects ifrån databasen
-		/// </summary>
-		private async void GetLibraryObjects(int id)
-		{
-			FrontPage = false;
-			LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
-		}
+        public async void ConfirmLoan()
+        {
+            foreach (Loan a in LoanCart)
+            {
+                await _repo.AddAsync(a);
+            }
+            _dialog.Alert("", "Dina lån är nu skapade");
+            LoanCart.Clear();
+        }
+        /// <summary>
+        /// hämtar alla library objects ifrån databasen
+        /// </summary>
+        private async void GetLibraryObjects(int id)
+        {
+            FrontPage = false;
+            //LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
+            LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>(id));
+        }
 
 		private async void GetLibraryObjects()
 		{
