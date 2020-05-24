@@ -8,6 +8,8 @@
     using G2Libsys.Commands;
     using G2Libsys.Data.Repository;
     using G2Libsys.Library;
+    using System.Security;
+    using System.Diagnostics;
     #endregion
 
     /// <summary>
@@ -18,7 +20,8 @@
         #region Private Fields
         private readonly IUserRepository _repo;
         private string username;
-        private string password;
+        private SecureString password;
+        private SecureString newPassword;
         private string emailValidationMessage;
         private User newUser;
         #endregion
@@ -42,13 +45,26 @@
         /// User password
         /// TODO: Change to secure password and passwordbox
         /// </summary>
-        public string Password
+        public SecureString Password
         {
             get => password;
             set
             {
                 password = value;
                 OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        /// <summary>
+        /// Password for new user
+        /// </summary>
+        public SecureString NewPassword
+        {
+            get => newPassword;
+            set
+            {
+                newPassword = value;
+                OnPropertyChanged(nameof(newPassword));
             }
         }
 
@@ -62,7 +78,8 @@
             {
                 newUser = value;
                 Username = string.Empty;
-                Password = string.Empty;
+                Password = null;
+                NewPassword = null;
                 OnPropertyChanged(nameof(NewUser));
             }
         }
@@ -93,7 +110,7 @@
         /// </summary>
         private Predicate<object> CanLogin =>
             _ => !string.IsNullOrWhiteSpace(Username)
-              && !string.IsNullOrWhiteSpace(Password);
+              && Password?.Length > 0;
 
         /// <summary>
         /// Register new user command
@@ -107,7 +124,7 @@
             _ => !string.IsNullOrWhiteSpace(NewUser.Firstname)
               && !string.IsNullOrWhiteSpace(NewUser.Lastname)
               && !string.IsNullOrWhiteSpace(NewUser.Email)
-              && !string.IsNullOrWhiteSpace(NewUser.Password);
+              && NewPassword?.Length > 0;
 
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
@@ -140,7 +157,7 @@
         private async void VerifyLogin()
         {
             // Check for user with correct credentials
-            var user = await _repo.VerifyLoginAsync(Username, Password);
+            var user = await _repo.VerifyLoginAsync(Username, Password.Unsecure());
 
             if (user is null)
             {
@@ -199,6 +216,9 @@
         {
             try
             {
+                NewUser.UserType = 3;
+                NewUser.Password = NewPassword.Unsecure();
+
                 // Insert new user
                 await _repo.AddAsync(NewUser);
                 _dialog.Alert("Registrerad", "Logga in med: " + NewUser.Email);
@@ -206,7 +226,8 @@
             catch (Exception ex)
             {
                 // Insert failed
-                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare:\n" + ex.Message);
+                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare");
+                Debug.WriteLine(ex.Message);
             }
             finally
             {

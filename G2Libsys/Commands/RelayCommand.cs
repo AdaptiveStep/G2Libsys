@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Input;
-
-namespace G2Libsys.Commands
+﻿namespace G2Libsys.Commands
 {
+    using System;
+    using System.Windows.Input;
+
     /// <summary>
     /// <typeparamref name="ICommand"/> implementation
     /// </summary>
@@ -45,35 +45,29 @@ namespace G2Libsys.Commands
         /// <param name="canExecute"></param>
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
-            _execute = execute ?? throw new ArgumentNullException("execute");
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
         }
 
         /// <summary>
-        /// 
+        /// Check if command is executable
         /// </summary>
         /// <param name="parameter"></param>
         public bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
 
         /// <summary>
-        /// 
+        /// Execute the command
         /// </summary>
         /// <param name="parameter"></param>
         public void Execute(object parameter) => _execute((T)parameter);
 
         /// <summary>
-        /// 
+        /// Eventhandles for changes in CanExecute
         /// </summary>
         public event EventHandler CanExecuteChanged
         {
-            add
-            {
-                CommandManager.RequerySuggested += value;
-            }
-            remove
-            {
-                CommandManager.RequerySuggested -= value;
-            }
+            add    => CommandManager.RequerySuggested += value;
+            remove => CommandManager.RequerySuggested -= value;
         }
     }
 }
