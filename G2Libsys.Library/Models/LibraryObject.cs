@@ -16,12 +16,24 @@
         public int? Pages { get; set; }
         public int? Dewey { get; set; }
         public int Category { get; set; }
-        public int? Author { get; set; }
+        public string? Author { get; set; }
         public string imagesrc { get; set; }
         public int? Library { get; set; }
         public int AddedBy { get; set; }
-        public DateTime LastEdited { get; set; }
-        public DateTime DateAdded { get; set; }
+
+        //Nullable to help advanced search
+        public DateTime? LastEdited { get; set; }
+        public DateTime? DateAdded { get; set; }
+
+        /// <summary>
+        /// Construktor puts default time to make gui have better initial datetimes.
+        /// </summary>
+		public LibraryObject()
+		{
+            //LastEdited = DateTime.Now.AddDays(-1);
+            //DateAdded = DateTime.Now.AddDays(-1);
+
+        }
 
         //public int ID { get; set; }
         //public string Title { get; set; }

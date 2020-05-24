@@ -109,13 +109,14 @@
 
 		public async Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(LibraryObject paramsInObject)
 		{
-			using (IDbConnection _db = Connection) { 
+			using (IDbConnection _db = Connection)
+			{
 
-			// Return all items of type T
-			 var tmp = await _db.QueryAsync<LibraryObject>(
-						sql: GetProcedureName<User>("smart_filter_Search"),
-					  param: paramsInObject,
-				commandType: CommandType.StoredProcedure);
+				// Return all items of type T
+				var tmp = await _db.QueryAsync<LibraryObject>(
+						   sql: GetProcedureName<LibraryObject>("smart_filter_Search"),
+						 param: paramsInObject,
+				   commandType: CommandType.StoredProcedure);
 
 				return tmp;
 			}

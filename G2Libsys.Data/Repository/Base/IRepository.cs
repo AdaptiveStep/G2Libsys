@@ -81,7 +81,7 @@
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(LibraryObject paramsInObject);
+        Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(AdvSearchParams paramsInObject);
 	}
 
     /// <summary>
@@ -150,6 +150,6 @@
         /// </summary>
         /// <param name="paramsInObject"></param>
         /// <returns></returns>
-        public Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(LibraryObject paramsInObject);
+        public Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(AdvSearchParams paramsInObject);
     }
 }
