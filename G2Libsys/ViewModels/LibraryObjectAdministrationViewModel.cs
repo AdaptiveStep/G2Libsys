@@ -201,7 +201,7 @@
             (SelectedCategory.ID switch
             {
                 0 => (await _repo.GetAllAsync<LibraryObject>()).ToList(),
-                _ => (await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == SelectedCategory.ID).ToList()
+                _ => (await _repo.GetAllAsync<LibraryObject>(SelectedCategory.ID)).ToList()
             }).ForEach(u => objects.Add(u));
 
             LibraryObjects = new ObservableCollection<LibraryObject>(objects);
