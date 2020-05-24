@@ -92,6 +92,7 @@
 
                 </Viewbox>
                 <Button
+                    Command="{Binding AddLoan}"
                     Grid.Row="2"
                     Grid.Column="2"
                     Content="Låna" />

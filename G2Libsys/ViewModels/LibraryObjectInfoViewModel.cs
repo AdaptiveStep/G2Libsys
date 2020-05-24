@@ -19,6 +19,7 @@ namespace G2Libsys.ViewModels
         #region Fields
         private readonly IRepository _repo;
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+        public ICommand AddLoan { get; private set; }
 
         private LibraryObject currentBook;
 
@@ -49,7 +50,7 @@ namespace G2Libsys.ViewModels
             //author = new Author();
             currentBook = libraryObject;
             //GetAuthor();
-           
+            AddLoan = new RelayCommand(_ => AddToCart());
         }
         public void AddToCart()
         {
@@ -58,7 +59,7 @@ namespace G2Libsys.ViewModels
                 ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
 
                 _loans.LoanCart.Add(currentBook);
-                _dialog.Alert("", "Tillagd i varukorgen");
+                _dialog.Alert("", $"Tillagd i varukorgen{ _loans.LoanCart.Count }");
             }
             else { _dialog.Alert("", "Vänligen logga in för att låna"); }
         }
