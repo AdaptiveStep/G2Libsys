@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 #endregion
 namespace G2Libsys.ViewModels
 {
@@ -43,11 +44,23 @@ namespace G2Libsys.ViewModels
 
         public LibraryObjectInfoViewModel(LibraryObject libraryObject)
         {
+
             _repo = new GeneralRepository();
             //author = new Author();
             currentBook = libraryObject;
             //GetAuthor();
            
+        }
+        public void AddToCart()
+        {
+            if (_navigationService.HostScreen.CurrentUser != null)
+            {
+                ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
+
+                _loans.LoanCart.Add(currentBook);
+                _dialog.Alert("", "Tillagd i varukorgen");
+            }
+            else { _dialog.Alert("", "Vänligen logga in för att låna"); }
         }
         #endregion
         #region Methods

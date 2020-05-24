@@ -16,17 +16,25 @@ namespace G2Libsys.ViewModels
 {
     public class LibraryMainViewModel : BaseViewModel, IViewModel
     {
+        #region commands
         public ICommand SearchCommand { get; private set; }
         public ICommand BookButton { get; private set; }
         public ICommand AddLoanButton { get; private set; }
+        #endregion
+
+        #region fields
         private readonly IRepository _repo;
         private ObservableCollection<Loan> loanCart;
+        private ObservableCollection<LibraryObject> libObjects;
         private bool frontPage;
         private ObservableCollection<LibraryObject> searchObjects;
+        private ObservableCollection<LibraryObject> fpLibObjects;
         private LibraryObject selectedLibraryObject;
         private User currentUser;
         private Card currentUserCard;
+        #endregion
 
+        #region
         public Card CurrentUserCard
         {
             get => currentUserCard;
@@ -54,11 +62,9 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SearchObjects));
             }
         }
-        private ObservableCollection<LibraryObject> fpLibObjects;
-        private ObservableCollection<LibraryObject> libObjects;
 
 
-        #region Public methods
+       
         /// <summary>
         /// En lista med Categories
         /// </summary>
@@ -113,7 +119,7 @@ namespace G2Libsys.ViewModels
         }
 
         public bool SearchPage => !FrontPage;
-
+        #endregion
 
 
         private void Search()
@@ -124,29 +130,6 @@ namespace G2Libsys.ViewModels
             else
                 FrontPage = true;
         }
-
-        public LibraryMainViewModel()
-        {
-            if (base.IsInDesignMode) return;
-            _repo = new GeneralRepository();
-            GetCategories();
-            GetUser();
-            FrontPage = true;
-            LibraryObjects = new ObservableCollection<LibraryObject>();
-            FpLibraryObjects = new ObservableCollection<LibraryObject>();
-            GetLibraryObjects();
-            GetFpLibraryObjects();
-            LoanCart = new ObservableCollection<Loan>();
-            SearchObjects = new ObservableCollection<LibraryObject>();
-            BookButton = new RelayCommand(_ => ConfirmLoan());
-            SearchCommand = new RelayCommand(_=>GetSearchObjects());
-            AddLoanButton = new RelayCommand(_=> AddToCart());
-
-
-        }
-        /// <summary>
-        /// Vid klick av library object, gå till ny vy av objektet
-        /// </summary>
         public LibraryObject SelectedLibraryObject
         {
             get => selectedLibraryObject;
@@ -160,41 +143,38 @@ namespace G2Libsys.ViewModels
                 }
             }
         }
+        #region const
+        public LibraryMainViewModel()
+        {
+            if (base.IsInDesignMode) return;
+            _repo = new GeneralRepository();
+            GetCategories();
+            
+            FrontPage = true;
+            LibraryObjects = new ObservableCollection<LibraryObject>();
+            FpLibraryObjects = new ObservableCollection<LibraryObject>();
+            GetLibraryObjects();
+            GetFpLibraryObjects();
+            LoanCart = new ObservableCollection<Loan>();
+            SearchObjects = new ObservableCollection<LibraryObject>();
+            
+            SearchCommand = new RelayCommand(_=>GetSearchObjects());
+            
+           
 
-
-
+        }
         #endregion
+        /// <summary>
+        /// Vid klick av library object, gå till ny vy av objektet
+        /// </summary>
+
+
+
+        
 
         #region Private methods
 
-        private async void GetUser()
-        {
-            
-            if (_navigationService.HostScreen.CurrentUser != null)
-            {
-                CurrentUser = _navigationService.HostScreen.CurrentUser;
-                CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
-            }
-        }
-        public void AddToCart()
-        {
-            if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
-            {
-                LoanCart.Add(new Loan() { LibraryObject = SelectedLibraryObject, Card = CurrentUserCard, LoanDate = DateTime.Now });
-                _dialog.Alert("", "Tillagd i varukorgen");
-            }
-            else { _dialog.Alert("", "Vänligen logga in för att låna"); }
-        }
-
-        public async void ConfirmLoan()
-        {
-            foreach (Loan a in LoanCart)
-            {
-                await _repo.AddAsync(a);
-            }
-            _dialog.Alert("", "Dina lån är nu skapade");
-            LoanCart.Clear();
-        }
+       
         /// <summary>
         /// hämtar alla library objects ifrån databasen
         /// </summary>
