@@ -9,6 +9,7 @@
     using G2Libsys.Data.Repository;
     using G2Libsys.Library;
     using System.Security;
+    using System.Diagnostics;
     #endregion
 
     /// <summary>
@@ -215,6 +216,7 @@
         {
             try
             {
+                NewUser.UserType = 3;
                 NewUser.Password = NewPassword.Unsecure();
 
                 // Insert new user
@@ -224,7 +226,8 @@
             catch (Exception ex)
             {
                 // Insert failed
-                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare:\n" + ex.Message);
+                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare");
+                Debug.WriteLine(ex.Message);
             }
             finally
             {
