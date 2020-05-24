@@ -19,6 +19,11 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+            </Style>
+        </Grid.Resources>
         <StackPanel 
                     VerticalAlignment="Bottom"
                     Grid.Column="1"
@@ -41,7 +46,8 @@
                 <KeyBinding Command="{Binding SearchCommand}" Key="Return" />
                 </TextBox.InputBindings>
             </TextBox>
-        
+            
+                
         <TextBlock Text="Avancerad sökning"
                    Grid.Column="1"
                    VerticalAlignment="Bottom"
@@ -49,6 +55,7 @@
                    Foreground="{StaticResource accent_light}" 
                    FontFamily="{StaticResource MaterialDesignFont}"
                    />
+            
         </StackPanel>
         
         

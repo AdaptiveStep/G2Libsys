@@ -134,6 +134,10 @@
                             Header="Sidor"/>
                         <DataGridTextColumn
                             MaxWidth="100"
+                            Binding="{Binding Disabled}"
+                            Header="Aktiverad"/>
+                        <DataGridTextColumn
+                            MaxWidth="100"
                             Binding="{Binding Dewey}"
                             Header="DeweyDecimal"/>
                         <DataGridTextColumn
@@ -157,5 +161,7 @@
 
             </StackPanel>
         </materialDesign:Card>
+        
+               
     </Grid>
 </local:BasePage>

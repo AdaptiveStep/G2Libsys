@@ -17,6 +17,7 @@
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0,-10,0,0" />
             <Setter Property="Header" Value="{Binding Title}" />
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Command" Value="{Binding Action}" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -180,6 +181,7 @@
                 BorderBrush="Transparent"
                 FlowDirection="RightToLeft"
                 FontSize="20"
+                Foreground="White"
                 IsMainMenu="true">
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -199,7 +201,7 @@
                             VerticalAlignment="Center"
                             Background="Transparent">
                             <TextBlock
-                                Margin="0,0,-70,0"
+                                Margin="0,0,-50,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Text="Mina sidor" />
