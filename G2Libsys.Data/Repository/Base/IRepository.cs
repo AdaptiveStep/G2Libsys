@@ -1,10 +1,12 @@
 ﻿namespace G2Libsys.Data.Repository
 {
-    /// <summary>
-    /// Required namespaces
-    /// </summary>
-    #region Namespaces
-    using System.Collections.Generic;
+	using G2Libsys.Library;
+
+	/// <summary>
+	/// Required namespaces
+	/// </summary>
+	#region Namespaces
+	using System.Collections.Generic;
     using System.Threading.Tasks;
     #endregion
 
@@ -71,7 +73,16 @@
         /// <param name="item"></param>
         /// <returns></returns>
         public Task RemoveAsync<T>(int id);
-    }
+
+        /// <summary>
+        /// Uses the AdvancedSearch stored procedure. Takes an Libraryobject that contains filtering parameters, 
+        /// and gets all the Libraryobjects that match these conditions.
+        /// For instance: if myBookobject.Title is "Harry" , then send myBookobject if you want all books that match that title.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(AdvSearchParams paramsInObject);
+	}
 
     /// <summary>
     /// Repository with type param
@@ -133,5 +144,12 @@
         /// <param name="item"></param>
         /// <returns></returns>
         public Task RemoveAsync(int id);
+
+        /// <summary>
+        /// Get a bunch of library objects by providing one libraryobject. The provided libraryobject contains desired attributes.
+        /// </summary>
+        /// <param name="paramsInObject"></param>
+        /// <returns></returns>
+        public Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(AdvSearchParams paramsInObject);
     }
 }

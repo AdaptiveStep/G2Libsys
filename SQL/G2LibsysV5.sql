@@ -254,6 +254,8 @@
 		--Genre 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Genres(ID) 		ON DELETE SET NULL,
 		-- META attributes -- Must be here due to the 1..1 -> 1..1 relationship. Cannot be in separate Table.
 		-- Solution: Can be replaced with "history tables and history-triggers".
+
+		---OBS: dates are inserted in the form '2020-05-24'
 		[Library] 		INT 				 	DEFAULT 1 		FOREIGN KEY REFERENCES Libraries(ID) 	ON DELETE SET NULL,
 		[AddedBy] 		INT 	 	NOT NULL 	DEFAULT 1 		FOREIGN KEY REFERENCES Users(ID),
 		[LastEdited] 	DATETIME 	NOT NULL 	DEFAULT SYSDATETIME(),
@@ -261,6 +263,7 @@
 		--Constraints
 		);
 		GO
+
 
 	--
 	--Relationship Card-2-OBJECT ; M2M
@@ -672,12 +675,12 @@
 		@Dewey			INT				= null,
 		@Category		INT,	
 		@Disabled 		BIT 			= null,
-		@Author			VARCHAR(100)				= null,
+		@Author			VARCHAR(100)	= null,
 		@Imagesrc 		VARCHAR(500)	= null,
 		@Library		INT				= null,
 		@AddedBy		INT				= null,
-		@LastEdited	DATETIME		= null,
-		@DateAdded	DATETIME		= null
+		@LastEdited	DATETIME			= null,
+		@DateAdded	DATETIME			= null
 
 		AS
 		BEGIN
@@ -692,6 +695,7 @@
 			Dewey 			= @Dewey,
 			Category 		= @Category,
 			Author 			= @Author,
+			Disabled 		= @Disabled,
 			imagesrc		= @Imagesrc,
 			[Library] 		= @Library,
 			AddedBy 		= @AddedBy,
@@ -756,27 +760,34 @@
 	    DROP PROCEDURE smart_filter_Search;
 	    GO
 
-	    --Dynamic Search directly to table
+	    --Dynamic Search directly to unhashed table, O(12N) = O(N)
 	CREATE PROC smart_filter_Search(
+		--Unused in the searchprocedure
+		-- @ID INT 					= NULL,
+		--@PurchasePrice INT 			= NULL,
+		-- @Pages INT 					= NULL,
+		-- @Disabled BIT 				= NULL,
+		-- @imagesrc VARCHAR(MAX) 		= NULL,
+
+		--Used in the searchprocedure
 	    @Title          VARCHAR(MAX) = NULL , 
 	    @Description    VARCHAR(MAX) = NULL, 
 	    @ISBN           INT          = NULL, 
 	    @Publisher      VARCHAR(MAX) = NULL, 
 	    @Dewey          INT          = NULL, 
 	    @Category       INT          = NULL, 
-	    @Author         INT			 = NULL,
-		@Library 		INT			 = NULL,
+	    @Author         VARCHAR(MAX) = NULL,
+		--@Library 		INT			 = NULL,
 		@AddedBy 		INT			 = NULL,
 		
 		--All that that were added since this date
-		@DateAdded DateTime			 = NULL,
+		@DateAdded DateTime			 = NULL
 
 		--All that were edited since this date
-		@LastEdited Datetime		 = NULL
+		--@LastEdited Datetime		 = NULL
 		)
 	    AS
 	    BEGIN
-
    		--To initiate the predicate with simple tautology.
 	    DECLARE @tmpsql VARCHAR(MAX) = ' 1=1 '
 	    
@@ -800,8 +811,8 @@
 	    IF @Author is NOT NULL
 	        SET @tmpsql = @tmpsql   + ' AND Author       LIKE + ''%'   	  +       @Author     + '%'''       
 
-	    IF @Library is NOT NULL
-	        SET @tmpsql =  @tmpsql  + ' AND Library             =  + '    +  CAST(@Library as VARCHAR(MAX))             
+	    --IF @Library is NOT NULL
+	    --    SET @tmpsql =  @tmpsql  + ' AND Library             =  + '    +  CAST(@Library as VARCHAR(MAX))             
 
 	    IF @AddedBy is NOT NULL
 	        SET @tmpsql =  @tmpsql  + ' AND AddedBy            =  + '     +  CAST(@AddedBy as VARCHAR(MAX))             
@@ -810,8 +821,8 @@
 	    IF @DateAdded is NOT NULL
 	        SET @tmpsql = @tmpsql   + ' AND [DateAdded] BETWEEN '' ' + CAST(@DateAdded  as VARCHAR(MAX))  + ' '' AND  SYSDATETIME() ' 
 	    
-		IF @LastEdited is NOT NULL
-	        SET @tmpsql = @tmpsql   + ' AND [LastEdited] BETWEEN '' ' + CAST(@LastEdited  as VARCHAR(MAX))  + ' '' AND  SYSDATETIME() ' 
+		--IF @LastEdited is NOT NULL
+	 --       SET @tmpsql = @tmpsql   + ' AND [LastEdited] BETWEEN '' ' + CAST(@LastEdited  as VARCHAR(MAX))  + ' '' AND  SYSDATETIME() ' 
 
 	    DECLARE  @tmpsql2 VARCHAR(MAX);
 	    SET @tmpsql2 = 'SELECT * FROM LibraryObjects WHERE' + @tmpsql;
@@ -1647,20 +1658,129 @@
 -------LIBRARY OBJECT INSERTS----------
 
 	--SAMPLE INSERTS
-	SET IDENTITY_INSERT 	LibraryObjects on
-		INSERT INTO 		LibraryObjects (ID, Title, [Description], ISBN, Publisher, PurchasePrice, Category, Author, imagesrc, Dewey) 
-				VALUES 
-				(1, 'Harry Potter och De vises sten'			,'Plötsligt händer det märkliga ting i den lilla staden! Mystiska stjärnskott på himlen och svärmar av ugglor mitt på dagen, katter som läser kartor och underliga människor som står i gathörnen och viskar. De viskar om en viss Harry Potter ... Föräldralöse Harry Potter bor hos sina elaka styvföräldrar och deras vidrige son. En helt ny värld öppnar sig för Harry när det visar sig att han egentligen är en trollkarl och börjar Hogwarths Skola för Häxkonster och Trolldom, en värld full av magi och spännande äventyr!'	,7599999888999,'Rabén Sjögren'	 ,350 ,1 ,1, 'https://s1.adlibris.com/images/54131168/harry-potter-och-de-vises-sten.jpg', 100),		--Does ID really have to be inserted? 
-				(2, 'Harry Potter och Hemligheternas kammare '	,'Sommarlovet är äntligen över! Harry Potter har längtat tillbaka till sitt andra år på Hogwarts skola för häxkonster och trolldom. Men hur ska han stå ut med den omåttligt stroppige professor Lockman? Vad döljer Hagrids förflutna? Och vem är egentligen Missnöjda Myrtle? De verkliga problemen börjar när någon, eller något, förstenar den ena Hogwartseleven efter den andra. Är det Harrys fiende, Draco Malfoy, som ligger bakom? Eller är det den som alla på Hogwarts misstänker - Harry Potter själv?'	,799919449999,'Rabén Sjögren'	 ,350 ,1 ,1, 'https://s1.adlibris.com/images/54131167/harry-potter-och-hemligheternas-kammare.jpg', 100),		
-				(3, 'Harry Potter och de vises sten'			,'Sexton år efter utgivningen av den första Harry Potter-boken i Sverige kommer nu en alldeles ny, genomillustrerad utgåva. Harry Potters fantastiska värld fångas mästerligt i Jim Kays makalösa bilder. Låt dig sugas in i en magisk upplevelse! Böckerna om Harry Potter har sålt i hundratals miljoner exemplar världen över. Den föräldralöse pojken som visar sig vara en trollkarl tog världen med storm, och lämnade ingen oberörd. Böckerna har blivit klassiker, och fortsätter att förtrolla nya generationer läsare.'	,7593399119999,'Rabén Sjögren'	 ,350 ,1 ,1, 'https://s1.adlibris.com/images/52391138/harry-potter-och-dodsrelikerna.jpg', 100),		
-				(4, 'Sagan om Ringen'							,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'	,9229229999999,'Penguin Classics'		,350 ,1 ,3, 'https://s2.adlibris.com/images/43135545/ringens-brodraskap.jpg', 100),
-				(5, 'Sagan om de två tornen'					,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'	,9329228888899,'Penguin Classics'		,350 ,1 ,3, 'https://s1.adlibris.com/images/42903698/de-tva-tornen.jpg', 100),
-				(6, 'Konungens återkomst'						,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'	,9529228333899,'Penguin Classics'		,350 ,1 ,3, 'https://s1.adlibris.com/images/43138299/konungens-aterkomst.jpg', 100),
-				(7, 'Hobbiten - Ljudbok'						,'Den lille hobbiten Bilbo Secker dras av trollkarlen Gandalf grå med på äventyr tillsammans med tretton dvärgar, ledda av den sturske Thorin Ekensköld. De ska röva bort en stor guldskatt som vaktas av den eldsprutande draken Smaug. På vägen stöter de på ruskiga troll och vättar, men också hjälpsamma varelser som alver, jätteörnar och den store Beorn. Bilbo träffar också den slemmige Gollum som håller till i en mörk grotta uppe i bergen. Gollum utmanar Bilbo på en tävling och blir där av med sin magiska osynlighetsring. En ring som kommer att spela en viktig roll i berättelsen.'				,9174322223999,'Coola Förlaget'			,350 ,3 ,3, 'https://s1.adlibris.com/images/42934038/hobbiten-eller-bort-och-hem-igen.jpg', 100),
-				(8, 'Game of Thrones Ljudbok'					,'Äventyr och hjältedåd, vänskap, kärlek och förräderi i en magisk medeltida värld. Robert Baratheon och Eddard Stark befriade en gång i tiden de sju konungarikena från den galne draklorden, och det blev Robert som besteg järntronen medan Eddard drog sig tillbaka till sitt Vinterhed. Efter en lång tid av fred samlar sig kung Roberts fiender både i Norden och i Södern. Hans närmaste rådgivare har dött under mystiska omständigheter och till och med hans egen drottning smider i hemlighet onda planer. Kung Robert ber Eddard Stark om hjälp och Eddard och hans familj dras obönhörligt in i maktspelet kring järntronen. Intrigerna leder till ett regelrätt krig mellan olika ätter och deras lorder. Men det största hotet mot kung Robert är draklordens två barn, en son och en dotter som nu har vuxit upp. De lever i exil och har fått en fristad hos hövdingen över Dothrakiens grässlätter. Med hjälp av honom och hans fyrtiotusen krigare ska åter en ättling av drakens blod härska över de sju konungarikena. Men kampen om järntronen har bara börjat … Den första boken i Sagan om is och eld.',9279229423999,'Amazon'	,75 ,2 ,2, 'https://s2.adlibris.com/images/625724/game-of-thrones---kampen-om-jarntronen.jpg', 100),
-				(9, 'Den andra dödssynden Ljudbok'				,'Det är dags för en ny generation Lauritzen att ta över. Fastighetsbranschen lockar dem och enorma vinster väntar. Eller avgrunden. Samtidigt ställs Eric Letangs advokat­byrå inför helt andra påfrestningar. 1980-talet är decenniet som kommer att skörda rader av oskyldiga offer i rättssalarna. De vildsint egoistiska stämningarna är på väg att bli det socialdemokratiska folkhemmets svanesång. Allt kan hända. Och det händer. Den andra dödssynden är den nionde delen i Jan Guillous romansvit Det stora århundradet, en berättelse om mänsklighetens största, grymmaste och blodigaste århundrade. '			,993333343999,'Evas Förlag'			,350 ,3 ,4, 'https://s1.adlibris.com/images/55340502/den-andra-dodssynden.jpg', 100),
-				(10, 'The Hulk'									,'Bruce Banner, a scientist on the run from the U.S. Government, must find a cure for the monster he turns into whenever he loses his temper.'			,9996229994999,'WarnerBrothers'			,350 ,4 ,1, 'https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_SY1000_CR0,0,674,1000_AL_.jpg', 100);
-		SET IDENTITY_INSERT LibraryObjects OFF
-		GO
-
+INSERT INTO LibraryObjects (
+            
+            Title
+            ,[Description]
+            ,ISBN
+            ,Publisher
+            ,PurchasePrice
+            ,Category
+            ,Author
+            ,imagesrc
+            ,Dewey
+        )
+    VALUES (
+        'Harry Potter och De vises sten'
+        ,'Plötsligt händer det märkliga ting i den lilla staden! Mystiska stjärnskott på himlen och svärmar av ugglor mitt på dagen, katter som läser kartor och underliga människor som står i gathörnen och viskar. De viskar om en viss Harry Potter ... Föräldralöse Harry Potter bor hos sina elaka styvföräldrar och deras vidrige son. En helt ny värld öppnar sig för Harry när det visar sig att han egentligen är en trollkarl och börjar Hogwarths Skola för Häxkonster och Trolldom, en värld full av magi och spännande äventyr!'
+        ,7599999888999
+        ,'Rabén Sjögren'
+        ,350
+        ,1
+        ,'Cool author'
+        ,'https://s1.adlibris.com/images/54131168/harry-potter-och-de-vises-sten.jpg'
+        ,100
+    )
+    ,--Does ID really have to be inserted? 
+ (
+        'Harry Potter och Hemligheternas kammare '
+        ,'Sommarlovet är äntligen över! Harry Potter har längtat tillbaka till sitt andra år på Hogwarts skola för häxkonster och trolldom. Men hur ska han stå ut med den omåttligt stroppige professor Lockman? Vad döljer Hagrids förflutna? Och vem är egentligen Missnöjda Myrtle? De verkliga problemen börjar när någon, eller något, förstenar den ena Hogwartseleven efter den andra. Är det Harrys fiende, Draco Malfoy, som ligger bakom? Eller är det den som alla på Hogwarts misstänker - Harry Potter själv?'
+        ,799919449999
+        ,'Rabén Sjögren'
+        ,350
+        ,1
+        ,'Megawriter'
+        ,'https://s1.adlibris.com/images/54131167/harry-potter-och-hemligheternas-kammare.jpg'
+        ,100
+    )
+    ,(
+        'Harry Potter och de vises sten'
+        ,'Sexton år efter utgivningen av den första Harry Potter-boken i Sverige kommer nu en alldeles ny, genomillustrerad utgåva. Harry Potters fantastiska värld fångas mästerligt i Jim Kays makalösa bilder. Låt dig sugas in i en magisk upplevelse! Böckerna om Harry Potter har sålt i hundratals miljoner exemplar världen över. Den föräldralöse pojken som visar sig vara en trollkarl tog världen med storm, och lämnade ingen oberörd. Böckerna har blivit klassiker, och fortsätter att förtrolla nya generationer läsare.'
+        ,7593399119999
+        ,'Rabén Sjögren'
+        ,350
+        ,1
+        ,'Gigabrain McPro'
+        ,'https://s1.adlibris.com/images/52391138/harry-potter-och-dodsrelikerna.jpg'
+        ,100
+    )
+    ,(
+        'Sagan om Ringen'
+        ,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'
+        ,9229229999999
+        ,'Penguin Classics'
+        ,350
+        ,1
+        ,'JRR Tolkien'
+        ,'https://s2.adlibris.com/images/43135545/ringens-brodraskap.jpg'
+        ,100
+    )
+    ,(
+        'Sagan om de två tornen'
+        ,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'
+        ,9329228888899
+        ,'Penguin Classics'
+        ,350
+        ,1
+        ,'JRR Tolkien'
+        ,'https://s1.adlibris.com/images/42903698/de-tva-tornen.jpg'
+        ,100
+    )
+    ,(
+       'Konungens återkomst'
+        ,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'
+        ,9529228333899
+        ,'Penguin Classics'
+        ,350
+        ,1
+        ,'JRR Tolkien'
+        ,'https://s1.adlibris.com/images/43138299/konungens-aterkomst.jpg'
+        ,100
+    )
+    ,(
+       'Hobbiten - Ljudbok'
+        ,'Den lille hobbiten Bilbo Secker dras av trollkarlen Gandalf grå med på äventyr tillsammans med tretton dvärgar, ledda av den sturske Thorin Ekensköld. De ska röva bort en stor guldskatt som vaktas av den eldsprutande draken Smaug. På vägen stöter de på ruskiga troll och vättar, men också hjälpsamma varelser som alver, jätteörnar och den store Beorn. Bilbo träffar också den slemmige Gollum som håller till i en mörk grotta uppe i bergen. Gollum utmanar Bilbo på en tävling och blir där av med sin magiska osynlighetsring. En ring som kommer att spela en viktig roll i berättelsen.'
+        ,9174322223999
+        ,'Coola Förlaget'
+        ,350
+        ,3
+        ,'Dr NoSleep McWrite'
+        ,'https://s1.adlibris.com/images/42934038/hobbiten-eller-bort-och-hem-igen.jpg'
+        ,100
+    )
+    ,(
+        'Game of Thrones Ljudbok'
+        ,'Äventyr och hjältedåd, vänskap, kärlek och förräderi i en magisk medeltida värld. Robert Baratheon och Eddard Stark befriade en gång i tiden de sju konungarikena från den galne draklorden, och det blev Robert som besteg järntronen medan Eddard drog sig tillbaka till sitt Vinterhed. Efter en lång tid av fred samlar sig kung Roberts fiender både i Norden och i Södern. Hans närmaste rådgivare har dött under mystiska omständigheter och till och med hans egen drottning smider i hemlighet onda planer. Kung Robert ber Eddard Stark om hjälp och Eddard och hans familj dras obönhörligt in i maktspelet kring järntronen. Intrigerna leder till ett regelrätt krig mellan olika ätter och deras lorder. Men det största hotet mot kung Robert är draklordens två barn, en son och en dotter som nu har vuxit upp. De lever i exil och har fått en fristad hos hövdingen över Dothrakiens grässlätter. Med hjälp av honom och hans fyrtiotusen krigare ska åter en ättling av drakens blod härska över de sju konungarikena. Men kampen om järntronen har bara börjat … Den första boken i Sagan om is och eld.'
+        ,9279229423999
+        ,'Amazon'
+        ,75
+        ,2
+        ,'GRR Martin'
+        ,'https://s2.adlibris.com/images/625724/game-of-thrones---kampen-om-jarntronen.jpg'
+        ,100
+    )
+    ,(
+        'Den andra dödssynden Ljudbok'
+        ,'Det är dags för en ny generation Lauritzen att ta över. Fastighetsbranschen lockar dem och enorma vinster väntar. Eller avgrunden. Samtidigt ställs Eric Letangs advokat­byrå inför helt andra påfrestningar. 1980-talet är decenniet som kommer att skörda rader av oskyldiga offer i rättssalarna. De vildsint egoistiska stämningarna är på väg att bli det socialdemokratiska folkhemmets svanesång. Allt kan hända. Och det händer. Den andra dödssynden är den nionde delen i Jan Guillous romansvit Det stora århundradet, en berättelse om mänsklighetens största, grymmaste och blodigaste århundrade. '
+        ,993333343999
+        ,'Evas Förlag'
+        ,350
+        ,3
+        ,'Richy Rich'
+        ,'https://s1.adlibris.com/images/55340502/den-andra-dodssynden.jpg'
+        ,100
+    )
+    ,(
+        'The Hulk'
+        ,'Bruce Banner, a scientist on the run from the U.S. Government, must find a cure for the monster he turns into whenever he loses his temper.'
+        ,9996229994999
+        ,'WarnerBrothers'
+        ,350
+        ,4
+        ,'El Chapo De La Writon'
+        ,'https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_SY1000_CR0,0,674,1000_AL_.jpg'
+        ,100
+    )
+;
+	GO 
 ------------------------------------------------------------------------

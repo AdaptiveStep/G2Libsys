@@ -86,30 +86,28 @@
 
 
 
-        </ComboBox>
+		</ComboBox>
 
-        <materialDesign:Card Grid.Column="3"
-                             Background="{StaticResource accent_light}"
-                             Height="39"
-                             Width="55"
-                             HorizontalAlignment="Left"
-                   
-                             VerticalAlignment="Bottom"
-                             Margin="0 0 0 16.5">
-            
-        <Button 
-                   x:Name="SearchButton"
-                   Grid.Column="3"
-                   Height="40"
-                   Width="55"
-                   Style="{StaticResource MaterialDesignFlatAccentBgButton}"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Bottom"
-                   Content="Sök"
-                   Command="{Binding SearchCommand}"
-        >
-        </Button>
-        </materialDesign:Card>
+		<materialDesign:Card
+			Grid.Column="3"
+			Width="55"
+			Height="39"
+			Margin="0,0,0,16.5"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Bottom"
+			Background="{StaticResource accent_light}">
 
-    </Grid>
+			<Button
+				x:Name="SearchButton"
+				Grid.Column="3"
+				Width="55"
+				Height="40"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Bottom"
+				Command="{Binding SearchCommand}"
+				Content="Sök"
+				Style="{StaticResource MaterialDesignFlatAccentBgButton}" />
+		</materialDesign:Card>
+
+	</Grid>
 </UserControl>
