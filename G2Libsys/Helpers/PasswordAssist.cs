@@ -70,7 +70,8 @@
             if (!GetUpdatingPassword(passwordBox))
             {
                 // Set PasswordBox content to binded property
-                // NOTE: Should only be used to clear the PasswordBox
+                // NOTE: Should primarily only be used to clear the PasswordBox,
+                //       but can be used to set to any value.
                 passwordBox.Password = (e.NewValue as SecureString).Unsecure();
             }
 
@@ -78,9 +79,9 @@
         }
 
         /// <summary>
-        /// Password changed event
+        /// Update the password
         /// </summary>
-        /// <param name="sender"></param>
+        /// <param name="sender">The PasswordBox</param>
         /// <param name="e"></param>
         private static void PasswordChanged(object sender, RoutedEventArgs e)
         {
@@ -88,8 +89,10 @@
 
             // Set is currently being updated to true
             SetUpdatingPassword(passwordBox, true);
+
             // Update the binding
             SetBindablePassword(passwordBox, passwordBox.SecurePassword);
+
             // Set is currently being updated to false
             SetUpdatingPassword(passwordBox, false);
         }
