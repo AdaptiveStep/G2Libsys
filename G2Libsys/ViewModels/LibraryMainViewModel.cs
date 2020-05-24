@@ -201,7 +201,8 @@ namespace G2Libsys.ViewModels
         private async void GetLibraryObjects(int id)
         {
             FrontPage = false;
-            LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
+            //LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
+            LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>(id));
         }
 
         private async void GetLibraryObjects()

@@ -604,9 +604,17 @@
 ------------------------------------------------------------------------
 ---------------LIBRARY OBJECTS -----------------------------------------
 	Create proc usp_getall_libraryobjects
-		as
+		@ID int = null
+		AS
 		BEGIN
-			select * from libraryobjects
+			if (@ID is not null)
+			begin
+				SELECT * FROM libraryobjects WHERE Category = @ID;
+			end
+			else
+			begin
+				SELECT * FROM libraryobjects;
+			end
 		END
 		GO
 	Create proc usp_getbyID_libraryobjects
