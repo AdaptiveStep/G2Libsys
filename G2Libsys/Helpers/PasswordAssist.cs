@@ -26,10 +26,10 @@
         typeof(PasswordAssist));
 
         /// <summary>
-        /// Set binding to the input as SecureString
+        /// Set the SecureString Value
         /// </summary>
-        /// <param name="dp"></param>
-        /// <param name="value"></param>
+        /// <param name="dp">The PasswordBox</param>
+        /// <param name="value">SecureString value</param>
         public static void SetBindablePassword(DependencyObject dp, SecureString value)
         {
             dp.SetValue(BindablePasswordProperty, value);
@@ -38,7 +38,7 @@
         /// <summary>
         /// Get updating status of PasswordBox
         /// </summary>
-        /// <param name="dp">PasswordBox</param>
+        /// <param name="dp">The PasswordBox</param>
         private static bool GetUpdatingPassword(DependencyObject dp)
         {
             return (bool)dp.GetValue(UpdatingPasswordProperty);
@@ -47,7 +47,7 @@
         /// <summary>
         /// Set updating status of PasswordBox
         /// </summary>
-        /// <param name="dp">PasswordBox</param>
+        /// <param name="dp">The PasswordBox</param>
         /// <param name="value">Updating status</param>
         private static void SetUpdatingPassword(DependencyObject dp, bool value)
         {
@@ -62,11 +62,12 @@
         private static void OnPasswordPropertyChanged(DependencyObject sender,
         DependencyPropertyChangedEventArgs e)
         {
-            PasswordBox passwordBox = sender as PasswordBox;
+            if (!(sender is PasswordBox passwordBox)) return;
+
             passwordBox.PasswordChanged -= PasswordChanged;
 
             // If PasswordBox is not being updated
-            // NOTE: Only true when Password is being updated outside of the PasswordBox
+            // NOTE: Only runs when Password is being updated outside of the PasswordBox
             if (!GetUpdatingPassword(passwordBox))
             {
                 // Set PasswordBox content to binded property
@@ -82,10 +83,9 @@
         /// Update the password
         /// </summary>
         /// <param name="sender">The PasswordBox</param>
-        /// <param name="e"></param>
-        private static void PasswordChanged(object sender, RoutedEventArgs e)
+        private static void PasswordChanged(object sender, RoutedEventArgs _)
         {
-            PasswordBox passwordBox = sender as PasswordBox;
+            if (!(sender is PasswordBox passwordBox)) return;
 
             // Set is currently being updated to true
             SetUpdatingPassword(passwordBox, true);
