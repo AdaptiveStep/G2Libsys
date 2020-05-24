@@ -4,7 +4,7 @@
     using System;
 
     /// <summary>
-    /// Implement CloseDialog event
+    /// Interface for implementation of CloseDialog event
     /// </summary>
     public interface IDialogRequestClose
     {

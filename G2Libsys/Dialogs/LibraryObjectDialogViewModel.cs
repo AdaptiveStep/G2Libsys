@@ -20,6 +20,7 @@
         #region Fields
         private LibraryObject libraryObject;
         private Category category;
+        private bool? _activatedCheckbox;
         #endregion
 
         #region Properties
@@ -74,6 +75,7 @@
         {
             this.LibraryObject = libraryObject;
             this.Categories = new ObservableCollection<Category>(category);
+            ActivatedCheckbox = true;
         }
         #endregion
 
@@ -96,6 +98,17 @@
             base.DialogResult = LibraryObject;
             base.OKCommand.Execute(param);
         }
+        public bool? ActivatedCheckbox
+        {
+            get { return _activatedCheckbox; }
+            set
+            {
+                _activatedCheckbox = value;
+                _activatedCheckbox = (_activatedCheckbox != null) ? value : false;
+                OnPropertyChanged("ActivatedCheckbox");
+            }
+        }
+
         #endregion
     }
 }

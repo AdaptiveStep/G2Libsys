@@ -28,6 +28,8 @@
             BorderBrush="{StaticResource PrimaryHueMidBrush}"
             BorderThickness="3"
             Height="auto"
+            Background="{StaticResource light_background}"
+            UniformCornerRadius="10"
             MaxWidth="500">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -45,6 +47,7 @@
                     Grid.RowSpan="3" 
                     Grid.Column="2" 
                     Margin="2"
+                    Background="{StaticResource light_background}"
                     >
 
                 <!--Bild-->
