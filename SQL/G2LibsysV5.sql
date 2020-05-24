@@ -349,7 +349,7 @@
 			delete from users where ID = @ID
 		END
 		GO
-
+--------------------------------------------------------------------------------
 	--Update user . Dapper requires all attributes when handling entire objects.
 	Create proc usp_update_users
 		@ID int,
@@ -549,6 +549,15 @@
 		END
 		GO
 
+
+	CREATE PROC usp_getbyid_cards
+		@ID int = null
+		AS
+		BEGIN
+			SELECT * FROM Cards WHERE ID =@ID		
+		END
+		GO
+
 		--Just add a new card. Only userID required.
 	--
 	CREATE PROC usp_insert_cards
@@ -572,7 +581,7 @@
 		@Activated 		BIT 		=null,	
 		@Owner 			INT 		=null,
 		@ValidUntil		DateTime 	=null,
-		@cardnumber 	Varchar(30) = null
+		@cardnumber 	Varchar(30) =null
 		AS
 		BEGIN
 			UPDATE Cards
@@ -616,7 +625,7 @@
 	    GO
 	CREATE PROC usp_insert_libraryobjects
 		@ID 			INT				= null,
-		@Title			INT 			,
+		@Title			VARCHAR(500) 	= null,
 		@Description 	VARCHAR(500)	= null,
 		@ISBN			BIGINT			= null,
 		@Publisher		VARCHAR(100)	= null,
@@ -624,7 +633,9 @@
 		@Pages			INT				= null,
 		@Dewey			INT				= null,
 		@Category		INT	      		,	
-		@Author			INT				= null,
+		@Author			VARCHAR(100)	= null,
+		@Disabled 		BIT 			= null,
+
 		@Imagesrc 		VARCHAR(500)	= null,
 		@Library		INT				= null,
 		@AddedBy		INT				= null,
@@ -633,11 +644,15 @@
 		AS
 		BEGIN
 			INSERT INTO 
-			LibraryObjects(Title, [Description], ISBN, Publisher, PurchasePrice, Pages, Dewey, Category, Author, imagesrc, [Library], AddedBy, LastEdited, DateAdded) 
+			LibraryObjects( Title, [Description], ISBN,  Publisher,  PurchasePrice,  Pages, Dewey, Category,    Author,  Disabled,  imagesrc, [Library], AddedBy, LastEdited, DateAdded) 
 			VALUES 
-			(@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Pages, @Dewey, @Category, @Author,@Imagesrc, @Library, @AddedBy, @LastEdited, @DateAdded);
+						  (@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Pages, @Dewey, @Category, @Author, @Disabled, @Imagesrc, @Library, @AddedBy, @LastEdited, @DateAdded);
 		END
 		GO
+
+
+
+
 	CREATE PROC usp_update_libraryobjects
 		@ID 			INT,
 		@Title			INT,
@@ -648,7 +663,8 @@
 		@Pages			INT				= null,
 		@Dewey			INT				= null,
 		@Category		INT,	
-		@Author			INT				= null,
+		@Disabled 		BIT 			= null,
+		@Author			VARCHAR(100)				= null,
 		@Imagesrc 		VARCHAR(500)	= null,
 		@Library		INT				= null,
 		@AddedBy		INT				= null,

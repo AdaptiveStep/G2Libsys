@@ -7,6 +7,7 @@ namespace G2Libsys.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            // Set materialdesign icon based on categoryid
             return (int)value switch
             {
                 0 => "EventWeek",

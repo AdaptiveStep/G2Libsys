@@ -23,19 +23,17 @@
             }
         }
 
+        private bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
+
         public BasePage()
         {
             if (IsInDesignMode) return;
+
             var navigationService = IoC.ServiceProvider.GetService<INavigationService>();
 
             var b = typeof(VM);
             ViewModel = navigationService.Locate(b) ?? new VM();
             this.DataContext = ViewModel;
         }
-        private bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
-
-
-
-
     }
 }

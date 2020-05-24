@@ -30,6 +30,7 @@
         private ICommand editItem;
         private ICommand deleteItem;
         private ICommand reset;
+        private LibraryObject newLibraryObject;
         private ObservableCollection<LibraryObject> libraryObjects;
         private Category selectedCategory;
         private LibraryObject selectedItem;
@@ -40,9 +41,12 @@
 
         public ObservableCollection<Category> Categories { get; set; }
 
+        /// <summary>
+        /// Chosen category in combobox
+        /// </summary>
         public Category SelectedCategory
         {
-            get => selectedCategory ?? Categories?.First();
+            get => selectedCategory ?? Categories?.FirstOrDefault();
             set
             {
                 if (selectedCategory != value)
@@ -55,6 +59,9 @@
             }
         }
 
+        /// <summary>
+        /// Gets the ObservableCollection of LibObjects 
+        /// </summary>
         public ObservableCollection<LibraryObject> LibraryObjects
         {
             get => libraryObjects;
@@ -64,7 +71,9 @@
                 OnPropertyChanged(nameof(libraryObjects));
             }
         }
-
+        /// <summary>
+        /// Selected Item in the datagrid
+        /// </summary>
         public LibraryObject SelectedItem
         {
             get => selectedItem;
@@ -74,7 +83,18 @@
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }
-
+        /// <summary>
+        /// Store new LibraryObject
+        /// </summary>
+        public LibraryObject NewLibraryObject
+        {
+            get => newLibraryObject;
+            set
+            {
+                newLibraryObject = value;
+                OnPropertyChanged(nameof(NewLibraryObject));
+            }
+        }
         public string SearchString
         {
             get => searchString;
@@ -126,6 +146,11 @@
         /// </summary>
         public ICommand Reset => reset ??= new RelayCommand(_ => ResetLists());
 
+        /// <summary>
+        /// Create LibraryObject
+        /// </summary>
+        public ICommand CreateLibraryObjectCommand { get; }
+
         #endregion
 
         #region Constructor
@@ -138,6 +163,7 @@
             if (base.IsInDesignMode) return;
 
             _repo = new GeneralRepository();
+            CreateLibraryObjectCommand = new RelayCommand(_ => CreateLibraryObject());
 
             dispatcher.InvokeAsync(Initialize);
         }
@@ -150,7 +176,6 @@
         {
             Categories     = new ObservableCollection<Category>();
             LibraryObjects = new ObservableCollection<LibraryObject>();
-
             Task<IEnumerable<Category>>  categoryList = _repo.GetAllAsync<Category>();
             Task<IEnumerable<LibraryObject>> itemList = _repo.GetAllAsync<LibraryObject>();
 
@@ -163,7 +188,7 @@
 
             OnPropertyChanged(nameof(Categories));
         }
-
+        
         private async Task GetLibraryObjects()
         {
             if (Categories?.Count < 1)
