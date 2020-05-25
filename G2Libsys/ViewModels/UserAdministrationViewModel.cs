@@ -203,6 +203,7 @@
             if (UserCard.Activated == true)
             {
                 UserCard.Activated = false;
+                _dialog.Confirm("a","b");
                 CardStatus = "Aktivera Kort";
             }
             else 
