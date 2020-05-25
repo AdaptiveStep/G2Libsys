@@ -15,6 +15,7 @@
     using G2Libsys.Library.Extensions;
     using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
+    using System.IO;
     #endregion
 
     /// <summary>
@@ -35,6 +36,8 @@
         private Category selectedCategory;
         private LibraryObject selectedItem;
         private string searchString;
+        private string filePath;
+
         #endregion
 
         #region Properties
@@ -58,7 +61,18 @@
                 }
             }
         }
-
+        /// <summary>
+        /// Filepath for reports
+        /// </summary>
+        public string FilePath
+        {
+            get => filePath;
+            set
+            {
+                filePath = value;
+                OnPropertyChanged(nameof(FilePath));
+            }
+        }
         /// <summary>
         /// Gets the ObservableCollection of LibObjects 
         /// </summary>
@@ -271,9 +285,58 @@
 
         private void DeleteLibraryObject()
         {
-            bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
+            if (selectedItem == null) return;
+            //bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
+            var myVM = new RemoveItemDialogViewModel("Ta bort bok");
+            var dialogresult = _dialog.Show(myVM);
 
-            if (!result) return;
+            if (!dialogresult.isSuccess) return;
+            FilePath = @"C:\Rapporter\Borttagna böcker.csv";
+            string createText = myVM.ReturnMessage;
+            var objectID = selectedItem.ID;
+            string objectName = selectedItem.Title;
+            string objectAuthor = selectedItem.Author;
+
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    File.WriteAllText(filePath, "ID: ");
+                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
+                    File.AppendAllText(filePath, "Namn: ");
+                    File.AppendAllText(filePath, objectName + Environment.NewLine);
+                    File.AppendAllText(filePath, "Författare: ");
+                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
+
+                    File.AppendAllText(filePath, "Anledning: ");
+                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
+
+                }
+
+                else
+                {
+                    File.AppendAllText(filePath, "ID: ");
+                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
+                    File.AppendAllText(filePath, "Namn: ");
+                    File.AppendAllText(filePath, objectName + Environment.NewLine);
+                    File.AppendAllText(filePath, "Författare: ");
+                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
+
+                    File.AppendAllText(filePath, "Anledning: ");
+                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                _dialog.Alert("Fel", "Stäng Excelfilen");
+                Debug.WriteLine(ex.Message);
+                return;
+
+
+            }
 
             try
             {

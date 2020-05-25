@@ -5,10 +5,13 @@
     using G2Libsys.Dialogs;
     using G2Libsys.Library;
     using G2Libsys.Services;
+    using Microsoft.Extensions.DependencyInjection;
     using System;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.IO;
     using System.Windows.Input;
+    
 
     public class AdminViewModel : BaseViewModel, IViewModel
     {
@@ -22,9 +25,24 @@
         private string searchstring;
         private ICommand goToUser;
         private UserType selectedUserType;
+        private string filePath;
+        private RemoveItemDialogViewModel RemoveItemDialogVM { get; set; } = new RemoveItemDialogViewModel();
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// filepath for reports
+        /// </summary>
+        public string FilePath
+        {
+            get => filePath;
+            set
+            {
+                filePath = value;
+                OnPropertyChanged(nameof(FilePath));
+            }
+        }
 
         public string SearchString
         {
@@ -177,10 +195,60 @@
         private async void RemoveUser()
         {
             if (SelectedUser == null) return;
+            
+            var myVM = new RemoveItemDialogViewModel("Ta bort användare");
+            var dialogresult = _dialog.Show(myVM);
 
-            bool result = _dialog.Confirm("Godkänn", $"Ta bort användaren:\n{SelectedUser.Firstname} {SelectedUser.Lastname}?");
+            
+            //Skapar en CSV fil med anledning till borttagning av användare
+            if (!dialogresult.isSuccess) return;
+            FilePath = @"C:\Rapporter\Borttagna användare.csv";
+            string createText = myVM.ReturnMessage;
+            var userID =  SelectedUser.ID;
+            string userFirstname = SelectedUser.Firstname;
+            string userLastname = SelectedUser.Lastname;
 
-            if (!result) return;
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                   File.WriteAllText(filePath, "ID: ");
+                   File.AppendAllText(filePath, userID.ToString() + Environment.NewLine);
+                   File.AppendAllText(filePath, "Namn: ");
+                   File.AppendAllText(filePath, userFirstname + Environment.NewLine);
+                   File.AppendAllText(filePath, "Efternamn: " );
+                   File.AppendAllText(filePath, userLastname + Environment.NewLine);
+                 
+                   File.AppendAllText(filePath, "Anledning: ");
+                   File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
+
+                }
+
+                else
+                {
+                   File.AppendAllText(filePath, "ID: " + userID.ToString() + Environment.NewLine);
+                   File.AppendAllText(filePath, "Namn: " + userFirstname + Environment.NewLine);
+                   File.AppendAllText(filePath, "Efternamn: " + userLastname + Environment.NewLine);
+                   File.AppendAllText(filePath, "Anledning: " + createText + Environment.NewLine + Environment.NewLine);
+              
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                _dialog.Alert("Fel", "Stäng Excelfilen");
+                Debug.WriteLine(ex.Message);
+                return;
+                
+
+            }
+            //finally
+            //{
+            //    NewUser = new User();
+
+            //}
+
 
             try
             {
