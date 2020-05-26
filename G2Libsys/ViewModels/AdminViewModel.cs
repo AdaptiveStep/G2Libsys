@@ -6,6 +6,7 @@
     using G2Libsys.Library;
     using G2Libsys.Services;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Win32;
     using System;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
@@ -28,7 +29,7 @@
         private UserType selectedUserType;
         private string filePath;
         private RemoveItemDialogViewModel RemoveItemDialogVM { get; set; } = new RemoveItemDialogViewModel();
-        public ICommand RunDialogCommand => new AnotherCommandImplementation(ExecuteRunDialog);
+        //public ICommand RunDialogCommand => new AnotherCommandImplementation(ExecuteRunDialog);
         #endregion
 
         #region Properties
@@ -135,6 +136,11 @@
         public ICommand RemoveUserCommand { get; }
 
         /// <summary>
+        /// Command for downloading a csv file with deleted users
+        /// </summary>
+        public ICommand DownloadUserLogCommand => new RelayCommand(SaveDialogBox);
+
+        /// <summary>
         /// Go to details for selected user
         /// </summary>
         public ICommand GoToUser => goToUser ??=
@@ -201,17 +207,22 @@
             var myVM = new RemoveItemDialogViewModel("Ta bort användare");
             var dialogresult = _dialog.Show(myVM);
 
+
             
+
+
+
+
             //Skapar en CSV fil med anledning till borttagning av användare
             if (!dialogresult.isSuccess) return;
-            FilePath = @"C:\Rapporter\Borttagna användare.csv";
+            
+
+
+
             string createText = myVM.ReturnMessage;
             var userID =  SelectedUser.ID;
             string userFirstname = SelectedUser.Firstname;
             string userLastname = SelectedUser.Lastname;
-
-
-            
 
 
             try
@@ -265,6 +276,32 @@
             {
                 // Reset NewUser
                 NewUser = new User();
+            }
+        }
+
+        public void SaveDialogBox(object param = null) //används till att spara .csv fil 
+        {
+            var userID = SelectedUser.ID.ToString();
+            string userFirstname = SelectedUser.Lastname;
+
+            // Inställningar för save file dialog box
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.FileName = "LibsysUsers"; // Default file name
+            dlg.DefaultExt = ".csv"; // Default file extension
+            dlg.Filter = "Excel documents (.csv)|*.csv"; // Filter files by extension
+
+            // Visa save file dialog box
+            Nullable<bool> saveresult = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (saveresult == true)
+            {
+                // spara dokument
+                string filename = dlg.FileName;
+                
+                File.WriteAllText(dlg.FileName, userID);
+                File.AppendAllText(dlg.FileName, userFirstname);
+                //File.AppendAllText(dlg.FileName, )
             }
         }
 

@@ -83,7 +83,7 @@
                 </StackPanel>
             </materialDesign:Card>
 
-		<StackPanel Orientation="Vertical" Grid.Column="1"  Margin="0 10 10 10">
+		<StackPanel Orientation="Vertical" Grid.Column="1"  Margin="0 0 10 10">
                 <Label Content="Lägg till medlem" Foreground="{StaticResource primary_mid}" />
                 <materialDesign:Card>
                     <StackPanel>
@@ -136,13 +136,25 @@
                 <materialDesign:Card>
                     <StackPanel>
                         <Button
-                            Margin="5,10"
+                            Margin="3,3"
                             HorizontalAlignment="Center"
                             Command="{Binding RemoveUserCommand}"
                             Content="Ta bort" />
                     </StackPanel>
                 </materialDesign:Card>
-            </StackPanel>
+            <Label Content="Raderade användare" Foreground="{StaticResource primary_mid}" />
+
+            <materialDesign:Card>
+                <StackPanel>
+                    <Button
+                            Margin="3,3"
+                            Width="70"
+                            HorizontalAlignment="Center"
+                            Command="{Binding DownloadUserLogCommand}"
+                            Content="{materialDesign:PackIcon Kind=ContentSave}" />
+                </StackPanel>
+            </materialDesign:Card>
+        </StackPanel>
 
 
     </Grid>

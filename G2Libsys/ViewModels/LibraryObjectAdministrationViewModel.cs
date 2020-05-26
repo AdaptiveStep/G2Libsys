@@ -320,22 +320,25 @@
                 {
                     File.WriteAllText(filePath, "ID: ");
                     File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
+
                     File.AppendAllText(filePath, "Namn: ");
                     File.AppendAllText(filePath, objectName + Environment.NewLine);
+
                     File.AppendAllText(filePath, "Författare: ");
                     File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
 
                     File.AppendAllText(filePath, "Anledning: ");
                     File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-
                 }
 
                 else
                 {
                     File.AppendAllText(filePath, "ID: ");
                     File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
+
                     File.AppendAllText(filePath, "Namn: ");
                     File.AppendAllText(filePath, objectName + Environment.NewLine);
+
                     File.AppendAllText(filePath, "Författare: ");
                     File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
 
@@ -347,12 +350,9 @@
             }
             catch (Exception ex)
             {
-
                 _dialog.Alert("Fel", "Stäng Excelfilen");
                 Debug.WriteLine(ex.Message);
                 return;
-
-
             }
 
             try

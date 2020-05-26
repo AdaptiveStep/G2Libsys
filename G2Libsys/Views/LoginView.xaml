@@ -73,6 +73,7 @@
                         materialDesign:TextFieldAssist.HasClearButton="True"
                         Background="WhiteSmoke"
                         Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    
                     <TextBlock
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
