@@ -11,7 +11,9 @@
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
+    using System.Windows.Documents;
     using System.Windows.Input;
     
 
@@ -219,47 +221,63 @@
 
 
 
-            string createText = myVM.ReturnMessage;
-            var userID =  SelectedUser.ID;
-            string userFirstname = SelectedUser.Firstname;
-            string userLastname = SelectedUser.Lastname;
+            //string createText = myVM.ReturnMessage;
+            //var userID =  SelectedUser.ID;
+            //string userFirstname = SelectedUser.Firstname;
+            //string userLastname = SelectedUser.Lastname;
+
+            //var getUserInformation = await _repo.GetAllAsync<User>();
+
+            //var getUser = new User();
+
+            //ObservableCollection<User> getUsers = new ObservableCollection<User>();
 
 
-            try
-            {
-                if (!File.Exists(filePath))
-                {
-                   File.WriteAllText(filePath, "ID: ");
-                   File.AppendAllText(filePath, userID.ToString() + Environment.NewLine);
-                   File.AppendAllText(filePath, "Namn: ");
-                   File.AppendAllText(filePath, userFirstname + Environment.NewLine);
-                   File.AppendAllText(filePath, "Efternamn: " );
-                   File.AppendAllText(filePath, userLastname + Environment.NewLine);
+            //if (!File.Exists(filePath))
+            //{
+            //    File.WriteAllText(filePath, getUser.ID.ToString());
+            //    File.AppendAllText(filePath, createText);
+            //}
+            //else
+            //{
+            //    File.AppendAllText(filePath, getUser.ID.ToString());
+            //    File.AppendAllText(filePath, createText);
+            //}
+            //try
+            //{
+            //    if (!File.Exists(filePath))
+            //    {
+            //       File.WriteAllText(filePath, "ID: ");
+            //       File.AppendAllText(filePath, userID.ToString() + Environment.NewLine);
+            //       File.AppendAllText(filePath, "Namn: ");
+            //       File.AppendAllText(filePath, userFirstname + Environment.NewLine);
+            //       File.AppendAllText(filePath, "Efternamn: " );
+            //       File.AppendAllText(filePath, userLastname + Environment.NewLine);
                  
-                   File.AppendAllText(filePath, "Anledning: ");
-                   File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
+            //       File.AppendAllText(filePath, "Anledning: ");
+            //       File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
 
-                }
+            //    }
 
-                else
-                {
-                   File.AppendAllText(filePath, "ID: " + userID.ToString() + Environment.NewLine);
-                   File.AppendAllText(filePath, "Namn: " + userFirstname + Environment.NewLine);
-                   File.AppendAllText(filePath, "Efternamn: " + userLastname + Environment.NewLine);
-                   File.AppendAllText(filePath, "Anledning: " + createText + Environment.NewLine + Environment.NewLine);
+            //    else
+            //    {
+            //       File.AppendAllText(filePath, "ID: " + userID.ToString() + Environment.NewLine);
+            //       File.AppendAllText(filePath, "Namn: " + userFirstname + Environment.NewLine);
+            //       File.AppendAllText(filePath, "Efternamn: " + userLastname + Environment.NewLine);
+            //       File.AppendAllText(filePath, "Anledning: " + createText + Environment.NewLine + Environment.NewLine);
               
-                }
+            //    }
 
-            }
-            catch (Exception ex)
-            {
+            //}
+            //catch (Exception ex)
+            //{
 
-                _dialog.Alert("Fel", "Stäng Excelfilen");
-                Debug.WriteLine(ex.Message);
-                return;
+            //    _dialog.Alert("Fel", "Stäng Excelfilen");
+            //    Debug.WriteLine(ex.Message);
+            //    return;
                 
 
-            }
+            //}
             
 
             try
