@@ -1,113 +1,82 @@
-﻿#region NameSpaces
-using G2Libsys.Commands;
-using G2Libsys.Data.Repository;
-using G2Libsys.Library;
-using G2Libsys.Services;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media.TextFormatting;
-#endregion
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
+	#region NameSpaces
+	using G2Libsys.Commands;
+	using G2Libsys.Data.Repository;
+	using G2Libsys.Library;
+    using G2Libsys.Models;
+    using G2Libsys.Services;
+	using System;
+	using System.Collections.ObjectModel;
+	using System.Linq;
+	using System.Runtime.Serialization;
+    using System.Threading.Tasks;
+    using System.Windows;
+	using System.Windows.Controls;
+	using System.Windows.Input;
+	using System.Windows.Media.TextFormatting;
+	#endregion
+
 	public class LibraryMainViewModel : BaseViewModel, IViewModel
 	{
-		public ICommand AdvancedSearchCommand { get; private set; }
-		public ICommand AdvClearCommand { get; private set; }
-		public ICommand SearchCommand { get; private set; }
-		public ICommand BookButton { get; private set; }
-		public ICommand AddLoanButton { get; private set; }
+		#region Fields
 		private readonly IRepository _repo;
-		private ObservableCollection<Loan> loanCart;
-		private bool frontPage;
-		private ObservableCollection<LibraryObject> searchObjects;
-
 		private LibraryObject selectedLibraryObject;
+		private ObservableCollection<LibraryObject> libObjects;
+		private Category selectedCatagory;
+		private string searchtext;
+		private bool frontPage;
+		private bool basicSearch;
+		#endregion
+
+		#region Properties
 
 		/// <summary>
 		/// We create this object when doing an advanced search query. Its instanse-variables are used for the search method.
 		/// </summary>
-		private AdvSearchParams advSearchObjectWithParams;
+		private SearchObject searchObject;
 
-		private User currentUser;
-		private Card currentUserCard;
-
-		public Card CurrentUserCard
+		public SearchObject SearchObject
 		{
-			get => currentUserCard;
+			get => searchObject;
 			set
 			{
-				currentUserCard = value;
-				OnPropertyChanged(nameof(currentUserCard));
+				searchObject = value;
+				OnPropertyChanged(nameof(SearchObject));
 			}
 		}
 
-		public AdvSearchParams AdvSearchObjectWithParams
-		{
-			get => advSearchObjectWithParams;
-			set
-			{
-				advSearchObjectWithParams = value;
-				OnPropertyChanged(nameof(advSearchObjectWithParams));
-			}
-		}
-
-		public User CurrentUser
-		{
-			get => currentUser;
-			set
-			{
-				currentUser = value;
-				OnPropertyChanged(nameof(CurrentUser));
-			}
-		}
-		public ObservableCollection<LibraryObject> SearchObjects
-		{
-			get => searchObjects;
-			set
-			{
-				searchObjects = value;
-				OnPropertyChanged(nameof(SearchObjects));
-			}
-		}
-		private ObservableCollection<LibraryObject> fpLibObjects;
-		private ObservableCollection<LibraryObject> libObjects;
-
-
-		#region Public methods
 		/// <summary>
 		/// En lista med Categories
 		/// </summary>
 		public ObservableCollection<Category> Categories { get; private set; }
-		public Category NavigateCategory
+
+		/// <summary>
+		/// Selected search category
+		/// </summary>
+		public Category SelectedCategory
 		{
+			get => selectedCatagory ?? Categories?.FirstOrDefault();
 			set
 			{
-				GetLibraryObjects(value.ID);
+				selectedCatagory = value;
+				OnPropertyChanged(nameof(SelectedCategory));
 			}
 		}
-		public ObservableCollection<Loan> LoanCart
+
+		/// <summary>
+		/// Selected navigation category
+		/// </summary>
+		public Category NavigateCategory
 		{
-			get => loanCart;
-			set
-			{
-				loanCart = value;
-				OnPropertyChanged(nameof(LoanCart));
-			}
+			// Get libraryobject with selected category id
+			set => GetLibraryObjects(value.ID);
 		}
 
 		/// <summary>
 		/// den andra listan med libobjects, används för att binda i blogposterna
 		/// </summary>
-		public ObservableCollection<LibraryObject> FpLibraryObjects
-		{
-			get => fpLibObjects;
-			set { fpLibObjects = value;}
-		}
+		public ObservableCollection<LibraryObject> FpLibraryObjects { get; set; }
 
 		/// <summary>
 		/// The list of LibraryObjects
@@ -120,69 +89,6 @@ namespace G2Libsys.ViewModels
 				libObjects = value;
 				OnPropertyChanged(nameof(LibraryObjects));
 			}
-		}
-		public bool FrontPage
-		{
-			get => frontPage;
-			set
-			{
-				frontPage = value;
-				OnPropertyChanged(nameof(FrontPage));
-				OnPropertyChanged(nameof(SearchPage));
-			}
-		}
-
-		public bool SearchPage => !FrontPage;
-
-
-
-		private void Search()
-		{
-			if (FrontPage)
-				FrontPage = false;
-
-			else
-				FrontPage = true;
-		}
-
-		public LibraryMainViewModel()
-		{
-			if (base.IsInDesignMode) return;
-			_repo = new GeneralRepository();
-			GetCategories();
-			GetUser();
-			FrontPage = true;
-			LibraryObjects = new ObservableCollection<LibraryObject>();
-			FpLibraryObjects = new ObservableCollection<LibraryObject>();
-			AdvSearchObjectWithParams = new AdvSearchParams();
-
-			GetLibraryObjects();
-			GetFpLibraryObjects();
-			LoanCart = new ObservableCollection<Loan>();
-			SearchObjects = new ObservableCollection<LibraryObject>();
-			BookButton = new RelayCommand(_ => ConfirmLoan());
-			SearchCommand = new RelayCommand(_ => GetSearchObjects());
-			AdvancedSearchCommand = new RelayCommand(_ => GetAdvancedSearchObjects());
-			AddLoanButton = new RelayCommand(_=> AddToCart());
-
-			AdvClearCommand = new RelayCommand(_ => ClearAdvSearch());
-
-			
-
-		}
-
-		private void ClearAdvSearch()
-		{
-			//Todo: Do a simple for-loop over all properties instead.
-			advSearchObjectWithParams.Publisher   = string.Empty;
-			advSearchObjectWithParams.Dewey       = null;
-			advSearchObjectWithParams.Author      = string.Empty;
-			advSearchObjectWithParams.AddedBy     = null;
-			advSearchObjectWithParams.Description = string.Empty;
-			advSearchObjectWithParams.Category    = null;
-			advSearchObjectWithParams.DateAdded   = DateTime.Now;
-			advSearchObjectWithParams.ISBN        = null;
-			advSearchObjectWithParams.Title       = string.Empty;
 		}
 
 		/// <summary>
@@ -202,58 +108,9 @@ namespace G2Libsys.ViewModels
 			}
 		}
 
-
-
-		#endregion
-
-		#region Private methods
-
-		private void GetUser()
-		{
-			
-			if (_navigationService.HostScreen.CurrentUser != null)
-			{
-				CurrentUser = _navigationService.HostScreen.CurrentUser;
-				//CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
-			}
-		}
-		public void AddToCart()
-		{
-			if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
-			{
-				LoanCart.Add(new Loan() { LibraryObject = SelectedLibraryObject, Card = CurrentUserCard, LoanDate = DateTime.Now });
-				_dialog.Alert("", "Tillagd i varukorgen");
-			}
-			else { _dialog.Alert("", "Vänligen logga in för att låna"); }
-		}
-
-        public async void ConfirmLoan()
-        {
-            foreach (Loan a in LoanCart)
-            {
-                await _repo.AddAsync(a);
-            }
-            _dialog.Alert("", "Dina lån är nu skapade");
-            LoanCart.Clear();
-        }
-        /// <summary>
-        /// hämtar alla library objects ifrån databasen
-        /// </summary>
-        private async void GetLibraryObjects(int id)
-        {
-            FrontPage = false;
-            //LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
-            LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>(id));
-        }
-
-		private async void GetLibraryObjects()
-		{
-			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
-		}
-
-
-
-		private string searchtext;
+		/// <summary>
+		/// Basic search string
+		/// </summary>
 		public string SearchText
 		{
 			get => searchtext;
@@ -264,39 +121,125 @@ namespace G2Libsys.ViewModels
 			}
 		}
 
+		#endregion
 
+		#region Bools
+
+		/// <summary>
+		/// If frontpage enabled
+		/// </summary>
+		public bool FrontPage
+		{
+			get => frontPage;
+			set
+			{
+				frontPage = value;
+				OnPropertyChanged(nameof(FrontPage));
+				OnPropertyChanged(nameof(SearchPage));
+			}
+		}
+
+		/// <summary>
+		/// If frontpage disabled
+		/// </summary>
+		public bool SearchPage => !FrontPage;
+
+		/// <summary>
+		/// If Basicsearch enabled
+		/// </summary>
+		public bool BasicSearch
+		{
+			get => basicSearch;
+			set
+			{
+				basicSearch = value;
+				OnPropertyChanged(nameof(BasicSearch));
+				OnPropertyChanged(nameof(AdvSearch));
+			}
+		}
+
+		/// <summary>
+		/// If Advancedsearch enabled
+		/// </summary>
+		public bool AdvSearch => !BasicSearch;
+
+		#endregion
+
+		#region Commands
+
+		public ICommand AdvancedSearchCommand { get; }
+		public ICommand AdvClearCommand { get; }
+		public ICommand SearchCommand { get; }
+		public ICommand EnableAdvancedSearch { get; }
+
+		#endregion
+
+		#region Constructor
+
+		public LibraryMainViewModel()
+		{
+			if (base.IsInDesignMode) return;
+
+			_repo = new GeneralRepository();
+
+			LibraryObjects = new ObservableCollection<LibraryObject>();
+			Categories = new ObservableCollection<Category>();
+
+			FrontPage = true;
+			BasicSearch = true;
+
+			GetCategories();
+			GetFpLibraryObjects();
+			ResetSearchObject();
+
+			SearchCommand = new RelayCommand(_ => GetSearchObjects());
+			AdvancedSearchCommand = new RelayCommand(_ => GetAdvancedSearchObjects());
+			AdvClearCommand = new RelayCommand(_ => ResetSearchObject());
+			EnableAdvancedSearch = new RelayCommand(_ => BasicSearch = !BasicSearch);
+        }
+
+		#endregion
+
+		#region Private methods
+
+		/// <summary>
+		/// Get library objects with the matching category id
+		/// </summary>
+		private async void GetLibraryObjects(int id)
+		{
+			FrontPage = false;
+			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>(id));
+		}
+
+		/// <summary>
+		/// Get search results
+		/// </summary>
 		private async void GetSearchObjects()
 		{
 			FrontPage = false;
-			//LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetAllAsync<LibraryObject>()).Where(o => o.Category == id));
-			
-			//SearchObjects.Clear();
 			LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetRangeAsync<LibraryObject>(SearchText)).Where(o => o.Category == SelectedCategory.ID));
 		}
 
 		/// <summary>
-		/// Uses the filtered search stored procedure to get libraryobjects. 
-		/// The stored procedure smart_filter_Search takes all the parameters the Libraryobject instanse has.
+		/// Uses the filteredsearch. Takes a SearchObject that contains filtering parameters,
+		/// and gets all the Libraryobjects that match these conditions.
+		/// For instance: if myBookobject.Title is "Harry", then send myBookobject if you want all books that match that title.
 		/// </summary>
 		private async void GetAdvancedSearchObjects()
 		{
 			FrontPage = false;
 
-			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.AdvancedSearchAsync(AdvSearchObjectWithParams));
+			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetRangeAsync<LibraryObject>(SearchObject));
 		}
 
-		private Category selectedCatagory;
-		public Category SelectedCategory
-		{
-			get => selectedCatagory;
-			set
-			{
-				
-				selectedCatagory = value;
-				OnPropertyChanged(nameof(SelectedCategory));
-			}
-		}
-	
+		/// <summary>
+		/// Initiate or reset SearchObject
+		/// </summary>
+		private void ResetSearchObject() => SearchObject = new SearchObject() { DateAdded = DateTime.Now.AddDays(-7) };
+
+		/// <summary>
+		/// Get category navigation
+		/// </summary>
 		private async void GetCategories()
 		{
 			try
@@ -309,14 +252,17 @@ namespace G2Libsys.ViewModels
 				Categories = new ObservableCollection<Category>() { new Category() { ID = 1, Name = "Saknas" } };
 			}
 		}
+
+		/// <summary>
+		/// Get frontpage content
+		/// </summary>
 		private async void GetFpLibraryObjects()
 		{
-			var list = (await _repo.GetAllAsync<LibraryObject>()).Where(x => x.Category == 1).ToList();
+			var list = (await _repo.GetAllAsync<LibraryObject>(1)).ToList();
 			FpLibraryObjects = new ObservableCollection<LibraryObject>(list.GetRange(0,2));
 		}
-		
-		
-		#endregion
-	}
+
+        #endregion
+    }
 }
 
