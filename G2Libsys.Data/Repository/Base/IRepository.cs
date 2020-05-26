@@ -56,9 +56,9 @@
         /// Get all items matching search with multiple filters
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="item"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        public Task<IEnumerable<T>> GetRangeAsync<T>(T item);
+        public Task<IEnumerable<T>> GetRangeAsync<T>(object parameters);
 
         /// <summary>
         /// Update item in database
@@ -73,15 +73,6 @@
         /// <param name="item"></param>
         /// <returns></returns>
         public Task RemoveAsync<T>(int id);
-
-        /// <summary>
-        /// Uses the AdvancedSearch stored procedure. Takes an Libraryobject that contains filtering parameters, 
-        /// and gets all the Libraryobjects that match these conditions.
-        /// For instance: if myBookobject.Title is "Harry" , then send myBookobject if you want all books that match that title.
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(AdvSearchParams paramsInObject);
 	}
 
     /// <summary>
@@ -94,62 +85,47 @@
         /// Insert new item
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
         public Task<int> AddAsync(T item);
 
         /// <summary>
         /// Insert multiple items
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
         public Task AddRangeAsync(IEnumerable<T> item);
 
         /// <summary>
         /// Get item by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
         public Task<T> GetByIdAsync(int id);
 
         /// <summary>
         /// Get all items
         /// </summary>
-        /// <returns></returns>
         public Task<IEnumerable<T>> GetAllAsync(int? id = null);
 
         /// <summary>
         /// Get all items matching search
         /// </summary>
         /// <param name="search"></param>
-        /// <returns></returns>
         public Task<IEnumerable<T>> GetRangeAsync(string search);
 
         /// <summary>
         /// Get all items matching search with multiple filters
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public Task<IEnumerable<T>> GetRangeAsync(T item);
+        /// <param name="parameters"></param>
+        public Task<IEnumerable<T>> GetRangeAsync(object parameters);
 
         /// <summary>
         /// Update item in database
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
         public Task UpdateAsync(T item);
 
         /// <summary>
         /// Delete item from database
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
         public Task RemoveAsync(int id);
-
-        /// <summary>
-        /// Get a bunch of library objects by providing one libraryobject. The provided libraryobject contains desired attributes.
-        /// </summary>
-        /// <param name="paramsInObject"></param>
-        /// <returns></returns>
-        public Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(AdvSearchParams paramsInObject);
     }
 }

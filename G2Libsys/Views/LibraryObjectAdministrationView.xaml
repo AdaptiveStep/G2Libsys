@@ -120,7 +120,7 @@
                             MaxWidth="100"
                             Binding="{Binding LastEdited}"
                             Header="Ändrad" />
-                        <DataGridTextColumn 
+                        <DataGridTextColumn
                             MaxWidth="100"
                             Binding="{Binding Publisher}"
                             Header="Publicerad av" />
@@ -131,22 +131,22 @@
                         <DataGridTextColumn
                             MaxWidth="100"
                             Binding="{Binding Pages}"
-                            Header="Sidor"/>
+                            Header="Sidor" />
                         <DataGridTextColumn
                             MaxWidth="100"
                             Binding="{Binding Disabled}"
-                            Header="Aktiverad"/>
+                            Header="Aktiverad" />
                         <DataGridTextColumn
                             MaxWidth="100"
                             Binding="{Binding Dewey}"
-                            Header="DeweyDecimal"/>
+                            Header="DeweyDecimal" />
                         <DataGridTextColumn
                             MaxWidth="100"
                             Binding="{Binding imagesrc}"
                             Header="Bildadress" />
 
                     </DataGrid.Columns>
-                        
+
                     <DataGrid.InputBindings>
                         <MouseBinding
                             Command="{Binding EditItem}"
@@ -161,7 +161,7 @@
 
             </StackPanel>
         </materialDesign:Card>
-        
-               
+
+
     </Grid>
 </local:BasePage>
