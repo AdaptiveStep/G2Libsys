@@ -756,12 +756,12 @@
 	-------- BELOW IS STILL UNDER CONSTRUCITON:
 	--Dynamic search of objects - multiple keywords (i.e conjunctive filter search)
 
-	IF OBJECT_ID('smart_filter_Search', 'P') IS NOT NULL
-	    DROP PROCEDURE smart_filter_Search;
+	IF OBJECT_ID('usp_filtersearch_libraryobjects', 'P') IS NOT NULL
+	    DROP PROCEDURE usp_filtersearch_libraryobjects;
 	    GO
 
 	    --Dynamic Search directly to unhashed table, O(12N) = O(N)
-	CREATE PROC smart_filter_Search(
+	CREATE PROC usp_filtersearch_libraryobjects(
 		--Unused in the searchprocedure
 		-- @ID INT 					= NULL,
 		--@PurchasePrice INT 			= NULL,

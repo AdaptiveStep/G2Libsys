@@ -175,7 +175,7 @@
             _navigationService.Setup(this);
 
             // Enable dev menu
-            DeveloperMode = true;
+            DeveloperMode = false;
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 

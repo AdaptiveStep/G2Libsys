@@ -5,15 +5,14 @@
     /// </summary>
     #region NameSpaces
     using Dapper;
-	using G2Libsys.Library;
 	using G2Libsys.Library.Extensions;
     using System;
     using System.Collections.Generic;
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
+    using System.Diagnostics;
     using System.Threading.Tasks;
-    using System.Transactions;
     #endregion
 
     // Ändringar här måste även göras i IRepository.
@@ -48,13 +47,13 @@
         #region Constructor
 
         /// <summary>
-        /// Default constructor, 
+        /// Default constructor,
         /// tableName = target table in database
         /// </summary>
-        public GenericRepository(string tableName = null)
+        protected GenericRepository(string tableName = null)
         {
             _tableName = tableName;
-            _connectionString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
+            _connectionString = ConfigurationManager.ConnectionStrings["sqldefault"].ConnectionString;
         }
 
         #endregion
@@ -78,7 +77,7 @@
                 {
                     try
                     {
-                        bkupString = ConfigurationManager.ConnectionStrings["sqldefault"].ConnectionString;
+                        bkupString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
                         var conn = new SqlConnection(bkupString);
                         conn.Open();
                         return conn;
@@ -118,6 +117,7 @@
             using IDbTransaction transaction = _db.BeginTransaction();
             try
             {
+                // Insert for each item in items
                 await _db.ExecuteAsync(
                             sql: GetProcedureName<T>("insertrange"),
                           param: items,
@@ -130,7 +130,8 @@
             {
                 // Rollback databse changes if transaction failed
                 transaction.Rollback();
-                throw new TransactionAbortedException(ex.ToString());
+                // Show what caused the error
+                Debug.WriteLine(ex.Message);
             }
         }
 
@@ -147,11 +148,12 @@
 
         public virtual async Task<IEnumerable<T>> GetAllAsync<T>(int? id = null)
         {
+            // if id is not null create parameter with id
             var param = id == null ? (object)(new { }) : new { id };
 
             using IDbConnection _db = Connection;
 
-            // Return all items of type T
+            // Return all items of type T that matches optional id parameter
             return await _db.QueryAsync<T>(
                         sql: GetProcedureName<T>("getall"),
                       param: param,
@@ -162,21 +164,21 @@
         {
             using IDbConnection _db = Connection;
 
-            // Return all items matching search
+            // Return all items of type T matching search
             return await _db.QueryAsync<T>(
                         sql: GetProcedureName<T>("simplesearch"),
                       param: new { search },
                 commandType: CommandType.StoredProcedure);
         }
 
-        public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(T item)
+        public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(object parameters)
         {
             using IDbConnection _db = Connection;
 
-            // Return all items matching search with multiple filters
+            // Return all items of type T matching the parameters
             return await _db.QueryAsync<T>(
                         sql: GetProcedureName<T>("filtersearch"),
-                      param: item,
+                      param: parameters,
                 commandType: CommandType.StoredProcedure);
         }
 
@@ -202,21 +204,6 @@
                 commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(AdvSearchParams paramsInObject)
-        {
-            using (IDbConnection _db = Connection)
-            {
-
-                // Return all items of type T
-                var tmp = await _db.QueryAsync<LibraryObject>(
-                           sql: "smart_filter_Search",
-                         param: paramsInObject,
-                   commandType: CommandType.StoredProcedure);
-
-                return tmp;
-            }
-        }
-
         #endregion
 
         #region Protected Methods
@@ -226,7 +213,7 @@
         /// </summary>
         /// <typeparam name="T">Model</typeparam>
         /// <param name="action">procedure type</param>
-        /// <returns></returns>
+        /// <returns>Procedure Name</returns>
         protected virtual string GetProcedureName<T>(string action)
         {
             string table = _tableName ?? typeof(T).ToTableName();
@@ -250,7 +237,7 @@
         /// Default constructor where tableName = target table in database <para/>
         /// Note: Only specify tablename if needed
         /// </summary>
-        public GenericRepository(string tableName = null)
+        protected GenericRepository(string tableName = null)
             : base(tableName) { }
 
         #endregion
@@ -267,7 +254,7 @@
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync(string partialword) => await base.GetRangeAsync<T>(partialword);
 
-        public virtual async Task<IEnumerable<T>> GetRangeAsync(T item) => await base.GetRangeAsync(item);
+        public virtual async Task<IEnumerable<T>> GetRangeAsync(object parameters) => await base.GetRangeAsync<T>(parameters);
 
         public virtual async Task UpdateAsync(T item) => await base.UpdateAsync(item);
 
