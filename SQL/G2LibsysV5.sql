@@ -259,11 +259,19 @@
 		[Library] 		INT 				 	DEFAULT 1 		FOREIGN KEY REFERENCES Libraries(ID) 	ON DELETE SET NULL,
 		[AddedBy] 		INT 	 	NOT NULL 	DEFAULT 1 		FOREIGN KEY REFERENCES Users(ID),
 		[LastEdited] 	DATETIME 	NOT NULL 	DEFAULT SYSDATETIME(),
-		[DateAdded] 	DATETIME 	NOT NULL 	DEFAULT SYSDATETIME()
-		--Constraints
-		);
-		GO
+		[DateAdded] 	DATETIME 	NOT NULL 	DEFAULT SYSDATETIME(),
+		StartDate DATETIME2 GENERATED ALWAYS AS ROW START NOT NULL DEFAULT SYSDATETIME(), 
+		EndDate DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL DEFAULT SYSDATETIME(),
+		PERIOD FOR SYSTEM_TIME (StartDate, EndDate)
+		)
 
+		---Temporal features for table. Can Easily be Disabled/pruned to save space.
+		WITH (SYSTEM_VERSIONING = ON 
+		         (HISTORY_TABLE = dbo.TestTemporalHistory, 
+		            History_retention_period = 365 DAYS
+		          )
+		      ) 
+		GO
 
 	--
 	--Relationship Card-2-OBJECT ; M2M
@@ -315,6 +323,25 @@
 		);
 	GO
 
+----------------- Tables of ADMIN LOGGER -------------------------------
+
+	CREATE TABLE AdminActionTypes(
+		ID 				INT IDENTITY(1,1) 		NOT NULL PRIMARY KEY 	,
+		Name	 		VARCHAR(300) 			NOT NULL 				,
+		
+		); 
+		GO
+	CREATE TABLE AdminActions(
+		ID 				INT IDENTITY(1,1) 		NOT NULL PRIMARY KEY 	,
+		ActionType 		INT 					NOT NULL FOREIGN KEY REFERENCES AdminActionTypes(ID),
+		Comment	 		VARCHAR(300) 			NOT NULL 				,
+		Actiondate 		DateTime 				NOT NULL DEFAULT SYSDATETIME()
+		); 
+		GO 
+
+
+
+
 ------------------------------------------------------------------------
 --SQL PROCEDURES -------------------------------------------------------
 ---------------Users ---------------------------------------------------
@@ -323,7 +350,7 @@
 		BEGIN
 			select * from users;
 		END
-		GO
+		GO 
 
 	--Add User
 	Create proc usp_insert_users
@@ -352,6 +379,8 @@
 			delete from users where ID = @ID
 		END
 		GO
+
+
 --------------------------------------------------------------------------------
 	--Update user . Dapper requires all attributes when handling entire objects.
 	Create proc usp_update_users
@@ -666,21 +695,21 @@
 
 	CREATE PROC usp_update_libraryobjects
 		@ID 			INT,
-		@Title			INT,
-		@Description 	Varchar(500)	= null,
+		@Title			VARCHAR(100),
+		@Description 	VARCHAR(500)	= null,
 		@ISBN			BIGINT			= null,
 		@Publisher		VARCHAR(100)	= null,
 		@PurchasePrice	FLOAT			= null,
 		@Pages			INT				= null,
 		@Dewey			INT				= null,
-		@Category		INT,	
-		@Disabled 		BIT 			= null,
+		@Category		INT 			,
+		@Disabled 		BIT 			,
 		@Author			VARCHAR(100)	= null,
 		@Imagesrc 		VARCHAR(500)	= null,
 		@Library		INT				= null,
-		@AddedBy		INT				= null,
-		@LastEdited	DATETIME			= null,
-		@DateAdded	DATETIME			= null
+		@AddedBy		INT				,
+		@LastEdited	DATETIME			,
+		@DateAdded	DATETIME			
 
 		AS
 		BEGIN
@@ -695,7 +724,7 @@
 			Dewey 			= @Dewey,
 			Category 		= @Category,
 			Author 			= @Author,
-			Disabled 		= @Disabled,
+			[Disabled] 		= @Disabled,
 			imagesrc		= @Imagesrc,
 			[Library] 		= @Library,
 			AddedBy 		= @AddedBy,
@@ -756,12 +785,12 @@
 	-------- BELOW IS STILL UNDER CONSTRUCITON:
 	--Dynamic search of objects - multiple keywords (i.e conjunctive filter search)
 
-	IF OBJECT_ID('usp_filtersearch_libraryobjects', 'P') IS NOT NULL
-	    DROP PROCEDURE usp_filtersearch_libraryobjects;
+	IF OBJECT_ID('usp_filtersearch_libraryobjects ', 'P') IS NOT NULL
+	    DROP PROCEDURE usp_filtersearch_libraryobjects ;
 	    GO
 
 	    --Dynamic Search directly to unhashed table, O(12N) = O(N)
-	CREATE PROC usp_filtersearch_libraryobjects(
+	CREATE PROC usp_filtersearch_libraryobjects (
 		--Unused in the searchprocedure
 		-- @ID INT 					= NULL,
 		--@PurchasePrice INT 			= NULL,
