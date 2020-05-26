@@ -4,7 +4,8 @@
 	using G2Libsys.Commands;
 	using G2Libsys.Data.Repository;
 	using G2Libsys.Library;
-	using G2Libsys.Services;
+    using G2Libsys.Models;
+    using G2Libsys.Services;
 	using System;
 	using System.Collections.ObjectModel;
 	using System.Linq;
@@ -20,7 +21,6 @@
 	{
 		#region Fields
 		private readonly IRepository _repo;
-		private LibraryObject searchObject;
 		private LibraryObject selectedLibraryObject;
 		private ObservableCollection<LibraryObject> libObjects;
 		private Category selectedCatagory;
@@ -34,9 +34,9 @@
 		/// <summary>
 		/// We create this object when doing an advanced search query. Its instanse-variables are used for the search method.
 		/// </summary>
-		private AdvSearchParams advSearchObjectWithParams;
+		private SearchObject advSearchObjectWithParams;
 
-		public AdvSearchParams AdvSearchObjectWithParams
+		public SearchObject SearchObject
 		{
 			get => advSearchObjectWithParams;
 			set
@@ -46,20 +46,10 @@
 			}
 		}
 
-        public LibraryObject SearchObject
-		{
-			get => searchObject;
-			set
-            {
-				searchObject = value;
-				OnPropertyChanged(nameof(SearchObject));
-            }
-		}
-
-        /// <summary>
-        /// En lista med Categories
-        /// </summary>
-        public ObservableCollection<Category> Categories { get; private set; }
+		/// <summary>
+		/// En lista med Categories
+		/// </summary>
+		public ObservableCollection<Category> Categories { get; private set; }
 
 		/// <summary>
 		/// Selected search category
@@ -157,16 +147,16 @@
 		/// <summary>
 		/// If Basicsearch enabled
 		/// </summary>
-        public bool BasicSearch
-        {
-            get => basicSearch;
-            set
+		public bool BasicSearch
+		{
+			get => basicSearch;
+			set
 			{
 				basicSearch = value;
 				OnPropertyChanged(nameof(BasicSearch));
 				OnPropertyChanged(nameof(AdvSearch));
 			}
-        }
+		}
 
 		/// <summary>
 		/// If Advancedsearch enabled
@@ -191,7 +181,8 @@
 			if (base.IsInDesignMode) return;
 
 			_repo = new GeneralRepository();
-            LibraryObjects = new ObservableCollection<LibraryObject>();
+
+			LibraryObjects = new ObservableCollection<LibraryObject>();
 			Categories = new ObservableCollection<Category>();
 
 			FrontPage = true;
@@ -199,34 +190,26 @@
 
 			GetCategories();
 			GetFpLibraryObjects();
+			ResetSearchObject();
 
 			SearchCommand = new RelayCommand(_ => GetSearchObjects());
-
-			AdvSearchObjectWithParams = new AdvSearchParams();
 			AdvancedSearchCommand = new RelayCommand(_ => GetAdvancedSearchObjects());
-			AdvClearCommand = new RelayCommand(_ => ClearAdvSearch());
+			AdvClearCommand = new RelayCommand(_ => ResetSearchObject());
 			EnableAdvancedSearch = new RelayCommand(_ => BasicSearch = !BasicSearch);
-
-            // Oanvänd kod?
-            //SearchObjects = new ObservableCollection<LibraryObject>();
-            //GetUser();
-            //LoanCart = new ObservableCollection<Loan>();
-            //AddLoanButton = new RelayCommand(_=> AddToCart());
-            //BookButton = new RelayCommand(_ => ConfirmLoan());
         }
 
 		#endregion
 
 		#region Private methods
 
-        /// <summary>
-        /// Get library objects with the matching category id
-        /// </summary>
-        private async void GetLibraryObjects(int id)
-        {
-            FrontPage = false;
-            LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>(id));
-        }
+		/// <summary>
+		/// Get library objects with the matching category id
+		/// </summary>
+		private async void GetLibraryObjects(int id)
+		{
+			FrontPage = false;
+			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>(id));
+		}
 
 		/// <summary>
 		/// Get search results
@@ -238,37 +221,26 @@
 		}
 
 		/// <summary>
-		/// Uses the filtered search stored procedure to get libraryobjects.
-		/// The stored procedure smart_filter_Search takes all the parameters the Libraryobject instance has.
+		/// Uses the filteredsearch. Takes a SearchObject that contains filtering parameters,
+		/// and gets all the Libraryobjects that match these conditions.
+		/// For instance: if myBookobject.Title is "Harry", then send myBookobject if you want all books that match that title.
 		/// </summary>
 		private async void GetAdvancedSearchObjects()
 		{
 			FrontPage = false;
 
-			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.AdvancedSearchAsync(AdvSearchObjectWithParams));
-		}
-
-
-		private void ClearAdvSearch()
-		{
-			//Todo: Do a simple for-loop over all properties instead.
-			//advSearchObjectWithParams.Publisher = string.Empty;
-			//advSearchObjectWithParams.Dewey = null;
-			//advSearchObjectWithParams.Author = string.Empty;
-			//advSearchObjectWithParams.AddedBy = null;
-			//advSearchObjectWithParams.Description = string.Empty;
-			//advSearchObjectWithParams.Category = null;
-			//advSearchObjectWithParams.DateAdded = DateTime.Now;
-			//advSearchObjectWithParams.ISBN = null;
-			//advSearchObjectWithParams.Title = string.Empty;
-
-			AdvSearchObjectWithParams = new AdvSearchParams();
+			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetRangeAsync<LibraryObject>(SearchObject));
 		}
 
 		/// <summary>
-		/// Get category navigation
+		/// Initiate or reset SearchObject
 		/// </summary>
-		private async void GetCategories()
+        private void ResetSearchObject() => SearchObject = new SearchObject() { DateAdded = DateTime.Now.AddDays(-7) };
+
+        /// <summary>
+        /// Get category navigation
+        /// </summary>
+        private async void GetCategories()
 		{
 			try
 			{
@@ -291,90 +263,6 @@
 		}
 
         #endregion
-
-        // Oanvänd kod?
-
-   //     private async void GetLibraryObjects()
-   //     {
-			//FrontPage = false;
-   //         LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>());
-   //     }
-
-        //private ObservableCollection<LibraryObject> searchObjects;
-
-        //public ObservableCollection<LibraryObject> SearchObjects
-        //{
-        //	get => searchObjects;
-        //	set
-        //	{
-        //		searchObjects = value;
-        //		OnPropertyChanged(nameof(SearchObjects));
-        //	}
-        //}
-
-        //private ObservableCollection<Loan> loanCart;
-        //private User currentUser;
-        //private Card currentUserCard;
-
-        //public User CurrentUser
-        //{
-        //	get => currentUser;
-        //	set
-        //	{
-        //		currentUser = value;
-        //		OnPropertyChanged(nameof(CurrentUser));
-        //	}
-        //}
-
-        //public Card CurrentUserCard
-        //{
-        //	get => currentUserCard;
-        //	set
-        //	{
-        //		currentUserCard = value;
-        //		OnPropertyChanged(nameof(currentUserCard));
-        //	}
-        //}
-
-        //private void GetUser()
-        //{
-
-        //	if (_navigationService.HostScreen.CurrentUser != null)
-        //	{
-        //		CurrentUser = _navigationService.HostScreen.CurrentUser;
-        //		//CurrentUserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
-        //	}
-        //}
-
-        //private void AddToCart()
-        //{
-        //	if (_navigationService.HostScreen.CurrentUser.LoggedIn == true)
-        //	{
-        //		LoanCart.Add(new Loan() { LibraryObject = SelectedLibraryObject, Card = CurrentUserCard, LoanDate = DateTime.Now });
-        //		_dialog.Alert("", "Tillagd i varukorgen");
-        //	}
-        //	else { _dialog.Alert("", "Vänligen logga in för att låna"); }
-        //}
-
-        //private async void ConfirmLoan()
-        //{
-        //	foreach (Loan a in LoanCart)
-        //	{
-        //		await _repo.AddAsync(a);
-        //	}
-        //	_dialog.Alert("", "Dina lån är nu skapade");
-        //	LoanCart.Clear();
-        //}
-
-        //public ObservableCollection<Loan> LoanCart
-        //{
-        //	get => loanCart;
-        //	set
-        //	{
-        //		loanCart = value;
-        //		OnPropertyChanged(nameof(LoanCart));
-        //	}
-        //}
     }
 }
 

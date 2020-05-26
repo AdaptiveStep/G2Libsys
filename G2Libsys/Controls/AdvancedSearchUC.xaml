@@ -59,7 +59,7 @@
                     materialDesign:HintAssist.Hint="Titel"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding AdvSearchObjectWithParams.Title, Mode=TwoWay}" />
+                    Text="{Binding SearchObject.Title, Mode=TwoWay}" />
 
                 <!--<TextBlock Text="Beskrivning" />-->
                 <TextBox
@@ -67,21 +67,21 @@
                     materialDesign:HintAssist.Hint="Beskrivning"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding AdvSearchObjectWithParams.Description, Mode=TwoWay}" />
+                    Text="{Binding SearchObject.Description, Mode=TwoWay}" />
                 <!--<TextBlock Text="ISBN" />-->
                 <TextBox
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="ISBN"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding AdvSearchObjectWithParams.ISBN, Mode=TwoWay}" />
+                    Text="{Binding SearchObject.ISBN, Mode=TwoWay}" />
                 <!--<TextBlock Text="Förlag" />-->
                 <TextBox
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="Förlag"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding AdvSearchObjectWithParams.Publisher, Mode=TwoWay}" />
+                    Text="{Binding SearchObject.Publisher, Mode=TwoWay}" />
                 <!--<TextBlock Text="Pris" />-->
                 <!--<TextBox
 					VerticalAlignment="Center"
@@ -114,14 +114,14 @@
                     materialDesign:HintAssist.Hint="Författare"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding AdvSearchObjectWithParams.Author, Mode=TwoWay}" />
+                    Text="{Binding SearchObject.Author, Mode=TwoWay}" />
 
                 <!--<TextBlock Text="dewey" />-->
                 <TextBox
                     materialDesign:HintAssist.Hint="Dewey Decimal"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding AdvSearchObjectWithParams.Dewey, Mode=TwoWay}" />
+                    Text="{Binding SearchObject.Dewey, Mode=TwoWay}" />
 
                 <!--<TextBlock Text="Kategori" />-->
 
@@ -129,7 +129,7 @@
                     materialDesign:HintAssist.Hint="Kategori"
                     materialDesign:TextFieldAssist.HasClearButton="True"
                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                    Text="{Binding AdvSearchObjectWithParams.Category, Mode=TwoWay}" />
+                    Text="{Binding SearchObject.Category, Mode=TwoWay}" />
 
                 <!--<StackPanel Margin="0,10,0,0">
 					<TextBlock Style="{StaticResource MaterialDesignCaptionTextBlock}" >
@@ -165,7 +165,7 @@
                     Margin="10,10,10,0"
                     materialDesign:HintAssist.Hint="Senast Inkommen"
                     materialDesign:TextFieldAssist.HasClearButton="True"
-                    SelectedDate="{Binding AdvSearchObjectWithParams.DateAdded, Mode=TwoWay}"
+                    SelectedDate="{Binding SearchObject.DateAdded, Mode=TwoWay}"
                     Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
 
             </StackPanel>

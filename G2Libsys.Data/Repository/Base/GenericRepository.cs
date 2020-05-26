@@ -169,14 +169,14 @@
                 commandType: CommandType.StoredProcedure);
         }
 
-        public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(T item)
+        public virtual async Task<IEnumerable<T>> GetRangeAsync<T>(object parameters)
         {
             using IDbConnection _db = Connection;
 
             // Return all items matching search with multiple filters
             return await _db.QueryAsync<T>(
                         sql: GetProcedureName<T>("filtersearch"),
-                      param: item,
+                      param: parameters,
                 commandType: CommandType.StoredProcedure);
         }
 
@@ -200,21 +200,6 @@
                         sql: GetProcedureName<T>("remove"),
                       param: new { id },
                 commandType: CommandType.StoredProcedure);
-        }
-
-        public async Task<IEnumerable<LibraryObject>> AdvancedSearchAsync(AdvSearchParams paramsInObject)
-        {
-            using (IDbConnection _db = Connection)
-            {
-
-                // Return all items of type T
-                var tmp = await _db.QueryAsync<LibraryObject>(
-                           sql: "smart_filter_Search",
-                         param: paramsInObject,
-                   commandType: CommandType.StoredProcedure);
-
-                return tmp;
-            }
         }
 
         #endregion
@@ -267,7 +252,7 @@
 
         public virtual async Task<IEnumerable<T>> GetRangeAsync(string partialword) => await base.GetRangeAsync<T>(partialword);
 
-        public virtual async Task<IEnumerable<T>> GetRangeAsync(T item) => await base.GetRangeAsync(item);
+        public virtual async Task<IEnumerable<T>> GetRangeAsync(object parameters) => await base.GetRangeAsync<T>(parameters);
 
         public virtual async Task UpdateAsync(T item) => await base.UpdateAsync(item);
 
