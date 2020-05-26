@@ -72,8 +72,6 @@
 		/// <summary>
 		/// Check if email already exist
 		/// </summary>
-		/// <param name="username"></param>
-		/// <param name="password"></param>
 		public async Task<bool> VerifyEmailAsync(string email)
 		{
 			using IDbConnection _db = base.Connection;
@@ -85,22 +83,26 @@
 				commandType: CommandType.StoredProcedure);
 		}
 
+		/// <summary>
+		/// Get user loans
+		/// </summary>
 		public async Task<IEnumerable<Loan>> GetLoansAsync(int id)
 		{
 			using IDbConnection _db = Connection;
 
-			// Return all items of type T
 			return await _db.QueryAsync<Loan>(
 						sql: GetProcedureName<User>("getloans"),
 					  param: new { id },
 				commandType: CommandType.StoredProcedure);
 		}
 
+		/// <summary>
+		/// Get user loanobjects
+		/// </summary>
 		public async Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id)
 		{
 			using IDbConnection _db = Connection;
 
-			// Return all items of type T
 			return await _db.QueryAsync<LibraryObject>(
 						sql: GetProcedureName<User>("getloanobjects"),
 					  param: new { id },

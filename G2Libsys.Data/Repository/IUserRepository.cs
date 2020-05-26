@@ -15,28 +15,23 @@
     public interface IUserRepository : IRepository<User>
     {
         /// <summary>
-        /// Implement specific user query
+        /// Verify user login credentials
         /// </summary>
         public Task<User> VerifyLoginAsync(string username, string password);
 
         /// <summary>
-        /// Implement specific user query
+        /// Verify the user email
         /// </summary>
         public Task<bool> VerifyEmailAsync(string email);
 
+        /// <summary>
+        /// Get user loans
+        /// </summary>
         public Task<IEnumerable<Loan>> GetLoansAsync(int id);
 
+        /// <summary>
+        /// Get user loanobjects
+        /// </summary>
         public Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id);
-
-        ///// <summary>
-        ///// Uses the AdvancedSearch stored procedure. Takes an Libraryobject that contains filtering parameters, 
-        ///// and gets all the Libraryobjects that match these conditions.
-        ///// For instance: if myBookobject.Title is "Harry" , then send myBookobject if you want all books that match that title.
-        ///// </summary>
-        ///// <param name="item"></param>
-        ///// <returns></returns>
-        //public Task<IEnumerable<LibraryObject>>
-        //       AdvancedSearchAsync(LibraryObject paramsInObject);
-
     }
 }
