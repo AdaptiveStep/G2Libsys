@@ -51,10 +51,10 @@
         /// Default constructor, 
         /// tableName = target table in database
         /// </summary>
-        public GenericRepository(string tableName = null)
+        protected GenericRepository(string tableName = null)
         {
             _tableName = tableName;
-            _connectionString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
+            _connectionString = ConfigurationManager.ConnectionStrings["sqldefault"].ConnectionString;
         }
 
         #endregion
@@ -78,7 +78,7 @@
                 {
                     try
                     {
-                        bkupString = ConfigurationManager.ConnectionStrings["sqldefault"].ConnectionString;
+                        bkupString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
                         var conn = new SqlConnection(bkupString);
                         conn.Open();
                         return conn;
@@ -250,7 +250,7 @@
         /// Default constructor where tableName = target table in database <para/>
         /// Note: Only specify tablename if needed
         /// </summary>
-        public GenericRepository(string tableName = null)
+        protected GenericRepository(string tableName = null)
             : base(tableName) { }
 
         #endregion
