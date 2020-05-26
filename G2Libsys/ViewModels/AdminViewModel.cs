@@ -10,6 +10,7 @@
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.IO;
+    using System.Reflection;
     using System.Windows.Input;
     
 
@@ -27,6 +28,7 @@
         private UserType selectedUserType;
         private string filePath;
         private RemoveItemDialogViewModel RemoveItemDialogVM { get; set; } = new RemoveItemDialogViewModel();
+        public ICommand RunDialogCommand => new AnotherCommandImplementation(ExecuteRunDialog);
         #endregion
 
         #region Properties
@@ -208,6 +210,10 @@
             string userFirstname = SelectedUser.Firstname;
             string userLastname = SelectedUser.Lastname;
 
+
+            
+
+
             try
             {
                 if (!File.Exists(filePath))
@@ -243,12 +249,7 @@
                 
 
             }
-            //finally
-            //{
-            //    NewUser = new User();
-
-            //}
-
+            
 
             try
             {

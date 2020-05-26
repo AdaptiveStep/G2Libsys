@@ -202,7 +202,10 @@
 
             OnPropertyChanged(nameof(Categories));
         }
-        
+        /// <summary>
+        /// Hämtar en lista med LibraryObject
+        /// </summary>
+        /// <returns></returns>
         private async Task GetLibraryObjects()
         {
             if (Categories?.Count < 1)
@@ -220,7 +223,10 @@
 
             LibraryObjects = new ObservableCollection<LibraryObject>(objects);
         }
-
+        /// <summary>
+        /// Hämtar en lista med libraryobject som matchar söksträng
+        /// </summary>
+        /// <returns></returns>
         private async Task SearchLibraryObject()
         {
             SelectedCategory = Categories.First();
@@ -239,7 +245,9 @@
                 Debug.WriteLine(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Skapar en ny LibraryObject
+        /// </summary>
         private async void CreateLibraryObject()
         {
             dialogViewModel = new LibraryObjectDialogViewModel(new LibraryObject(), ItemCategories, "Lägg till ny");
@@ -259,7 +267,9 @@
                 Debug.WriteLine(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Funktion för att ändra i LibraryObject
+        /// </summary>
         private async void EditLibraryObject()
         {
             dialogViewModel = new LibraryObjectDialogViewModel(SelectedItem, ItemCategories, "Ändra detaljer");
@@ -282,16 +292,23 @@
                 Debug.WriteLine(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Function used for deleting a library object
+        /// </summary>
         private void DeleteLibraryObject()
         {
             if (selectedItem == null) return;
             //bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
             var myVM = new RemoveItemDialogViewModel("Ta bort bok");
+            //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
             var dialogresult = _dialog.Show(myVM);
 
             if (!dialogresult.isSuccess) return;
+            //Filens sökväg
             FilePath = @"C:\Rapporter\Borttagna böcker.csv";
+
+
+            //Skickar med en anledning, ID, Titel och Author och skriver till .csv fil
             string createText = myVM.ReturnMessage;
             var objectID = selectedItem.ID;
             string objectName = selectedItem.Title;

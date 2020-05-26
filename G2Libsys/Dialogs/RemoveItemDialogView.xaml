@@ -18,14 +18,14 @@
             BorderThickness="2"
             UniformCornerRadius="18">
             <materialDesign:Card.Background>
-                <SolidColorBrush Opacity="0.6" Color="White" />
+                <SolidColorBrush Opacity="0.8" Color="White" />
             </materialDesign:Card.Background>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Border Background="White" Opacity="0.2" />
+                <Border Background="White" Opacity="0.5" />
                 <TextBlock
                     Height="26"
                     Margin="2"
