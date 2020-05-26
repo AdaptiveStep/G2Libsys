@@ -34,15 +34,15 @@
 		/// <summary>
 		/// We create this object when doing an advanced search query. Its instanse-variables are used for the search method.
 		/// </summary>
-		private SearchObject advSearchObjectWithParams;
+		private SearchObject searchObject;
 
 		public SearchObject SearchObject
 		{
-			get => advSearchObjectWithParams;
+			get => searchObject;
 			set
 			{
-				advSearchObjectWithParams = value;
-				OnPropertyChanged(nameof(advSearchObjectWithParams));
+				searchObject = value;
+				OnPropertyChanged(nameof(SearchObject));
 			}
 		}
 
@@ -235,12 +235,12 @@
 		/// <summary>
 		/// Initiate or reset SearchObject
 		/// </summary>
-        private void ResetSearchObject() => SearchObject = new SearchObject() { DateAdded = DateTime.Now.AddDays(-7) };
+		private void ResetSearchObject() => SearchObject = new SearchObject() { DateAdded = DateTime.Now.AddDays(-7) };
 
-        /// <summary>
-        /// Get category navigation
-        /// </summary>
-        private async void GetCategories()
+		/// <summary>
+		/// Get category navigation
+		/// </summary>
+		private async void GetCategories()
 		{
 			try
 			{
