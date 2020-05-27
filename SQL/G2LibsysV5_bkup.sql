@@ -78,14 +78,6 @@
 
 ------------------------------------------------------------------------
 --SQL DEFINITIONSFILE --------------------------------------------------
-	-- Contant for passphrase
-		CREATE FUNCTION fnConstant()
-		RETURNS VARCHAR(10)
-		AS
-		BEGIN
-			RETURN 'G2S'
-		END
-		GO
 
 	DROP TABLE IF EXISTS dbo.Libraries	
 	CREATE TABLE Libraries(
@@ -121,25 +113,21 @@
 		--Usernumber AS (ID+100) * 2867585817934888 % 8687931395129801, 			--Calculated with (mod p) . Inverse is 7654321234567890 . Always unique due to being Finite Field.
 
 		[Email] VARCHAR(300) 	   	NOT NULL UNIQUE,
-		[Password] VARBINARY(8000) 	NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
-		Firstname VARCHAR(50)  		NOT NULL DEFAULT 'UNNAMED',
-		Lastname VARCHAR(50)   		NOT NULL DEFAULT 'UNNAMED',
+		[Password] VARCHAR(20) 		NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
+		Firstname VARCHAR(20)  		NOT NULL DEFAULT 'UNNAMED',
+		Lastname VARCHAR(20)   		NOT NULL DEFAULT 'UNNAMED',
 		UserType INT 			   	NOT NULL FOREIGN KEY REFERENCES UserTypes(ID),
 		LoggedIn bit 		   		NOT NULL DEFAULT 0 
 		);
 		GO
 		--STANDARD INSERTS
 			SET IDENTITY_INSERT 	Users on
-				declare @Phrase varchar(20)
-				Begin
-				select @Phrase = dbo.fnConstant();
 				INSERT INTO 		Users (ID,[Email],[Password], Firstname, Lastname, UserType) 
 						VALUES 
-						(1, 'Admin@johan.com'	, ENCRYPTBYPASSPHRASE(@Phrase, '123')		,'johan'	,'schwartz'		,1),		--Does ID really have to be inserted? 
-						(2, 'Petra@petra.com'	, ENCRYPTBYPASSPHRASE(@Phrase, '123')	  	,'Petra'	,'Mede'   	 	,2),
-						(3, 'Joppan@johanna.com', ENCRYPTBYPASSPHRASE(@Phrase, '123')		,'Joan'		,'Sacrebleu'	,3);
+						(1, 'Admin@johan.com'	,123		,'johan'	,'schwartz'		,1),		--Does ID really have to be inserted? 
+						(2, 'Petra@petra.com'	,123	  	,'Petra'	,'Mede'   	 	,2),
+						(3, 'Joppan@johanna.com',123		,'Joan'		,'Sacrebleu'	,3);
 				SET IDENTITY_INSERT Users OFF
-				End
 				GO
 	
 	DROP TABLE IF EXISTS dbo.Authors	
@@ -285,7 +273,6 @@
 		      ) 
 		GO
 
-
 	--
 	--Relationship Card-2-OBJECT ; M2M
 	CREATE TABLE Loans(
@@ -352,35 +339,34 @@
 		); 
 		GO 
 
+
+
+
 ------------------------------------------------------------------------
 --SQL PROCEDURES -------------------------------------------------------
 ---------------Users ---------------------------------------------------
 	Create proc usp_getall_users
 		as
-		declare @Phrase varchar(20);
 		BEGIN
-			select @Phrase = dbo.fnConstant();
-			select ID, Email, CONVERT(varchar(100), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as [Password], Firstname, Lastname, UserType, LoggedIn from users;
+			select * from users;
 		END
-		GO
+		GO 
 
 	--Add User
 	Create proc usp_insert_users
 		@ID int = null,
 		@LoanID numeric = null,
 		@Email varchar(300),
-		@Password varchar(100),
-		@Firstname varchar(50),
-		@Lastname varchar(50),
+		@Password varchar(20),
+		@Firstname varchar(20),
+		@Lastname varchar(20),
 		@UserType int,
 		@LoggedIn bit,
 		@NewID int Output
 		as
-		declare @Phrase varchar(20);
 		BEGIN
-			select @Phrase = dbo.fnConstant();
 			insert into users (Email, [Password], Firstname, Lastname, UserType, LoggedIn)
-			values (@Email, ENCRYPTBYPASSPHRASE(@Phrase, @Password), @Firstname, @Lastname, @UserType, @LoggedIn);
+			values (@Email, @Password, @Firstname, @Lastname, @UserType, @LoggedIn);
 			select @NewID = SCOPE_IDENTITY();
 		END
 		GO
@@ -393,24 +379,24 @@
 			delete from users where ID = @ID
 		END
 		GO
+
+
 --------------------------------------------------------------------------------
 	--Update user . Dapper requires all attributes when handling entire objects.
 	Create proc usp_update_users
 		@ID int,
 		@LoanID numeric = null,
 		@Email varchar(300),
-		@Password varchar(100),
-		@Firstname varchar(50),
-		@Lastname varchar(50),
+		@Password varchar(20),
+		@Firstname varchar(20),
+		@Lastname varchar(20),
 		@UserType int,
 		@LoggedIn bit
 		as
-		declare @Phrase varchar(20);
 		BEGIN
-			select @Phrase = dbo.fnConstant();
 			Update users
 			Set Email = @Email, 
-				[Password] = ENCRYPTBYPASSPHRASE(@Phrase, @Password), 
+				[Password] = @Password, 
 				Firstname = @Firstname, 
 				Lastname = @Lastname, 
 				UserType = @UserType, 
@@ -421,16 +407,14 @@
 	--
 	Create proc usp_verifylogin_users
 		@Email varchar(300),
-		@Password varchar(100)
+		@Password varchar(20)
 		as
-		declare @Phrase varchar(20);
 		BEGIN
-			select @Phrase = dbo.fnConstant();
-			SELECT	ID, Email, CONVERT(varchar(100), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as [Password], Firstname, Lastname, UserType, LoggedIn 
-			FROM Users 
-			WHERE	CAST(CONVERT(varchar(50), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as varbinary(100)) = CAST(@Password as varbinary(100))
-			AND		Email = @Email 
-			AND		CONVERT(varchar(50), DECRYPTBYPASSPHRASE(@Phrase, [Password])) = @Password
+			SELECT * FROM Users WHERE
+			CAST(Email as varbinary(100)) = CAST(@Email as varbinary(100))
+			AND CAST([Password] as varbinary(100)) = CAST(@Password as varbinary(100))
+			AND Email = @Email 
+			AND [Password] = @Password
 		END
 		GO
 	--
@@ -801,12 +785,12 @@
 	-------- BELOW IS STILL UNDER CONSTRUCITON:
 	--Dynamic search of objects - multiple keywords (i.e conjunctive filter search)
 
-	IF OBJECT_ID('usp_filtersearch_libraryobjects', 'P') IS NOT NULL
-	    DROP PROCEDURE usp_filtersearch_libraryobjects;
+	IF OBJECT_ID('usp_filtersearch_libraryobjects ', 'P') IS NOT NULL
+	    DROP PROCEDURE usp_filtersearch_libraryobjects ;
 	    GO
 
 	    --Dynamic Search directly to unhashed table, O(12N) = O(N)
-	CREATE PROC usp_filtersearch_libraryobjects(
+	CREATE PROC usp_filtersearch_libraryobjects (
 		--Unused in the searchprocedure
 		-- @ID INT 					= NULL,
 		--@PurchasePrice INT 			= NULL,
