@@ -16,6 +16,7 @@
     using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
     using System.IO;
+    using G2Libsys.Library.Models;
     #endregion
 
     /// <summary>
@@ -299,61 +300,68 @@
         {
             if (selectedItem == null) return;
             //bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
-            var myVM = new RemoveItemDialogViewModel("Ta bort bok");
+            var myVM = new RemoveItemDialogViewModel("Ta bort biblioteksobjekt");
             //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
             var dialogresult = _dialog.Show(myVM);
 
             if (!dialogresult.isSuccess) return;
+
+            AdminAction adminAction = new AdminAction()
+            {
+                Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}  Anledning: { dialogresult.msg} ",
+                Actiondate = DateTime.Now,
+                ActionType = 2
+            };
             //Filens sökväg
-            FilePath = @"C:\Rapporter\Borttagna böcker.csv";
+            //    FilePath = @"C:\Rapporter\Borttagna böcker.csv";
 
 
-            //Skickar med en anledning, ID, Titel och Author och skriver till .csv fil
-            string createText = myVM.ReturnMessage;
-            var objectID = selectedItem.ID;
-            string objectName = selectedItem.Title;
-            string objectAuthor = selectedItem.Author;
+            //    //Skickar med en anledning, ID, Titel och Author och skriver till .csv fil
+            //    string createText = myVM.ReturnMessage;
+            //    var objectID = selectedItem.ID;
+            //    string objectName = selectedItem.Title;
+            //    string objectAuthor = selectedItem.Author;
 
-            try
-            {
-                if (!File.Exists(filePath))
-                {
-                    File.WriteAllText(filePath, "ID: ");
-                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
+            //    try
+            //    {
+            //        if (!File.Exists(filePath))
+            //        {
+            //            File.WriteAllText(filePath, "ID: ");
+            //            File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
 
-                    File.AppendAllText(filePath, "Namn: ");
-                    File.AppendAllText(filePath, objectName + Environment.NewLine);
+            //            File.AppendAllText(filePath, "Namn: ");
+            //            File.AppendAllText(filePath, objectName + Environment.NewLine);
 
-                    File.AppendAllText(filePath, "Författare: ");
-                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
+            //            File.AppendAllText(filePath, "Författare: ");
+            //            File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
 
-                    File.AppendAllText(filePath, "Anledning: ");
-                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-                }
+            //            File.AppendAllText(filePath, "Anledning: ");
+            //            File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
+            //        }
 
-                else
-                {
-                    File.AppendAllText(filePath, "ID: ");
-                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
+            //        else
+            //        {
+            //            File.AppendAllText(filePath, "ID: ");
+            //            File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
 
-                    File.AppendAllText(filePath, "Namn: ");
-                    File.AppendAllText(filePath, objectName + Environment.NewLine);
+            //            File.AppendAllText(filePath, "Namn: ");
+            //            File.AppendAllText(filePath, objectName + Environment.NewLine);
 
-                    File.AppendAllText(filePath, "Författare: ");
-                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
+            //            File.AppendAllText(filePath, "Författare: ");
+            //            File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
 
-                    File.AppendAllText(filePath, "Anledning: ");
-                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
+            //            File.AppendAllText(filePath, "Anledning: ");
+            //            File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
 
-                }
+            //        }
 
-            }
-            catch (Exception ex)
-            {
-                _dialog.Alert("Fel", "Stäng Excelfilen");
-                Debug.WriteLine(ex.Message);
-                return;
-            }
+            //    }
+            //    catch (Exception ex)
+            //{
+            //    _dialog.Alert("Fel", "Stäng Excelfilen");
+            //    Debug.WriteLine(ex.Message);
+            //    return;
+            //}
 
             try
             {
