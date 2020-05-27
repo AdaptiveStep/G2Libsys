@@ -120,7 +120,7 @@
                             VerticalAlignment="Center"
                             Content="Aktiverad"
                             Foreground="White"
-                            IsChecked="{Binding ActivatedCheckbox}"
+                            IsChecked="{Binding LibraryObject.Disabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Style="{StaticResource MaterialDesignAccentCheckBox}" />
 
                     </StackPanel>
