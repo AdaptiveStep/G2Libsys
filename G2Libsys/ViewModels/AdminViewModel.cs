@@ -4,15 +4,19 @@
     using G2Libsys.Data.Repository;
     using G2Libsys.Dialogs;
     using G2Libsys.Library;
+    using G2Libsys.Library.Models;
     using G2Libsys.Services;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Win32;
     using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Text;
+    using System.Threading.Tasks;
     using System.Windows.Documents;
     using System.Windows.Input;
     
@@ -84,6 +88,8 @@
             }
         }
 
+        
+
         /// <summary>
         /// Store new user
         /// </summary>
@@ -137,10 +143,11 @@
         /// </summary>
         public ICommand RemoveUserCommand { get; }
 
+
         /// <summary>
         /// Command for downloading a csv file with deleted users
         /// </summary>
-        public ICommand DownloadUserLogCommand => new RelayCommand(SaveDialogBox);
+        public ICommand DownloadUserLogCommand => new RelayCommand(SaveDialogBoxAsync);
 
         /// <summary>
         /// Go to details for selected user
@@ -209,7 +216,6 @@
             var myVM = new RemoveItemDialogViewModel("Ta bort användare");
             var dialogresult = _dialog.Show(myVM);
 
-
             
 
 
@@ -217,73 +223,22 @@
 
             //Skapar en CSV fil med anledning till borttagning av användare
             if (!dialogresult.isSuccess) return;
-            
+            AdminAction adminAction = new AdminAction()
+            {
+                Comment = $"AnvändarID: {SelectedUser.ID} \nAnledning:  { dialogresult.msg} \n",
+                Actiondate = DateTime.Now,
+                ActionType = 1
+            };
 
 
 
-            //string createText = myVM.ReturnMessage;
-            //var userID =  SelectedUser.ID;
-            //string userFirstname = SelectedUser.Firstname;
-            //string userLastname = SelectedUser.Lastname;
 
-            //var getUserInformation = await _repo.GetAllAsync<User>();
-
-            //var getUser = new User();
-
-            //ObservableCollection<User> getUsers = new ObservableCollection<User>();
-
-
-            //if (!File.Exists(filePath))
-            //{
-            //    File.WriteAllText(filePath, getUser.ID.ToString());
-            //    File.AppendAllText(filePath, createText);
-            //}
-            //else
-            //{
-            //    File.AppendAllText(filePath, getUser.ID.ToString());
-            //    File.AppendAllText(filePath, createText);
-            //}
-            //try
-            //{
-            //    if (!File.Exists(filePath))
-            //    {
-            //       File.WriteAllText(filePath, "ID: ");
-            //       File.AppendAllText(filePath, userID.ToString() + Environment.NewLine);
-            //       File.AppendAllText(filePath, "Namn: ");
-            //       File.AppendAllText(filePath, userFirstname + Environment.NewLine);
-            //       File.AppendAllText(filePath, "Efternamn: " );
-            //       File.AppendAllText(filePath, userLastname + Environment.NewLine);
-                 
-            //       File.AppendAllText(filePath, "Anledning: ");
-            //       File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-
-            //    }
-
-            //    else
-            //    {
-            //       File.AppendAllText(filePath, "ID: " + userID.ToString() + Environment.NewLine);
-            //       File.AppendAllText(filePath, "Namn: " + userFirstname + Environment.NewLine);
-            //       File.AppendAllText(filePath, "Efternamn: " + userLastname + Environment.NewLine);
-            //       File.AppendAllText(filePath, "Anledning: " + createText + Environment.NewLine + Environment.NewLine);
-              
-            //    }
-
-            //}
-            //catch (Exception ex)
-            //{
-
-            //    _dialog.Alert("Fel", "Stäng Excelfilen");
-            //    Debug.WriteLine(ex.Message);
-            //    return;
-                
-
-            //}
-            
-
+            bool isSuccess = false;
             try
             {
                 await _userRepo.RemoveAsync(SelectedUser.ID);
                 Users.Remove(SelectedUser);
+                isSuccess = true;
             }
             catch (Exception ex)
             {
@@ -295,12 +250,18 @@
                 // Reset NewUser
                 NewUser = new User();
             }
+                if (isSuccess)
+                {
+                    await _repo.AddAsync(adminAction);
+                }
         }
 
-        public void SaveDialogBox(object param = null) //används till att spara .csv fil 
+
+
+        public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
         {
-            var userID = SelectedUser.ID.ToString();
-            string userFirstname = SelectedUser.Lastname;
+            var adminActions = new List<AdminAction>(await _repo.GetAllAsync<AdminAction>(1));
+
 
             // Inställningar för save file dialog box
             SaveFileDialog dlg = new SaveFileDialog();
@@ -311,14 +272,33 @@
             // Visa save file dialog box
             Nullable<bool> saveresult = dlg.ShowDialog();
 
+            
+
             // Process save file dialog box results
             if (saveresult == true)
             {
+                
+
                 // spara dokument
                 string filename = dlg.FileName;
-                
-                File.WriteAllText(dlg.FileName, userID);
-                File.AppendAllText(dlg.FileName, userFirstname);
+
+
+                // Create a FileStream with mode CreateNew  
+                FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate);
+                // Create a StreamWriter from FileStream  
+                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                {
+                    foreach (var action in adminActions)
+                    {
+                        writer.WriteLine(action.ID);
+                        writer.WriteLine(action.ActionType);
+                        writer.WriteLine(action.Comment);
+                        writer.WriteLine(action.Actiondate);
+                    }
+                }
+
+
+                //File.WriteAllText(dlg.FileName, adminActions);
                 //File.AppendAllText(dlg.FileName, )
             }
         }
