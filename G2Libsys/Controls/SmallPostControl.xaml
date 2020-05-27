@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:G2Libsys.Controls" 
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             xmlns:converter="clr-namespace:G2Libsys.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500" >
     <Grid >
@@ -52,7 +53,7 @@
                 <!--Bild-->
 
                     <Image
-               Source="https://s1.adlibris.com/images/54131167/harry-potter-och-hemligheternas-kammare.jpg"
+               Source="{Binding FpLibraryObjects[0].imagesrc, Converter={converter:PathToImageConverter}}"
                Stretch="Uniform"
                Margin="5"
                Grid.RowSpan="3"
