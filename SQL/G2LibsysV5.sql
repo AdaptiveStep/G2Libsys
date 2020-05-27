@@ -121,7 +121,7 @@
 		--Usernumber AS (ID+100) * 2867585817934888 % 8687931395129801, 			--Calculated with (mod p) . Inverse is 7654321234567890 . Always unique due to being Finite Field.
 
 		[Email] VARCHAR(300) 	   	NOT NULL UNIQUE,
-		[Password] VARCHAR(100) 		NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
+		[Password] VARBINARY(8000) 	NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
 		Firstname VARCHAR(50)  		NOT NULL DEFAULT 'UNNAMED',
 		Lastname VARCHAR(50)   		NOT NULL DEFAULT 'UNNAMED',
 		UserType INT 			   	NOT NULL FOREIGN KEY REFERENCES UserTypes(ID),
@@ -426,10 +426,11 @@
 		declare @Phrase varchar(20);
 		BEGIN
 			select @Phrase = dbo.fnConstant();
-			SELECT ID, Email, CONVERT(varchar(100), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as [Password], Firstname, Lastname, UserType, LoggedIn FROM Users WHERE
-			CAST(CONVERT(varchar(50), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as varbinary(100)) = CAST(@Password as varbinary(100))
-			AND Email = @Email 
-			AND CONVERT(varchar(50), DECRYPTBYPASSPHRASE(@Phrase, [Password])) = @Password
+			SELECT	ID, Email, CONVERT(varchar(100), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as [Password], Firstname, Lastname, UserType, LoggedIn 
+			FROM Users 
+			WHERE	CAST(CONVERT(varchar(50), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as varbinary(100)) = CAST(@Password as varbinary(100))
+			AND		Email = @Email 
+			AND		CONVERT(varchar(50), DECRYPTBYPASSPHRASE(@Phrase, [Password])) = @Password
 		END
 		GO
 	--
