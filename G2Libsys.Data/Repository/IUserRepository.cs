@@ -15,17 +15,23 @@
     public interface IUserRepository : IRepository<User>
     {
         /// <summary>
-        /// Implement specific user query
+        /// Verify user login credentials
         /// </summary>
         public Task<User> VerifyLoginAsync(string username, string password);
 
         /// <summary>
-        /// Implement specific user query
+        /// Verify the user email
         /// </summary>
         public Task<bool> VerifyEmailAsync(string email);
 
+        /// <summary>
+        /// Get user loans
+        /// </summary>
         public Task<IEnumerable<Loan>> GetLoansAsync(int id);
 
+        /// <summary>
+        /// Get user loanobjects
+        /// </summary>
         public Task<IEnumerable<LibraryObject>> GetLoanObjectsAsync(int id);
     }
 }

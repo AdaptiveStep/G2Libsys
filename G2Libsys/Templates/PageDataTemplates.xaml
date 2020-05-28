@@ -62,4 +62,9 @@
         <dialog:LibraryObjectDialogView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type dialog:RemoveItemDialogViewModel}">
+        <dialog:RemoveItemDialogView />
+    </DataTemplate>
+    
+
 </ResourceDictionary>

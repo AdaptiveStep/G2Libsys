@@ -182,7 +182,7 @@
 		ID 				INT IDENTITY(1,1) 	NOT NULL PRIMARY KEY,									  	--Candidatekey
 		ActivationDate 	DATETIME 			NOT NULL DEFAULT SYSDATETIME(),
 		Activated 		BIT 				NOT NULL DEFAULT 1,
-		[Owner] 		INT 			   	NOT NULL FOREIGN KEY REFERENCES Users(ID) ON DELETE CASCADE UNIQUE, 					--Many2One
+		[Owner] 		INT 			   	NOT NULL FOREIGN KEY REFERENCES Users(ID) UNIQUE, 					--Many2One
 
  
 
@@ -338,14 +338,6 @@
 		Actiondate 		DateTime 				NOT NULL DEFAULT SYSDATETIME()
 		); 
 		GO 
-
-		--Standard inserts
-		INSERT INTO [dbo].[AdminActionTypes]
-		           ([Name])
-		     VALUES
-		           ('RemovedUser'),
-				   ('RemovedLibraryObject');
-		GO
 
 
 
@@ -604,9 +596,7 @@
 		@ID 			int 		=null,
 		@ActivationDate DATETIME 	=null,
 		@Activated 		BIT 		=null,	
-		@Owner 			INT 		=null,
-		@ValidUntil     DATETIME    =null,
-        @CardNumber     VARCHAR(MAX)=null
+		@Owner 			INT 		=null
 
 		AS
 		BEGIN
@@ -750,40 +740,6 @@
 		BEGIN
 			select * from Categories;
 		END
-		GO
-
----------------AdminActions---------------------------------------------
-
-	CREATE PROC usp_insert_adminactions
-	@ID 			[int] 			= 	NULL,
-	@ActionType 	[int] 			=	NULL,
-	@Comment 		[varchar](MAX)	= 	NULL,
-	@Actiondate 	[datetime] 		=	NULL
-
-		AS
-		BEGIN
-			INSERT INTO AdminActions
-					(ActionType  , Comment, Actiondate)
-		VALUES 
-     				(@ActionType ,@Comment,@Actiondate);
-		END
-		GO
-
-
-	CREATE proc [dbo].[usp_getall_adminactions]
-		@ID int = null
-		AS
-		BEGIN
-			if (@ID is not null)
-			begin
-				SELECT * FROM AdminActions WHERE ActionType = @ID;
-			end
-			else
-			begin
-				SELECT * FROM AdminActions;
-			end
-		END
-
 		GO
 
 ------------------------------------------------------------------------
