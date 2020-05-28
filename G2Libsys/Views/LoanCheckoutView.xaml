@@ -6,11 +6,13 @@
                 xmlns:convert="clr-namespace:G2Libsys.Converters"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:G2Libsys.Views" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:userControl="clr-namespace:G2Libsys.Controls"
-                mc:Ignorable="d" 
-            FontSize="15"
-                
-             >
+             xmlns:local="clr-namespace:G2Libsys.Views" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+              xmlns:userControl="clr-namespace:G2Libsys.Controls"
+                mc:Ignorable="d" >
+
+
+
     <Grid   >
 
         <materialDesign:Card 
@@ -29,7 +31,7 @@
             HorizontalAlignment="Center"
              Width="480" Height="380"
             VerticalAlignment="Top"
-            ItemsSource="{Binding Cart}"
+            ItemsSource="{Binding _loans.LoanCart}"
             >
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -54,9 +56,9 @@
                                     <Border
                       Width="100" Height="100" HorizontalAlignment="Left" 
                       >
-                                        <Border.Background>
+                                        <!--<Border.Background>
                                             <ImageBrush ImageSource="{Binding imagesrc, Converter={convert:PathToImageConverter}}" Stretch="Uniform"/>
-                                        </Border.Background>
+                                        </Border.Background>-->
 
                                     </Border>
                                     <Border  HorizontalAlignment="Right" Grid.Column="2"  VerticalAlignment="Top" Height="20" Width="20">
@@ -103,12 +105,12 @@
                     <Button
                Margin="10" 
              Style="{StaticResource MaterialDesignRaisedButton}"
-             Width="100" Height="40" Content="Checka ut">
+             Width="100" Height="40" Content="Checka ut" Command="{Binding Confirm}">
                     </Button>
                     <Button
                 Margin="10"
              Style="{StaticResource MaterialDesignRaisedButton}"
-             Width="136" Height="40" Content="Töm Varukorgen">
+             Width="136" Height="40" Content="Töm Varukorgen" Command="{Binding Clear}">
                     </Button>
                 </StackPanel>
             </StackPanel>

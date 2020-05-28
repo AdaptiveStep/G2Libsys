@@ -14,6 +14,8 @@ namespace G2Libsys.ViewModels
     class LoanCheckoutViewModel : BaseViewModel, ISubViewModel
     {
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+        public ICommand Confirm { get; set; }
+        public ICommand Clear { get; set; }
         private readonly IRepository _repo;
         ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
         private Card currentUserCard;
@@ -43,8 +45,8 @@ namespace G2Libsys.ViewModels
             _repo = new GeneralRepository();
             _loans = new LoansServices();
             GetUser();
-            
-
+            Confirm = new RelayCommand(_ => ConfirmLoan());
+            Clear = new RelayCommand(_ => ClearLoan());
         }
 
         private async void GetUser()
@@ -66,6 +68,10 @@ namespace G2Libsys.ViewModels
         //    }
         //    else { _dialog.Alert("", "Vänligen logga in för att låna"); }
         //}
+        public void ClearLoan()
+        {
+            _loans.LoanCart.Clear();
+        }
 
         public async void ConfirmLoan()
         {
