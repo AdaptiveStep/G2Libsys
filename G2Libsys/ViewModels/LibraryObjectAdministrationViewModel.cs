@@ -19,6 +19,7 @@
     using G2Libsys.Library.Models;
     using Microsoft.Win32;
     using System.Text;
+    using System.ComponentModel;
     #endregion
 
     /// <summary>
@@ -39,7 +40,7 @@
         private Category selectedCategory;
         private LibraryObject selectedItem;
         private string searchString;
-        private string filePath;
+        //private string filePath;
 
         #endregion
 
@@ -64,7 +65,23 @@
                 }
             }
         }
-       
+
+        /// <summary>
+        /// Get and set for an admin action
+        /// </summary>
+        private AdminAction adminAction;
+
+        public AdminAction AdminAction
+        {
+            get => adminAction;
+            set 
+            { 
+                adminAction = value;
+                OnPropertyChanged(nameof(adminAction));
+            }
+        }
+
+
         /// <summary>
         /// Gets the ObservableCollection of LibObjects 
         /// </summary>
@@ -190,6 +207,8 @@
             Task<IEnumerable<Category>>  categoryList = _repo.GetAllAsync<Category>();
             Task<IEnumerable<LibraryObject>> itemList = _repo.GetAllAsync<LibraryObject>();
 
+            AdminAction = new AdminAction();
+
             await Task.WhenAll(categoryList, itemList);
 
             Categories.Add(new Category() { ID = 0, Name = "Visa Alla" });
@@ -303,13 +322,13 @@
             if (!dialogresult.isSuccess) return;
 
 
-            AdminAction adminAction = new AdminAction()
+            AdminAction = new AdminAction()
             {
                 Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}  Anledning: { dialogresult.msg} ",
                 Actiondate = DateTime.Now,
-                ActionType = 2
-
+                ActionType = 2,
             };
+            
             
             //    }
             //    catch (Exception ex)
@@ -319,18 +338,12 @@
             //    return;
             //}C:\Users\andre\Desktop\Newton\Repos\G2Libsys\G2Libsys\Events\
 
-            bool isSuccess = false;
 
             try
             {
-                await _repo.UpdateAsync(SelectedItem.Disabled).ConfigureAwait(false);
+                SelectedItem.Disabled = false;
+                await _repo.UpdateAsync<LibraryObject>(SelectedItem).ConfigureAwait(false);
 
-                //LibraryObjects.Remove(SelectedItem);
-                isSuccess = true;
-                if (isSuccess)
-                {
-                    await _repo.UpdateAsync(adminAction);
-                }
             }
             catch (Exception ex)
             {
@@ -375,7 +388,7 @@
                     {
 
                         writer.Write($"{item},");
-                        ;
+                        
                     }
                 }
 
