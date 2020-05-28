@@ -15,6 +15,7 @@
     using G2Libsys.Library.Extensions;
     using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
+    using System.IO;
     #endregion
 
     /// <summary>
@@ -35,6 +36,8 @@
         private Category selectedCategory;
         private LibraryObject selectedItem;
         private string searchString;
+        private string filePath;
+
         #endregion
 
         #region Properties
@@ -58,7 +61,18 @@
                 }
             }
         }
-
+        /// <summary>
+        /// Filepath for reports
+        /// </summary>
+        public string FilePath
+        {
+            get => filePath;
+            set
+            {
+                filePath = value;
+                OnPropertyChanged(nameof(FilePath));
+            }
+        }
         /// <summary>
         /// Gets the ObservableCollection of LibObjects 
         /// </summary>
@@ -188,7 +202,10 @@
 
             OnPropertyChanged(nameof(Categories));
         }
-        
+        /// <summary>
+        /// Hämtar en lista med LibraryObject
+        /// </summary>
+        /// <returns></returns>
         private async Task GetLibraryObjects()
         {
             if (Categories?.Count < 1)
@@ -206,7 +223,10 @@
 
             LibraryObjects = new ObservableCollection<LibraryObject>(objects);
         }
-
+        /// <summary>
+        /// Hämtar en lista med libraryobject som matchar söksträng
+        /// </summary>
+        /// <returns></returns>
         private async Task SearchLibraryObject()
         {
             SelectedCategory = Categories.First();
@@ -225,7 +245,9 @@
                 Debug.WriteLine(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Skapar en ny LibraryObject
+        /// </summary>
         private async void CreateLibraryObject()
         {
             dialogViewModel = new LibraryObjectDialogViewModel(new LibraryObject(), ItemCategories, "Lägg till ny");
@@ -245,7 +267,9 @@
                 Debug.WriteLine(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Funktion för att ändra i LibraryObject
+        /// </summary>
         private async void EditLibraryObject()
         {
             dialogViewModel = new LibraryObjectDialogViewModel(SelectedItem, ItemCategories, "Ändra detaljer");
@@ -268,12 +292,68 @@
                 Debug.WriteLine(ex.Message);
             }
         }
-
+        /// <summary>
+        /// Function used for deleting a library object
+        /// </summary>
         private void DeleteLibraryObject()
         {
-            bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
+            if (selectedItem == null) return;
+            //bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
+            var myVM = new RemoveItemDialogViewModel("Ta bort bok");
+            //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
+            var dialogresult = _dialog.Show(myVM);
 
-            if (!result) return;
+            if (!dialogresult.isSuccess) return;
+            //Filens sökväg
+            FilePath = @"C:\Rapporter\Borttagna böcker.csv";
+
+
+            //Skickar med en anledning, ID, Titel och Author och skriver till .csv fil
+            string createText = myVM.ReturnMessage;
+            var objectID = selectedItem.ID;
+            string objectName = selectedItem.Title;
+            string objectAuthor = selectedItem.Author;
+
+            try
+            {
+                if (!File.Exists(filePath))
+                {
+                    File.WriteAllText(filePath, "ID: ");
+                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
+
+                    File.AppendAllText(filePath, "Namn: ");
+                    File.AppendAllText(filePath, objectName + Environment.NewLine);
+
+                    File.AppendAllText(filePath, "Författare: ");
+                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
+
+                    File.AppendAllText(filePath, "Anledning: ");
+                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
+                }
+
+                else
+                {
+                    File.AppendAllText(filePath, "ID: ");
+                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
+
+                    File.AppendAllText(filePath, "Namn: ");
+                    File.AppendAllText(filePath, objectName + Environment.NewLine);
+
+                    File.AppendAllText(filePath, "Författare: ");
+                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
+
+                    File.AppendAllText(filePath, "Anledning: ");
+                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _dialog.Alert("Fel", "Stäng Excelfilen");
+                Debug.WriteLine(ex.Message);
+                return;
+            }
 
             try
             {
