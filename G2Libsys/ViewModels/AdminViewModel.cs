@@ -265,11 +265,11 @@
 
             // Inställningar för save file dialog box
             SaveFileDialog dlg = new SaveFileDialog();
-            dlg.FileName = "LibsysUsers"; // Default file name
+            dlg.FileName = "LibsysUserLog"; // Default file name
             dlg.DefaultExt = ".csv"; // Default file extension
             dlg.Filter = "Excel documents (.csv)|*.csv"; // Filter files by extension
 
-            // Visa save file dialog box
+            // Visa save file dialog box true if user input string
             bool? saveresult = dlg.ShowDialog();
 
             

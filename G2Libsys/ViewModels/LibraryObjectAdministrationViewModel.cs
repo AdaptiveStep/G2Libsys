@@ -17,6 +17,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using System.IO;
     using G2Libsys.Library.Models;
+    using Microsoft.Win32;
+    using System.Text;
     #endregion
 
     /// <summary>
@@ -62,18 +64,7 @@
                 }
             }
         }
-        /// <summary>
-        /// Filepath for reports
-        /// </summary>
-        public string FilePath
-        {
-            get => filePath;
-            set
-            {
-                filePath = value;
-                OnPropertyChanged(nameof(FilePath));
-            }
-        }
+       
         /// <summary>
         /// Gets the ObservableCollection of LibObjects 
         /// </summary>
@@ -154,7 +145,12 @@
         /// <summary>
         /// Delete LibraryObject
         /// </summary>
-        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => DeleteLibraryObject(), CanExecute);
+        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => DeleteLibraryObjectAsync(), CanExecute);
+
+        /// <summary>
+        /// Command for downloading a csv file with deleted users
+        /// </summary>
+        public ICommand DownloadLibLogCommand => new RelayCommand(SaveDialogBoxAsync);
 
         /// <summary>
         /// Reset lists
@@ -296,89 +292,97 @@
         /// <summary>
         /// Function used for deleting a library object
         /// </summary>
-        private void DeleteLibraryObject()
+        private async Task DeleteLibraryObjectAsync()
         {
             if (selectedItem == null) return;
             //bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
-            var myVM = new RemoveItemDialogViewModel("Ta bort biblioteksobjekt");
+            var myVM = new RemoveItemDialogViewModel("Radera biblioteksobjekt");
             //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
             var dialogresult = _dialog.Show(myVM);
 
             if (!dialogresult.isSuccess) return;
+
 
             AdminAction adminAction = new AdminAction()
             {
                 Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}  Anledning: { dialogresult.msg} ",
                 Actiondate = DateTime.Now,
                 ActionType = 2
+
             };
-            //Filens sökväg
-            //    FilePath = @"C:\Rapporter\Borttagna böcker.csv";
-
-
-            //    //Skickar med en anledning, ID, Titel och Author och skriver till .csv fil
-            //    string createText = myVM.ReturnMessage;
-            //    var objectID = selectedItem.ID;
-            //    string objectName = selectedItem.Title;
-            //    string objectAuthor = selectedItem.Author;
-
-            //    try
-            //    {
-            //        if (!File.Exists(filePath))
-            //        {
-            //            File.WriteAllText(filePath, "ID: ");
-            //            File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
-
-            //            File.AppendAllText(filePath, "Namn: ");
-            //            File.AppendAllText(filePath, objectName + Environment.NewLine);
-
-            //            File.AppendAllText(filePath, "Författare: ");
-            //            File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
-
-            //            File.AppendAllText(filePath, "Anledning: ");
-            //            File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-            //        }
-
-            //        else
-            //        {
-            //            File.AppendAllText(filePath, "ID: ");
-            //            File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
-
-            //            File.AppendAllText(filePath, "Namn: ");
-            //            File.AppendAllText(filePath, objectName + Environment.NewLine);
-
-            //            File.AppendAllText(filePath, "Författare: ");
-            //            File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
-
-            //            File.AppendAllText(filePath, "Anledning: ");
-            //            File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-
-            //        }
-
+            
             //    }
             //    catch (Exception ex)
             //{
             //    _dialog.Alert("Fel", "Stäng Excelfilen");
             //    Debug.WriteLine(ex.Message);
             //    return;
-            //}
+            //}C:\Users\andre\Desktop\Newton\Repos\G2Libsys\G2Libsys\Events\
+
+            bool isSuccess = false;
 
             try
             {
-                _repo.RemoveAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
-                LibraryObjects.Remove(SelectedItem);
+                await _repo.UpdateAsync(SelectedItem.Disabled).ConfigureAwait(false);
+
+                //LibraryObjects.Remove(SelectedItem);
+                isSuccess = true;
+                if (isSuccess)
+                {
+                    await _repo.UpdateAsync(adminAction);
+                }
             }
             catch (Exception ex)
             {
                 _dialog.Alert("Error", "Borttagning misslyckades, försök igen");
                 Debug.WriteLine(ex.Message);
             }
+            
         }
 
         private void ResetLists()
         {
             SearchString = string.Empty;
             dispatcher.InvokeAsync(GetLibraryObjects);
+        }
+
+        public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
+        {
+            var adminActions = new List<AdminAction>(await _repo.GetAllAsync<AdminAction>(1));
+
+
+            // Inställningar för save file dialog box
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.FileName = "LibsysUserLog"; // Default file name
+            dlg.DefaultExt = ".csv"; // Default file extension
+            dlg.Filter = "Excel documents (.csv)|*.csv"; // Filter files by extension
+
+            // Visa save file dialog box true if user input string
+            bool? saveresult = dlg.ShowDialog();
+
+
+
+            // Process save file dialog box results
+            if (saveresult == true)
+            {
+                // Create a FileStream with mode CreateNew  
+                FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate);
+                // Create a StreamWriter from FileStream  
+                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                {
+                    writer.WriteLine("ID,Action,Comment,ActionDate");
+                    foreach (var item in adminActions)
+                    {
+
+                        writer.Write($"{item},");
+                        ;
+                    }
+                }
+
+
+                //File.WriteAllText(dlg.FileName, adminActions);
+                //File.AppendAllText(dlg.FileName, )
+            }
         }
 
         #endregion
