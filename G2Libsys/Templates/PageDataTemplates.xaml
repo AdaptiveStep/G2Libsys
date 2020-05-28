@@ -58,5 +58,8 @@
     <DataTemplate DataType="{x:Type dialog:LibraryObjectDialogViewModel}">
         <dialog:LibraryObjectDialogView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type dialog:ReasonDialogViewModel}">
+        <dialog:ReasonDialogView />
+    </DataTemplate>
 
 </ResourceDictionary>

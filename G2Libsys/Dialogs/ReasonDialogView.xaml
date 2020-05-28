@@ -60,7 +60,7 @@
                     </Grid.Resources>
                     <StackPanel Width="150" Grid.ColumnSpan="2">
 
-                        <Label Content="Anledning" />
+                        <!--<Label Content="Anledning" />
                         <ComboBox
                             Width="130"
                             Height="24"
@@ -68,18 +68,18 @@
                             Padding="0"
                             Background="WhiteSmoke"
                             >
-                            <!--ItemsSource="{Binding Categories}"
+                            --><!--ItemsSource="{Binding Categories}"
                             SelectedIndex="{Binding LibraryObject.Category}"
-                            SelectedItem="{Binding SelectedCategory}"-->
+                            SelectedItem="{Binding SelectedCategory}"--><!--
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" />
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
-                        </ComboBox>
+                        </ComboBox>-->
                         <Label Content="Beskrivning" />
                         <TextBox
-                            Text="{Binding LibraryObject.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="62" Width="130" />
+                            Text="{Binding Reason, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="62" Width="130" />
                     </StackPanel>
 
                    
