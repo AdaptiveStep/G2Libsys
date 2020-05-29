@@ -346,6 +346,16 @@
 
 
 
+--SQL VIEWS
+	CREATE VIEW LibraryObjectsView
+	AS
+	Select L.ID, L.Title, L.ISBN, C.[Name] AS Category, L.[Disabled], L.PurchasePrice, L.DateAdded, L.LastEdited
+	FROM LibraryObjects L 
+	LEFT JOIN
+	Categories C ON L.Category = C.ID
+	GO
+
+
 ------------------------------------------------------------------------
 --SQL PROCEDURES -------------------------------------------------------
 ---------------Users ---------------------------------------------------
@@ -924,6 +934,26 @@
 				--Author.lname 	LIKE '%' + @PartialAuthorlastname 	+ '%' ;   --FIX THIS
 
 		END
+		GO
+
+
+	 ---GET ALL Disabled Libraryobjects
+	 CREATE proc usp_filtersearch_libraryobjectsviews
+        @ID INT = null,
+        @Title VARCHAR(MAX)=null,
+        @ISBN INT = null,
+        @CATEGORY VARCHAR(MAX) = null,        
+        @Disabled BIT = null,
+        @PurchasePrice FLOAT = null,
+        @DateAdded DATETIME = null,
+        @LastEdited DATETIME = null
+        as
+        
+        BEGIN
+            select * from LibraryObjectsView WHERE 
+            
+            [Disabled] = @Disabled
+        END
 		GO
 
 	--Dynamic search of Loans
