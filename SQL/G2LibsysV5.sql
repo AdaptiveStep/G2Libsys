@@ -130,15 +130,15 @@
 				SET IDENTITY_INSERT Users OFF
 				GO
 	
-	DROP TABLE IF EXISTS dbo.Authors	
-	CREATE TABLE Authors(
-		ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  							--Candidatekey
-		Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
-		Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
-		ImageSRC VARCHAR(300),
-		Biography VARCHAR(5000)
-		);
-		GO
+	-- DROP TABLE IF EXISTS dbo.Authors	
+	-- CREATE TABLE Authors(
+	-- 	ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  							--Candidatekey
+	-- 	Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
+	-- 	Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
+	-- 	ImageSRC VARCHAR(300),
+	-- 	Biography VARCHAR(5000)
+	-- 	);
+	-- 	GO
 
 		--STANDARD INSERTS
 			SET IDENTITY_INSERT 	Authors on
@@ -344,7 +344,8 @@
 		           ([Name])
 		     VALUES
 		           ('RemovedUser'),
-				   ('RemovedLibraryObject');
+				   ('RemovedLibraryObject'),
+				   ('AddedUser');
 		GO
 
 
