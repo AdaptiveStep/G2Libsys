@@ -2,25 +2,33 @@
 using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace G2Libsys.ViewModels
 {
-    class LoanCheckoutViewModel : BaseViewModel, ISubViewModel
+    public class LoanCheckoutViewModel : BaseViewModel, ISubViewModel
     {
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
         public ICommand Confirm { get; set; }
+        public ICommand DeleteItem { get; set; }
         public ICommand Clear { get; set; }
         private readonly IRepository _repo;
         ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
         private Card currentUserCard;
         private ObservableCollection<Loan> loanCart;
+        private LibraryObject selectedItem;
 
+        public LibraryObject SelectedItem
+        {
+            get => selectedItem;
+            set
+            {
+                selectedItem = value;
+                OnPropertyChanged(nameof(SelectedItem));
+            }
+        }
         public ObservableCollection<Loan> LoanCart
         {
             get => loanCart;
@@ -47,6 +55,7 @@ namespace G2Libsys.ViewModels
             GetUser();
             Confirm = new RelayCommand(_ => ConfirmLoan());
             Clear = new RelayCommand(_ => ClearLoan());
+            DeleteItem = new RelayCommand(_ => RemoveLoan());
         }
 
         private async void GetUser()
@@ -68,9 +77,14 @@ namespace G2Libsys.ViewModels
         //    }
         //    else { _dialog.Alert("", "Vänligen logga in för att låna"); }
         //}
+        public void RemoveLoan()
+        {
+            _loans.LoanCart.Remove(SelectedItem);
+        }
         public void ClearLoan()
         {
             _loans.LoanCart.Clear();
+            LoanCart.Clear();
         }
 
         public async void ConfirmLoan()

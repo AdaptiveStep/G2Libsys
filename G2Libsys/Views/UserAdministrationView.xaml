@@ -66,6 +66,8 @@
                         </ListView>
                     </GroupBox>
                 </Border>
+                <Button Command="{Binding ReturnLoan}" Content="Lämna tillbaka"/>
+
 
                 <StackPanel Orientation="Horizontal"  Height="30" Margin="10 0 0 0">
                     <TextBlock Text="Kort ID:" Width="55"/>

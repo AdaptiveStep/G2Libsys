@@ -179,7 +179,7 @@
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
-            CurrentViewModel = _navigationService.GetViewModel(new LoanCheckoutViewModel());
+            CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
 
             // Initiate menuitems list
            // MenuItems = new ObservableCollection<UserMenuItem>();

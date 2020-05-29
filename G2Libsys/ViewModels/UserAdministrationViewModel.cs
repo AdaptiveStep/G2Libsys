@@ -8,6 +8,7 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Reflection;
     using System.Windows.Input;
 
@@ -26,6 +27,7 @@
         private readonly IUserRepository _userrepo;
         private ObservableCollection<LibraryObject> libObjects;
         private string cardStatus;
+        private LibraryObject selectedLoan;
         
         private User confirm;
         private User confirm2;
@@ -38,6 +40,15 @@
         /// Currently displayed User
         /// </summary>
         /// 
+        public LibraryObject SelectedLoan
+        {
+            get => selectedLoan;
+            set
+            {
+                selectedLoan = value;
+                OnPropertyChanged(nameof(SelectedLoan));
+            }
+        }
         public User Confirm 
         {
             get=> confirm;
@@ -121,6 +132,7 @@
         public ICommand Savebutton { get; private set; }
         public ICommand ChangeCardStatusbutton { get; private set; }
         public ICommand CreateNewCardbutton { get; private set; }
+        public ICommand ReturnLoan { get; private set; }
         #endregion
 
         #region Constructor
@@ -136,8 +148,8 @@
             NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1)};
 
             NewCard.Owner = ActiveUser.ID;
-            
-            
+
+            ReturnLoan = new RelayCommand(x => Return());
             Savebutton = new RelayCommand(x => Save());
             ChangeCardStatusbutton = new RelayCommand(x => ChangeCardStatus());
             CreateNewCardbutton = new RelayCommand(x => CreateNewCard());
@@ -151,7 +163,18 @@
         #endregion
 
         #region Methods
+        public async void Return()
+        {
+            foreach(var a in LoanObjects)
+            {
+                if (a.ObjectID == SelectedLoan.ID)
+                {
+                    await _repo.RemoveAsync<Loan>(a.ID);
+                }
+            }
+            
 
+        }
         public async void CreateNewCard()
         {
             if (UserCard != null)
