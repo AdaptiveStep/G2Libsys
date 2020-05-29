@@ -264,8 +264,6 @@
 		EndDate DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL DEFAULT SYSDATETIME(),
 		PERIOD FOR SYSTEM_TIME (StartDate, EndDate)
 		)
-
-		---Temporal features for table. Can Easily be Disabled/pruned to save space.
 		WITH (SYSTEM_VERSIONING = ON 
 		         (HISTORY_TABLE = dbo.TestTemporalHistory, 
 		            History_retention_period = 365 DAYS
@@ -345,7 +343,9 @@
 		     VALUES
 		           ('RemovedUser'),
 				   ('RemovedLibraryObject'),
-				   ('AddedUser');
+				   ('AddedUser'),
+				   ('DisabledCard')
+				   ;
 		GO
 
 
