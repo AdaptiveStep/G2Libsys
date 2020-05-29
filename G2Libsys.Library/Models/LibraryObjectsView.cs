@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace G2Libsys.Library.Models
 {
@@ -10,10 +8,11 @@ namespace G2Libsys.Library.Models
         public string Title { get; set; }
         public long? ISBN { get; set; }
         public string Category { get; set; }
+        public string DeweyDecimal { get; set; }
+        public string DeweyDescription { get; set; }
         public bool Disabled { get; set; }
         public double? PurchasePrice { get; set; }
-        public DateTime DateAdded { get; set; }
-        public DateTime LastEdited { get; set; }
+        public DateTime? DateAdded { get; set; }
+        public DateTime? LastEdited { get; set; }
     }
-
 }
