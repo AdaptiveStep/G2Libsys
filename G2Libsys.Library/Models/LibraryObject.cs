@@ -13,7 +13,8 @@
         public long? ISBN { get; set; }
         public string Publisher { get; set; }
         public double? PurchasePrice { get; set; }
-        public int? Pages { get; set; }
+		public int Quantity { get; set; }
+		public int? Pages { get; set; }
         public string Author { get; set; }
         public int? Dewey { get; set; }
         public int Category { get; set; }

@@ -130,28 +130,28 @@
 				SET IDENTITY_INSERT Users OFF
 				GO
 	
-	-- DROP TABLE IF EXISTS dbo.Authors	
-	-- CREATE TABLE Authors(
-	-- 	ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  							--Candidatekey
-	-- 	Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
-	-- 	Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
-	-- 	ImageSRC VARCHAR(300),
-	-- 	Biography VARCHAR(5000)
-	-- 	);
-	-- 	GO
+	---- DROP TABLE IF EXISTS dbo.Authors	
+	---- CREATE TABLE Authors(
+	---- 	ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  							--Candidatekey
+	---- 	Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
+	---- 	Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
+	---- 	ImageSRC VARCHAR(300),
+	---- 	Biography VARCHAR(5000)
+	---- 	);
+	---- 	GO
 
-		--STANDARD INSERTS
-			SET IDENTITY_INSERT 	Authors on
-				INSERT INTO 		Authors (ID,Firstname, Lastname, ImageSRC, Biography) 
-						VALUES 
-						(0, 'Okänt'	,'Okänt', 'http://ifmetall-alimak.se/onewebmedia/bild-saknas%20herr.gif', 'Ingen biografi hittades'									),				--Does ID really have to be inserted? 
+	--	--STANDARD INSERTS
+	--		SET IDENTITY_INSERT 	Authors on
+	--			INSERT INTO 		Authors (ID,Firstname, Lastname, ImageSRC, Biography) 
+	--					VALUES 
+	--					(0, 'Okänt'	,'Okänt', 'http://ifmetall-alimak.se/onewebmedia/bild-saknas%20herr.gif', 'Ingen biografi hittades'									),				--Does ID really have to be inserted? 
 
-						(1, 'JK - Joanne'	,'Rowling'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/J._K._Rowling_2010.jpg/330px-J._K._Rowling_2010.jpg', 'Joanne Rowling, better known by her pen name J. K. Rowling, is a British author, film producer, television producer, screenwriter, and philanthropist. She is best known for writing the Harry Potter fantasy series, which has won multiple awards and sold more than 500 million copies, becoming the best-selling book series in history.'	), 
-						(2, 'George R. R'	,'Martin'	, 'https://duckduckgo.com/i/e6ce7885.jpg', 'George Raymond Richard Martin, also known as GRRM, is an American novelist and short story writer in the fantasy, horror, and science fiction genres, screenwriter, and television producer. He is writing the series of epic fantasy novels A Song of Ice and Fire, which was adapted into the HBO series Game of Thrones'	),
-						(3, 'JRR Tolkien'	,'Tolkien'	, 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Tolkien_1916.jpg', 'John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic. He was the author of the classic high fantasy works The Hobbit and The Lord of the Rings'						),
-						(4, 'Jan'			,'Guillou'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg/330px-Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg', 'Jan Oskar Sverre Lucien Henri Guillou is a French-Swedish author and journalist. Among his books are a series of spy fiction novels about a spy named Carl Hamilton, and a trilogy of historical fiction novels about a Knight Templar, Arn Magnusson'	);
-				SET IDENTITY_INSERT Authors OFF
-				GO
+	--					(1, 'JK - Joanne'	,'Rowling'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/J._K._Rowling_2010.jpg/330px-J._K._Rowling_2010.jpg', 'Joanne Rowling, better known by her pen name J. K. Rowling, is a British author, film producer, television producer, screenwriter, and philanthropist. She is best known for writing the Harry Potter fantasy series, which has won multiple awards and sold more than 500 million copies, becoming the best-selling book series in history.'	), 
+	--					(2, 'George R. R'	,'Martin'	, 'https://duckduckgo.com/i/e6ce7885.jpg', 'George Raymond Richard Martin, also known as GRRM, is an American novelist and short story writer in the fantasy, horror, and science fiction genres, screenwriter, and television producer. He is writing the series of epic fantasy novels A Song of Ice and Fire, which was adapted into the HBO series Game of Thrones'	),
+	--					(3, 'JRR Tolkien'	,'Tolkien'	, 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Tolkien_1916.jpg', 'John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic. He was the author of the classic high fantasy works The Hobbit and The Lord of the Rings'						),
+	--					(4, 'Jan'			,'Guillou'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg/330px-Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg', 'Jan Oskar Sverre Lucien Henri Guillou is a French-Swedish author and journalist. Among his books are a series of spy fiction novels about a spy named Carl Hamilton, and a trilogy of historical fiction novels about a Knight Templar, Arn Magnusson'	);
+	--			SET IDENTITY_INSERT Authors OFF
+	--			GO
 	
 	DROP TABLE IF EXISTS dbo.Seminars	
 	CREATE TABLE Seminars(
@@ -241,19 +241,14 @@
 		ISBN 			BIGINT 				 	DEFAULT 0,						
 		Publisher		VARCHAR(100) 			DEFAULT 'UNNAMED',
 		PurchasePrice 	FLOAT 					DEFAULT 300,
+		Quantity 		INT 					DEFAULT 1,
 		Pages 			INT 					DEFAULT 0,
 		Author 			varchar(MAX) 			DEFAULT 'No Description',
 
 		Dewey			INT 	 			 					FOREIGN KEY REFERENCES DeweyDecimals(DeweyINT),
 		Category 		INT 		NOT NULL	DEFAULT 1 		FOREIGN KEY REFERENCES Categories(ID) ,
---		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
-		
-		Disabled 		BIT NOT NULL DEFAULT 1,
+		Disabled 		BIT			NOT NULL	DEFAULT 1,
 		imagesrc 		VARCHAR(500), 
-		--Hardcover 		INT 					DEFAULT 1 		FOREIGN KEY REFERENCES Covers(ID) 		ON DELETE SET NULL,
-		--Genre 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Genres(ID) 		ON DELETE SET NULL,
-		-- META attributes -- Must be here due to the 1..1 -> 1..1 relationship. Cannot be in separate Table.
-		-- Solution: Can be replaced with "history tables and history-triggers".
 
 		---OBS: dates are inserted in the form '2020-05-24'
 		[Library] 		INT 				 	DEFAULT 1 		FOREIGN KEY REFERENCES Libraries(ID) 	ON DELETE SET NULL,
@@ -681,6 +676,7 @@
 		@ISBN			BIGINT			= null,
 		@Publisher		VARCHAR(100)	= null,
 		@PurchasePrice	FLOAT			= null,
+		@Quantity		INT				= null,
 		@Pages			INT				= null,
 		@Dewey			INT				= null,
 		@Category		INT	      		,	
@@ -695,9 +691,9 @@
 		AS
 		BEGIN
 			INSERT INTO 
-			LibraryObjects( Title, [Description], ISBN,  Publisher,  PurchasePrice,  Pages, Dewey, Category,    Author,  Disabled,  imagesrc, [Library], AddedBy, LastEdited, DateAdded) 
+			LibraryObjects( Title, [Description], ISBN,  Publisher,  PurchasePrice,  Quantity,  Pages, Dewey, Category,    Author,  Disabled,  imagesrc, [Library], AddedBy, LastEdited, DateAdded) 
 			VALUES 
-						  (@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Pages, @Dewey, @Category, @Author, @Disabled, @Imagesrc, @Library, @AddedBy, @LastEdited, @DateAdded);
+						  (@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Quantity, @Pages, @Dewey, @Category, @Author, @Disabled, @Imagesrc, @Library, @AddedBy, @LastEdited, @DateAdded);
 		END
 		GO
 
@@ -711,6 +707,7 @@
 		@ISBN			BIGINT			= null,
 		@Publisher		VARCHAR(100)	= null,
 		@PurchasePrice	FLOAT			= null,
+		@Quantity		INT				= null,
 		@Pages			INT				= null,
 		@Dewey			INT				= null,
 		@Category		INT 			,
@@ -732,6 +729,7 @@
 			Publisher 		= @Publisher,
 			PurchasePrice 	= @PurchasePrice,
 			Pages 			= @Pages,
+			Quantity		= @Quantity,
 			Dewey 			= @Dewey,
 			Category 		= @Category,
 			Author 			= @Author,
