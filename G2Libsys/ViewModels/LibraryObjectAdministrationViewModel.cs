@@ -41,7 +41,7 @@
         private Category selectedCategory;
         private LibraryObject selectedItem;
         private string searchString;
-        //private string filePath;
+        private bool disabledLibraryObjects;
 
         #endregion
 
@@ -68,20 +68,17 @@
         }
 
         /// <summary>
-        /// Get and set for an admin action
+        /// Property for disabled Library objects
         /// </summary>
-        private AdminAction adminAction;
-
-        public AdminAction AdminAction
+        public bool DisabledLibraryObjects
         {
-            get => adminAction;
-            set 
-            { 
-                adminAction = value;
-                OnPropertyChanged(nameof(adminAction));
+            get => disabledLibraryObjects;
+            set
+            {
+                disabledLibraryObjects = value;
+                OnPropertyChanged(nameof(DisabledLibraryObjects));
             }
         }
-
 
         /// <summary>
         /// Gets the ObservableCollection of LibObjects 
@@ -95,6 +92,8 @@
                 OnPropertyChanged(nameof(libraryObjects));
             }
         }
+
+
         /// <summary>
         /// Selected Item in the datagrid
         /// </summary>
@@ -119,6 +118,7 @@
                 OnPropertyChanged(nameof(NewLibraryObject));
             }
         }
+
         public string SearchString
         {
             get => searchString;
@@ -203,15 +203,12 @@
 
         private async Task Initialize()
         {
+            DisabledLibraryObjects = true;
             Categories     = new ObservableCollection<Category>();
             LibraryObjects = new ObservableCollection<LibraryObject>();
             Task<IEnumerable<Category>>  categoryList = _repo.GetAllAsync<Category>();
             Task<IEnumerable<LibraryObject>> itemList = _repo.GetAllAsync<LibraryObject>();
-
-            AdminAction = new AdminAction();
-
             await Task.WhenAll(categoryList, itemList);
-
             Categories.Add(new Category() { ID = 0, Name = "Visa Alla" });
 
             categoryList.Result.ToList().ForEach(c => Categories    .Add(c));
@@ -240,6 +237,10 @@
 
             LibraryObjects = new ObservableCollection<LibraryObject>(objects);
         }
+
+       
+
+
         /// <summary>
         /// Hämtar en lista med libraryobject som matchar söksträng
         /// </summary>
@@ -322,7 +323,7 @@
 
 
             //creates an adminaction for the log in database
-            AdminAction = new AdminAction()
+            var adminAction = new AdminAction()
             {
                 Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}",
                 Actiondate = DateTime.Now,
@@ -336,7 +337,7 @@
             try
             {
                 //sets the selecteditem to disabled
-                SelectedItem.Disabled = false;
+                SelectedItem.Disabled = true;
                 await _repo.UpdateAsync<LibraryObject>(SelectedItem).ConfigureAwait(false);
                 
             }
@@ -369,9 +370,8 @@
         /// <param name="param"></param>
         public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
         {
-            LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = false, DateAdded = DateTime.Now, LastEdited = DateTime.Now };
+            LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = DisabledLibraryObjects, DateAdded = DateTime.Now, LastEdited = DateTime.Now };
             var libObjects = new List<LibraryObjectsView>(await _repo.GetRangeAsync<LibraryObjectsView>(libraryObjectsView));
-
             var propList = libraryObjectsView.GetType().GetProperties().Select(p => p.Name).ToList();
 
             // Inställningar för save file dialog box

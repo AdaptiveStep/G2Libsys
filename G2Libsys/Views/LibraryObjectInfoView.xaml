@@ -19,7 +19,7 @@
     <Grid>
         <Grid.Resources>
             <Style TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
             </Style>
         </Grid.Resources>
         <Rectangle Opacity="0.5">
@@ -63,7 +63,7 @@
                 </Grid.RowDefinitions>
 
                 <!--  Viewbox för image  -->
-                
+
                 <Viewbox
                     Grid.Row="1"
                     Grid.RowSpan="5"
@@ -141,8 +141,8 @@
                     Text="Författare:" />
 
                 <!--  Author  -->
-                
-                
+
+
                 <materialDesign:Card
                     Grid.Row="2"
                     Grid.RowSpan="5"
@@ -151,19 +151,19 @@
                     Height="auto"
                     Background="Transparent">
                     <Grid>
-                       
-
-                            <TextBlock
-                                Margin="0,0,10,0"
-                                FontWeight="DemiBold"
-                                Text="{Binding LibraryObject.Author}"
-                                TextWrapping="Wrap" />
 
 
+                        <TextBlock
+                            Margin="0,0,10,0"
+                            FontWeight="DemiBold"
+                            Text="{Binding LibraryObject.Author}"
+                            TextWrapping="Wrap" />
 
 
 
-                        
+
+
+
                     </Grid>
 
                 </materialDesign:Card>
