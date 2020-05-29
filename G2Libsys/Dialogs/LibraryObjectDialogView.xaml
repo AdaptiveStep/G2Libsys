@@ -6,6 +6,7 @@
     xmlns:local="clr-namespace:G2Libsys.Dialogs"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converter="clr-namespace:G2Libsys.Converters"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -120,6 +121,7 @@
                             VerticalAlignment="Center"
                             Content="Aktiverad"
                             Foreground="White"
+                            Visibility="{Binding IsEnabled, Converter={converter:BoolToVisibilityConverter}}"
                             IsChecked="{Binding LibraryObject.Disabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                             Style="{StaticResource MaterialDesignAccentCheckBox}" />
 

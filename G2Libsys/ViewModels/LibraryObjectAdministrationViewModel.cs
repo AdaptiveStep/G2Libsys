@@ -20,6 +20,7 @@
     using Microsoft.Win32;
     using System.Text;
     using System.ComponentModel;
+    using Microsoft.VisualBasic.CompilerServices;
     #endregion
 
     /// <summary>
@@ -314,55 +315,64 @@
         private async Task DeleteLibraryObjectAsync()
         {
             if (selectedItem == null) return;
-            //bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
-            var myVM = new RemoveItemDialogViewModel("Radera biblioteksobjekt");
+            bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
             //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
-            var dialogresult = _dialog.Show(myVM);
 
-            if (!dialogresult.isSuccess) return;
+            if (!result) return;
 
 
+            //creates an adminaction for the log in database
             AdminAction = new AdminAction()
             {
-                Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}  Anledning: { dialogresult.msg} ",
+                Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}",
                 Actiondate = DateTime.Now,
                 ActionType = 2,
+
+
             };
             
-            
-            //    }
-            //    catch (Exception ex)
-            //{
-            //    _dialog.Alert("Fel", "Stäng Excelfilen");
-            //    Debug.WriteLine(ex.Message);
-            //    return;
-            //}C:\Users\andre\Desktop\Newton\Repos\G2Libsys\G2Libsys\Events\
-
+     
 
             try
             {
+                //sets the selecteditem to disabled
                 SelectedItem.Disabled = false;
                 await _repo.UpdateAsync<LibraryObject>(SelectedItem).ConfigureAwait(false);
-
+                
             }
             catch (Exception ex)
             {
                 _dialog.Alert("Error", "Borttagning misslyckades, försök igen");
                 Debug.WriteLine(ex.Message);
             }
+            finally
+            {
+                //updates the list
+                ResetLists();
+            }
             
         }
 
+        /// <summary>
+        /// A method used to updating lists
+        /// </summary>
         private void ResetLists()
         {
             SearchString = string.Empty;
             dispatcher.InvokeAsync(GetLibraryObjects);
         }
 
+
+        /// <summary>
+        /// A dialogbox that lets you browse where you want to save an object
+        /// </summary>
+        /// <param name="param"></param>
         public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
         {
-            var adminActions = new List<AdminAction>(await _repo.GetAllAsync<AdminAction>(1));
+            LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = false, DateAdded = DateTime.Now, LastEdited = DateTime.Now };
+            var libObjects = new List<LibraryObjectsView>(await _repo.GetRangeAsync<LibraryObjectsView>(libraryObjectsView));
 
+            var propList = libraryObjectsView.GetType().GetProperties().Select(p => p.Name).ToList();
 
             // Inställningar för save file dialog box
             SaveFileDialog dlg = new SaveFileDialog();
@@ -383,18 +393,15 @@
                 // Create a StreamWriter from FileStream  
                 using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
                 {
-                    writer.WriteLine("ID,Action,Comment,ActionDate");
-                    foreach (var item in adminActions)
+                    writer.WriteLine(string.Join("," , propList));
+                    foreach (var item in libObjects)
                     {
-
-                        writer.Write($"{item},");
-                        
+                        writer.WriteLine($"{ item.ID },{ item.ISBN },{ item.PurchasePrice },{item.Title},{item.Category},{item.DateAdded},{item.Disabled},{item.LastEdited}");
                     }
                 }
 
 
-                //File.WriteAllText(dlg.FileName, adminActions);
-                //File.AppendAllText(dlg.FileName, )
+           
             }
         }
 

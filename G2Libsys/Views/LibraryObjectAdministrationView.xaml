@@ -114,7 +114,7 @@
                     DataContext="{Binding}"
                     IsReadOnly="True"
                     ItemsSource="{Binding LibraryObjects}"
-                    SelectedItem="{Binding SelectedItem}"
+                    SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Single">
                     <DataGrid.Columns>
                         <DataGridTextColumn
@@ -173,7 +173,8 @@
                         <MouseBinding
                             Command="{Binding EditItem}"
                             CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
-                            Gesture="LeftDoubleClick" />
+                            Gesture="LeftDoubleClick" 
+                            />
                         <KeyBinding
                             Key="Delete"
                             Command="{Binding DeleteItem}"

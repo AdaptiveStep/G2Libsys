@@ -20,7 +20,6 @@
         #region Fields
         private LibraryObject libraryObject;
         private Category category;
-        private bool? _activatedCheckbox;
         #endregion
 
         #region Properties
@@ -37,6 +36,7 @@
             }
         }
 
+        public bool IsEnabled { get; }
         
         /// <summary>
         /// Selected category for libraryobject
@@ -76,6 +76,7 @@
         {
             this.LibraryObject = libraryObject;
             this.Categories = new ObservableCollection<Category>(category);
+            IsEnabled = !LibraryObject.Disabled;
             
         }
         #endregion
