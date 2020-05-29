@@ -58,6 +58,7 @@
                     <TextBlock Text="Ange en anledning för borttagning:"
                                Grid.Column="1"
                                HorizontalAlignment="Center"
+                               Foreground="White"
                                Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                                Grid.Row="1"
                                Grid.ColumnSpan="3"/>
