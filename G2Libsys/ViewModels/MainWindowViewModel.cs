@@ -179,10 +179,10 @@
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
-            CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
+            CurrentViewModel = _navigationService.GetViewModel(new LoanCheckoutViewModel());
 
             // Initiate menuitems list
-            MenuItems = new ObservableCollection<UserMenuItem>();
+           // MenuItems = new ObservableCollection<UserMenuItem>();
 
             // Aplication closing event handler
             Application.Current.MainWindow.Closing
