@@ -11,7 +11,7 @@
         {
             try
             {
-                using FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.None);
+                using FileStream stream = new FileStream(file, FileMode.OpenOrCreate, FileAccess.Read, FileShare.None);
             }
             catch (IOException)
             {
