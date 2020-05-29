@@ -20,7 +20,6 @@
         #region Fields
         private LibraryObject libraryObject;
         private Category category;
-        private bool? _activatedCheckbox;
         #endregion
 
         #region Properties
@@ -37,6 +36,8 @@
             }
         }
 
+        public bool IsEnabled { get; }
+        
         /// <summary>
         /// Selected category for libraryobject
         /// </summary>
@@ -75,7 +76,8 @@
         {
             this.LibraryObject = libraryObject;
             this.Categories = new ObservableCollection<Category>(category);
-            ActivatedCheckbox = true;
+            IsEnabled = !LibraryObject.Disabled;
+            
         }
         #endregion
 
@@ -94,20 +96,10 @@
             LibraryObject.LastEdited = DateTime.Now;
             LibraryObject.Category = SelectedCategory.ID;
             LibraryObject.AddedBy = _navigationService.HostScreen.CurrentUser?.ID ?? 1;
-
             base.DialogResult = LibraryObject;
             base.OKCommand.Execute(param);
         }
-        public bool? ActivatedCheckbox
-        {
-            get { return _activatedCheckbox; }
-            set
-            {
-                _activatedCheckbox = value;
-                _activatedCheckbox = (_activatedCheckbox != null) ? value : false;
-                OnPropertyChanged("ActivatedCheckbox");
-            }
-        }
+      
 
         #endregion
     }

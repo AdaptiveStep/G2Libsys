@@ -16,6 +16,11 @@
     using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
     using System.IO;
+    using G2Libsys.Library.Models;
+    using Microsoft.Win32;
+    using System.Text;
+    using System.ComponentModel;
+    using Microsoft.VisualBasic.CompilerServices;
     #endregion
 
     /// <summary>
@@ -36,7 +41,7 @@
         private Category selectedCategory;
         private LibraryObject selectedItem;
         private string searchString;
-        private string filePath;
+        //private string filePath;
 
         #endregion
 
@@ -61,18 +66,23 @@
                 }
             }
         }
+
         /// <summary>
-        /// Filepath for reports
+        /// Get and set for an admin action
         /// </summary>
-        public string FilePath
+        private AdminAction adminAction;
+
+        public AdminAction AdminAction
         {
-            get => filePath;
-            set
-            {
-                filePath = value;
-                OnPropertyChanged(nameof(FilePath));
+            get => adminAction;
+            set 
+            { 
+                adminAction = value;
+                OnPropertyChanged(nameof(adminAction));
             }
         }
+
+
         /// <summary>
         /// Gets the ObservableCollection of LibObjects 
         /// </summary>
@@ -153,7 +163,12 @@
         /// <summary>
         /// Delete LibraryObject
         /// </summary>
-        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => DeleteLibraryObject(), CanExecute);
+        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => DeleteLibraryObjectAsync(), CanExecute);
+
+        /// <summary>
+        /// Command for downloading a csv file with deleted users
+        /// </summary>
+        public ICommand DownloadLibLogCommand => new RelayCommand(SaveDialogBoxAsync);
 
         /// <summary>
         /// Reset lists
@@ -192,6 +207,8 @@
             LibraryObjects = new ObservableCollection<LibraryObject>();
             Task<IEnumerable<Category>>  categoryList = _repo.GetAllAsync<Category>();
             Task<IEnumerable<LibraryObject>> itemList = _repo.GetAllAsync<LibraryObject>();
+
+            AdminAction = new AdminAction();
 
             await Task.WhenAll(categoryList, itemList);
 
@@ -295,82 +312,97 @@
         /// <summary>
         /// Function used for deleting a library object
         /// </summary>
-        private void DeleteLibraryObject()
+        private async Task DeleteLibraryObjectAsync()
         {
             if (selectedItem == null) return;
-            //bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
-            var myVM = new RemoveItemDialogViewModel("Ta bort bok");
+            bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
             //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
-            var dialogresult = _dialog.Show(myVM);
 
-            if (!dialogresult.isSuccess) return;
-            //Filens sökväg
-            FilePath = @"C:\Rapporter\Borttagna böcker.csv";
+            if (!result) return;
 
 
-            //Skickar med en anledning, ID, Titel och Author och skriver till .csv fil
-            string createText = myVM.ReturnMessage;
-            var objectID = selectedItem.ID;
-            string objectName = selectedItem.Title;
-            string objectAuthor = selectedItem.Author;
+            //creates an adminaction for the log in database
+            AdminAction = new AdminAction()
+            {
+                Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}",
+                Actiondate = DateTime.Now,
+                ActionType = 2,
+
+
+            };
+            
+     
 
             try
             {
-                if (!File.Exists(filePath))
-                {
-                    File.WriteAllText(filePath, "ID: ");
-                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Namn: ");
-                    File.AppendAllText(filePath, objectName + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Författare: ");
-                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Anledning: ");
-                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-                }
-
-                else
-                {
-                    File.AppendAllText(filePath, "ID: ");
-                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Namn: ");
-                    File.AppendAllText(filePath, objectName + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Författare: ");
-                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Anledning: ");
-                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                _dialog.Alert("Fel", "Stäng Excelfilen");
-                Debug.WriteLine(ex.Message);
-                return;
-            }
-
-            try
-            {
-                _repo.RemoveAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
-                LibraryObjects.Remove(SelectedItem);
+                //sets the selecteditem to disabled
+                SelectedItem.Disabled = false;
+                await _repo.UpdateAsync<LibraryObject>(SelectedItem).ConfigureAwait(false);
+                
             }
             catch (Exception ex)
             {
                 _dialog.Alert("Error", "Borttagning misslyckades, försök igen");
                 Debug.WriteLine(ex.Message);
             }
+            finally
+            {
+                //updates the list
+                ResetLists();
+            }
+            
         }
 
+        /// <summary>
+        /// A method used to updating lists
+        /// </summary>
         private void ResetLists()
         {
             SearchString = string.Empty;
             dispatcher.InvokeAsync(GetLibraryObjects);
+        }
+
+
+        /// <summary>
+        /// A dialogbox that lets you browse where you want to save an object
+        /// </summary>
+        /// <param name="param"></param>
+        public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
+        {
+            LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = false, DateAdded = DateTime.Now, LastEdited = DateTime.Now };
+            var libObjects = new List<LibraryObjectsView>(await _repo.GetRangeAsync<LibraryObjectsView>(libraryObjectsView));
+
+            var propList = libraryObjectsView.GetType().GetProperties().Select(p => p.Name).ToList();
+
+            // Inställningar för save file dialog box
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.FileName = "LibsysUserLog"; // Default file name
+            dlg.DefaultExt = ".csv"; // Default file extension
+            dlg.Filter = "Excel documents (.csv)|*.csv"; // Filter files by extension
+
+            // Visa save file dialog box true if user input string
+            bool? saveresult = dlg.ShowDialog();
+
+
+
+            // Process save file dialog box results
+            if (saveresult == true)
+            {
+                // Create a FileStream with mode CreateNew  
+                FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate);
+                // Create a StreamWriter from FileStream  
+                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                {
+                    writer.WriteLine(string.Join("," , propList));
+                    foreach (var item in libObjects)
+                    {
+                        writer.WriteLine($"{ item.ID },{ item.ISBN },{ item.PurchasePrice },{item.Title},{item.Category},{item.DateAdded},{item.Disabled},{item.LastEdited}");
+                    }
+                }
+
+
+           
+            }
         }
 
         #endregion
