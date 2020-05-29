@@ -119,11 +119,12 @@
                         <CheckBox
                             Margin="10,5,0,0"
                             VerticalAlignment="Center"
-                            Content="Aktiverad"
+                            Content="Aktivera"
                             Foreground="White"
+                            
                             Visibility="{Binding IsEnabled, Converter={converter:BoolToVisibilityConverter}}"
-                            IsChecked="{Binding LibraryObject.Disabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                            Style="{StaticResource MaterialDesignAccentCheckBox}" />
+                            IsChecked="{Binding LibraryObject.Disabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={converter:InverseBooleanConverter}}"
+                            Style="{StaticResource MaterialDesignUserForegroundCheckBox}" />
 
                     </StackPanel>
 

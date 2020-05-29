@@ -76,7 +76,7 @@
         {
             this.LibraryObject = libraryObject;
             this.Categories = new ObservableCollection<Category>(category);
-            IsEnabled = !LibraryObject.Disabled;
+            IsEnabled = LibraryObject.Disabled;
             
         }
         #endregion
