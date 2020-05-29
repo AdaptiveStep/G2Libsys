@@ -389,15 +389,16 @@
             // Visa save file dialog box true if user input string
             bool? saveresult = dlg.ShowDialog();
 
-            if (dlg.FileName.IsFileBusy())
-            {
-                _dialog.Alert("Fel!", "Fil upptagen");
-                return;
-            }
-
             // Process save file dialog box results
             if (saveresult == true)
             {
+
+                if (dlg.FileName.IsFileBusy())
+                {
+                    _dialog.Alert("Fel!", "Fil upptagen");
+                    return;
+                }
+
                 // Sort by category
                 libObjects = libObjects.OrderBy(o => o.Category).ToList();
 
