@@ -4,6 +4,7 @@
     using G2Libsys.Data.Repository;
     using G2Libsys.Dialogs;
     using G2Libsys.Library;
+    using G2Libsys.Library.Extensions;
     using G2Libsys.Library.Models;
     using G2Libsys.Services;
     using Microsoft.Extensions.DependencyInjection;
@@ -212,14 +213,9 @@
         private async void RemoveUser()
         {
             if (SelectedUser == null) return;
-            
+        
             var myVM = new RemoveItemDialogViewModel("Ta bort användare");
             var dialogresult = _dialog.Show(myVM);
-
-            
-
-
-
 
             //Skapar en CSV fil med anledning till borttagning av användare
             if (!dialogresult.isSuccess) return;
@@ -229,9 +225,6 @@
                 Actiondate = DateTime.Now,
                 ActionType = 1
             };
-
-
-
 
             bool isSuccess = false;
             try
@@ -250,10 +243,11 @@
                 // Reset NewUser
                 NewUser = new User();
             }
-                if (isSuccess)
-                {
-                    await _repo.AddAsync(adminAction);
-                }
+
+            if (isSuccess)
+            {
+                await _repo.AddAsync(adminAction);
+            }
         }
 
 
@@ -261,7 +255,6 @@
         public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
         {
             var adminActions = new List<AdminAction>(await _repo.GetAllAsync<AdminAction>(1));
-
 
             // Inställningar för save file dialog box
             SaveFileDialog dlg = new SaveFileDialog();
@@ -272,30 +265,29 @@
             // Visa save file dialog box true if user input string
             bool? saveresult = dlg.ShowDialog();
 
-            
-
             // Process save file dialog box results
             if (saveresult == true)
             {
-                // Create a FileStream with mode CreateNew  
-                FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate);
-                // Create a StreamWriter from FileStream  
-                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                if (dlg.FileName.IsFileBusy())
                 {
-                    writer.WriteLine("ID,Action,Comment,ActionDate");
-                    foreach (var action in adminActions)
-                    {
-
-                        writer.Write($"{action.ID},");
-                        writer.Write($"{action.ActionType},");
-                        writer.Write($"{action.Comment},");
-                        writer.WriteLine($"{action.Actiondate}");
-                    }
+                    _dialog.Alert("Fel!", "Stäng filen först.");
+                    return;
                 }
 
+                // Create a FileStream with mode CreateNew  
+                FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate);
 
-                //File.WriteAllText(dlg.FileName, adminActions);
-                //File.AppendAllText(dlg.FileName, )
+                stream.SetLength(0);
+
+                // Create a StreamWriter from FileStream  
+                using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
+
+                writer.WriteLine("ID,Action,Comment,ActionDate");
+
+                foreach (var action in adminActions)
+                {
+                    writer.WriteLine($"{action.ID},{action.ActionType},{action.Comment},{action.Actiondate}");
+                }
             }
         }
 

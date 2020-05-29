@@ -381,7 +381,7 @@
             // Inställningar för save file dialog box
             SaveFileDialog dlg = new SaveFileDialog
             {
-                FileName = "LibsysUserLog", // Default file name
+                FileName = "LibsysObjectLog", // Default file name
                 DefaultExt = ".csv", // Default file extension
                 Filter = "Excel documents (.csv)|*.csv" // Filter files by extension
             };
@@ -395,7 +395,7 @@
 
                 if (dlg.FileName.IsFileBusy())
                 {
-                    _dialog.Alert("Fel!", "Fil upptagen");
+                    _dialog.Alert("Fel!", "Stäng filen först.");
                     return;
                 }
 
@@ -404,6 +404,8 @@
 
                 // Create a FileStream with mode CreateNew  
                 FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate); // fix trycatch
+
+                stream.SetLength(0);
 
                 // Create a StreamWriter from FileStream  
                 using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
