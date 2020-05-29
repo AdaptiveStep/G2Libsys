@@ -76,7 +76,29 @@
                         <Label Content="DeweyDecimal" />
                         <TextBox
                             Text="{Binding LibraryObject.Dewey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                    </StackPanel>
+               
+               
+               <!--For imageupload-->
+                    	<!--<StackPanel>
+							
+							<Separator Margin="0 5"/>
+			                <Border Margin="10 0 10 0" BorderBrush="White" BorderThickness="1" HorizontalAlignment="Center">
+				                <Image x:Name="PreviewImage" Width="20" Height="20"  
+						                Source="{Binding RawImageData,
+                                        Converter={StaticResource ByteArrayToBitmapImageConverter},
+                                        Mode=OneWay}" >
+
+				                </Image>
+
+			                </Border>
+							<TextBox Text="" Margin="5" IsEnabled="False" ToolTip="Välj bild nedan."/>
+			                
+			                <StackPanel Orientation="Horizontal">
+			                <Button Command="{Binding BrowseCommand}" Content="Välj" x:Name="PickButton" Click="PickButton_Click" Margin="5 0 0 0"/>
+			                <Button Command="{Binding UploadCommand}" Content="[UPL]" x:Name="Uploadbutton" Click="Uploadbutton_Click" Margin="5 0 0 0" ToolTip="Klicka för att ladda upp bilden"/>
+			                </StackPanel>
+		                </StackPanel>
+                    </StackPanel>-->
 
                     <StackPanel Grid.Column="2" Width="130">
                         <Label Content="Kategori" />
