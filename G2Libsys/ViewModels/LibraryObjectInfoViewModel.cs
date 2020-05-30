@@ -17,7 +17,11 @@ namespace G2Libsys.ViewModels
     {
         #region Fields
         private readonly IRepository _repo;
-        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ =>
+        {
+            _navigationService.HostScreen.SubViewModel = null;
+            currentBook = null;
+        });
 
         private LibraryObject currentBook;
 

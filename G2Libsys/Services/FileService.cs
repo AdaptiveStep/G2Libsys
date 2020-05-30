@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="fileName">Desired file name</param>
         /// <returns>Bool if file is created</returns>
-        public bool? CreateFile(string fileName = null)
+        public bool CreateFile(string fileName = null)
         {
             FileDialog = new SaveFileDialog()
             {
@@ -29,7 +29,7 @@
                 Filter = "Excel documents (.csv)|*.csv"
             };
 
-            return FileDialog.ShowDialog();
+            return FileDialog?.ShowDialog() ?? false;
         }
 
         /// <summary>
@@ -40,7 +40,7 @@
         /// <returns>Bool save success</returns>
         public bool ExportCSV<T>(List<T> itemList)
         {
-            if (FileDialog?.FileName.IsFileBusy() ?? true)
+            if ((FileDialog?.FileName.IsFileBusy() ?? true) || itemList?.Count <= 0)
             {
                 return false;
             }

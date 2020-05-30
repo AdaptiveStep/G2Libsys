@@ -367,7 +367,7 @@
         }
 
         /// <summary>
-        /// A dialogbox that lets you browse where you want to save an object
+        /// Export libraryobjects details to csv file
         /// </summary>
         public async Task SaveDialogBoxAsync()
         {
@@ -376,9 +376,9 @@
 
             var _fileService = IoC.ServiceProvider.GetService<IFileService>();
 
-            bool? fileCreated = _fileService.CreateFile("LibraryObjectLog");
+            bool fileCreated = _fileService.CreateFile("LibraryObjectLog");
 
-            if (fileCreated == true)
+            if (fileCreated)
             {
                 bool success = _fileService.ExportCSV(libObjects);
 
