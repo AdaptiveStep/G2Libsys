@@ -44,8 +44,24 @@
                 <Border Width="104"  HorizontalAlignment="Right"/>
                 <Border Height="170" Width="300" VerticalAlignment="Bottom" Margin="10" >
                     <GroupBox Header="Aktiva lån">
-                        <ListView
+                        <StackPanel Orientation="Horizontal">
+                            <ListView ItemsSource="{Binding LoanObjects}" SelectedItem="{Binding SelectedLoan}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+
+
+                                        <Grid Background="{StaticResource accent_light}">
+
+                                            <CheckBox />
+                                        </Grid>
+
+
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+
+                            </ListView>
                             
+                        <ListView
                             SelectionMode="Single"
                             ItemsSource="{Binding LibraryObjects}">
                             <ListView.ItemTemplate>
@@ -64,6 +80,7 @@
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
+                        </StackPanel>
                     </GroupBox>
                 </Border>
                 <Button Command="{Binding ReturnLoan}" Content="Lämna tillbaka"/>
