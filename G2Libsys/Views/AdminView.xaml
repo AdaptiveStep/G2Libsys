@@ -13,145 +13,148 @@
     x:TypeArguments="vm:AdminViewModel"
     mc:Ignorable="d">
     <Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="2*"/>
-			<ColumnDefinition Width="auto"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="auto" />
 
-		</Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>
         <Grid.Resources>
             <Style TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
             </Style>
             <Style TargetType="Label">
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
-                
+                <Setter Property="Foreground" Value="White" />
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
+
             </Style>
         </Grid.Resources>
-		<materialDesign:Card  Margin="10" Grid.Column="0">
+        <materialDesign:Card Grid.Column="0" Margin="10">
+            <StackPanel>
+                <materialDesign:Card Margin="10">
+                    <StackPanel Orientation="Horizontal">
+
+                        <Label VerticalAlignment="Center" Content="Sök efter användare" />
+                        <TextBox
+                            Width="140"
+                            Margin="10"
+                            Background="Wheat"
+                            Text="{Binding SearchString}" />
+                        <Button
+                            Margin="0,0,10,0"
+                            Command="{Binding searchbutton}"
+                            Content="Sök" />
+                        <Button Command="{Binding cancelsearch}" Content="Avbryt" />
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <DataGrid
+                    Height="320"
+                    MinWidth="400"
+                    Margin="10,10,10,10"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    DataContext="{Binding}"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Users}"
+                    ScrollViewer.CanContentScroll="True"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    SelectedItem="{Binding SelectedUser}"
+                    SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
+                        <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
+                        <DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
+                        <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                        <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
+                    </DataGrid.Columns>
+                    <DataGrid.InputBindings>
+                        <MouseBinding
+                            Command="{Binding GoToUser}"
+                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
+                            Gesture="LeftDoubleClick" />
+                        <KeyBinding
+                            Key="Delete"
+                            Command="{Binding RemoveUserCommand}"
+                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
+                    </DataGrid.InputBindings>
+                </DataGrid>
+
+            </StackPanel>
+        </materialDesign:Card>
+
+        <StackPanel
+            Grid.Column="1"
+            Margin="0,0,10,10"
+            Orientation="Vertical">
+            <Label Content="Lägg till medlem" Foreground="{StaticResource primary_mid}" />
+            <materialDesign:Card>
                 <StackPanel>
-                    <materialDesign:Card Margin="10">
-                        <StackPanel Orientation="Horizontal">
-
-                            <Label VerticalAlignment="Center" Content="Sök efter användare" />
-                            <TextBox
-                                Width="140"
-                                Margin="10"
-                                Background="Wheat"
-                                Text="{Binding SearchString}" />
-                            <Button
-                                Margin="0,0,10,0"
-                                Command="{Binding searchbutton}"
-                                Content="Sök" />
-                            <Button Command="{Binding cancelsearch}" Content="Avbryt" />
-                        </StackPanel>
-                    </materialDesign:Card>
-
-                    <DataGrid
-                        Height="320"
-                        MinWidth="400"
-                        Margin="10,10,10,10"
-                        AutoGenerateColumns="False"
-                        CanUserAddRows="False"
-                        CanUserDeleteRows="False"
-                        DataContext="{Binding}"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding Users}"
-                        ScrollViewer.CanContentScroll="True"
-                        ScrollViewer.VerticalScrollBarVisibility="Auto"
-                        SelectedItem="{Binding SelectedUser}"
-                        SelectionMode="Single">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
-                            <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
-                            <DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
-                            <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
-                            <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
-                        </DataGrid.Columns>
-                        <DataGrid.InputBindings>
-                            <MouseBinding
-                                Command="{Binding GoToUser}"
-                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
-                                Gesture="LeftDoubleClick" />
-                            <KeyBinding
-                                Key="Delete"
-                                Command="{Binding RemoveUserCommand}"
-                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
-                        </DataGrid.InputBindings>
-                    </DataGrid>
-
+                    <Label Content="Namn" />
+                    <TextBox
+                        Width="100"
+                        Margin="10,0,10,0"
+                        Background="Wheat"
+                        Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <Label Content="Efternamn" />
+                    <TextBox
+                        Width="100"
+                        Margin="10,0,10,0"
+                        Background="Wheat"
+                        Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <Label Content="Email" />
+                    <TextBox
+                        Width="100"
+                        Margin="10,0,10,0"
+                        Background="Wheat"
+                        Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <Label Content="Lösenord" />
+                    <TextBox
+                        Width="100"
+                        Margin="10,0,10,0"
+                        Background="Wheat"
+                        Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                    <Label Content="Användartyp" />
+                    <ComboBox
+                        Width="100"
+                        Margin="10,0,10,0"
+                        Background="Wheat"
+                        ItemsSource="{Binding UserTypes}"
+                        SelectedItem="{Binding SelectedUserType}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <Button
+                        Margin="10,20,10,10"
+                        Command="{Binding AddUserCommand}"
+                        Content="Lägg till" />
                 </StackPanel>
             </materialDesign:Card>
 
-		<StackPanel Orientation="Vertical" Grid.Column="1"  Margin="0 0 10 10">
-                <Label Content="Lägg till medlem" Foreground="{StaticResource primary_mid}" />
-                <materialDesign:Card>
-                    <StackPanel>
-                        <Label Content="Namn" />
-                        <TextBox
-                            Width="100"
-                            Margin="10,0,10,0"
-                            Background="Wheat"
-                            Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <Label Content="Efternamn" />
-                        <TextBox
-                            Width="100"
-                            Margin="10,0,10,0"
-                            Background="Wheat"
-                            Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <Label Content="Email" />
-                        <TextBox
-                            Width="100"
-                            Margin="10,0,10,0"
-                            Background="Wheat"
-                            Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <Label Content="Lösenord" />
-                        <TextBox
-                            Width="100"
-                            Margin="10,0,10,0"
-                            Background="Wheat"
-                            Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                        <Label Content="Användartyp" />
-                        <ComboBox
-                            Width="100"
-                            Margin="10,0,10,0"
-                            Background="Wheat"
-                            ItemsSource="{Binding UserTypes}"
-                            SelectedItem="{Binding SelectedUserType}">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                        </ComboBox>
-                        <Button
-                            Margin="10,20,10,10"
-                            Command="{Binding AddUserCommand}"
-                            Content="Lägg till" />
-                    </StackPanel>
-                </materialDesign:Card>
+            <Label Content="Ta bort medlem" Foreground="{StaticResource primary_mid}" />
 
-                <Label Content="Ta bort medlem" Foreground="{StaticResource primary_mid}" />
-
-                <materialDesign:Card>
-                    <StackPanel>
-                        <Button
-                            Margin="3,3"
-                            HorizontalAlignment="Center"
-                            Command="{Binding RemoveUserCommand}"
-                            Content="Ta bort" />
-                    </StackPanel>
-                </materialDesign:Card>
+            <materialDesign:Card>
+                <StackPanel>
+                    <Button
+                        Margin="3,3"
+                        HorizontalAlignment="Center"
+                        Command="{Binding RemoveUserCommand}"
+                        Content="Ta bort" />
+                </StackPanel>
+            </materialDesign:Card>
             <Label Content="Raderade användare" Foreground="{StaticResource primary_mid}" />
 
             <materialDesign:Card>
                 <StackPanel>
                     <Button
-                            Margin="3,3"
-                            Width="70"
-                            HorizontalAlignment="Center"
-                            Command="{Binding DownloadUserLogCommand}"
-                            Content="{materialDesign:PackIcon Kind=ContentSave}" />
+                        Width="70"
+                        Margin="3,3"
+                        HorizontalAlignment="Center"
+                        Command="{Binding DownloadUserLogCommand}"
+                        Content="{materialDesign:PackIcon Kind=ContentSave}" />
                 </StackPanel>
             </materialDesign:Card>
         </StackPanel>

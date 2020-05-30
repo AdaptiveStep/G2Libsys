@@ -16,6 +16,11 @@
     using System.Diagnostics;
     using Microsoft.Extensions.DependencyInjection;
     using System.IO;
+    using G2Libsys.Library.Models;
+    using Microsoft.Win32;
+    using System.Text;
+    using System.ComponentModel;
+    using Microsoft.VisualBasic.CompilerServices;
     #endregion
 
     /// <summary>
@@ -36,7 +41,7 @@
         private Category selectedCategory;
         private LibraryObject selectedItem;
         private string searchString;
-        private string filePath;
+        private bool disabledLibraryObjects;
 
         #endregion
 
@@ -61,18 +66,20 @@
                 }
             }
         }
+
         /// <summary>
-        /// Filepath for reports
+        /// Property for disabled Library objects
         /// </summary>
-        public string FilePath
+        public bool DisabledLibraryObjects
         {
-            get => filePath;
+            get => disabledLibraryObjects;
             set
             {
-                filePath = value;
-                OnPropertyChanged(nameof(FilePath));
+                disabledLibraryObjects = value;
+                OnPropertyChanged(nameof(DisabledLibraryObjects));
             }
         }
+
         /// <summary>
         /// Gets the ObservableCollection of LibObjects 
         /// </summary>
@@ -85,6 +92,8 @@
                 OnPropertyChanged(nameof(libraryObjects));
             }
         }
+
+
         /// <summary>
         /// Selected Item in the datagrid
         /// </summary>
@@ -109,6 +118,7 @@
                 OnPropertyChanged(nameof(NewLibraryObject));
             }
         }
+
         public string SearchString
         {
             get => searchString;
@@ -133,7 +143,7 @@
         /// <summary>
         /// Enable execute if an Item is selected
         /// </summary>
-        private Predicate<object> CanExecute => _ => SelectedItem != null;
+        private Predicate<object> CanExecute => _ => SelectedItem != null && !SelectedItem.Disabled;
 
         /// <summary>
         /// Search for LibraryObject
@@ -153,7 +163,12 @@
         /// <summary>
         /// Delete LibraryObject
         /// </summary>
-        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => DeleteLibraryObject(), CanExecute);
+        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => dispatcher.InvokeAsync(DeleteLibraryObjectAsync), CanExecute);
+
+        /// <summary>
+        /// Command for downloading a csv file with deleted users
+        /// </summary>
+        public ICommand DownloadLibLogCommand => new RelayCommand(async _ => await SaveDialogBoxAsync());
 
         /// <summary>
         /// Reset lists
@@ -186,13 +201,21 @@
 
         #region Methods
 
+        /// <summary>
+        /// Initial setup
+        /// </summary>
         private async Task Initialize()
         {
+            // Initiate
+            DisabledLibraryObjects = true;
             Categories     = new ObservableCollection<Category>();
             LibraryObjects = new ObservableCollection<LibraryObject>();
+
+            // Call queries
             Task<IEnumerable<Category>>  categoryList = _repo.GetAllAsync<Category>();
             Task<IEnumerable<LibraryObject>> itemList = _repo.GetAllAsync<LibraryObject>();
 
+            // Wait for both queries to complete
             await Task.WhenAll(categoryList, itemList);
 
             Categories.Add(new Category() { ID = 0, Name = "Visa Alla" });
@@ -200,12 +223,13 @@
             categoryList.Result.ToList().ForEach(c => Categories    .Add(c));
             itemList    .Result.ToList().ForEach(i => LibraryObjects.Add(i));
 
+            // Update categories
             OnPropertyChanged(nameof(Categories));
         }
+
         /// <summary>
         /// Hämtar en lista med LibraryObject
         /// </summary>
-        /// <returns></returns>
         private async Task GetLibraryObjects()
         {
             if (Categories?.Count < 1)
@@ -223,15 +247,15 @@
 
             LibraryObjects = new ObservableCollection<LibraryObject>(objects);
         }
+
         /// <summary>
         /// Hämtar en lista med libraryobject som matchar söksträng
         /// </summary>
-        /// <returns></returns>
         private async Task SearchLibraryObject()
         {
             SelectedCategory = Categories.First();
 
-            List<LibraryObject> result;
+            var result = new List<LibraryObject>();
 
             try
             {
@@ -245,6 +269,7 @@
                 Debug.WriteLine(ex.Message);
             }
         }
+
         /// <summary>
         /// Skapar en ny LibraryObject
         /// </summary>
@@ -267,6 +292,7 @@
                 Debug.WriteLine(ex.Message);
             }
         }
+
         /// <summary>
         /// Funktion för att ändra i LibraryObject
         /// </summary>
@@ -292,85 +318,79 @@
                 Debug.WriteLine(ex.Message);
             }
         }
+
         /// <summary>
         /// Function used for deleting a library object
         /// </summary>
-        private void DeleteLibraryObject()
+        private async Task DeleteLibraryObjectAsync()
         {
             if (selectedItem == null) return;
-            //bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
-            var myVM = new RemoveItemDialogViewModel("Ta bort bok");
-            //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
-            var dialogresult = _dialog.Show(myVM);
 
-            if (!dialogresult.isSuccess) return;
-            //Filens sökväg
-            FilePath = @"C:\Rapporter\Borttagna böcker.csv";
+            bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
+
+            if (!result) return;
 
 
-            //Skickar med en anledning, ID, Titel och Author och skriver till .csv fil
-            string createText = myVM.ReturnMessage;
-            var objectID = selectedItem.ID;
-            string objectName = selectedItem.Title;
-            string objectAuthor = selectedItem.Author;
+            //creates an adminaction for the log in database
+            var adminAction = new AdminAction()
+            {
+                Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}",
+                Actiondate = DateTime.Now,
+                ActionType = 2,
+            };
 
             try
             {
-                if (!File.Exists(filePath))
-                {
-                    File.WriteAllText(filePath, "ID: ");
-                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Namn: ");
-                    File.AppendAllText(filePath, objectName + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Författare: ");
-                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Anledning: ");
-                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-                }
-
-                else
-                {
-                    File.AppendAllText(filePath, "ID: ");
-                    File.AppendAllText(filePath, objectID.ToString() + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Namn: ");
-                    File.AppendAllText(filePath, objectName + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Författare: ");
-                    File.AppendAllText(filePath, objectAuthor + Environment.NewLine);
-
-                    File.AppendAllText(filePath, "Anledning: ");
-                    File.AppendAllText(filePath, createText + Environment.NewLine + Environment.NewLine);
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                _dialog.Alert("Fel", "Stäng Excelfilen");
-                Debug.WriteLine(ex.Message);
-                return;
-            }
-
-            try
-            {
-                _repo.RemoveAsync<LibraryObject>(SelectedItem.ID).ConfigureAwait(false);
-                LibraryObjects.Remove(SelectedItem);
+                //sets the selecteditem to disabled
+                SelectedItem.Disabled = true;
+                await _repo.UpdateAsync(SelectedItem).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 _dialog.Alert("Error", "Borttagning misslyckades, försök igen");
                 Debug.WriteLine(ex.Message);
             }
+            finally
+            {
+                //updates the list
+                ResetLists();
+            }
         }
 
+        /// <summary>
+        /// A method used to updating lists
+        /// </summary>
         private void ResetLists()
         {
             SearchString = string.Empty;
             dispatcher.InvokeAsync(GetLibraryObjects);
+        }
+
+        /// <summary>
+        /// A dialogbox that lets you browse where you want to save an object
+        /// </summary>
+        public async Task SaveDialogBoxAsync()
+        {
+            LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = DisabledLibraryObjects };
+            var libObjects = new List<LibraryObjectsView>(await _repo.GetRangeAsync<LibraryObjectsView>(libraryObjectsView));
+
+            var _fileService = IoC.ServiceProvider.GetService<IFileService>();
+
+            bool? fileCreated = _fileService.CreateFile("LibraryObjectLog");
+
+            if (fileCreated == true)
+            {
+                bool success = _fileService.ExportCSV(libObjects);
+
+                if (success)
+                {
+                    _dialog.Alert("Filen sparad", "");
+                }
+                else
+                {
+                    _dialog.Alert("Exportering misslyckades", "Stäng filen om öppen och försök igen.");
+                }
+            }
         }
 
         #endregion

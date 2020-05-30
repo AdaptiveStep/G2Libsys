@@ -32,6 +32,23 @@
 		#region Properties
 
 		/// <summary>
+		/// This is used when Uploading/downloading image blobs from the server.
+		/// </summary>
+		private byte[] _rawImageData;
+		public byte[] RawImageData
+		{
+			get { return _rawImageData; }
+			set
+			{
+				if (value != _rawImageData)
+				{
+					_rawImageData = value;
+					OnPropertyChanged(nameof(RawImageData));
+				}
+			}
+		}
+
+		/// <summary>
 		/// We create this object when doing an advanced search query. Its instanse-variables are used for the search method.
 		/// </summary>
 		private SearchObject searchObject;

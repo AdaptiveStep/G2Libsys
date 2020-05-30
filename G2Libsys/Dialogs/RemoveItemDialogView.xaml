@@ -12,7 +12,8 @@
     <Grid>
         <materialDesign:Card
             Margin="100"
-            Padding="0"
+            MaxHeight="250"
+            MaxWidth="350"
             materialDesign:ShadowAssist.ShadowDepth="Depth5"
             BorderBrush="Black"
             BorderThickness="2"
@@ -57,6 +58,7 @@
                     <TextBlock Text="Ange en anledning för borttagning:"
                                Grid.Column="1"
                                HorizontalAlignment="Center"
+                               Foreground="White"
                                Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
                                Grid.Row="1"
                                Grid.ColumnSpan="3"/>
@@ -68,10 +70,10 @@
                         Grid.RowSpan="2"
                         Background="{StaticResource light_background}"
                         MinHeight="170"
-                        MinWidth="550"
+                        MinWidth="150"
+                        Margin="15"
                         FontFamily="{StaticResource MaterialDesignFont}"
                         FontSize="13"
-                        AcceptsReturn="True"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
                         Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
@@ -92,10 +94,7 @@
                         Style="{StaticResource MaterialDesignRaisedButton}"  />
 
 
-                    <Rectangle Grid.Row="4"
-                               Grid.Column="2" 
-                               Fill="{StaticResource accent_light }"
-                               Opacity="0.8"/>
+                    
                     <Button
                         Grid.Row="4"
                         Grid.Column="3"
