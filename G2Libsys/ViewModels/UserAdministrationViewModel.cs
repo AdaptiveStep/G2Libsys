@@ -251,7 +251,7 @@
         }
         public async void GetLoans()
         {
-            a = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
+            LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
             LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
         }
         #endregion
