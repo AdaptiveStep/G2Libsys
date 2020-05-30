@@ -1,86 +1,86 @@
 ﻿<local:BasePage
-	x:Class="G2Libsys.Views.LibraryObjectInfoView"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:converter="clr-namespace:G2Libsys.Converters"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:local="clr-namespace:G2Libsys.Views"
-	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:userControl="clr-namespace:G2Libsys.Controls"
-	xmlns:vm="clr-namespace:G2Libsys.ViewModels"
-	d:DesignHeight="500"
-	d:DesignWidth="800"
-	x:TypeArguments="vm:LibraryObjectInfoViewModel"
-	mc:Ignorable="d">
+    x:Class="G2Libsys.Views.LibraryObjectInfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converter="clr-namespace:G2Libsys.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:G2Libsys.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:userControl="clr-namespace:G2Libsys.Controls"
+    xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+    d:DesignHeight="500"
+    d:DesignWidth="800"
+    x:TypeArguments="vm:LibraryObjectInfoViewModel"
+    mc:Ignorable="d">
 
-	<!--  Klickbar rectangle som stänger fönstret  -->
+    <!--  Klickbar rectangle som stänger fönstret  -->
 
-	<Grid>
-		<Grid.Resources>
-			<Style TargetType="TextBlock">
-				<Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
-			</Style>
-		</Grid.Resources>
-		<Rectangle Opacity="0.5">
-			<Rectangle.Fill>
-				<SolidColorBrush Color="Black" />
-			</Rectangle.Fill>
-		</Rectangle>
-		<Button
-			Width="{Binding (FrameworkElement.ActualWidth)}"
-			Height="{Binding (FrameworkElement.ActualHeight)}"
-			Background="Transparent"
-			Command="{Binding CancelCommand}"
-			Cursor="Arrow"
-			Style="{StaticResource MaterialDesignToolButton}" />
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
+            </Style>
+        </Grid.Resources>
+        <Rectangle Opacity="0.5">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Black" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Button
+            Width="{Binding (FrameworkElement.ActualWidth)}"
+            Height="{Binding (FrameworkElement.ActualHeight)}"
+            Background="Transparent"
+            Command="{Binding CancelCommand}"
+            Cursor="Arrow"
+            Style="{StaticResource MaterialDesignToolButton}" />
 
-		<materialDesign:Card
-			MaxWidth="720"
-			MaxHeight="750"
-			Margin="30"
-			Background="{StaticResource light_background}"
-			UniformCornerRadius="10">
-			<Grid>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="25" />
-					<ColumnDefinition Width="2*" />
-					<ColumnDefinition />
-					<ColumnDefinition />
-					<ColumnDefinition />
-					<ColumnDefinition />
-					<ColumnDefinition />
-					<ColumnDefinition Width="25" />
-				</Grid.ColumnDefinitions>
-				<Grid.RowDefinitions>
-					<RowDefinition Height="25" />
-					<RowDefinition Height="auto" />
-					<RowDefinition Height="auto" />
-					<RowDefinition Height="auto" />
-					<RowDefinition Height="auto" />
-					<RowDefinition Height="*" />
-					<RowDefinition Height="*" />
-					<RowDefinition Height="25" />
-				</Grid.RowDefinitions>
+        <materialDesign:Card
+            MaxWidth="720"
+            MaxHeight="750"
+            Margin="30"
+            Background="{StaticResource light_background}"
+            UniformCornerRadius="10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="25" />
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="25" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="25" />
+                </Grid.RowDefinitions>
 
-				<!--  Viewbox för image  -->
+                <!--  Viewbox för image  -->
 
-				<Viewbox
-					Grid.Row="2"
-					Grid.RowSpan="3"
-					Grid.Column="1"
-					Margin="10"
-					VerticalAlignment="Top"
-					Stretch="Uniform">
+                <Viewbox
+                    Grid.Row="2"
+                    Grid.RowSpan="3"
+                    Grid.Column="1"
+                    Margin="10"
+                    VerticalAlignment="Top"
+                    Stretch="Uniform">
 
-					<Image Source="{Binding LibraryObject.imagesrc, Converter={converter:PathToImageConverter}}" Stretch="Uniform" />
-				</Viewbox>
+                    <Image Source="{Binding LibraryObject.imagesrc, Converter={converter:PathToImageConverter}}" Stretch="Uniform" />
+                </Viewbox>
 
 
 
-				<!--  Titel / description libobject  -->
+                <!--  Titel / description libobject  -->
 
-				<!--<Viewbox
+                <!--<Viewbox
 					Grid.Row="1"
 					Grid.Column="2"
 					Grid.ColumnSpan="5"
@@ -88,104 +88,105 @@
 					Margin="10"
 					HorizontalAlignment="Left">
 					-->
-				<!--<TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="{Binding LibraryObject.Title}" TextWrapping="Wrap" />-->
-				<!--
+                <!--<TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="{Binding LibraryObject.Title}" TextWrapping="Wrap" />-->
+                <!--
 
 				</Viewbox>-->
 
-				<TextBlock
-					Grid.Row="1"
-					Grid.Column="1"
-					Grid.ColumnSpan="5"
-					Margin="10"
-					Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-					Text="{Binding LibraryObject.Title}"
-					TextWrapping="Wrap" />
+                <TextBlock
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="5"
+                    Margin="10"
+                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                    Text="{Binding LibraryObject.Title}"
+                    TextWrapping="Wrap" />
 
-				<ScrollViewer
-					Grid.Row="2"
-					Grid.RowSpan="2"
-					Grid.Column="2"
-					Grid.ColumnSpan="5"
-					Margin="10"
-					VerticalScrollBarVisibility="Auto">
+                <ScrollViewer
+                    Grid.Row="2"
+                    Grid.RowSpan="2"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="5"
+                    Margin="10"
+                    VerticalScrollBarVisibility="Auto">
 
-					<TextBlock
-						Style="{StaticResource MaterialDesignTextBlock}"
-						Text="{Binding LibraryObject.Description}"
-						TextWrapping="Wrap" />
+                    <TextBlock
+                        Style="{StaticResource MaterialDesignTextBlock}"
+                        Text="{Binding LibraryObject.Description}"
+                        TextWrapping="Wrap" />
 
-				</ScrollViewer>
+                </ScrollViewer>
 
-				<materialDesign:Card
-					Grid.Row="4"
-					Grid.RowSpan="1"
-					Grid.Column="2"
-					Grid.ColumnSpan="5"
-					Margin="5"
-					Background="{StaticResource light_background}">
-					<Grid Margin="10" VerticalAlignment="Center">
-						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="auto" />
-							<ColumnDefinition />
-							<ColumnDefinition />
-						</Grid.ColumnDefinitions>
-						<Grid.RowDefinitions>
-							<RowDefinition />
+                <materialDesign:Card
+                    Grid.Row="4"
+                    Grid.RowSpan="1"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="5"
+                    Margin="5"
+                    Background="{StaticResource light_background}">
+                    <Grid Margin="10" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
 
-						</Grid.RowDefinitions>
-
-
-
-
-						<StackPanel
-							Grid.RowSpan="4"
-							Margin="0,0,5,0"
-							HorizontalAlignment="Left">
-							<StackPanel.Resources>
-								<Style TargetType="TextBlock">
-									<Setter Property="HorizontalAlignment" Value="Right" />
-									<Setter Property="FontWeight" Value="Bold" />
-								</Style>
-							</StackPanel.Resources>
-
-							<TextBlock Text="Pris: " />
-							<TextBlock Text="ISBN: " />
-							<TextBlock Text="Antal Sidor: " />
-							<TextBlock Text="Datum Tillagt: " />
-							<TextBlock Text="Författare" />
-
-						</StackPanel>
-
-						<StackPanel Grid.RowSpan="4" Grid.Column="1">
-							<StackPanel.Resources>
-								<Style TargetType="TextBlock">
-									<Setter Property="HorizontalAlignment" Value="left" />
-								</Style>
-							</StackPanel.Resources>
-
-							<TextBlock Text="{Binding LibraryObject.PurchasePrice}" />
-							<TextBlock Text="{Binding LibraryObject.ISBN}" />
-							<TextBlock Text="{Binding LibraryObject.Pages}" />
-							<TextBlock Text="{Binding LibraryObject.DateAdded}" />
-							<TextBlock Text="{Binding LibraryObject.Author}" />
-
-
-						</StackPanel>
-
-						<Button
-							Grid.Row="4"
-							Grid.Column="3"
-							Margin="10"
-							Content="Låna" />
-					</Grid>
-				</materialDesign:Card>
+                        </Grid.RowDefinitions>
 
 
 
 
+                        <StackPanel
+                            Grid.RowSpan="4"
+                            Margin="0,0,5,0"
+                            HorizontalAlignment="Left">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right" />
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Style>
+                            </StackPanel.Resources>
 
-				<!--<materialDesign:Card
+                            <TextBlock Text="Pris: " />
+                            <TextBlock Text="ISBN: " />
+                            <TextBlock Text="Antal Sidor: " />
+                            <TextBlock Text="Datum Tillagt: " />
+                            <TextBlock Text="Författare" />
+
+                        </StackPanel>
+
+                        <StackPanel Grid.RowSpan="4" Grid.Column="1">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="left" />
+                                </Style>
+                            </StackPanel.Resources>
+
+                            <TextBlock Text="{Binding LibraryObject.PurchasePrice}" />
+                            <TextBlock Text="{Binding LibraryObject.ISBN}" />
+                            <TextBlock Text="{Binding LibraryObject.Pages}" />
+                            <TextBlock Text="{Binding LibraryObject.DateAdded}" />
+                            <TextBlock Text="{Binding LibraryObject.Author}" />
+
+
+                        </StackPanel>
+
+                        <Button
+                            Grid.Row="4"
+                            Grid.Column="3"
+                            Margin="10"
+                            Command="{Binding AddLoan}"
+                            Content="Låna" />
+                    </Grid>
+                </materialDesign:Card>
+
+
+
+
+
+                <!--<materialDesign:Card
 					Grid.Row="6"
 					Grid.RowSpan="2"
 					Grid.Column="1"
@@ -210,10 +211,10 @@
 
 
 
-				<!--  Author  -->
+                <!--  Author  -->
 
 
-				<materialDesign:Card
+                <!--<materialDesign:Card
 					Grid.Row="2"
 					Grid.RowSpan="5"
 					Grid.Column="5"
@@ -222,8 +223,8 @@
 					Background="Transparent">
 					<Grid />
 
-				</materialDesign:Card>
-			</Grid>
-		</materialDesign:Card>
-	</Grid>
+				</materialDesign:Card>-->
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
 </local:BasePage>

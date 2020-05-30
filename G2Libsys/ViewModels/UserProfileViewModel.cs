@@ -144,7 +144,7 @@ namespace G2Libsys.ViewModels
         }
         public async void GetLoans()
         {
-            LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(CurrentUser.ID));
+            //LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(CurrentUser.ID));
             LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(CurrentUser.ID));
             GetCard();
 

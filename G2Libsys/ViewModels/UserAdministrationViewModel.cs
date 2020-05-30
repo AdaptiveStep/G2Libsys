@@ -145,7 +145,7 @@
             Confirm = new User();
             Confirm2 = new User();
             
-            NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1)};
+            NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1), Activated= true};
 
             NewCard.Owner = ActiveUser.ID;
 

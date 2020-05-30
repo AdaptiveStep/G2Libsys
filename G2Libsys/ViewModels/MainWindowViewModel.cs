@@ -182,7 +182,7 @@
             CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
 
             // Initiate menuitems list
-           // MenuItems = new ObservableCollection<UserMenuItem>();
+            MenuItems = new ObservableCollection<UserMenuItem>();
 
             // Aplication closing event handler
             Application.Current.MainWindow.Closing
@@ -211,6 +211,8 @@
 
             // Create UserMenuItems
             MenuItems.Add(new UserMenuItem(typeof(UserProfileViewModel), "Profil"));
+            MenuItems.Add(new UserMenuItem(typeof(LoanCheckoutViewModel), "Varukorg"));
+
 
             (CurrentUser.UserType switch
             {

@@ -1,121 +1,126 @@
 ﻿<local:BasePage
-             x:Class="G2Libsys.Views.LoanCheckoutView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:vm="clr-namespace:G2Libsys.ViewModels"
-             x:TypeArguments="vm:LoanCheckoutViewModel"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:G2Libsys.Views"
-             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d" 
-             FontSize="15"
-                
-             d:DesignHeight="1000" d:DesignWidth="1000">
-    <Grid   >
+    x:Class="G2Libsys.Views.LoanCheckoutView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:G2Libsys.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+    d:DesignHeight="1000"
+    d:DesignWidth="1000"
+    x:TypeArguments="vm:LoanCheckoutViewModel"
+    FontSize="15"
+    mc:Ignorable="d">
+    <Grid>
 
-        <materialDesign:Card 
-            UniformCornerRadius="10"
-                Margin="20" Height="480" Width="800" >
+        <materialDesign:Card
+            Width="800"
+            Height="480"
+            Margin="20"
+            UniformCornerRadius="10">
             <StackPanel Orientation="Vertical">
-            
-            
- 
-        
-
-        <ListView 
-            Margin="5 20 5 5"
-            Grid.Column="1"
-            HorizontalAlignment="Center"
-             Width="480" Height="380"
-            VerticalAlignment="Top"
-            ItemsSource="{Binding _loans.LoanCart, NotifyOnSourceUpdated=True}"
-            SelectedItem="{Binding SelectedItem}"
-            >
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
-                <DataTemplate>
+                
+                <ListView
+                    Grid.Column="1"
+                    Width="480"
+                    Height="380"
+                    Margin="5,20,5,5"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    ItemsSource="{Binding LoanObj}"
                     
-                    <materialDesign:Card HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-               Grid.Column="1"
-                 >
-                <Grid  Background="{DynamicResource light_background}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition
-                     Width="Auto" />
-                        <ColumnDefinition
-                     Width="*" />
-                        <ColumnDefinition
-                    Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <Border
-                      Width="100" Height="100" HorizontalAlignment="Left" 
-                      >
-                        <!--<Border.Background>
-                                            <ImageBrush ImageSource="{Binding imagesrc, Converter={convert:PathToImageConverter}}" Stretch="Uniform"/>
-                        </Border.Background>-->
+                    SelectedItem="{Binding SelectedItem}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
 
-                    </Border>
-                                    <Border  HorizontalAlignment="Right" Grid.Column="2"  VerticalAlignment="Top" Height="20" Width="20">
-                        <Border.Background >
-                            <ImageBrush ImageSource="/Views/depositphotos_38606631-stock-illustration-trash-bin-icon.jpg"/>
-                        </Border.Background>
+                            <materialDesign:Card
+                                Grid.Column="1"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch">
+                                <Grid Background="{DynamicResource light_background}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Border
+                                        Width="100"
+                                        Height="100"
+                                        HorizontalAlignment="Left">
+                                        <!--<Border.Background>-->
+                                        <!--<ImageBrush ImageSource="{Binding imagesrc, Converter={convert:PathToImageConverter}}" Stretch="Uniform"/>
+                                        </Border.Background>-->
+
+                                    </Border>
+                                    <Border
+                                        Grid.Column="2"
+                                        Width="20"
+                                        Height="20"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top">
+                                        <Border.Background>
+                                            <ImageBrush ImageSource="/Views/depositphotos_38606631-stock-illustration-trash-bin-icon.jpg" />
+                                        </Border.Background>
 
                                         <Border.InputBindings>
                                             <MouseBinding
-                                                                 
-                        MouseAction="LeftClick" CommandParameter="{Binding}" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}},
-                                              Path=DataContext.DeleteItem}" />
+                                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=DataContext.DeleteItem}"
+                                                CommandParameter="{Binding}"
+                                                MouseAction="LeftClick" />
                                         </Border.InputBindings>
 
                                     </Border>
-                                      
-                         <StackPanel
-                  Grid.Column="1"
-                 Margin="8 24 8 0"
-                             
-                        >
-                        <TextBlock Text="{Binding Title}"
-                  FontWeight="Bold" FontSize="16" Foreground="#DD000000" HorizontalAlignment="Left">
 
-                        </TextBlock>
-                        <TextBlock Text="{Binding Description}"
-                                   FontSize="15"
-                    TextWrapping="Wrap"
-                      VerticalAlignment="Center" Foreground="#DD000000" HorizontalAlignment="Left">
+                                    <StackPanel Grid.Column="1" Margin="8,24,8,0" >
+                                       
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="#DD000000"
+                                            Text="{Binding Tile, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"
+                                            FontSize="15"
+                                            Foreground="#DD000000"
+                                            Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                                            TextWrapping="Wrap" />
+                                    </StackPanel>
+                                    <StackPanel
+                                        Grid.Row="2"
+                                        Margin="8"
+                                        HorizontalAlignment="Right"
+                                        Orientation="Horizontal" />
+                                </Grid>
+                            </materialDesign:Card>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel
-                      HorizontalAlignment="Right"
-                 Grid.Row="2"
-                       Orientation="Horizontal"
-                  Margin="8"/>
-                </Grid>
-            </materialDesign:Card>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-
-        </ListView>
-        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center" >
-            <Button
-               Margin="10" 
-                Command="{Binding Confirm}"
-             Style="{StaticResource MaterialDesignRaisedButton}"
-             Width="100" Height="40" Content="Checka ut">
-            </Button>
-            <Button
-                Margin="10"
-                Command="{Binding Clear}"
-             Style="{StaticResource MaterialDesignRaisedButton}"
-             Width="136" Height="40" Content="Töm Varukorgen">
-            </Button>
-        </StackPanel>
-        </StackPanel>
+                </ListView>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Button
+                        Width="100"
+                        Height="40"
+                        Margin="10"
+                        Command="{Binding Confirm}"
+                        Content="Checka ut"
+                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                    <Button
+                        Width="136"
+                        Height="40"
+                        Margin="10"
+                        Command="{Binding Clear}"
+                        Content="Töm Varukorgen"
+                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                </StackPanel>
+            </StackPanel>
         </materialDesign:Card>
     </Grid>
 </local:BasePage>
