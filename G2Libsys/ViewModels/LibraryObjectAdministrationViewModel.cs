@@ -143,7 +143,7 @@
         /// <summary>
         /// Enable execute if an Item is selected
         /// </summary>
-        private Predicate<object> CanExecute => _ => SelectedItem != null;
+        private Predicate<object> CanExecute => _ => SelectedItem != null && !SelectedItem.Disabled;
 
         /// <summary>
         /// Search for LibraryObject
@@ -163,12 +163,12 @@
         /// <summary>
         /// Delete LibraryObject
         /// </summary>
-        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => DeleteLibraryObjectAsync(), CanExecute);
+        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => dispatcher.InvokeAsync(DeleteLibraryObjectAsync), CanExecute);
 
         /// <summary>
         /// Command for downloading a csv file with deleted users
         /// </summary>
-        public ICommand DownloadLibLogCommand => new RelayCommand(SaveDialogBoxAsync);
+        public ICommand DownloadLibLogCommand => new RelayCommand(async _ => await SaveDialogBoxAsync());
 
         /// <summary>
         /// Reset lists
@@ -325,8 +325,8 @@
         private async Task DeleteLibraryObjectAsync()
         {
             if (selectedItem == null) return;
+
             bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
-            //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
 
             if (!result) return;
 
@@ -343,7 +343,7 @@
             {
                 //sets the selecteditem to disabled
                 SelectedItem.Disabled = true;
-                await _repo.UpdateAsync<LibraryObject>(SelectedItem).ConfigureAwait(false);
+                await _repo.UpdateAsync(SelectedItem).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -366,56 +366,29 @@
             dispatcher.InvokeAsync(GetLibraryObjects);
         }
 
-
         /// <summary>
         /// A dialogbox that lets you browse where you want to save an object
         /// </summary>
-        /// <param name="param"></param>
-        public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
+        public async Task SaveDialogBoxAsync()
         {
             LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = DisabledLibraryObjects };
             var libObjects = new List<LibraryObjectsView>(await _repo.GetRangeAsync<LibraryObjectsView>(libraryObjectsView));
 
-            var propList = libraryObjectsView.GetType().GetProperties().Select(p => p.Name).ToList();
+            var _fileService = IoC.ServiceProvider.GetService<IFileService>();
 
-            // Inställningar för save file dialog box
-            SaveFileDialog dlg = new SaveFileDialog
+            bool? fileCreated = _fileService.CreateFile("LibraryObjectLog");
+
+            if (fileCreated == true)
             {
-                FileName = "LibsysObjectLog", // Default file name
-                DefaultExt = ".csv", // Default file extension
-                Filter = "Excel documents (.csv)|*.csv" // Filter files by extension
-            };
+                bool success = _fileService.ExportCSV(libObjects);
 
-            // Visa save file dialog box true if user input string
-            bool? saveresult = dlg.ShowDialog();
-
-            // Process save file dialog box results
-            if (saveresult == true)
-            {
-
-                if (dlg.FileName.IsFileBusy())
+                if (success)
                 {
-                    _dialog.Alert("Fel!", "Stäng filen först.");
-                    return;
+                    _dialog.Alert("Filen sparad", "");
                 }
-
-                // Sort by category
-                libObjects = libObjects.OrderBy(o => o.Category).ToList();
-
-                // Create a FileStream with mode CreateNew  
-                FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate); // fix trycatch
-
-                stream.SetLength(0);
-
-                // Create a StreamWriter from FileStream  
-                using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
-
-                // Header property names
-                writer.WriteLine(string.Join(",", propList));
-
-                foreach (var item in libObjects)
+                else
                 {
-                    writer.WriteLine($"{item.ID},{item.Title},{item.ISBN},{item.Category},{item.DeweyDecimal},{item.DeweyDescription},{item.Disabled},{item.PurchasePrice},{item.DateAdded},{item.LastEdited}");
+                    _dialog.Alert("Exportering misslyckades", "Stäng filen om öppen och försök igen.");
                 }
             }
         }
