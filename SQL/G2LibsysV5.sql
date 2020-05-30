@@ -78,6 +78,14 @@
 
 ------------------------------------------------------------------------
 --SQL DEFINITIONSFILE --------------------------------------------------
+	-- Contant for passphrase
+		CREATE FUNCTION fnConstant()
+		RETURNS VARCHAR(10)
+		AS
+		BEGIN
+			RETURN 'G2S'
+		END
+		GO
 
 	DROP TABLE IF EXISTS dbo.Libraries	
 	CREATE TABLE Libraries(
@@ -113,45 +121,49 @@
 		--Usernumber AS (ID+100) * 2867585817934888 % 8687931395129801, 			--Calculated with (mod p) . Inverse is 7654321234567890 . Always unique due to being Finite Field.
 
 		[Email] VARCHAR(300) 	   	NOT NULL UNIQUE,
-		[Password] VARCHAR(20) 		NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
-		Firstname VARCHAR(20)  		NOT NULL DEFAULT 'UNNAMED',
-		Lastname VARCHAR(20)   		NOT NULL DEFAULT 'UNNAMED',
+		[Password] VARBINARY(8000) 	NOT NULL DEFAULT ROUND(RAND() * 100000, 0), 
+		Firstname VARCHAR(50)  		NOT NULL DEFAULT 'UNNAMED',
+		Lastname VARCHAR(50)   		NOT NULL DEFAULT 'UNNAMED',
 		UserType INT 			   	NOT NULL FOREIGN KEY REFERENCES UserTypes(ID),
 		LoggedIn bit 		   		NOT NULL DEFAULT 0 
 		);
 		GO
 		--STANDARD INSERTS
 			SET IDENTITY_INSERT 	Users on
+				declare @Phrase varchar(20)
+				Begin
+				select @Phrase = dbo.fnConstant();
 				INSERT INTO 		Users (ID,[Email],[Password], Firstname, Lastname, UserType) 
 						VALUES 
-						(1, 'Admin@johan.com'	,123		,'johan'	,'schwartz'		,1),		--Does ID really have to be inserted? 
-						(2, 'Petra@petra.com'	,123	  	,'Petra'	,'Mede'   	 	,2),
-						(3, 'Joppan@johanna.com',123		,'Joan'		,'Sacrebleu'	,3);
+						(1, 'Admin@johan.com'	, ENCRYPTBYPASSPHRASE(@Phrase, '123')		,'johan'	,'schwartz'		,1),		--Does ID really have to be inserted? 
+						(2, 'Petra@petra.com'	, ENCRYPTBYPASSPHRASE(@Phrase, '123')	  	,'Petra'	,'Mede'   	 	,2),
+						(3, 'Joppan@johanna.com', ENCRYPTBYPASSPHRASE(@Phrase, '123')		,'Joan'		,'Sacrebleu'	,3);
 				SET IDENTITY_INSERT Users OFF
+				End
 				GO
 	
-	DROP TABLE IF EXISTS dbo.Authors	
-	CREATE TABLE Authors(
-		ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  							--Candidatekey
-		Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
-		Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
-		ImageSRC VARCHAR(300),
-		Biography VARCHAR(5000)
-		);
-		GO
+	---- DROP TABLE IF EXISTS dbo.Authors	
+	---- CREATE TABLE Authors(
+	---- 	ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY ,				  							--Candidatekey
+	---- 	Firstname VARCHAR(20)  NOT NULL DEFAULT 'UNNAMED',
+	---- 	Lastname VARCHAR(20)   NOT NULL DEFAULT 'UNNAMED',
+	---- 	ImageSRC VARCHAR(300),
+	---- 	Biography VARCHAR(5000)
+	---- 	);
+	---- 	GO
 
-		--STANDARD INSERTS
-			SET IDENTITY_INSERT 	Authors on
-				INSERT INTO 		Authors (ID,Firstname, Lastname, ImageSRC, Biography) 
-						VALUES 
-						(0, 'Okänt'	,'Okänt', 'http://ifmetall-alimak.se/onewebmedia/bild-saknas%20herr.gif', 'Ingen biografi hittades'									),				--Does ID really have to be inserted? 
+	--	--STANDARD INSERTS
+	--		SET IDENTITY_INSERT 	Authors on
+	--			INSERT INTO 		Authors (ID,Firstname, Lastname, ImageSRC, Biography) 
+	--					VALUES 
+	--					(0, 'Okänt'	,'Okänt', 'http://ifmetall-alimak.se/onewebmedia/bild-saknas%20herr.gif', 'Ingen biografi hittades'									),				--Does ID really have to be inserted? 
 
-						(1, 'JK - Joanne'	,'Rowling'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/J._K._Rowling_2010.jpg/330px-J._K._Rowling_2010.jpg', 'Joanne Rowling, better known by her pen name J. K. Rowling, is a British author, film producer, television producer, screenwriter, and philanthropist. She is best known for writing the Harry Potter fantasy series, which has won multiple awards and sold more than 500 million copies, becoming the best-selling book series in history.'	), 
-						(2, 'George R. R'	,'Martin'	, 'https://duckduckgo.com/i/e6ce7885.jpg', 'George Raymond Richard Martin, also known as GRRM, is an American novelist and short story writer in the fantasy, horror, and science fiction genres, screenwriter, and television producer. He is writing the series of epic fantasy novels A Song of Ice and Fire, which was adapted into the HBO series Game of Thrones'	),
-						(3, 'JRR Tolkien'	,'Tolkien'	, 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Tolkien_1916.jpg', 'John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic. He was the author of the classic high fantasy works The Hobbit and The Lord of the Rings'						),
-						(4, 'Jan'			,'Guillou'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg/330px-Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg', 'Jan Oskar Sverre Lucien Henri Guillou is a French-Swedish author and journalist. Among his books are a series of spy fiction novels about a spy named Carl Hamilton, and a trilogy of historical fiction novels about a Knight Templar, Arn Magnusson'	);
-				SET IDENTITY_INSERT Authors OFF
-				GO
+	--					(1, 'JK - Joanne'	,'Rowling'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/J._K._Rowling_2010.jpg/330px-J._K._Rowling_2010.jpg', 'Joanne Rowling, better known by her pen name J. K. Rowling, is a British author, film producer, television producer, screenwriter, and philanthropist. She is best known for writing the Harry Potter fantasy series, which has won multiple awards and sold more than 500 million copies, becoming the best-selling book series in history.'	), 
+	--					(2, 'George R. R'	,'Martin'	, 'https://duckduckgo.com/i/e6ce7885.jpg', 'George Raymond Richard Martin, also known as GRRM, is an American novelist and short story writer in the fantasy, horror, and science fiction genres, screenwriter, and television producer. He is writing the series of epic fantasy novels A Song of Ice and Fire, which was adapted into the HBO series Game of Thrones'	),
+	--					(3, 'JRR Tolkien'	,'Tolkien'	, 'https://upload.wikimedia.org/wikipedia/commons/b/b4/Tolkien_1916.jpg', 'John Ronald Reuel Tolkien was an English writer, poet, philologist, and academic. He was the author of the classic high fantasy works The Hobbit and The Lord of the Rings'						),
+	--					(4, 'Jan'			,'Guillou'	, 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg/330px-Jan_Guillou%2C_Bokm%C3%A4ssan_2013_5_%28crop%29.jpg', 'Jan Oskar Sverre Lucien Henri Guillou is a French-Swedish author and journalist. Among his books are a series of spy fiction novels about a spy named Carl Hamilton, and a trilogy of historical fiction novels about a Knight Templar, Arn Magnusson'	);
+	--			SET IDENTITY_INSERT Authors OFF
+	--			GO
 	
 	DROP TABLE IF EXISTS dbo.Seminars	
 	CREATE TABLE Seminars(
@@ -212,7 +224,7 @@
 		SET IDENTITY_INSERT 	Categories on
 			INSERT INTO 		Categories (ID,[Name], Description) 
 					VALUES 
-					(1, 'Papers Bok','Alla typer av böcker'							),										--Does ID really have to be inserted? 
+					(1, 'Bok'		,'Alla typer av böcker'							),										--Does ID really have to be inserted? 
 					(2, 'Ebok'	  	,'Eböcker som går att ladda ner.'				),
 					(3, 'Ljudbok'	,'Ljudböcker som går att lyssna på'				),
 					(4, 'Film'		,'Filmer som går att låna eller ladda ner'		);
@@ -241,19 +253,14 @@
 		ISBN 			BIGINT 				 	DEFAULT 0,						
 		Publisher		VARCHAR(100) 			DEFAULT 'UNNAMED',
 		PurchasePrice 	FLOAT 					DEFAULT 300,
+		Quantity 		INT 					DEFAULT 1,
 		Pages 			INT 					DEFAULT 0,
 		Author 			varchar(MAX) 			DEFAULT 'No Description',
 
 		Dewey			INT 	 			 					FOREIGN KEY REFERENCES DeweyDecimals(DeweyINT),
 		Category 		INT 		NOT NULL	DEFAULT 1 		FOREIGN KEY REFERENCES Categories(ID) ,
---		Author 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Authors(ID) 		ON DELETE SET NULL,
-		
-		Disabled 		BIT NOT NULL DEFAULT 1,
+		Disabled 		BIT			NOT NULL	DEFAULT 1,
 		imagesrc 		VARCHAR(500), 
-		--Hardcover 		INT 					DEFAULT 1 		FOREIGN KEY REFERENCES Covers(ID) 		ON DELETE SET NULL,
-		--Genre 			INT 		 			DEFAULT 1 		FOREIGN KEY REFERENCES Genres(ID) 		ON DELETE SET NULL,
-		-- META attributes -- Must be here due to the 1..1 -> 1..1 relationship. Cannot be in separate Table.
-		-- Solution: Can be replaced with "history tables and history-triggers".
 
 		---OBS: dates are inserted in the form '2020-05-24'
 		[Library] 		INT 				 	DEFAULT 1 		FOREIGN KEY REFERENCES Libraries(ID) 	ON DELETE SET NULL,
@@ -264,8 +271,6 @@
 		EndDate DATETIME2 GENERATED ALWAYS AS ROW END NOT NULL DEFAULT SYSDATETIME(),
 		PERIOD FOR SYSTEM_TIME (StartDate, EndDate)
 		)
-
-		---Temporal features for table. Can Easily be Disabled/pruned to save space.
 		WITH (SYSTEM_VERSIONING = ON 
 		         (HISTORY_TABLE = dbo.TestTemporalHistory, 
 		            History_retention_period = 365 DAYS
@@ -344,37 +349,56 @@
 		           ([Name])
 		     VALUES
 		           ('RemovedUser'),
-				   ('RemovedLibraryObject');
+				   ('RemovedLibraryObject'),
+				   ('AddedUser'),
+				   ('DisabledCard')
+				   ;
 		GO
 
 
 
 
+--SQL VIEWS
+	CREATE VIEW LibraryObjectsView
+	AS
+	Select L.ID, L.Title, L.ISBN, C.[Name] AS Category, D.DeweyDecimal, D.[Description] AS DeweyDescription, L.[Disabled], L.PurchasePrice, L.DateAdded, L.LastEdited
+	FROM LibraryObjects L 
+	LEFT JOIN
+	Categories C ON L.Category = C.ID
+	LEFT JOIN
+	DeweyDecimals D ON L.Dewey = D.DeweyINT
+	GO
+
+
 ------------------------------------------------------------------------
 --SQL PROCEDURES -------------------------------------------------------
 ---------------Users ---------------------------------------------------
-	Create proc usp_getall_users
+Create proc usp_getall_users
 		as
+		declare @Phrase varchar(20);
 		BEGIN
-			select * from users;
+			select @Phrase = dbo.fnConstant();
+			select ID, Email, CONVERT(varchar(100), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as [Password], Firstname, Lastname, UserType, LoggedIn from users;
 		END
-		GO 
+		GO
 
 	--Add User
 	Create proc usp_insert_users
 		@ID int = null,
 		@LoanID numeric = null,
 		@Email varchar(300),
-		@Password varchar(20),
-		@Firstname varchar(20),
-		@Lastname varchar(20),
+		@Password varchar(100),
+		@Firstname varchar(50),
+		@Lastname varchar(50),
 		@UserType int,
 		@LoggedIn bit,
 		@NewID int Output
 		as
+		declare @Phrase varchar(20);
 		BEGIN
+			select @Phrase = dbo.fnConstant();
 			insert into users (Email, [Password], Firstname, Lastname, UserType, LoggedIn)
-			values (@Email, @Password, @Firstname, @Lastname, @UserType, @LoggedIn);
+			values (@Email, ENCRYPTBYPASSPHRASE(@Phrase, @Password), @Firstname, @Lastname, @UserType, @LoggedIn);
 			select @NewID = SCOPE_IDENTITY();
 		END
 		GO
@@ -391,20 +415,22 @@
 
 --------------------------------------------------------------------------------
 	--Update user . Dapper requires all attributes when handling entire objects.
-	Create proc usp_update_users
+		Create proc usp_update_users
 		@ID int,
 		@LoanID numeric = null,
 		@Email varchar(300),
-		@Password varchar(20),
-		@Firstname varchar(20),
-		@Lastname varchar(20),
+		@Password varchar(100),
+		@Firstname varchar(50),
+		@Lastname varchar(50),
 		@UserType int,
 		@LoggedIn bit
 		as
+		declare @Phrase varchar(20);
 		BEGIN
+			select @Phrase = dbo.fnConstant();
 			Update users
 			Set Email = @Email, 
-				[Password] = @Password, 
+				[Password] = ENCRYPTBYPASSPHRASE(@Phrase, @Password), 
 				Firstname = @Firstname, 
 				Lastname = @Lastname, 
 				UserType = @UserType, 
@@ -415,14 +441,16 @@
 	--
 	Create proc usp_verifylogin_users
 		@Email varchar(300),
-		@Password varchar(20)
+		@Password varchar(100)
 		as
+		declare @Phrase varchar(20);
 		BEGIN
-			SELECT * FROM Users WHERE
-			CAST(Email as varbinary(100)) = CAST(@Email as varbinary(100))
-			AND CAST([Password] as varbinary(100)) = CAST(@Password as varbinary(100))
-			AND Email = @Email 
-			AND [Password] = @Password
+			select @Phrase = dbo.fnConstant();
+			SELECT	ID, Email, CONVERT(varchar(100), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as [Password], Firstname, Lastname, UserType, LoggedIn 
+			FROM Users 
+			WHERE	CAST(CONVERT(varchar(50), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as varbinary(100)) = CAST(@Password as varbinary(100))
+			AND		Email = @Email 
+			AND		CONVERT(varchar(50), DECRYPTBYPASSPHRASE(@Phrase, [Password])) = @Password
 		END
 		GO
 	--
@@ -680,6 +708,7 @@
 		@ISBN			BIGINT			= null,
 		@Publisher		VARCHAR(100)	= null,
 		@PurchasePrice	FLOAT			= null,
+		@Quantity		INT				= null,
 		@Pages			INT				= null,
 		@Dewey			INT				= null,
 		@Category		INT	      		,	
@@ -694,9 +723,9 @@
 		AS
 		BEGIN
 			INSERT INTO 
-			LibraryObjects( Title, [Description], ISBN,  Publisher,  PurchasePrice,  Pages, Dewey, Category,    Author,  Disabled,  imagesrc, [Library], AddedBy, LastEdited, DateAdded) 
+			LibraryObjects( Title, [Description], ISBN,  Publisher,  PurchasePrice,  Quantity,  Pages, Dewey, Category,    Author,  Disabled,  imagesrc, [Library], AddedBy, LastEdited, DateAdded) 
 			VALUES 
-						  (@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Pages, @Dewey, @Category, @Author, @Disabled, @Imagesrc, @Library, @AddedBy, @LastEdited, @DateAdded);
+						  (@Title, @Description, @ISBN, @Publisher, @PurchasePrice, @Quantity, @Pages, @Dewey, @Category, @Author, @Disabled, @Imagesrc, @Library, @AddedBy, @LastEdited, @DateAdded);
 		END
 		GO
 
@@ -710,6 +739,7 @@
 		@ISBN			BIGINT			= null,
 		@Publisher		VARCHAR(100)	= null,
 		@PurchasePrice	FLOAT			= null,
+		@Quantity		INT				= null,
 		@Pages			INT				= null,
 		@Dewey			INT				= null,
 		@Category		INT 			,
@@ -731,6 +761,7 @@
 			Publisher 		= @Publisher,
 			PurchasePrice 	= @PurchasePrice,
 			Pages 			= @Pages,
+			Quantity		= @Quantity,
 			Dewey 			= @Dewey,
 			Category 		= @Category,
 			Author 			= @Author,
@@ -785,18 +816,6 @@
 		END
 
 		GO
-
-		---Add AdminActions     Andres version
-		-- ALTER proc [dbo].[usp_insert_AdminActions]         
-		-- @ID int = null,         
-		-- @Comment varchar(700) = null,         
-		-- @ActionType int,         
-		-- @ActionDate DateTime                           
-		-- as         
-		-- BEGIN             
-		-- 	insert into AdminActions (Comment, ActionType, ActionDate)             
-		-- 	values (@Comment, @ActionType, @ActionDate);                      
-		-- END
 
 ------------------------------------------------------------------------
 ---------------Search/Data structures ----------------------------------
@@ -937,6 +956,26 @@
 				--Author.lname 	LIKE '%' + @PartialAuthorlastname 	+ '%' ;   --FIX THIS
 
 		END
+		GO
+
+
+	 ---GET ALL Disabled Libraryobjects
+	 CREATE proc usp_filtersearch_libraryobjectsviews
+        @ID INT = null,
+        @Title VARCHAR(MAX)=null,
+        @ISBN INT = null,
+        @CATEGORY VARCHAR(MAX) = null,  
+		@DeweyDecimal INT = null,
+		@DeweyDescription VARCHAR(MAX) = null,
+        @Disabled BIT = null,
+        @PurchasePrice FLOAT = null,
+        @DateAdded DATETIME = null,
+        @LastEdited DATETIME = null
+        as
+        
+        BEGIN
+            select * from LibraryObjectsView WHERE [Disabled] = @Disabled
+        END
 		GO
 
 	--Dynamic search of Loans

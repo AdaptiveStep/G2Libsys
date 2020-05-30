@@ -3,6 +3,7 @@ using System.Windows.Data;
 
 namespace G2Libsys.Converters
 {
+    //TODO DELETE THIS FILE
     /// <summary>
     /// Is used by AdvancedSearch to collapse when Normal Searchbar is showed.
     /// Currently not implemented
