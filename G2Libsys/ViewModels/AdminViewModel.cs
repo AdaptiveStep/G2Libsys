@@ -254,6 +254,8 @@
 
         public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
         {
+            
+
             var adminActions = new List<AdminAction>(await _repo.GetAllAsync<AdminAction>(1));
 
             // Inställningar för save file dialog box
@@ -263,6 +265,21 @@
             dlg.Filter = "Excel documents (.csv)|*.csv"; // Filter files by extension
 
             // Visa save file dialog box true if user input string
+            var _fileService = IoC.ServiceProvider.GetService<IFileService>();
+            bool? fileCreated = _fileService.CreateFile("LibsysUserLog");
+            if (fileCreated==true)
+            {
+                bool success = _fileService.ExportCSV(adminActions);
+                if (success)
+                {
+                    _dialog.Alert("", "");
+                }
+                else
+                {
+                    _dialog.Alert("Filen används redan", "Stäng filen och försök igen");
+                }
+
+            }
             bool? saveresult = dlg.ShowDialog();
 
             // Process save file dialog box results

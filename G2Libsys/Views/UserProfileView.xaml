@@ -29,7 +29,8 @@
 
             <materialDesign:Card
             MaxWidth="450"
-            MaxHeight="550"
+            MaxHeight="500"
+            Opacity="0.9"
             Background="{StaticResource light_background}"
             UniformCornerRadius="10">
 
@@ -45,7 +46,6 @@
                     </Grid.RowDefinitions>
 
                     <materialDesign:Card
-                    MinHeight="400"
                     Grid.ColumnSpan="2"
                     VerticalAlignment="Top"
                     Background="WhiteSmoke">
@@ -55,28 +55,38 @@
                               BorderThickness="0"
                               >
 
-                            <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                            <StackPanel Grid.ColumnSpan="2" 
+                                        HorizontalAlignment="Center">
                                 <TextBlock
                     Margin="10"
                     HorizontalAlignment="Center"
-                    FontSize="16"
-                    Text="{Binding ActiveUser.Email}" />
+                    Text="{Binding ActiveUser.Email}"
+                    VerticalAlignment="Center"
+                    Style="{StaticResource MaterialDesignSubtitle2TextBlock}"                    
+                                    />
 
                                 <StackPanel Margin="0,5,0,10" Orientation="Horizontal">
 
-                                    <TextBlock Margin="15,0,0,0" Text="KortID:       " />
+                                    <TextBlock Margin="15,0,0,0" Text="KortID:       " 
+                                               Style="{StaticResource MaterialDesignSubtitle2TextBlock}"/>
                                     <TextBlock Text="{Binding UserCard.CardNumber, Mode=OneWay, NotifyOnSourceUpdated=True}" />
                                 </StackPanel>
 
                                 <StackPanel
-                            Grid.ColumnSpan="2"
                             HorizontalAlignment="Center"
                             Orientation="Horizontal">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Width" Value="150"/>
+                                        <Setter Property="Height" Value="55"/>
+                                    </Style>
+                                </StackPanel.Resources>
 
 
                                     <StackPanel Margin="12,10,0,10">
+                                    
 
-                                        <TextBox
+                                    <TextBox
                                     materialDesign:HintAssist.Hint=" Ändra förnamn"
                                     materialDesign:TextFieldAssist.HasClearButton="True"
                                     Background="{StaticResource PrimaryHueLightBrush}"
@@ -104,6 +114,8 @@
                                     <StackPanel Grid.Column="1" Margin="10">
 
                                         <TextBox
+                                    Width="150"
+                                            Height="30"
                                     materialDesign:HintAssist.Hint=" Bekräfta förnamn"
                                     materialDesign:TextFieldAssist.HasClearButton="True"
                                     Background="{StaticResource PrimaryHueLightBrush}"
@@ -156,9 +168,9 @@
                     </materialDesign:Card>
 
                     <materialDesign:Card
-                    Padding="0 10 0 0"
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
+                    Opacity="0.9"
                     Background="{StaticResource light_background}" />
                     <StackPanel
                     Grid.Row="1"
