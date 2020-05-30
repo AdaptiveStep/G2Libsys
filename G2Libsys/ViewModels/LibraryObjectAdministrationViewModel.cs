@@ -143,7 +143,7 @@
         /// <summary>
         /// Enable execute if an Item is selected
         /// </summary>
-        private Predicate<object> CanExecute => _ => SelectedItem != null;
+        private Predicate<object> CanExecute => _ => SelectedItem != null && !SelectedItem.Disabled;
 
         /// <summary>
         /// Search for LibraryObject
@@ -325,8 +325,8 @@
         private async Task DeleteLibraryObjectAsync()
         {
             if (selectedItem == null) return;
+
             bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
-            //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
 
             if (!result) return;
 
@@ -369,7 +369,6 @@
         /// <summary>
         /// A dialogbox that lets you browse where you want to save an object
         /// </summary>
-        /// <param name="param"></param>
         public async Task SaveDialogBoxAsync()
         {
             LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = DisabledLibraryObjects };
