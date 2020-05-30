@@ -272,7 +272,7 @@
                 bool success = _fileService.ExportCSV(adminActions);
                 if (success)
                 {
-                    _dialog.Alert("", "");
+                    _dialog.Alert("Fil skapad!", "En .csv fil har laddats skapats.");
                 }
                 else
                 {
