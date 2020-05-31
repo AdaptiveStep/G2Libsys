@@ -41,6 +41,7 @@
             services.AddScoped<IDialogService, DialogService>();
             services.AddTransient<IFileService, FileService>();
             services.AddScoped<ILoansService, LoansServices>();
+
             return services;
         }
     }

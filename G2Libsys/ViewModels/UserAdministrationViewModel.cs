@@ -8,6 +8,7 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
+    using System.Linq;
     using System.Reflection;
     using System.Windows.Input;
 
@@ -39,6 +40,7 @@
         /// Currently displayed User
         /// </summary>
         /// 
+        
         public string Reason
         {
             get => reason;
@@ -131,6 +133,7 @@
         public ICommand Savebutton { get; private set; }
         public ICommand ChangeCardStatusbutton { get; private set; }
         public ICommand CreateNewCardbutton { get; private set; }
+        public ICommand ReturnLoan { get; private set; }
         #endregion
 
         #region Constructor
@@ -142,12 +145,12 @@
             this.ActiveUser = user;
             Confirm = new User();
             Confirm2 = new User();
-
-            NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1), Activated = true };
+            
+            NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1), Activated= true};
 
             NewCard.Owner = ActiveUser.ID;
-            
-            
+
+            ReturnLoan = new RelayCommand(x => Return());
             Savebutton = new RelayCommand(x => Save());
             ChangeCardStatusbutton = new RelayCommand(x => ChangeCardStatus());
             CreateNewCardbutton = new RelayCommand(x => CreateNewCard());
@@ -161,14 +164,23 @@
         #endregion
 
         #region Methods
+        public async void Return()
+        {
+                     
+            foreach (Loan a in LoanObjects)
+            {
+                await _repo.UpdateAsync(a);
+            }
+            GetLoans();
 
+        }
         public async void CreateNewCard()
         {
             if (UserCard != null)
             {
-                await _repo.RemoveAsync<Card>(UserCard.ID);
+                await _repo.RemoveAsync<Card>(UserCard.Owner);
             }
-            UserCard = NewCard;
+            
             await _repo.AddAsync(NewCard);
             GetCard();
             _dialog.Alert("Klart", "Nytt Kort Skapat");
@@ -259,7 +271,9 @@ public async void GetCard()
         public async void GetLoans()
         {
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
+            
             LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
+            
         }
         #endregion
     }

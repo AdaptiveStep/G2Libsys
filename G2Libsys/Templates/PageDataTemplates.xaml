@@ -43,6 +43,12 @@
         <vs:LibrarianView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:LoanCheckoutViewModel}">
+        <vs:LoanCheckoutView />
+    </DataTemplate>
+
+
+
 
 
 

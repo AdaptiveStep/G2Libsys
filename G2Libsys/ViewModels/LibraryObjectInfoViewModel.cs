@@ -22,7 +22,7 @@ namespace G2Libsys.ViewModels
         public ICommand AddLoan { get; private set; }
 
         private LibraryObject currentBook;
-
+        private Card currentUserCard;
         //private Author author;
 
         //private async void GetAuthor()
@@ -45,21 +45,31 @@ namespace G2Libsys.ViewModels
 
         public LibraryObjectInfoViewModel(LibraryObject libraryObject)
         {
-
+            
             _repo = new GeneralRepository();
             //author = new Author();
             currentBook = libraryObject;
             //GetAuthor();
             AddLoan = new RelayCommand(_ => AddToCart());
+            GetCard();
+        }
+        public async void GetCard()
+        {
+            CurrentUserCard = await _repo.GetByIdAsync<Card>(_navigationService.HostScreen.CurrentUser.ID);
         }
         public void AddToCart()
         {
             if (_navigationService.HostScreen.CurrentUser != null)
             {
-                ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
 
-                _loans.LoanCart.Add(currentBook);
-                _dialog.Alert("", $"Tillagd i varukorgen{ _loans.LoanCart.Count }");
+                if (CurrentUserCard != null)
+                {
+                    ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
+
+                    _loans.LoanCart.Add(currentBook);
+                    _dialog.Alert("", $"Tillagd i varukorgen");
+                }
+                else { _dialog.Alert("", "Du har inget Lånekort registrerat. \nVänligen kontakta personalen"); }
             }
             else { _dialog.Alert("", "Vänligen logga in för att låna"); }
         }
@@ -91,6 +101,15 @@ namespace G2Libsys.ViewModels
             {
                 currentBook = value;
                 OnPropertyChanged(nameof(LibraryObject));
+            }
+        }
+        public Card CurrentUserCard
+        {
+            get => currentUserCard;
+            set
+            {
+                currentUserCard = value;
+                OnPropertyChanged(nameof(CurrentUserCard));
             }
         }
         #endregion
