@@ -597,7 +597,7 @@ Create proc usp_getall_users
                 ( 
                 SELECT CardID
                 FROM Cards as C
-                WHERE Loans.CardID = C.ID and c.ID = @ID
+                WHERE Loans.CardID = C.ID and c.Owner = @ID
                 )
 
     END
@@ -622,7 +622,9 @@ Create proc usp_getall_users
 		@ID int = null
 		AS
 		BEGIN
-			SELECT * FROM Cards WHERE ID =@ID		
+			SELECT * 
+			FROM Cards 
+			WHERE Cards.Owner = @ID		
 		END
 		GO
 

@@ -18,7 +18,7 @@
     public class UserAdministrationViewModel : BaseViewModel, ISubViewModel
     {
         #region Fields
-        
+        private ReasonDialogViewModel dialogViewModel;
         private User activeUser;
         private Card userCard;
         private Card newCard;
@@ -27,8 +27,8 @@
         private readonly IUserRepository _userrepo;
         private ObservableCollection<LibraryObject> libObjects;
         private string cardStatus;
-        
-        
+        private string reason;
+       
         private User confirm;
         private User confirm2;
         #endregion
@@ -41,6 +41,15 @@
         /// </summary>
         /// 
         
+        public string Reason
+        {
+            get => reason;
+            set
+            {
+                reason = value;
+                OnPropertyChanged(nameof(Reason));
+            }
+        }
         public User Confirm 
         {
             get=> confirm;
@@ -212,9 +221,14 @@
        
         public async void ChangeCardStatus()
         {
+
             
             if (UserCard.Activated == true)
             {
+
+                dialogViewModel = new ReasonDialogViewModel("");
+                Reason = _dialog.Show(dialogViewModel);
+                //UserCard.DeactivateReason = Reason;
                 UserCard.Activated = false;
                 CardStatus = "Aktivera Kort";
             }
@@ -226,7 +240,23 @@
             await _repo.UpdateAsync(UserCard);
             
         }
-        public async void GetCard()
+    //    dialogViewModel = new LibraryObjectDialogViewModel(new LibraryObject(), ItemCategories, "Lägg till ny");
+
+    //        LibraryObject newItem = _dialog.Show(dialogViewModel);
+
+    //        if (newItem == null) return;
+
+    //        try
+    //        {
+    //            await _repo.AddAsync(newItem);
+    //    ResetLists();
+    //}
+    //        catch (Exception ex)
+    //        {
+    //            _dialog.Alert("Error", "Ändringarna sparades ej, försök igen");
+    //            Debug.WriteLine(ex.Message);
+    //        }
+public async void GetCard()
         {
                 UserCard = await _repo.GetByIdAsync<Card>(ActiveUser.ID);
             if (UserCard != null)
