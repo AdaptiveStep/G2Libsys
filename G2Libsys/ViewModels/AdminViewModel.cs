@@ -250,26 +250,22 @@
             }
         }
 
-
-
+        /// <summary>
+        /// Export adminactions on users to csv
+        /// </summary>
         public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
         {
-            
-
             var adminActions = new List<AdminAction>(await _repo.GetAllAsync<AdminAction>(1));
 
-            // Inställningar för save file dialog box
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.FileName = "LibsysUserLog"; // Default file name
-            dlg.DefaultExt = ".csv"; // Default file extension
-            dlg.Filter = "Excel documents (.csv)|*.csv"; // Filter files by extension
+            var fileService = IoC.ServiceProvider.GetService<IFileService>();
 
-            // Visa save file dialog box true if user input string
-            var _fileService = IoC.ServiceProvider.GetService<IFileService>();
-            bool? fileCreated = _fileService.CreateFile("LibsysUserLog");
-            if (fileCreated==true)
+            // Return true if user creates a file
+            bool fileCreated = fileService.CreateFile("LibsysUserLog");
+
+            if (fileCreated)
             {
-                bool success = _fileService.ExportCSV(adminActions);
+                bool success = fileService.ExportCSV(adminActions);
+
                 if (success)
                 {
                     _dialog.Alert("Fil skapad!", "En .csv fil har laddats skapats.");
@@ -277,33 +273,6 @@
                 else
                 {
                     _dialog.Alert("Filen används redan", "Stäng filen och försök igen");
-                }
-
-            }
-            bool? saveresult = dlg.ShowDialog();
-
-            // Process save file dialog box results
-            if (saveresult == true)
-            {
-                if (dlg.FileName.IsFileBusy())
-                {
-                    _dialog.Alert("Fel!", "Stäng filen först.");
-                    return;
-                }
-
-                // Create a FileStream with mode CreateNew  
-                FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate);
-
-                stream.SetLength(0);
-
-                // Create a StreamWriter from FileStream  
-                using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
-
-                writer.WriteLine("ID,Action,Comment,ActionDate");
-
-                foreach (var action in adminActions)
-                {
-                    writer.WriteLine($"{action.ID},{action.ActionType},{action.Comment},{action.Actiondate}");
                 }
             }
         }

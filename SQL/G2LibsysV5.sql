@@ -108,10 +108,9 @@
 				INSERT INTO UserTypes(ID,[Name]) 
 				VALUES 
 					(1,'Bibliotekschef'),
-					(2,'Lokalspersonal'),
+					(2,'Bibliotekarie'),
 					(3,'Användare'),
-					(4,'Avstängd'),
-					(5,'Städerska')
+					(4,'Avstängd')
 				SET IDENTITY_INSERT [Usertypes] OFF
 				GO
 
