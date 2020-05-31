@@ -577,7 +577,7 @@ Create proc usp_getall_users
         (
             SELECT ObjectID
             FROM LOANS
-            WHERE Returned=1 AND Loans.CardID IN
+            WHERE Returned=0 AND Loans.CardID IN
             (
                 SELECT Cards.ID
                 FROM Cards
@@ -593,7 +593,7 @@ Create proc usp_getall_users
     BEGIN
         SELECt *
         FROM Loans
-        WHERE RETURNED=1 AND CardID IN 
+        WHERE RETURNED=0 AND CardID IN 
                 ( 
                 SELECT CardID
                 FROM Cards as C
