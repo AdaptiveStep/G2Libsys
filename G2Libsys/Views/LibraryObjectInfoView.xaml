@@ -65,59 +65,45 @@
 					<RowDefinition Height="25" />
 				</Grid.RowDefinitions>
 
-                <!--  Viewbox för image  -->
+				<!--  Viewbox för image  -->
 
-                <Viewbox
-                    Grid.Row="2"
-                    Grid.RowSpan="3"
-                    Grid.Column="1"
-                    Margin="10"
-                    VerticalAlignment="Top"
-                    Stretch="Uniform">
+				<Viewbox
+					Grid.Row="2"
+					Grid.RowSpan="3"
+					Grid.Column="1"
+					Margin="10"
+					VerticalAlignment="Top"
+					Stretch="Uniform">
 
-                    <Image Source="{Binding LibraryObject.imagesrc, Converter={converter:PathToImageConverter}}" Stretch="Uniform" />
-                </Viewbox>
+					<Image Source="{Binding LibraryObject.imagesrc, Converter={converter:PathToImageConverter}}" Stretch="Uniform" />
+				</Viewbox>
 
 
 
-                <!--  Titel / description libobject  -->
-
-                <!--<Viewbox
+				<!--  Titel / description libobject  -->
+				<TextBlock
 					Grid.Row="1"
+					Grid.Column="1"
+					Grid.ColumnSpan="5"
+					Margin="10"
+					Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+					Text="{Binding LibraryObject.Title}"
+					TextWrapping="Wrap" />
+
+				<ScrollViewer
+					Grid.Row="2"
+					Grid.RowSpan="2"
 					Grid.Column="2"
 					Grid.ColumnSpan="5"
-					MaxHeight="30"
 					Margin="10"
-					HorizontalAlignment="Left">
-					-->
-                <!--<TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="{Binding LibraryObject.Title}" TextWrapping="Wrap" />-->
-                <!--
+					VerticalScrollBarVisibility="Auto">
 
-				</Viewbox>-->
+					<TextBlock
+						Style="{StaticResource MaterialDesignTextBlock}"
+						Text="{Binding LibraryObject.Description}"
+						TextWrapping="Wrap" />
 
-                <TextBlock
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Grid.ColumnSpan="5"
-                    Margin="10"
-                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                    Text="{Binding LibraryObject.Title}"
-                    TextWrapping="Wrap" />
-
-                <ScrollViewer
-                    Grid.Row="2"
-                    Grid.RowSpan="2"
-                    Grid.Column="2"
-                    Grid.ColumnSpan="5"
-                    Margin="10"
-                    VerticalScrollBarVisibility="Auto">
-
-                    <TextBlock
-                        Style="{StaticResource MaterialDesignTextBlock}"
-                        Text="{Binding LibraryObject.Description}"
-                        TextWrapping="Wrap" />
-
-                </ScrollViewer>
+				</ScrollViewer>
 
 				<materialDesign:Card
 					Grid.Row="4"
@@ -134,97 +120,63 @@
 						<Grid.RowDefinitions>
 							<RowDefinition />
 
-                        </Grid.RowDefinitions>
+						</Grid.RowDefinitions>
 
 
 
 
-                        <StackPanel
-                            Grid.RowSpan="4"
-                            Margin="0,0,5,0"
-                            HorizontalAlignment="Left">
-                            <StackPanel.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="Right" />
-                                    <Setter Property="FontWeight" Value="Bold" />
-                                </Style>
-                            </StackPanel.Resources>
+						<StackPanel
+							Grid.RowSpan="4"
+							Margin="0,0,5,0"
+							HorizontalAlignment="Left">
+							<StackPanel.Resources>
+								<Style TargetType="TextBlock">
+									<Setter Property="HorizontalAlignment" Value="Right" />
+									<Setter Property="FontWeight" Value="Bold" />
+								</Style>
+							</StackPanel.Resources>
 
-                            <TextBlock Text="Pris: " />
-                            <TextBlock Text="ISBN: " />
-                            <TextBlock Text="Antal Sidor: " />
-                            <TextBlock Text="Datum Tillagt: " />
-                            <TextBlock Text="Författare" />
-
-                        </StackPanel>
-
-                        <StackPanel Grid.RowSpan="4" Grid.Column="1">
-                            <StackPanel.Resources>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="HorizontalAlignment" Value="left" />
-                                </Style>
-                            </StackPanel.Resources>
-
-                            <TextBlock Text="{Binding LibraryObject.PurchasePrice}" />
-                            <TextBlock Text="{Binding LibraryObject.ISBN}" />
-                            <TextBlock Text="{Binding LibraryObject.Pages}" />
-                            <TextBlock Text="{Binding LibraryObject.DateAdded}" />
-                            <TextBlock Text="{Binding LibraryObject.Author}" />
-
-
-                        </StackPanel>
-
-                        <Button
-                            Grid.Row="4"
-                            Grid.Column="3"
-                            Margin="10"
-                            Command="{Binding AddLoan}"
-                            Content="Låna" />
-                    </Grid>
-                </materialDesign:Card>
-
-
-
-
-
-                <!--<materialDesign:Card
-					Grid.Row="6"
-					Grid.RowSpan="2"
-					Grid.Column="1"
-					Grid.ColumnSpan="2"
-					Margin="5,5,15,5"
-					Background="{StaticResource light_background}"
-					UniformCornerRadius="10"
-					Visibility="Collapsed">
-					<StackPanel>
-
-						<TextBlock Text="Pris       ISBN              Antal sidor      Datum tillagt" />
-						<StackPanel Orientation="Horizontal">
-							<TextBlock Margin="3" Text="{Binding LibraryObject.PurchasePrice}" />
-							<TextBlock Margin="3" Text="{Binding LibraryObject.ISBN}" />
-							<TextBlock Margin="3" Text="{Binding LibraryObject.Pages}" />
-							<TextBlock Margin="15,3,3,3" Text="{Binding LibraryObject.DateAdded}" />
+							<TextBlock Text="Pris: " />
+							<TextBlock Text="ISBN: " />
+							<TextBlock Text="Antal Sidor: " />
+							<TextBlock Text="Datum Tillagt: " />
+							<TextBlock Text="Författare" />
 
 						</StackPanel>
-					</StackPanel>
 
-				</materialDesign:Card>-->
+						<StackPanel Grid.RowSpan="4" Grid.Column="1">
+							<StackPanel.Resources>
+								<Style TargetType="TextBlock">
+									<Setter Property="HorizontalAlignment" Value="left" />
+								</Style>
+							</StackPanel.Resources>
+
+							<TextBlock Text="{Binding LibraryObject.PurchasePrice}" />
+							<TextBlock Text="{Binding LibraryObject.ISBN}" />
+							<TextBlock Text="{Binding LibraryObject.Pages}" />
+							<TextBlock Text="{Binding LibraryObject.DateAdded}" />
+							<TextBlock Text="{Binding LibraryObject.Author}" />
 
 
+						</StackPanel>
 
-                <!--  Author  -->
 
+						<Button
+							Grid.Row="4"
+							Grid.Column="3"
+							Margin="10"
+							Command="{Binding AddLoan}"
+							Content="Låna" />
 
-                <!--<materialDesign:Card
-					Grid.Row="2"
-					Grid.RowSpan="5"
-					Grid.Column="5"
-					Grid.ColumnSpan="3"
-					Height="auto"
-					Background="Transparent">
-					<Grid />
-
+					</Grid>
 				</materialDesign:Card>
+
+
+
+
+
+
+
 			</Grid>
 		</materialDesign:Card>
 	</Grid>

@@ -55,7 +55,11 @@ namespace G2Libsys.ViewModels
         }
         public async void GetCard()
         {
+			if (_navigationService.HostScreen.CurrentUser != null)
+			{
             CurrentUserCard = await _repo.GetByIdAsync<Card>(_navigationService.HostScreen.CurrentUser.ID);
+
+			}
         }
         public void AddToCart()
         {
