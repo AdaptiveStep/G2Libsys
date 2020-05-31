@@ -13,6 +13,13 @@ namespace G2Libsys.ViewModels
         public ICommand deletebutton { get; private set; }
         public ICommand searchbutton { get; private set; }
         public ICommand cancelsearch { get; private set; }
+        private ICommand goToUser;
+        public ICommand GoToUser => goToUser ??=
+            new RelayCommand(_ =>
+            {
+                _navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new UserAdministrationViewModel(SelectedUser));
+            }, _ => SelectedUser != null);
+
         private readonly IRepository<User> _repo;
 
         //binda knapparna från viewen
@@ -21,6 +28,16 @@ namespace G2Libsys.ViewModels
         private ObservableCollection<User> _users;
         private string searchstring;
 
+        private User selectedUser;
+        public User SelectedUser
+        {
+            get => selectedUser;
+            set
+            {
+                selectedUser = value;
+                OnPropertyChanged(nameof(SelectedUser));
+            }
+        }
         public string SearchString
         {
             get => searchstring;
@@ -42,17 +59,7 @@ namespace G2Libsys.ViewModels
         }
 
         
-        private User oldUser;
-
-        public User OldUser
-        {
-            get => oldUser;
-            set
-            {
-                oldUser = value;
-                OnPropertyChanged(nameof(oldUser));
-            }
-        }
+       
 
         public ObservableCollection<User> Users
         {
@@ -113,8 +120,8 @@ namespace G2Libsys.ViewModels
         
         public async void DeleteUser()
         {
-            if (OldUser != null)
-                await _repo.RemoveAsync(OldUser.ID);
+            if (SelectedUser != null)
+                await _repo.RemoveAsync(SelectedUser.ID);
             GetUsers();
         }
         public async void AddUser()

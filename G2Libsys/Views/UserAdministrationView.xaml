@@ -9,177 +9,244 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:userControl="clr-namespace:G2Libsys.Controls"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     MinWidth="800"
     MinHeight="450"
-    x:TypeArguments="vm:UserAdministrationViewModel"    
+    d:DesignHeight="800"
+    d:DesignWidth="1000"
+    x:TypeArguments="vm:UserAdministrationViewModel"
+    Background="{DynamicResource MaterialDesignPaper}"
+    FontFamily="{DynamicResource MaterialDesignFont}"
     FontSize="16"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
-
     <Grid>
+        <Rectangle Opacity="0.7">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Black" />
+            </Rectangle.Fill>
+        </Rectangle>
+        <Button
+            Width="{Binding (FrameworkElement.ActualWidth)}"
+            Height="{Binding (FrameworkElement.ActualHeight)}"
+            Background="Transparent"
+            Command="{Binding CancelCommand}"
+            Cursor="Arrow"
+            Style="{StaticResource MaterialDesignToolForegroundButton}" />
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        <materialDesign:Card
+            MaxWidth="450"
+            MaxHeight="550"
+            UniformCornerRadius="10">
 
-        <Border Grid.Column="0"  Background="White" CornerRadius="15" MinHeight="400" MinWidth="350" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid Width="450" Margin="10">
 
-            <StackPanel Height="380" Width="320" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                    <Button Margin="0 0 93 0" Command="{Binding CancelCommand}">
-                        <Button.Background>
-                            <ImageBrush ImageSource="..\Resources\Images\nedladdning.png"/>
-                        </Button.Background>
-                    </Button>
-                    <Border Width="70" Height="70" CornerRadius="50" Background="#FFA64B4B"/>
-                </StackPanel>
-                <Border>
-                    <TextBlock Text="{Binding ActiveUser.Email}"  FontSize="16" Margin="10" FontFamily="Segoe UI" FontWeight="Normal" HorizontalAlignment="Center">
-
-                    </TextBlock>
-                </Border>
-                <Border Width="295"/>
-                <Border Width="104"  HorizontalAlignment="Right"/>
-                <Border Height="170" Width="300" VerticalAlignment="Bottom" Margin="10" >
-                    <GroupBox Header="Aktiva lån">
-                        <ListView
-                            
-                            SelectionMode="Single"
-                            ItemsSource="{Binding LibraryObjects}">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    
-                                      
-                                            <Grid Background="{StaticResource accent_light}">
-                                                
-                                            <TextBlock 
-                                             FontWeight="DemiBold"
-                                             Foreground="Black"
-                                             Text="{Binding Title}"/>
-                                            </Grid>
-                                        
-                                    
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </GroupBox>
-                </Border>
-
-                <StackPanel Orientation="Horizontal"  Height="30" Margin="10 0 0 0">
-                    <TextBlock Text="Kort ID:" Width="55"/>
-                    <TextBlock Text="{Binding UserCard.CardNumber, Mode=OneWay, NotifyOnSourceUpdated=True}"/>
-                </StackPanel>
-
-                
-                    <Button
-                      Style="{StaticResource MaterialDesignRaisedButton}"
-                      Content="{Binding CardStatus, Mode=OneWay}"
-                      Command="{Binding ChangeCardStatusbutton}"
-                      ToolTip="Resource name: MaterialDesignRaisedButton" Background="#FF009688" Width="130" Height="30"/>
-                   
-
-               
-
-
-
-            </StackPanel>
-        </Border>
-
-
-
-
-        <Border Grid.Column="1" MinHeight="400" MinWidth="350" Background="White" CornerRadius="15"  VerticalAlignment="Center" HorizontalAlignment="Center" >
-            <StackPanel Orientation="Vertical">
-                
-            <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-            <Border/>
-                <StackPanel Grid.Column="0" Margin="10"  >
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="4*" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
 
-                    <TextBox
-                    Text="{Binding Confirm.Firstname, Mode=OneWayToSource}"
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                    materialDesign:HintAssist.Hint=" Ändra förnamn"  Background="{StaticResource AttentionToActionBrush}" >
-                    </TextBox>
-                        <TextBox
-                            Text="{Binding Confirm.Lastname, Mode=OneWayToSource}"
-                         materialDesign:TextFieldAssist.HasClearButton="True" 
-                    materialDesign:HintAssist.Hint=" Ändra Efternamn"   Background="{StaticResource AttentionToActionBrush}">
-                        </TextBox>
-                        <TextBox
-                            Text="{Binding Confirm.Password, Mode=OneWayToSource}"
-                         Background="{StaticResource AttentionToActionBrush}"
-                        materialDesign:HintAssist.Hint=" Nytt lösenord"
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                        />
-                    
-                   
-                    <TextBox
-                         Background="{StaticResource AttentionToActionBrush}"
-                    materialDesign:HintAssist.Hint=" Ny E-post"
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                        Text="{Binding Confirm.Email, Mode=OneWayToSource}">
-                    </TextBox>
-                    
-                    
-                    
-                   
+                <materialDesign:Card
+                    Grid.ColumnSpan="2"
+                    MinHeight="300"
+                    VerticalAlignment="Top">
+                    <GroupBox
+                        HorizontalAlignment="Stretch"
+                        materialDesign:ColorZoneAssist.Mode="PrimaryLight"
+                        materialDesign:ShadowAssist.ShadowDepth="Depth1"
+                        BorderThickness="0">
+
+                        <StackPanel Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                            <TextBlock
+                                Margin="10"
+                                HorizontalAlignment="Center"
+                                FontSize="16"
+                                Text="{Binding ActiveUser.Email}" />
+
+                            <StackPanel Margin="0,5,0,10" Orientation="Horizontal">
+
+                                <TextBlock Margin="15,0,0,0" Text="KortID:       " />
+                                <TextBlock Text="{Binding UserCard.CardNumber, Mode=OneWay, NotifyOnSourceUpdated=True}" />
+                            </StackPanel>
+
+                            <StackPanel
+                                Grid.ColumnSpan="2"
+                                HorizontalAlignment="Center"
+                                Orientation="Horizontal">
+
+
+                                <StackPanel Margin="12,10,0,10">
+
+                                    <TextBox
+                                        materialDesign:HintAssist.Hint=" Ändra förnamn"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Text="{Binding Confirm.Firstname, Mode=OneWayToSource}" />
+
+                                    <TextBox
+                                        materialDesign:HintAssist.Hint=" Ändra Efternamn"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Text="{Binding Confirm.Lastname, Mode=OneWayToSource}" />
+                                    <TextBox
+                                        materialDesign:HintAssist.Hint=" Nytt lösenord"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Text="{Binding Confirm.Password, Mode=OneWayToSource}" />
+
+                                    <TextBox
+                                        materialDesign:HintAssist.Hint=" Ny E-post"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Text="{Binding Confirm.Email, Mode=OneWayToSource}" />
+
+                                </StackPanel>
+
+                                <StackPanel Grid.Column="1" Margin="10">
+
+                                    <TextBox
+                                        materialDesign:HintAssist.Hint=" Bekräfta förnamn"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Text="{Binding Confirm2.Firstname, Mode=OneWayToSource}" />
+                                    <TextBox
+                                        materialDesign:HintAssist.Hint=" Bekräfta efternamn"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Text="{Binding Confirm2.Lastname, Mode=OneWayToSource}" />
+                                    <TextBox
+                                        materialDesign:HintAssist.Hint=" Bekräfta lösenord"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Text="{Binding Confirm2.Password, Mode=OneWayToSource}" />
+
+                                    <TextBox
+                                        materialDesign:HintAssist.Hint=" Bekräfta E-post"
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Text="{Binding Confirm2.Email, Mode=OneWayToSource}" />
+
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Orientation="Horizontal">
+                                <TextBlock
+                                    Margin="10"
+                                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                    Text="Bekräfta Profiländringar" />
+                                <Button
+                                    Grid.ColumnSpan="2"
+                                    Width="55"
+                                    Height="30"
+                                    materialDesign:ButtonAssist.CornerRadius="3"
+                                    materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                                    Command="{Binding SaveButton}"
+                                    Style="{StaticResource MaterialDesignRaisedLightButton}">
+
+                                    <materialDesign:PackIcon
+                                        Width="30"
+                                        Height="25"
+                                        Foreground="Black"
+                                        Kind="ContentSave" />
+
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                </materialDesign:Card>
+
+                <StackPanel
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Orientation="Horizontal">
+                    <materialDesign:Card  />
+
+                    <StackPanel>
+
+
+
+
+                        <TextBlock Margin="0,10,0,10" Text="Skapa nytt kort" />
+
+                        <Button
+                            Width="55"
+                            Margin="5"
+                            HorizontalAlignment="Left"
+                            materialDesign:ButtonAssist.CornerRadius="3"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                            Command="{Binding CreateNewCardbutton}"
+                            Style="{StaticResource MaterialDesignRaisedLightButton}">
+                            <materialDesign:PackIcon Kind="Create" />
+                        </Button>
+
+                        <TextBlock Margin="5" Text="Spärra kort" />
+
+                        <Button
+                            Width="120"
+                            Height="30"
+                            Margin="5"
+                            HorizontalAlignment="Left"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                            Command="{Binding ChangeCardStatusbutton}"
+                            Content="{Binding CardStatus, Mode=OneWay}"
+                            Style="{StaticResource MaterialDesignRaisedLightButton}" />
+                        <Button  Content="r" Command="{Binding ReturnLoan}"/>
+                    </StackPanel>
+
+                    <StackPanel>
+
+                        <GroupBox
+                            materialDesign:ButtonAssist.CornerRadius="3"
+                            materialDesign:ColorZoneAssist.Mode="PrimaryLight"
+                            materialDesign:ShadowAssist.ShadowDepth="Depth2"
+                            BorderThickness="0"
+                            
+                            Header="Aktiva lån"
+                            >
+                                <ScrollViewer>
+                            <StackPanel Orientation="Horizontal" >
+                                    
+                                <ListView ItemsSource="{Binding LibraryObjects}" SelectionMode="Single">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+
+
+                                            <TextBlock
+                                                FontWeight="DemiBold"
+                                                Text="{Binding Title}"
+                                                TextWrapping="Wrap" />
+
+
+
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+
+                                <ListView ItemsSource="{Binding LoanObjects}" SelectionMode="Single" >
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+
+
+                                            <CheckBox  IsChecked="{Binding Returned, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  FontWeight="DemiBold" />
+
+
+
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+
+                            </StackPanel>
+                                </ScrollViewer>
+                        </GroupBox>
+                        
+                    </StackPanel>
+
                 </StackPanel>
-                <StackPanel Grid.Column="1" Margin="10">
-                    
 
-                    <TextBox
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                         Background="{StaticResource AttentionToActionBrush}"
-                    materialDesign:HintAssist.Hint=" Bekräfta förnamn"  Text="{Binding Confirm2.Firstname, Mode=OneWayToSource}"/>
-                        <TextBox
-                            materialDesign:TextFieldAssist.HasClearButton="True" 
-                             Background="{StaticResource AttentionToActionBrush}"
-                    materialDesign:HintAssist.Hint=" Bekräfta efternamn"  Text="{Binding Confirm2.Lastname, Mode=OneWayToSource}"/>
-                        <TextBox 
-                            materialDesign:TextFieldAssist.HasClearButton="True" 
-                             Background="{StaticResource AttentionToActionBrush}"
-                            Text="{Binding Confirm2.Password, Mode=OneWayToSource}"
-                        materialDesign:HintAssist.Hint=" Bekräfta lösenord"
-                        
-                         />
-                    
-
-                   
-                    <TextBox
-                        materialDesign:TextFieldAssist.HasClearButton="True" 
-                         Background="{StaticResource AttentionToActionBrush}"
-                    materialDesign:HintAssist.Hint=" Bekräfta E-post"
-                        Text="{Binding Confirm2.Email, Mode=OneWayToSource}"/>
-                   
-            </StackPanel>
             </Grid>
-                <Button  Grid.ColumnSpan="2"
-                        
-                        Margin="0 20 0 10"
-                        
-                        Command="{Binding Savebutton}"
-                      Style="{StaticResource MaterialDesignRaisedButton}"
-                        Content="Bekräfta"
-                         ToolTip="Resource name: MaterialDesignRaisedButton" Background="#FF009688" Width="130" Height="30"/>
-                <TextBlock Text="Skapa nytt kort" HorizontalAlignment="Center"/>
+        </materialDesign:Card>
 
-               
-                
-
-                <Button  
-                        Margin="0 20 0 10"
-                       
-                        Command="{Binding CreateNewCardbutton}"
-                      Style="{StaticResource MaterialDesignRaisedButton}"
-                        Content="Skapa"
-                         ToolTip="Resource name: MaterialDesignRaisedButton" Background="#FF009688" Width="130" Height="30"/>
-            </StackPanel>
-        </Border>
     </Grid>
 </local:BasePage>

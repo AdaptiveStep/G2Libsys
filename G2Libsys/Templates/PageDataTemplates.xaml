@@ -43,6 +43,12 @@
         <vs:LibrarianView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:LoanCheckoutViewModel}">
+        <vs:LoanCheckoutView />
+    </DataTemplate>
+
+
+
 
 
 
@@ -57,6 +63,9 @@
 
     <DataTemplate DataType="{x:Type dialog:LibraryObjectDialogViewModel}">
         <dialog:LibraryObjectDialogView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type dialog:ReasonDialogViewModel}">
+        <dialog:ReasonDialogView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type dialog:RemoveItemDialogViewModel}">

@@ -291,7 +291,7 @@
 		--Computed columns
 		--ExpirationDate
 		--isLate
-	 	CONSTRAINT UC_CardObjectCombo UNIQUE (CardID,ObjectID)
+	 	
 		);
 		GO
 
@@ -577,7 +577,7 @@ Create proc usp_getall_users
         (
             SELECT ObjectID
             FROM LOANS
-            WHERE  Loans.CardID IN
+            WHERE Returned=0 AND Loans.CardID IN
             (
                 SELECT Cards.ID
                 FROM Cards
@@ -593,11 +593,11 @@ Create proc usp_getall_users
     BEGIN
         SELECt *
         FROM Loans
-        WHERE CardID IN 
+        WHERE RETURNED=0 AND CardID IN 
                 ( 
                 SELECT CardID
                 FROM Cards as C
-                WHERE Loans.CardID = C.ID and c.ID = @ID
+                WHERE Loans.CardID = C.ID and c.Owner = @ID
                 )
 
     END
@@ -622,7 +622,9 @@ Create proc usp_getall_users
 		@ID int = null
 		AS
 		BEGIN
-			SELECT * FROM Cards WHERE ID =@ID		
+			SELECT * 
+			FROM Cards 
+			WHERE Cards.Owner = @ID		
 		END
 		GO
 
@@ -1802,7 +1804,7 @@ INSERT INTO LibraryObjects (
         ,350
         ,1
         ,'Cool author'
-        ,'https://s1.adlibris.com/images/54131168/harry-potter-och-de-vises-sten.jpg'
+        ,'https://covers.openlibrary.org/b/id/7395418-L.jpg'
         ,100
     )
     ,--Does ID really have to be inserted? 
@@ -1814,7 +1816,7 @@ INSERT INTO LibraryObjects (
         ,350
         ,1
         ,'Megawriter'
-        ,'https://s1.adlibris.com/images/54131167/harry-potter-och-hemligheternas-kammare.jpg'
+        ,'https://covers.openlibrary.org/b/id/8266542-M.jpg'
         ,100
     )
     ,(
@@ -1825,7 +1827,7 @@ INSERT INTO LibraryObjects (
         ,350
         ,1
         ,'Gigabrain McPro'
-        ,'https://s1.adlibris.com/images/52391138/harry-potter-och-dodsrelikerna.jpg'
+        ,'https://covers.openlibrary.org/b/id/8259337-M.jpg'
         ,100
     )
     ,(
@@ -1835,8 +1837,8 @@ INSERT INTO LibraryObjects (
         ,'Penguin Classics'
         ,350
         ,1
-        ,'JRR Tolkien'
-        ,'https://s2.adlibris.com/images/43135545/ringens-brodraskap.jpg'
+        ,'J.R.R Tolkien'
+        ,'https://covers.openlibrary.org/w/id/8474036-L.jpg'
         ,100
     )
     ,(
@@ -1846,8 +1848,8 @@ INSERT INTO LibraryObjects (
         ,'Penguin Classics'
         ,350
         ,1
-        ,'JRR Tolkien'
-        ,'https://s1.adlibris.com/images/42903698/de-tva-tornen.jpg'
+        ,'J.R.R Tolkien'
+        ,'https://covers.openlibrary.org/w/id/8478177-L.jpg'
         ,100
     )
     ,(
@@ -1857,8 +1859,19 @@ INSERT INTO LibraryObjects (
         ,'Penguin Classics'
         ,350
         ,1
-        ,'JRR Tolkien'
-        ,'https://s1.adlibris.com/images/43138299/konungens-aterkomst.jpg'
+        ,'J.R.R Tolkien'
+        ,'https://covers.openlibrary.org/w/id/8461482-L.jpg'
+        ,100
+    )
+	  ,(
+       'Konungens återkomst'
+        ,'"En ring att styra dem, en ring att se dem, en ring att fånga dem och till mörkret ge dem, i Mordor, i skuggornas land'
+        ,9529228333899
+        ,'Penguin Classics'
+        ,350
+        ,1
+        ,'J.R.R Tolkien'
+        ,'https://ia800608.us.archive.org/view_archive.php?archive=/20/items/olcovers658/olcovers658-L.zip&file=6587309-L.jpg&ext='
         ,100
     )
     ,(
@@ -1868,8 +1881,8 @@ INSERT INTO LibraryObjects (
         ,'Coola Förlaget'
         ,350
         ,3
-        ,'Dr NoSleep McWrite'
-        ,'https://s1.adlibris.com/images/42934038/hobbiten-eller-bort-och-hem-igen.jpg'
+        ,'J.R.R Tolkien'
+        ,'https://covers.openlibrary.org/w/id/8406786-L.jpg'
         ,100
     )
     ,(
@@ -1879,8 +1892,8 @@ INSERT INTO LibraryObjects (
         ,'Amazon'
         ,75
         ,2
-        ,'GRR Martin'
-        ,'https://s2.adlibris.com/images/625724/game-of-thrones---kampen-om-jarntronen.jpg'
+        ,'G.R.R Martin'
+        ,'https://covers.openlibrary.org/w/id/8773509-L.jpg'
         ,100
     )
     ,(
@@ -1890,7 +1903,7 @@ INSERT INTO LibraryObjects (
         ,'Evas Förlag'
         ,350
         ,3
-        ,'Richy Rich'
+        ,'Jan Guillou'
         ,'https://s1.adlibris.com/images/55340502/den-andra-dodssynden.jpg'
         ,100
     )
@@ -1902,7 +1915,7 @@ INSERT INTO LibraryObjects (
         ,350
         ,4
         ,'El Chapo De La Writon'
-        ,'https://m.media-amazon.com/images/M/MV5BMTUyNzk3MjA1OF5BMl5BanBnXkFtZTcwMTE1Njg2MQ@@._V1_SY1000_CR0,0,674,1000_AL_.jpg'
+        ,'https://covers.openlibrary.org/w/id/7740361-L.jpg'
         ,100
     )
 ;

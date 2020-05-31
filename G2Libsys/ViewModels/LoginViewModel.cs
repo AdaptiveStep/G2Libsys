@@ -10,6 +10,9 @@
     using G2Libsys.Library;
     using System.Security;
     using System.Diagnostics;
+    using G2Libsys.Models;
+    using System.Windows.Threading;
+    using System.Windows;
     #endregion
 
     /// <summary>
@@ -24,6 +27,12 @@
         private SecureString newPassword;
         private string emailValidationMessage;
         private User newUser;
+        private int maxAttempts = 0;
+        private DispatcherTimer timer;
+        private bool isLocked;
+        private int countdown;
+        private string loginText;
+
         #endregion
 
         #region Public Properties
@@ -97,6 +106,18 @@
             }
         }
 
+
+        public string LoginText
+        {
+            get => loginText;
+            set 
+            { 
+                loginText = value;
+                OnPropertyChanged(nameof(LoginText));
+            }
+        }
+
+
         #endregion
 
         #region Commands
@@ -106,11 +127,18 @@
         public ICommand LogIn { get; set; }
 
         /// <summary>
+        /// Start and stop commands for the timer used for locking a user out
+        /// </summary>
+        public ICommand StartTimer { get; private set; }
+        public ICommand ResetTimer { get; private set; }
+
+        /// <summary>
         /// Verify if canExecute login command
         /// </summary>
         private Predicate<object> CanLogin =>
             _ => !string.IsNullOrWhiteSpace(Username)
-              && Password?.Length > 0;
+              && Password?.Length > 0
+              && !isLocked;
 
         /// <summary>
         /// Register new user command
@@ -139,10 +167,10 @@
             if (base.IsInDesignMode) return;
 
             _repo = new UserRepository();
-
+            LoginText = "Logga in";
             EmailValidationMessage = string.Empty;
             NewUser = new User();
-
+            isLocked = false;
             // Create commands
             LogIn = new RelayCommand(_ => VerifyLogin(), CanLogin);
             Register = new RelayCommand(_ => VerifyRegister(), CanRegister);
@@ -150,6 +178,31 @@
         #endregion
 
         #region Private Methods
+
+        public void LoginWait()
+        {
+            isLocked = true;
+            timer = new DispatcherTimer();
+            countdown = 60;
+            timer.Interval += new TimeSpan(0, 0, 1);
+            timer.Tick += (o, e) =>
+            {
+                countdown--;
+                LoginText = $"({countdown})";
+
+                if (countdown == 1)
+                {
+                    isLocked = false;
+                    LoginText = "Logga in";
+                    maxAttempts = 0;
+                    timer.Stop(); 
+                }
+
+            };
+
+            timer.Start();
+
+        }
 
         /// <summary>
         /// Verify user credentials and login
@@ -161,6 +214,14 @@
 
             if (user is null)
             {
+                maxAttempts++;
+                if (maxAttempts >= 3)
+                {
+                    _dialog.Alert("Max antal inloggningsförsök nådda", "Försök igen");
+                    LoginWait();
+                    return;
+                    
+                }
                 _dialog.Alert("Fel lösenord", "Försök igen.");
             }
             else
