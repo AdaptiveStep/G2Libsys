@@ -74,8 +74,6 @@
 
                     // Set CurrentViewModel
                     _navigationService.HostScreen.CurrentViewModel = _navigationService.GetViewModel(viewModel);
-
-                    _navigationService.HostScreen.SubViewModel = null;
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });

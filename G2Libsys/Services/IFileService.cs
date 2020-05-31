@@ -14,7 +14,7 @@
         /// </summary>
         /// <param name="fileName">Desired file name</param>
         /// <returns>Bool if file is created</returns>
-        bool? CreateFile(string fileName = null);
+        bool CreateFile(string fileName = null);
 
         /// <summary>
         /// Export list to the csv file created
