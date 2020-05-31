@@ -10,6 +10,12 @@
     AllowsTransparency="True"
     Background="Transparent"
     ResizeMode="NoResize"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
     SizeToContent="Manual"
     WindowStartupLocation="CenterOwner"
     WindowStyle="None"
@@ -27,7 +33,7 @@
             Command="{Binding CancelCommand}"
             Cursor="Arrow"
             IsCancel="True"
-            Style="{StaticResource MaterialDesignToolForegroundButton}" />
+             />
 
         <ContentControl x:Name="ContentPresenter" Content="{Binding}" />
     </Grid>

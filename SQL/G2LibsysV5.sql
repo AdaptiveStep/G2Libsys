@@ -1936,6 +1936,62 @@ INSERT INTO LibraryObjects (
         ,'https://covers.openlibrary.org/w/id/7740361-L.jpg'
         ,100
     )
+	,(
+		'Thinking Like an Etrepreneur'
+		,'Hur man gör smarta affärsbeslut som kan leda dig till att bygga ditt egna företag.'
+		,9780967162461
+		,'HCM Publishing'
+		,400
+		,1
+		,'Peter Hupalo'
+		,'https://covers.openlibrary.org/b/id/732527-L.jpg'
+		,107
+	)
+	,(
+		'Green Illusions'
+		,'Boken diskuterar hemligheterna om ren energi och framtidens miljörörelse.'
+		,9780803237759
+		,'University of Nebraska Press'
+		,300
+		,1
+		,'Ozzie Zehner'
+		,'https://covers.openlibrary.org/b/id/9344195-L.jpg'
+		,107
+	)
+	,(
+		'Citizen Science'
+		,'En studie om människor, expertis och hållbar utveckling .'
+		,9780415115483
+		,'Routledge'
+		,70
+		,1
+		,'Alan Irwin'
+		,'https://covers.openlibrary.org/b/id/263997-L.jpg'
+		,107
+	)
+	,(
+		'Animal Cognition'
+		,'Boken tittar på hur djur bearbetar information från deras miljö.'
+		,9780415252980
+		,'Routledge'
+		,150
+		,1
+		,'Nick Lund'
+		,'https://covers.openlibrary.org/b/id/1212263-L.jpg'
+		,100
+	)
+	,(
+		'IT'
+		,'
+		De var sju tonåringar när de först snubblat över skräcken. Nu är de vuxna män och kvinnor som har gått ut i den stora världen för att få framgång och lycka. Men ingen av dem tål den kraft som har dragit dem tillbaka till Derry för att möta mardrömmen utan slut, och det onda utan namn.'
+		,9780415252980
+		,'New American Library'
+		,100
+		,1
+		,'Stephen King'
+		,'https://covers.openlibrary.org/b/id/8569283-L.jpg'
+		,100
+	)
 ;
 	GO 
 ------------------------------------------------------------------------

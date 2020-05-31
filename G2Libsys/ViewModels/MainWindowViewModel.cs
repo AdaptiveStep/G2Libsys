@@ -135,13 +135,13 @@
         {
             SubViewModel = null;
 
-            if (!(CurrentViewModel is LibraryMainViewModel))
+            if (!(CurrentViewModel is LibraryMainViewModel model))
             {
                 _navigationService.HostScreen.CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
             }
             else
             {
-                var viewModel = (LibraryMainViewModel)CurrentViewModel;
+                var viewModel = model;
                 viewModel.FrontPage = true;
             }
         });
