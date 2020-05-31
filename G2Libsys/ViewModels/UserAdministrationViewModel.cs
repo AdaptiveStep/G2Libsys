@@ -215,7 +215,7 @@
                     }
                     await _repo.UpdateAsync(ActiveUser);
                    _dialog.Alert("Klart", "Uppgifterna sparades");
-            }
+                }
                 else { _dialog.Alert("Error", "Kunde inte spara. dubbelkolla alla parametrar"); }
         }
        
@@ -229,8 +229,12 @@
                 dialogViewModel = new ReasonDialogViewModel("");
                 Reason = _dialog.Show(dialogViewModel);
                 //UserCard.DeactivateReason = Reason;
-                UserCard.Activated = false;
-                CardStatus = "Aktivera Kort";
+                if (Reason != null && Reason != "")
+                {
+                    UserCard.Activated = false;
+                    CardStatus = "Aktivera Kort";
+                }
+                else { _dialog.Alert("", "Ingen anledning gavs\nFörsök igen"); }
             }
             else 
             { 
@@ -271,8 +275,12 @@ public async void GetCard()
         public async void GetLoans()
         {
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
-            
-            LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
+            LibraryObjects = new ObservableCollection<LibraryObject>();
+            foreach (Loan a in LoanObjects)
+            {
+                LibraryObjects.Add(await _repo.GetByIdAsync<LibraryObject>(a.ObjectID));
+            }
+            //LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
             
         }
         #endregion
