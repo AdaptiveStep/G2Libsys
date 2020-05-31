@@ -246,7 +246,7 @@
 							<ItemsControl ItemsSource="{Binding LoanObjects}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-										<CheckBox Height="20" FontWeight="DemiBold" IsChecked="{Binding Returned, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+										<CheckBox Height="20" IsChecked="{Binding Returned, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>

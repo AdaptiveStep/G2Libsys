@@ -194,7 +194,6 @@
                         Content="Borttagna objekt"
                         Foreground="White"
                         IsChecked="{Binding DisabledLibraryObjects, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        Style="{StaticResource MaterialDesignAccentCheckBox}"
                         ToolTip="Visar en lista på borttagna eller aktiverade objekt" />
                     <Button
                         Width="45"
