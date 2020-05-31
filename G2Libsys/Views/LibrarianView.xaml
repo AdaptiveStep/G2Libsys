@@ -8,26 +8,22 @@
                 xmlns:local="clr-namespace:G2Libsys.Views"
                 xmlns:vm="clr-namespace:G2Libsys.ViewModels"               
                 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+                FontFamily="{DynamicResource MaterialDesignFont}"
+	            TextElement.FontSize="13"
+	            TextElement.FontWeight="Regular"
+	            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	            TextOptions.TextFormattingMode="Ideal"
+	            TextOptions.TextRenderingMode="Auto"
                 mc:Ignorable="d" 
-                d:DesignHeight="450" d:DesignWidth="800"> 
-
-    <Grid  ShowGridLines="False" Background="{StaticResource light_background}">
+                d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Grid.Resources>
-            <Style TargetType="Label" >
-                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}"/>
-            </Style>
-        </Grid.Resources>
-        <Button Grid.Column="0" 
-                Content="Medlemmar" 
-                VerticalAlignment="Top" 
-                Margin="10 50 10 0"/>
+       
         <StackPanel Grid.Column="1"
-                    Orientation="Horizontal"
-                    Background="{StaticResource accent_light}">
+                    Orientation="Horizontal">
 
 
             <StackPanel>
@@ -37,7 +33,7 @@
                     <Label Content="Sök efter användare" 
                            VerticalAlignment="Center"/>
                     
-                        <TextBox Background="Wheat" 
+                        <TextBox  
                                  Text="{Binding SearchString}" 
                                  Margin="10 10 10 10" 
                                  Width="140"/>
@@ -84,7 +80,7 @@
             
             
             <StackPanel Orientation="Vertical">
-                <Label Content="Lägg till medlem" Foreground="Black"/>
+                <Label Content="Lägg till medlem"/>
                 <materialDesign:Card>
 
 
@@ -95,20 +91,20 @@
 
                     <StackPanel>
                         <Label Content="Namn"/>
-                        <TextBox Margin="10 0 10 0" Width="100" Background="Wheat" Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBox Margin="10 0 10 0" Width="100" Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Efternamn"/>
-                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Email"/>
-                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                         <Label Content="Lösenord"/>
-                        <TextBox Margin="10 0 10 0" Width="100"  Background="Wheat" Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                        <TextBox Margin="10 0 10 0" Width="100"  Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                        
                         <Button Command="{Binding addbutton}" Content="Lägg till" Margin="10 20 10 10"/>
                     </StackPanel>
                 </materialDesign:Card>
 
 
-                <Label Content="Ta bort medlem" Foreground="Black"/>
+                <Label Content="Ta bort medlem" />
 
                 <materialDesign:Card>
 

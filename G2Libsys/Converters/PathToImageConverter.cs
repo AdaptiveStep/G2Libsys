@@ -8,12 +8,14 @@ namespace G2Libsys.Converters
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value == null || value.ToString() == string.Empty)
             {
                 return new BitmapImage(new Uri(@"pack://application:,,,/Resources/Images/Bild_saknas.png"));
             }
-
+            
             return new BitmapImage(new Uri(value.ToString()));
+
+            
 
 
         }

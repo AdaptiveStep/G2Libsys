@@ -8,9 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:uc="clr-namespace:G2Libsys.Controls"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
     d:DesignHeight="1500"
     d:DesignWidth="780"
-    FontFamily="{StaticResource MaterialDesignFont}"
     mc:Ignorable="d">
 
     <Grid>
@@ -40,14 +45,14 @@
                     Margin="0,0,40,0"
                     DataContext="{Binding}" />
 
-                <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" />
+                <GridSplitter  />
 
                 <uc:BigPostControl
                     x:Name="bigpostctrl"
                     Grid.ColumnSpan="2"
                     DataContext="{Binding}" />
 
-                <GridSplitter Height="50" Style="{StaticResource MaterialDesignScrollBarThumb}" />
+                <GridSplitter Height="50"  />
 
                 <uc:SmallPostControl x:Name="smallpostonrl" DataContext="{Binding}" />
 

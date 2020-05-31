@@ -210,7 +210,7 @@
 
                 await _repo.AddAsync(adminAction);
 
-                await SaveDialogBoxAsync();
+                //await SaveDialogBoxAsync();
 
                 await _repo.RemoveAsync<Card>(UserCard.Owner);
             }
