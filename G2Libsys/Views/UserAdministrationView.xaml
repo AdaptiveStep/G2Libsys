@@ -141,7 +141,7 @@
                                     Height="30"
                                     materialDesign:ButtonAssist.CornerRadius="3"
                                     materialDesign:ShadowAssist.ShadowDepth="Depth2"
-                                    Command="{Binding SaveButton}"
+                                    Command="{Binding Savebutton}"
                                     Style="{StaticResource MaterialDesignRaisedLightButton}">
 
                                     <materialDesign:PackIcon

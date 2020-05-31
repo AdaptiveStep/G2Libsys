@@ -9,7 +9,7 @@ using G2Libsys.Services;
 namespace G2Libsys.ViewModels
 {
     // Hantera användarens egna info
-    public class UserProfileViewModel : BaseViewModel, ISubViewModel
+    public class UserProfileViewModel : BaseViewModel, IViewModel
     {
         private ObservableCollection<LibraryObject> libObjects;
         private ObservableCollection<Loan> loanObjects;
@@ -21,7 +21,7 @@ namespace G2Libsys.ViewModels
         private User currentUser;
         public ICommand Showbutton { get; private set; }
         public ICommand Savebutton { get; private set; }
-        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+        //public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         public Card UserCard
         {
@@ -139,13 +139,19 @@ namespace G2Libsys.ViewModels
 
         public async void GetCard()
         {
+
             UserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
            
         }
         public async void GetLoans()
         {
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(CurrentUser.ID));
-            LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(CurrentUser.ID));
+            LibraryObjects = new ObservableCollection<LibraryObject>();
+            foreach (Loan a in LoanObjects)
+            {
+                LibraryObjects.Add(await _repo.GetByIdAsync<LibraryObject>(a.ObjectID));
+            }
+           
             GetCard();
 
         }
