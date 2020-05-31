@@ -214,6 +214,7 @@
                 new RelayCommand(_ =>
                 _navigationService.HostScreen.SubViewModel =
                 (ISubViewModel)_navigationService.GetViewModel(new UserProfileViewModel()))));
+            MenuItems.Add(new UserMenuItem(typeof(LoanCheckoutViewModel), "Varukorg"));
 
             (CurrentUser.UserType switch
             {

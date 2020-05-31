@@ -27,7 +27,7 @@
         private readonly IUserRepository _userrepo;
         private ObservableCollection<LibraryObject> libObjects;
         private string cardStatus;
-        private Loan selectedLoan;
+        
         
         private User confirm;
         private User confirm2;
@@ -40,15 +40,7 @@
         /// Currently displayed User
         /// </summary>
         /// 
-        public Loan SelectedLoan
-        {
-            get => selectedLoan;
-            set
-            {
-                selectedLoan = value;
-                OnPropertyChanged(nameof(SelectedLoan));
-            }
-        }
+        
         public User Confirm 
         {
             get=> confirm;
@@ -165,24 +157,21 @@
         #region Methods
         public async void Return()
         {
-            if (SelectedLoan != null)
+                     
+            foreach (Loan a in LoanObjects)
             {
-               
-                        SelectedLoan.Returned = true;
-                        await _repo.UpdateAsync<Loan>(SelectedLoan);
-                   
-                    
-                
+                await _repo.UpdateAsync(a);
             }
+            GetLoans();
 
         }
         public async void CreateNewCard()
         {
             if (UserCard != null)
             {
-                await _repo.RemoveAsync<Card>(UserCard.ID);
+                await _repo.RemoveAsync<Card>(UserCard.Owner);
             }
-            UserCard = NewCard;
+            
             await _repo.AddAsync(NewCard);
             GetCard();
             _dialog.Alert("Klart", "Nytt Kort Skapat");
@@ -252,7 +241,9 @@
         public async void GetLoans()
         {
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
+            
             LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
+            
         }
         #endregion
     }
