@@ -57,7 +57,8 @@ namespace G2Libsys.ViewModels
 
         public LibraryObjectInfoViewModel(LibraryObject libraryObject)
         {
-            if (libraryObject.Quantity > 0)
+            
+            if (libraryObject.Quantity > 0 || libraryObject.Category > 1)
             {
                 Buttonstatus = "Låna";
             }
@@ -89,10 +90,14 @@ namespace G2Libsys.ViewModels
 
                 if (CurrentUserCard != null && CurrentUserCard.Activated != false)
                 {
+
                     ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
 
                     _loans.LoanCart.Add(currentBook);
                     _dialog.Alert("", $"Tillagd i varukorgen");
+                    currentBook.Quantity--;
+                    
+                    CancelCommand.Execute(null);
                 }
                 else { _dialog.Alert("", "Du har inget Lånekort registrerat eller aktiverat \nVänligen kontakta personalen"); }
             }
