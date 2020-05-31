@@ -13,6 +13,13 @@
     d:DesignWidth="800"
     x:TypeArguments="vm:LibraryObjectAdministrationViewModel"
     SnapsToDevicePixels="True"
+    Background="{DynamicResource MaterialDesignPaper}"
+	FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -49,7 +56,6 @@
                                     HorizontalAlignment="Stretch"
                                     materialDesign:TextFieldAssist.HasClearButton="True"
                                     materialDesign:TextFieldAssist.RippleOnFocusEnabled="True"
-                                    Background="WhiteSmoke"
                                     Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button
                                     Margin="5"
@@ -68,13 +74,10 @@
                                     Margin="5"
                                     Padding="0"
                                     HorizontalAlignment="Center"
-                                    FontSize="16"
-                                    Foreground="WhiteSmoke"
                                     ItemsSource="{Binding Categories}"
                                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                    SelectedItem="{Binding SelectedCategory}"
-                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                    SelectedItem="{Binding SelectedCategory}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock Width="110" Text="{Binding Name}" />
@@ -106,7 +109,6 @@
                         CanUserAddRows="False"
                         CanUserDeleteRows="False"
                         CanUserResizeColumns="True"
-                        ColumnHeaderStyle="{StaticResource MaterialDesignDataGridColumnHeader}"
                         DataContext="{Binding}"
                         IsReadOnly="True"
                         ItemsSource="{Binding LibraryObjects}"
@@ -192,7 +194,6 @@
                         Content="Borttagna objekt"
                         Foreground="White"
                         IsChecked="{Binding DisabledLibraryObjects, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                        Style="{StaticResource MaterialDesignAccentCheckBox}"
                         ToolTip="Visar en lista på borttagna eller aktiverade objekt" />
                     <Button
                         Width="45"

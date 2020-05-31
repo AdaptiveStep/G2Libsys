@@ -9,7 +9,13 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	d:DesignHeight="320"
 	d:DesignWidth="650"
-	FontFamily="{StaticResource MaterialDesignFont}"
+    Background="{DynamicResource MaterialDesignPaper}"
+	FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
 	mc:Ignorable="d">
     
 	<Grid>
@@ -38,29 +44,33 @@
 					<RowDefinition />
 					<RowDefinition />
 				</Grid.RowDefinitions>
-
+                    
 				<TextBlock
 					Grid.Row="0"
 					Grid.RowSpan="1"
 					Grid.Column="0"
-					Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                    Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
 					Text="{Binding FpLibraryObjects[1].Title}"
 					TextWrapping="Wrap" />
 
 				<StackPanel Grid.Row="1" Grid.RowSpan="2">
-
-					<TextBlock Style="{StaticResource MaterialDesignSubtitle1TextBlock}" Text="{Binding FpLibraryObjects[1].Publisher}" />
+                    <StackPanel Orientation="Horizontal"
+                                Margin="5 0 0 0">
+                        
+                    <TextBlock Text="Av: "/>
+                    <TextBlock Text="{Binding FpLibraryObjects[1].Publisher}" />
+                    </StackPanel>
 
 
 					<WrapPanel>
 						<TextBlock
+                            Margin="5 5 0 0"
 							Grid.Row="1"
-							Style="{StaticResource MaterialDesignTextBlock}"
 							Text="{Binding FpLibraryObjects[1].Description}"
 							TextWrapping="Wrap" />
-						<TextBlock
+                        <TextBlock
+                            Margin="5 15 0 0"
 							VerticalAlignment="Bottom"
-							FontWeight="Bold"
 							Text="{Binding FpLibraryObjects[1].DateAdded}" />
 
 					</WrapPanel>
@@ -75,7 +85,7 @@
 
 					<Image Source="{Binding FpLibraryObjects[1].imagesrc, Converter={converter:PathToImageConverter}}" 
                            Stretch="Uniform"
-                           MaxHeight="250"
+                           MaxHeight="300"
                            />
 
 				</materialDesign:Card>

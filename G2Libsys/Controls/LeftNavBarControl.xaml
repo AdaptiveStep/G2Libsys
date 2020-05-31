@@ -9,8 +9,14 @@
     xmlns:userControl="clr-namespace:G2Libsys.Controls"
     d:DesignHeight="160"
     d:DesignWidth="160"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+    TextElement.FontSize="27"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
-    <Grid Background="{DynamicResource accent_light}">
+    <Grid >
 
         <ListView
             x:Name="ViewListBox"
@@ -18,9 +24,6 @@
             Height="auto"
             Margin="5"
             HorizontalContentAlignment="Center"
-            FontSize="12"
-            FontWeight="DemiBold"
-            Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
             ItemsSource="{Binding Categories}"
             ScrollViewer.HorizontalScrollBarVisibility="Disabled"
             ScrollViewer.VerticalScrollBarVisibility="Disabled"
@@ -28,7 +31,7 @@
             SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="140" HorizontalAlignment="Left">
+                    <Grid Width="120" HorizontalAlignment="Left">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon
                                 Width="24"
@@ -36,15 +39,11 @@
                                 Margin="4,2,6,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Foreground="Black"
                                 Kind="{Binding ID, Converter={converter:CategoryToIconConverter}}" />
                             <TextBlock
                                 Margin="6,0,4,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                FontSize="22"
-                                FontWeight="DemiBold"
-                                Foreground="Black"
                                 Text="{Binding Name}" />
                         </StackPanel>
                     </Grid>

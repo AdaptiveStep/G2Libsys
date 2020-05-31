@@ -23,9 +23,7 @@
             Padding="0"
             materialDesign:ShadowAssist.ShadowDepth="Depth5"
             UniformCornerRadius="18">
-            <materialDesign:Card.Background>
-                <SolidColorBrush Opacity="0.6" Color="{StaticResource Primary900}" />
-            </materialDesign:Card.Background>
+            
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
