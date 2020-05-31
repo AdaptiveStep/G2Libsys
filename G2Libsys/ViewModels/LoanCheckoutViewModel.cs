@@ -112,18 +112,26 @@ namespace G2Libsys.ViewModels
 
         public async void ConfirmLoan()
         {
-            LoanCart = new ObservableCollection<Loan>();
-            foreach (LibraryObject a in LoanObj)
+            if (LoanObj.Count > 0)
             {
-                LoanCart.Add(new Loan { ObjectID = a.ID, CardID = CurrentUserCard.ID, LoanDate = DateTime.Now });
-            }
-            await _repo.AddRangeAsync(LoanCart);
+                LoanCart = new ObservableCollection<Loan>();
+                foreach (LibraryObject a in LoanObj)
+                {
+                    LoanCart.Add(new Loan { ObjectID = a.ID, CardID = CurrentUserCard.ID, LoanDate = DateTime.Now });
+                }
+                await _repo.AddRangeAsync(LoanCart);
 
-            _dialog.Alert("", "Dina lån är nu skapade");
-            LoanCart.Clear();
-            LoanObj.Clear();
-            _loans.LoanCart.Clear();
-            CancelCommand.Execute(null);
+                _dialog.Alert("", "Dina lån är nu skapade");
+                LoanCart.Clear();
+                LoanObj.Clear();
+                _loans.LoanCart.Clear();
+                CancelCommand.Execute(null);
+            }
+            else 
+            { 
+                _dialog.Alert("", "Inga lån tillagda");
+                CancelCommand.Execute(null);
+            }
         }
     }
 }
