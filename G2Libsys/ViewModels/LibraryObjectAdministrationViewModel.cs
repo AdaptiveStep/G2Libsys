@@ -143,7 +143,7 @@
         /// <summary>
         /// Enable execute if an Item is selected
         /// </summary>
-        private Predicate<object> CanExecute => _ => SelectedItem != null;
+        private Predicate<object> CanExecute => _ => SelectedItem != null && !SelectedItem.Disabled;
 
         /// <summary>
         /// Search for LibraryObject
@@ -163,12 +163,12 @@
         /// <summary>
         /// Delete LibraryObject
         /// </summary>
-        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => DeleteLibraryObjectAsync(), CanExecute);
+        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => dispatcher.InvokeAsync(DeleteLibraryObjectAsync), CanExecute);
 
         /// <summary>
         /// Command for downloading a csv file with deleted users
         /// </summary>
-        public ICommand DownloadLibLogCommand => new RelayCommand(SaveDialogBoxAsync);
+        public ICommand DownloadLibLogCommand => new RelayCommand(async _ => await SaveDialogBoxAsync());
 
         /// <summary>
         /// Reset lists
@@ -201,25 +201,35 @@
 
         #region Methods
 
+        /// <summary>
+        /// Initial setup
+        /// </summary>
         private async Task Initialize()
         {
+            // Initiate
             DisabledLibraryObjects = true;
             Categories     = new ObservableCollection<Category>();
             LibraryObjects = new ObservableCollection<LibraryObject>();
+
+            // Call queries
             Task<IEnumerable<Category>>  categoryList = _repo.GetAllAsync<Category>();
             Task<IEnumerable<LibraryObject>> itemList = _repo.GetAllAsync<LibraryObject>();
+
+            // Wait for both queries to complete
             await Task.WhenAll(categoryList, itemList);
+
             Categories.Add(new Category() { ID = 0, Name = "Visa Alla" });
 
             categoryList.Result.ToList().ForEach(c => Categories    .Add(c));
             itemList    .Result.ToList().ForEach(i => LibraryObjects.Add(i));
 
+            // Update categories
             OnPropertyChanged(nameof(Categories));
         }
+
         /// <summary>
         /// Hämtar en lista med LibraryObject
         /// </summary>
-        /// <returns></returns>
         private async Task GetLibraryObjects()
         {
             if (Categories?.Count < 1)
@@ -238,18 +248,14 @@
             LibraryObjects = new ObservableCollection<LibraryObject>(objects);
         }
 
-       
-
-
         /// <summary>
         /// Hämtar en lista med libraryobject som matchar söksträng
         /// </summary>
-        /// <returns></returns>
         private async Task SearchLibraryObject()
         {
             SelectedCategory = Categories.First();
 
-            List<LibraryObject> result;
+            var result = new List<LibraryObject>();
 
             try
             {
@@ -263,6 +269,7 @@
                 Debug.WriteLine(ex.Message);
             }
         }
+
         /// <summary>
         /// Skapar en ny LibraryObject
         /// </summary>
@@ -285,6 +292,7 @@
                 Debug.WriteLine(ex.Message);
             }
         }
+
         /// <summary>
         /// Funktion för att ändra i LibraryObject
         /// </summary>
@@ -310,14 +318,15 @@
                 Debug.WriteLine(ex.Message);
             }
         }
+
         /// <summary>
         /// Function used for deleting a library object
         /// </summary>
         private async Task DeleteLibraryObjectAsync()
         {
             if (selectedItem == null) return;
+
             bool result = _dialog.Confirm("Ta bort", $"\"{SelectedItem.Title.LimitLength(20)}\"\nGodkänn borttagning.");
-            //En dialogruta som tar emot en tuple med bool och string (anledning för att ta bort objekt)
 
             if (!result) return;
 
@@ -328,18 +337,13 @@
                 Comment = $"ObjektID: {selectedItem.ID} Titel: {selectedItem.Title}",
                 Actiondate = DateTime.Now,
                 ActionType = 2,
-
-
             };
-            
-     
 
             try
             {
                 //sets the selecteditem to disabled
                 SelectedItem.Disabled = true;
-                await _repo.UpdateAsync<LibraryObject>(SelectedItem).ConfigureAwait(false);
-                
+                await _repo.UpdateAsync(SelectedItem).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -351,7 +355,6 @@
                 //updates the list
                 ResetLists();
             }
-            
         }
 
         /// <summary>
@@ -363,45 +366,30 @@
             dispatcher.InvokeAsync(GetLibraryObjects);
         }
 
-
         /// <summary>
         /// A dialogbox that lets you browse where you want to save an object
         /// </summary>
-        /// <param name="param"></param>
-        public async void SaveDialogBoxAsync(object param = null) //används till att spara .csv fil 
+        public async Task SaveDialogBoxAsync()
         {
-            LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = DisabledLibraryObjects, DateAdded = DateTime.Now, LastEdited = DateTime.Now };
+            LibraryObjectsView libraryObjectsView = new LibraryObjectsView() { Disabled = DisabledLibraryObjects };
             var libObjects = new List<LibraryObjectsView>(await _repo.GetRangeAsync<LibraryObjectsView>(libraryObjectsView));
-            var propList = libraryObjectsView.GetType().GetProperties().Select(p => p.Name).ToList();
 
-            // Inställningar för save file dialog box
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.FileName = "LibsysUserLog"; // Default file name
-            dlg.DefaultExt = ".csv"; // Default file extension
-            dlg.Filter = "Excel documents (.csv)|*.csv"; // Filter files by extension
+            var _fileService = IoC.ServiceProvider.GetService<IFileService>();
 
-            // Visa save file dialog box true if user input string
-            bool? saveresult = dlg.ShowDialog();
+            bool? fileCreated = _fileService.CreateFile("LibraryObjectLog");
 
-
-
-            // Process save file dialog box results
-            if (saveresult == true)
+            if (fileCreated == true)
             {
-                // Create a FileStream with mode CreateNew  
-                FileStream stream = new FileStream(dlg.FileName, FileMode.OpenOrCreate);
-                // Create a StreamWriter from FileStream  
-                using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8))
+                bool success = _fileService.ExportCSV(libObjects);
+
+                if (success)
                 {
-                    writer.WriteLine(string.Join("," , propList));
-                    foreach (var item in libObjects)
-                    {
-                        writer.WriteLine($"{ item.ID },{ item.ISBN },{ item.PurchasePrice },{item.Title},{item.Category},{item.DateAdded},{item.Disabled},{item.LastEdited}");
-                    }
+                    _dialog.Alert("Filen sparad", "");
                 }
-
-
-           
+                else
+                {
+                    _dialog.Alert("Exportering misslyckades", "Stäng filen om öppen och försök igen.");
+                }
             }
         }
 

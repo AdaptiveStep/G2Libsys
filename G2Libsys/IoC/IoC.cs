@@ -39,6 +39,7 @@
 
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddScoped<IDialogService, DialogService>();
+            services.AddTransient<IFileService, FileService>();
 
             return services;
         }
