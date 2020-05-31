@@ -227,7 +227,7 @@
 						Text="Aktiva lån" />
 
 					<Separator/>
-					<ScrollViewer  VerticalScrollBarVisibility="Auto" MaxHeight="500" MaxWidth="500" >
+					<ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100" MaxWidth="500"  >
 						<StackPanel Orientation="Horizontal">
 
 
@@ -235,7 +235,7 @@
 							<ItemsControl ItemsSource="{Binding LibraryObjects}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-										<TextBlock Text="{Binding Title}" MaxWidth="400"/> 
+                                        <TextBlock Height="20" Text="{Binding Title}" MaxWidth="400"/> 
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>
@@ -243,7 +243,7 @@
 							<ItemsControl ItemsSource="{Binding LoanObjects}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-										<CheckBox FontWeight="DemiBold" IsChecked="{Binding Returned, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+										<CheckBox Height="20" FontWeight="DemiBold" IsChecked="{Binding Returned, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>

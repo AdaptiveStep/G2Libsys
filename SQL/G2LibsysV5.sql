@@ -372,6 +372,21 @@
 ------------------------------------------------------------------------
 --SQL PROCEDURES -------------------------------------------------------
 ---------------Users ---------------------------------------------------
+Create PROC [dbo].[usp_filtersearch_loans](
+	 @ID INT)
+    AS
+    BEGIN
+        SELECt *
+        FROM Loans
+        WHERE CardID IN 
+                ( 
+                SELECT CardID
+                FROM Cards as C
+                WHERE Loans.CardID = C.ID and c.Owner = @ID
+                )
+
+    END
+	GO
 Create proc usp_getall_users
 		as
 		declare @Phrase varchar(20);

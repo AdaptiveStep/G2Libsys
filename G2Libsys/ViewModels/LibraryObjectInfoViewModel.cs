@@ -17,12 +17,14 @@ namespace G2Libsys.ViewModels
     public class LibraryObjectInfoViewModel : BaseViewModel, ISubViewModel
     {
         #region Fields
+        private bool available;
         private readonly IRepository _repo;
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
         public ICommand AddLoan { get; private set; }
 
         private LibraryObject currentBook;
         private Card currentUserCard;
+        private string buttonstatus;
         //private Author author;
 
         //private async void GetAuthor()
@@ -36,6 +38,24 @@ namespace G2Libsys.ViewModels
         //}
         #endregion       
         #region Constructor
+            public string Buttonstatus
+        {
+            get => buttonstatus;
+            set
+            {
+                buttonstatus = value;
+                OnPropertyChanged(nameof(buttonstatus));
+            }
+        }
+        public bool Available
+        {
+            get => available;
+            set
+            {
+                available = value;
+                OnPropertyChanged(nameof(Available));
+            }
+        }
         public LibraryObjectInfoViewModel()
         {
 
@@ -45,7 +65,16 @@ namespace G2Libsys.ViewModels
 
         public LibraryObjectInfoViewModel(LibraryObject libraryObject)
         {
-            
+            if (libraryObject.Quantity > 0)
+            {
+                Buttonstatus = "Låna";
+                Available = true;
+            }
+            else 
+            {
+                Buttonstatus = "Slut";
+                Available = false;
+            }
             _repo = new GeneralRepository();
             //author = new Author();
             currentBook = libraryObject;
