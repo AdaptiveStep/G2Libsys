@@ -291,7 +291,7 @@
 		--Computed columns
 		--ExpirationDate
 		--isLate
-	 	CONSTRAINT UC_CardObjectCombo UNIQUE (CardID,ObjectID)
+	 	
 		);
 		GO
 
@@ -577,7 +577,7 @@ Create proc usp_getall_users
         (
             SELECT ObjectID
             FROM LOANS
-            WHERE  Loans.CardID IN
+            WHERE Returned=1 AND Loans.CardID IN
             (
                 SELECT Cards.ID
                 FROM Cards
@@ -593,7 +593,7 @@ Create proc usp_getall_users
     BEGIN
         SELECt *
         FROM Loans
-        WHERE CardID IN 
+        WHERE RETURNED=1 AND CardID IN 
                 ( 
                 SELECT CardID
                 FROM Cards as C
