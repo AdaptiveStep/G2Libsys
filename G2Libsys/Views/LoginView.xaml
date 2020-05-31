@@ -11,6 +11,12 @@
     xmlns:userControl="clr-namespace:G2Libsys.Controls"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
     x:TypeArguments="vm:LoginViewModel"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
     <Grid>
         <Rectangle
@@ -33,7 +39,6 @@
             MinHeight="200"
             MaxHeight="350"
             Margin="50"
-            Background="{StaticResource primary_dark}"
             UniformCornerRadius="10">
 
 
@@ -48,21 +53,11 @@
 
                 <Grid.Resources>
                     <Style TargetType="TextBlock">
-                        <Setter Property="Foreground" Value="{StaticResource MaterialDesignDarkForeground}" />
-                        <Setter Property="FontSize" Value="16" />
-                        <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
                         <Setter Property="Margin" Value="0,5,0,3" />
                         <Setter Property="HorizontalAlignment" Value="Left" />
                     </Style>
 
-                    <!--<Style TargetType="TextBox">
-                        <Setter Property="Background" Value="White" />
-                        <Setter Property="Height" Value="25" />
-                        <Setter Property="Width" Value="160" />
-                        <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True" />
-                        <Setter Property="materialDesign:TextFieldAssist.HasOutlinedTextField" Value="True" />
-                        <Setter Property="materialDesign:TextFieldAssist.RippleOnFocusEnabled" Value="True" />
-                    </Style>-->
+                   
                 </Grid.Resources>
 
                 <StackPanel
@@ -73,7 +68,6 @@
                     <TextBlock Text="E-post" />
                     <TextBox
                         materialDesign:TextFieldAssist.HasClearButton="True"
-                        Background="WhiteSmoke"
                         Text="{Binding Username, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                     <TextBlock
@@ -85,7 +79,6 @@
                         x:Name="PasswordText"
                         helper:PasswordAssist.BindablePassword="{Binding Password, Mode=TwoWay}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
-                        Background="WhiteSmoke"
                         Style="{StaticResource MaterialDesignPasswordBox}" />
 
                     <Button
@@ -95,7 +88,7 @@
                         VerticalAlignment="Top"
                         Command="{Binding LogIn}"
                         Content="{Binding LoginText}"
-                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                        />
 
                 </StackPanel>
 
@@ -108,13 +101,11 @@
                     <TextBlock Text="Förnamn" />
                     <TextBox
                         materialDesign:TextFieldAssist.HasClearButton="True"
-                        Background="WhiteSmoke"
                         Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                     <TextBlock HorizontalAlignment="Left" Text="Efternamn" />
                     <TextBox
                         materialDesign:TextFieldAssist.HasClearButton="True"
-                        Background="WhiteSmoke"
                         Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                     <StackPanel Width="160" Orientation="Horizontal">
@@ -124,28 +115,24 @@
                             Margin="0,0,4,-4"
                             HorizontalAlignment="Right"
                             Content="{Binding EmailValidationMessage}"
-                            FontSize="10"
-                            Foreground="PaleVioletRed"
                             Opacity="0.6"
                             Visibility="Visible" />
                     </StackPanel>
                     <TextBox
                         materialDesign:TextFieldAssist.HasClearButton="True"
-                        Background="WhiteSmoke"
                         Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
                     <TextBlock HorizontalAlignment="Left" Text="Lösenord" />
                     <PasswordBox
                         helper:PasswordAssist.BindablePassword="{Binding NewPassword, Mode=TwoWay}"
                         materialDesign:TextFieldAssist.HasClearButton="True"
-                        Background="WhiteSmoke"
-                        Style="{StaticResource MaterialDesignPasswordBox}" />
+                        />
 
                     <Button
                         Margin="10"
                         Command="{Binding Register}"
                         Content="Registrera"
-                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                        />
 
                 </StackPanel>
 

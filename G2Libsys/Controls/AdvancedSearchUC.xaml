@@ -206,7 +206,7 @@
 				Margin="5"
 				IsChecked="True"
 				Style="{StaticResource MaterialDesignActionToggleButton}"
-				ToolTip="MaterialDesignActionLightToggleButton">
+				ToolTip="Stäng avancerad sökning">
 				<ToggleButton.Content>
 					<materialDesign:PackIcon Kind="EmoticonSad" />
 				</ToggleButton.Content>
