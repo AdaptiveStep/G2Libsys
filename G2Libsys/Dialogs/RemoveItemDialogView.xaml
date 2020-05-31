@@ -6,106 +6,94 @@
     xmlns:local="clr-namespace:G2Libsys.Dialogs"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Grid>
         <materialDesign:Card
-            Margin="100"
-            MaxHeight="250"
-            MaxWidth="350"
-            materialDesign:ShadowAssist.ShadowDepth="Depth5"
-            BorderBrush="Black"
-            BorderThickness="2"
-            UniformCornerRadius="18">
-            <materialDesign:Card.Background>
-                <SolidColorBrush Opacity="0.8" Color="{StaticResource Accent700}" />
-            </materialDesign:Card.Background>
+			MaxWidth="280"
+			MaxHeight="200"
+			Margin="20"
+			Padding="0"
+			materialDesign:ShadowAssist.ShadowDepth="Depth5"
+			Background="{DynamicResource MaterialDesignPaper}"
+			BorderBrush="Black"
+			BorderThickness="1"
+			UniformCornerRadius="20">
+
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Border Background="{StaticResource accent_light}" Opacity="0.5" />
+                <Border Background="Black" Opacity="0.2" />
                 <TextBlock
-                    Height="26"
-                    Margin="2"
-                    Padding="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="16"
-                    FontWeight="DemiBold"
-                    Foreground="{StaticResource accent_light}"
-                    Style="{StaticResource MaterialDesignBody2TextBlock}"
-                    Text="{Binding Title}" />
+					Height="26"
+					Margin="2"
+					Padding="0"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					Text="{Binding Title}" />
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="5"/>
-                        <RowDefinition Height="25"/>
+                        <RowDefinition />
                         <RowDefinition Height="auto" />
-                        <RowDefinition  />
-                        <RowDefinition Height="25"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="25" />
-
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    
-                    <TextBlock Text="Ange en anledning för borttagning:"
-                               Grid.Column="1"
-                               HorizontalAlignment="Center"
-                               Foreground="White"
-                               Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
-                               Grid.Row="1"
-                               Grid.ColumnSpan="3"/>
 
-                    <TextBox
-                        Grid.Column="1"
-                        Grid.ColumnSpan="3"
-                        Grid.Row="2"
-                        Grid.RowSpan="2"
-                        Background="{StaticResource light_background}"
-                        MinHeight="170"
-                        MinWidth="150"
-                        Margin="15"
-                        FontFamily="{StaticResource MaterialDesignFont}"
-                        FontSize="13"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
-                        Text="{Binding ReturnMessage, Mode=TwoWay}"
-                        TextWrapping="WrapWithOverflow" />
+                    <StackPanel Grid.ColumnSpan="2" Width="250">
+
+                        <Label Content="{Binding Message}" />
+                        
+                        <TextBox
+							x:Name="ReasonTextbox"
+							Height="100"
+							VerticalAlignment="Top"
+							materialDesign:HintAssist.Hint="Ange en anledning"
+							Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
+							Text="{Binding ReturnMessage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+							TextWrapping="Wrap"
+							VerticalScrollBarVisibility="Auto" />
+                    </StackPanel>
+
 
 
                     <Button
-                        Grid.Row="4"
-                        Height="28"
-                        Padding="0"
-                        Command="{Binding RemoveItemCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
-                        Content="Ta bort"
-                        Grid.ColumnSpan="2"
-                        FontSize="18"
-                        Opacity="0.8"
-                        Style="{StaticResource MaterialDesignRaisedButton}"  />
+						Grid.Row="1"
+						Margin="0,0,5,0"
+						Command="{Binding SaveCommand}"
+						CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+						Content="Godkänn">
 
+                        <Button.Style>
 
-                    
+                            <Style BasedOn="{StaticResource MaterialDesignRaisedButton}" TargetType="Button">
+                                <Setter Property="IsEnabled" Value="True" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=ReasonTextbox}" Value="">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                    </Button>
                     <Button
-                        Grid.Row="4"
-                        Grid.Column="3"
-                        Grid.ColumnSpan="2"
-                        Height="28"
-                        Command="{Binding CancelCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
-                        Content="Avbryt"
-                        FontSize="18"
-                        Opacity="0.8"
-                        Style="{StaticResource MaterialDesignRaisedButton}" />
+						Grid.Row="1"
+						Grid.Column="1"
+						Margin="5,0,0,0"
+						Command="{Binding CancelCommand}"
+						CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+						Content="Avbryt" />
                 </Grid>
             </Grid>
         </materialDesign:Card>
