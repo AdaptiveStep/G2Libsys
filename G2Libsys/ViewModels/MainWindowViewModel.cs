@@ -78,8 +78,12 @@
             get => currentViewModel;
             set
             {
-                currentViewModel = value;
-                OnPropertyChanged(nameof(CurrentViewModel));
+                if (value != null)
+                {
+                    currentViewModel = value;
+                    SubViewModel = null;
+                    OnPropertyChanged(nameof(CurrentViewModel));
+                }
             }
         }
 
