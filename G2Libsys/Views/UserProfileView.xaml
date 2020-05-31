@@ -44,8 +44,8 @@
 
 
         <Button
-			Grid.RowSpan="2"
-			Grid.ColumnSpan="2"
+			Grid.RowSpan="3"
+			Grid.ColumnSpan="3"
 			Width="{Binding (FrameworkElement.ActualWidth)}"
 			Height="{Binding (FrameworkElement.ActualHeight)}"
 			Background="Transparent"
@@ -168,23 +168,7 @@
                 </materialDesign:Card>
                 <Separator Grid.ColumnSpan="2" VerticalAlignment="Bottom" />
 
-                <!--  Stackpanel for buttons handling loaned objects  -->
-                <StackPanel
-					Grid.Row="1"
-					Grid.Column="1"
-					Margin="5,10,10,10">
-
-                    <Button Margin="5" Command="{Binding ReturnLoan}">
-
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="AssignmentReturn" />
-                                <TextBlock Margin="10,0,0,0" Text="Återlämna" />
-
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                </StackPanel>
+                
 
 
                 <!--  panel for loaned objects  -->
@@ -206,15 +190,8 @@
                             <ItemsControl ItemsSource="{Binding LibraryObjects}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding Title}" MaxWidth="400"/>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-
-                            <ItemsControl ItemsSource="{Binding LoanObjects}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <CheckBox FontWeight="DemiBold" IsChecked="{Binding Returned, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                        <TextBlock Text="{Binding Title}" MaxWidth="400"
+                                                   />
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
