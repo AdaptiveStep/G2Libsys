@@ -167,6 +167,8 @@
 
             GetLoans();
             GetCard();
+
+            SaveDialogBoxAsync();
         }
 
         #endregion
@@ -175,10 +177,10 @@
 
         private void SetupCommands()
         {
-            ExportHistory = new RelayCommand(_ => SaveDialogBoxAsync());
+            ExportHistory = new RelayCommand(async _ => await SaveDialogBoxAsync());
             ReturnLoan = new RelayCommand(_ => Return());
             Savebutton = new RelayCommand(_ => Save());
-            ChangeCardStatusbutton = new RelayCommand(_ => ChangeCardStatus());
+            ChangeCardStatusbutton = new RelayCommand(_ => ChangeCardStatus(), _ => UserCard != null);
             CreateNewCardbutton = new RelayCommand(_ => CreateNewCard());
         }
 
@@ -276,19 +278,14 @@
             CardStatus = UserCard?.Activated ?? false ? "Spärra Kort" : "Aktivera Kort";
         }
 
-        private async void GetLoans()
-        {
-            LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
-            
-            LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
-        }
-
         /// <summary>
         /// Export this users loan history to a csv file
         /// </summary>
-        private void SaveDialogBoxAsync()
+        private async Task SaveDialogBoxAsync()
         {
-            if (ActiveUser is null || LoanObjects is null) return;
+            if (ActiveUser is null) return;
+
+            var loanHistory = await _repo.GetRangeAsync<Loan>(new { ActiveUser.ID });
 
             var fileService = IoC.ServiceProvider.GetService<IFileService>();
 
@@ -296,7 +293,7 @@
 
             if (fileCreated)
             {
-                bool success = fileService.ExportCSV(LoanObjects.ToList());
+                bool success = fileService.ExportCSV(loanHistory.ToList());
 
                 if (success)
                 {
@@ -313,12 +310,14 @@
         {
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
             LibraryObjects = new ObservableCollection<LibraryObject>();
+
             foreach (Loan a in LoanObjects)
             {
                 LibraryObjects.Add(await _repo.GetByIdAsync<LibraryObject>(a.ObjectID));
             }
             //LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
         }
+
         #endregion
     }
 }

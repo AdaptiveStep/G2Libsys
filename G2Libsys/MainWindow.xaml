@@ -41,14 +41,5 @@
 
         <ContentPresenter Grid.Row="2" Content="{Binding SubViewModel}" />
 
-        <!--  Close SubView Button  -->
-        <!--<Button
-            Width="0"
-            Height="0"
-            VerticalAlignment="Top"
-            Background="Transparent"
-            Command="{Binding CancelCommand}"
-            IsCancel="True"
-            Style="{x:Null}" />-->
     </Grid>
 </Window>
