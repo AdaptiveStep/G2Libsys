@@ -10,7 +10,6 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="vm:UserProfileViewModel"
-    Background="{DynamicResource MaterialDesignPaper}"
     FontFamily="{DynamicResource MaterialDesignFont}"
     TextElement.FontSize="13"
     TextElement.FontWeight="Regular"
@@ -34,24 +33,19 @@
 
 
         <Rectangle
-			Grid.RowSpan="3"
-			Grid.ColumnSpan="3"
-			Opacity="0.7">
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="3"
+            Opacity="0.7">
             <Rectangle.Fill>
                 <SolidColorBrush Color="Black" />
             </Rectangle.Fill>
+            <Rectangle.InputBindings>
+                <MouseBinding
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding}"
+                    MouseAction="LeftClick" />
+            </Rectangle.InputBindings>
         </Rectangle>
-
-
-        <Button
-			Grid.RowSpan="3"
-			Grid.ColumnSpan="3"
-			Width="{Binding (FrameworkElement.ActualWidth)}"
-			Height="{Binding (FrameworkElement.ActualHeight)}"
-			Background="Transparent"
-			Command="{Binding CancelCommand}"
-			Cursor="Arrow"
-			Style="{StaticResource MaterialDesignToolForegroundButton}" />
 
         <materialDesign:Card
 			Grid.Row="1"
