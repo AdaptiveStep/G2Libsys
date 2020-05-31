@@ -36,6 +36,7 @@
         private ICommand editItem;
         private ICommand deleteItem;
         private ICommand reset;
+        private ICommand downloadLibLogCommand;
         private LibraryObject newLibraryObject;
         private ObservableCollection<LibraryObject> libraryObjects;
         private Category selectedCategory;
@@ -168,7 +169,7 @@
         /// <summary>
         /// Command for downloading a csv file with deleted users
         /// </summary>
-        public ICommand DownloadLibLogCommand => new RelayCommand(async _ => await SaveDialogBoxAsync());
+        public ICommand DownloadLibLogCommand => downloadLibLogCommand ??= new RelayCommand(async _ => await SaveDialogBoxAsync());
 
         /// <summary>
         /// Reset lists
