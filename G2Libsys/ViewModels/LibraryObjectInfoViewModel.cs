@@ -66,14 +66,14 @@ namespace G2Libsys.ViewModels
             if (_navigationService.HostScreen.CurrentUser != null)
             {
 
-                if (CurrentUserCard != null)
+                if (CurrentUserCard != null && CurrentUserCard.Activated != false)
                 {
                     ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
 
                     _loans.LoanCart.Add(currentBook);
                     _dialog.Alert("", $"Tillagd i varukorgen");
                 }
-                else { _dialog.Alert("", "Du har inget Lånekort registrerat. \nVänligen kontakta personalen"); }
+                else { _dialog.Alert("", "Du har inget Lånekort registrerat eller aktiverat \nVänligen kontakta personalen"); }
             }
             else { _dialog.Alert("", "Vänligen logga in för att låna"); }
         }
