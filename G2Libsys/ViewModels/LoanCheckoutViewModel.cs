@@ -9,7 +9,7 @@ using System;
 
 namespace G2Libsys.ViewModels
 {
-    public class LoanCheckoutViewModel : BaseViewModel, ISubViewModel
+    public class LoanCheckoutViewModel : BaseViewModel, IViewModel
     {
         private readonly IRepository _repo;
         private readonly ILoansService _loans;
@@ -21,7 +21,7 @@ namespace G2Libsys.ViewModels
         public ICommand Confirm { get; set; }
         public ICommand DeleteItem { get; set; }
         public ICommand Clear { get; set; }
-        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.CurrentViewModel = _navigationService.CreateNewInstance(new LibraryMainViewModel()));
 
         public LibraryObject SelectedItem
         {
@@ -107,9 +107,12 @@ namespace G2Libsys.ViewModels
             LoanObj.Clear();
             
             _loans.LoanCart.Clear();
-            CancelCommand.Execute(null);
-        }
 
+            CancelCommand.Execute(null);
+
+
+        }
+       
         public async void ConfirmLoan()
         {
             if (LoanObj.Count > 0)
@@ -125,6 +128,7 @@ namespace G2Libsys.ViewModels
                 LoanCart.Clear();
                 LoanObj.Clear();
                 _loans.LoanCart.Clear();
+
                 CancelCommand.Execute(null);
             }
             else 

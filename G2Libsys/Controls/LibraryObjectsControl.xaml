@@ -17,7 +17,7 @@
 			Width="{Binding (FrameworkElement.ActualWidth), RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
 			ScrollViewer.VerticalScrollBarVisibility="Auto"
 			IsSynchronizedWithCurrentItem="False" 
-			ItemsSource="{Binding LibraryObjects, UpdateSourceTrigger=PropertyChanged}"
+			ItemsSource="{Binding LibraryObjects}"
 			SelectedItem="{Binding SelectedLibraryObject}"
 			SelectionMode="Single">
 			<ListView.ItemTemplate>
