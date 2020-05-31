@@ -81,6 +81,7 @@ namespace G2Libsys.ViewModels
         {
             _loans.LoanCart.Remove(SelectedItem);
             LoanObj.Remove(SelectedItem);
+            
         }
         
         private async void GetUser()

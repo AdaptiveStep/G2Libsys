@@ -547,7 +547,8 @@ Create proc usp_getall_users
 			INSERT INTO Loans (LoanDate, ObjectID, CardID)
 			VALUES (@LoanDate, @ObjectID, @CardID);
 			update LibraryObjects
-			set Quantity = LibraryObjects.Quantity -1 Where ID = @OBjectID;
+			SET Quantity = LibraryObjects.Quantity -1 
+			WHERE ID = @OBjectID AND Category=1;
 		END
 		GO
 	
@@ -580,7 +581,8 @@ Create proc usp_getall_users
 				Returned 		= @Returned
 			WHERE ID=@ID; 
 			update LibraryObjects
-			set Quantity = LibraryObjects.Quantity +1 Where ID = @OBjectID;
+			set Quantity = LibraryObjects.Quantity +1 
+			WHERE ID = @OBjectID AND Category=1;
 		END
 		GO
 
@@ -605,7 +607,7 @@ Create proc usp_getall_users
     END
     GO
 
-    Create PROC usp_getloans_users(
+    Create PROC [dbo].[usp_getloans_users](
     @ID INT)
     AS
     BEGIN
@@ -615,7 +617,11 @@ Create proc usp_getall_users
                 ( 
                 SELECT CardID
                 FROM Cards as C
-                WHERE Loans.CardID = C.ID and c.Owner = @ID
+                WHERE Loans.CardID = C.ID and c.Owner = @ID and ObjectID IN 
+				(
+				SELECT ObjectID
+				FROM LibraryObjects as L
+				WHERE L.Category=1 AND L.ID = OBjectID)
                 )
 
     END
@@ -1813,6 +1819,8 @@ INSERT INTO LibraryObjects (
             ,Author
             ,imagesrc
             ,Dewey
+			,Disabled 
+			,Quantity
         )
     VALUES (
         'Harry Potter och De vises sten'
@@ -1824,6 +1832,8 @@ INSERT INTO LibraryObjects (
         ,'Cool author'
         ,'https://covers.openlibrary.org/b/id/7395418-L.jpg'
         ,100
+		,0
+		,10
     )
     ,--Does ID really have to be inserted? 
  (
@@ -1836,6 +1846,8 @@ INSERT INTO LibraryObjects (
         ,'Megawriter'
         ,'https://covers.openlibrary.org/b/id/8266542-M.jpg'
         ,100
+		,0
+		,10
     )
     ,(
         'Harry Potter och de vises sten'
@@ -1847,6 +1859,8 @@ INSERT INTO LibraryObjects (
         ,'Gigabrain McPro'
         ,'https://covers.openlibrary.org/b/id/8259337-M.jpg'
         ,100
+		,0
+		,10
     )
     ,(
         'Sagan om Ringen'
@@ -1858,6 +1872,8 @@ INSERT INTO LibraryObjects (
         ,'J.R.R Tolkien'
         ,'https://covers.openlibrary.org/w/id/8474036-L.jpg'
         ,100
+		,0
+		,10
     )
     ,(
         'Sagan om de två tornen'
@@ -1869,6 +1885,8 @@ INSERT INTO LibraryObjects (
         ,'J.R.R Tolkien'
         ,'https://covers.openlibrary.org/w/id/8478177-L.jpg'
         ,100
+		,0
+		,10
     )
     ,(
        'Konungens återkomst'
@@ -1880,6 +1898,8 @@ INSERT INTO LibraryObjects (
         ,'J.R.R Tolkien'
         ,'https://covers.openlibrary.org/w/id/8461482-L.jpg'
         ,100
+		,0
+		,10
     )
 	  ,(
        'Konungens återkomst'
@@ -1891,6 +1911,8 @@ INSERT INTO LibraryObjects (
         ,'J.R.R Tolkien'
         ,'https://ia800608.us.archive.org/view_archive.php?archive=/20/items/olcovers658/olcovers658-L.zip&file=6587309-L.jpg&ext='
         ,100
+		,0
+		,10
     )
     ,(
        'Hobbiten - Ljudbok'
@@ -1902,6 +1924,8 @@ INSERT INTO LibraryObjects (
         ,'J.R.R Tolkien'
         ,'https://covers.openlibrary.org/w/id/8406786-L.jpg'
         ,100
+		,0
+		,10
     )
     ,(
         'Game of Thrones Ljudbok'
@@ -1913,6 +1937,8 @@ INSERT INTO LibraryObjects (
         ,'G.R.R Martin'
         ,'https://covers.openlibrary.org/w/id/8773509-L.jpg'
         ,100
+		,0
+		,10
     )
     ,(
         'Den andra dödssynden Ljudbok'
@@ -1924,6 +1950,8 @@ INSERT INTO LibraryObjects (
         ,'Jan Guillou'
         ,'https://s1.adlibris.com/images/55340502/den-andra-dodssynden.jpg'
         ,100
+		,0
+		,10
     )
     ,(
         'The Hulk'
@@ -1935,6 +1963,8 @@ INSERT INTO LibraryObjects (
         ,'El Chapo De La Writon'
         ,'https://covers.openlibrary.org/w/id/7740361-L.jpg'
         ,100
+		,0
+		,10
     )
 	,(
 		'Thinking Like an Etrepreneur'
@@ -1946,6 +1976,8 @@ INSERT INTO LibraryObjects (
 		,'Peter Hupalo'
 		,'https://covers.openlibrary.org/b/id/732527-L.jpg'
 		,107
+		,0
+		,10
 	)
 	,(
 		'Green Illusions'
@@ -1957,6 +1989,8 @@ INSERT INTO LibraryObjects (
 		,'Ozzie Zehner'
 		,'https://covers.openlibrary.org/b/id/9344195-L.jpg'
 		,107
+		,0
+		,10
 	)
 	,(
 		'Citizen Science'
@@ -1968,6 +2002,8 @@ INSERT INTO LibraryObjects (
 		,'Alan Irwin'
 		,'https://covers.openlibrary.org/b/id/263997-L.jpg'
 		,107
+		,0
+		,10
 	)
 	,(
 		'Animal Cognition'
@@ -1979,6 +2015,8 @@ INSERT INTO LibraryObjects (
 		,'Nick Lund'
 		,'https://covers.openlibrary.org/b/id/1212263-L.jpg'
 		,100
+		,0
+		,10
 	)
 	,(
 		'IT'
@@ -1991,6 +2029,8 @@ INSERT INTO LibraryObjects (
 		,'Stephen King'
 		,'https://covers.openlibrary.org/b/id/8569283-L.jpg'
 		,100
+		,0
+		,10
 	)
 ;
 	GO 

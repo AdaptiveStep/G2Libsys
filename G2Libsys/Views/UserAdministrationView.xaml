@@ -206,7 +206,7 @@
 							</StackPanel>
 						</Button.Content>
 					</Button>
-                    <Button Command="{Binding ExportHistory}">
+                    <Button Margin="5" Command="{Binding ExportHistory}">
 
                         <Button.Content>
                             <StackPanel Orientation="Horizontal">
@@ -246,7 +246,7 @@
 							<ItemsControl ItemsSource="{Binding LoanObjects}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-										<CheckBox Height="20" IsChecked="{Binding Returned, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+										<CheckBox Height="20" IsChecked="{Binding Returned}" />
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>

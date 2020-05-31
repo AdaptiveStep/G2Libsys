@@ -276,7 +276,10 @@
 		private async void GetFpLibraryObjects()
 		{
 			var list = (await _repo.GetAllAsync<LibraryObject>(1)).ToList();
-			FpLibraryObjects = new ObservableCollection<LibraryObject>(list.GetRange(0,2));
+			if (list.Count > 3)
+			{
+				FpLibraryObjects = new ObservableCollection<LibraryObject>(list.GetRange(0, 2));
+			}
 		}
 
         #endregion
