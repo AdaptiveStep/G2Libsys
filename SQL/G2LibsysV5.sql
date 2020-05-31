@@ -699,7 +699,7 @@ Create proc usp_getall_users
 		BEGIN
 			if (@ID is not null)
 			begin
-				SELECT * FROM libraryobjects WHERE Category = @ID;
+				SELECT * FROM libraryobjects WHERE Category = @ID and Disabled = 0;
 			end
 			else
 			begin
