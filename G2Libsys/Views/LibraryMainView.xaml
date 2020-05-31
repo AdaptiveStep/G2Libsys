@@ -45,6 +45,7 @@
 		<!--  Row1  -->
 		<userControl:FrontPageControl
 			Grid.Row="1"
+            
 			DataContext="{Binding}"
 			Visibility="{Binding FrontPage, Converter={converter:BoolToVisibilityConverter}}" />
 		<userControl:LibraryObjectsControl

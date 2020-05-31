@@ -546,6 +546,8 @@ Create proc usp_getall_users
 		BEGIN
 			INSERT INTO Loans (LoanDate, ObjectID, CardID)
 			VALUES (@LoanDate, @ObjectID, @CardID);
+			update LibraryObjects
+			set Quantity = LibraryObjects.Quantity -1 Where ID = @OBjectID;
 		END
 		GO
 	
@@ -577,6 +579,8 @@ Create proc usp_getall_users
 				CardID 			= @CardID,
 				Returned 		= @Returned
 			WHERE ID=@ID; 
+			update LibraryObjects
+			set Quantity = LibraryObjects.Quantity +1 Where ID = @OBjectID;
 		END
 		GO
 
@@ -626,7 +630,7 @@ Create proc usp_getall_users
 		BEGIN
 			IF (@ID IS NOT NULL)	--Only delete user if there is a userID provided
 	   			BEGIN
-				DELETE FROM Cards WHERE ID=@ID; 		--Might still crash if there is no user with this userid
+				DELETE FROM Cards WHERE Owner=@ID; 		--Might still crash if there is no user with this userid
 				END
 		END
 		GO
