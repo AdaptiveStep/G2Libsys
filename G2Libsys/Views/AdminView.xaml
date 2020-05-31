@@ -8,6 +8,12 @@
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
     d:DesignHeight="480"
     d:DesignWidth="600"
     x:TypeArguments="vm:AdminViewModel"
@@ -18,16 +24,7 @@
             <ColumnDefinition Width="auto" />
 
         </Grid.ColumnDefinitions>
-        <Grid.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
-            </Style>
-            <Style TargetType="Label">
-                <Setter Property="Foreground" Value="White" />
-                <Setter Property="FontFamily" Value="{StaticResource MaterialDesignFont}" />
-
-            </Style>
-        </Grid.Resources>
+        
         <materialDesign:Card Grid.Column="0" Margin="10">
             <StackPanel>
                 <materialDesign:Card Margin="10">
@@ -37,7 +34,6 @@
                         <TextBox
                             Width="140"
                             Margin="10"
-                            Background="Wheat"
                             Text="{Binding SearchString}" />
                         <Button
                             Margin="0,0,10,0"
@@ -87,38 +83,33 @@
             Grid.Column="1"
             Margin="0,0,10,10"
             Orientation="Vertical">
-            <Label Content="Lägg till medlem" Foreground="{StaticResource primary_mid}" />
+            <Label Content="Lägg till medlem" />
             <materialDesign:Card>
                 <StackPanel>
                     <Label Content="Namn" />
                     <TextBox
                         Width="100"
                         Margin="10,0,10,0"
-                        Background="Wheat"
                         Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     <Label Content="Efternamn" />
                     <TextBox
                         Width="100"
                         Margin="10,0,10,0"
-                        Background="Wheat"
                         Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     <Label Content="Email" />
                     <TextBox
                         Width="100"
                         Margin="10,0,10,0"
-                        Background="Wheat"
                         Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     <Label Content="Lösenord" />
                     <TextBox
                         Width="100"
                         Margin="10,0,10,0"
-                        Background="Wheat"
                         Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     <Label Content="Användartyp" />
                     <ComboBox
                         Width="100"
                         Margin="10,0,10,0"
-                        Background="Wheat"
                         ItemsSource="{Binding UserTypes}"
                         SelectedItem="{Binding SelectedUserType}">
                         <ComboBox.ItemTemplate>
@@ -134,7 +125,7 @@
                 </StackPanel>
             </materialDesign:Card>
 
-            <Label Content="Ta bort medlem" Foreground="{StaticResource primary_mid}" />
+            <Label Content="Ta bort medlem"  />
 
             <materialDesign:Card>
                 <StackPanel>
@@ -145,7 +136,7 @@
                         Content="Ta bort" />
                 </StackPanel>
             </materialDesign:Card>
-            <Label Content="Raderade användare" Foreground="{StaticResource primary_mid}" />
+            <Label Content="Raderade användare"  />
 
             <materialDesign:Card>
                 <StackPanel>

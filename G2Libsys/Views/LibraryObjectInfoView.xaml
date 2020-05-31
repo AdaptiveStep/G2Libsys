@@ -64,19 +64,22 @@
 					<RowDefinition Height="*" />
 					<RowDefinition Height="25" />
 				</Grid.RowDefinitions>
-
+                <materialDesign:Card Grid.Row="2"
+									 Grid.RowSpan="3"
+					                 Grid.Column="1"
+									 Margin="10"
+                                     materialDesign:ShadowAssist.ShadowDepth="Depth4">
+                    
 				<!--  Viewbox för image  -->
 
 				<Viewbox
-					Grid.Row="2"
-					Grid.RowSpan="3"
-					Grid.Column="1"
-					Margin="10"
+					
 					VerticalAlignment="Top"
 					Stretch="Uniform">
 
 					<Image Source="{Binding LibraryObject.imagesrc, Converter={converter:PathToImageConverter}}" Stretch="Uniform" />
 				</Viewbox>
+                </materialDesign:Card>
 
 
 
@@ -99,7 +102,6 @@
 					VerticalScrollBarVisibility="Auto">
 
 					<TextBlock
-						Style="{StaticResource MaterialDesignTextBlock}"
 						Text="{Binding LibraryObject.Description}"
 						TextWrapping="Wrap" />
 
@@ -140,7 +142,7 @@
 							<TextBlock Text="ISBN: " />
 							<TextBlock Text="Antal Sidor: " />
 							<TextBlock Text="Datum Tillagt: " />
-							<TextBlock Text="Författare" />
+							<TextBlock Text="Författare: " />
 
 						</StackPanel>
 
