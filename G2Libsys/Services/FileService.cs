@@ -40,7 +40,7 @@
         /// <returns>Bool save success</returns>
         public bool ExportCSV<T>(List<T> itemList)
         {
-            if ((FileDialog?.FileName.IsFileBusy() ?? true) || itemList?.Count <= 0)
+            if ((FileDialog?.FileName.IsFileBusy() ?? true) || itemList is null)
             {
                 return false;
             }
@@ -55,16 +55,16 @@
             using StreamWriter writer = new StreamWriter(stream, Encoding.UTF8);
 
             // Header property names
-            writer.WriteLine(string.Join(",", itemList[0].GetType().GetProperties().Select(p => p.Name)));
+            writer.WriteLine(string.Join(",", typeof(T).GetProperties().Select(p => p.Name)));
 
             // Write each item to the file on a new row
             foreach (var item in itemList)
             {
-                // Get item values
-                var b = item.GetType().GetProperties().Select(p => p.GetValue(item, null).ToString()).ToList();
+                // Get item property values
+                var itemValues = item.GetType().GetProperties().Select(p => p.GetValue(item, null));
 
                 // Write item on new row
-                writer.WriteLine(string.Join(",", b));
+                writer.WriteLine(string.Join(",", itemValues));
             }
 
             return true;
