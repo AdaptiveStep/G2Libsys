@@ -143,7 +143,7 @@
         /// <summary>
         /// Enable execute if an Item is selected
         /// </summary>
-        private Predicate<object> CanExecute => _ => SelectedItem != null && !SelectedItem.Disabled;
+        private Predicate<object> CanRemove => _ => SelectedItem != null && !SelectedItem.Disabled;
 
         /// <summary>
         /// Search for LibraryObject
@@ -158,12 +158,12 @@
         /// <summary>
         /// Update LibraryObject
         /// </summary>
-        public ICommand EditItem => editItem ??= new RelayCommand(_ => EditLibraryObject(), CanExecute);
+        public ICommand EditItem => editItem ??= new RelayCommand(_ => EditLibraryObject(), _ => SelectedItem != null);
 
         /// <summary>
         /// Delete LibraryObject
         /// </summary>
-        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => dispatcher.InvokeAsync(DeleteLibraryObjectAsync), CanExecute);
+        public ICommand DeleteItem => deleteItem ??= new RelayCommand(_ => dispatcher.InvokeAsync(DeleteLibraryObjectAsync), CanRemove);
 
         /// <summary>
         /// Command for downloading a csv file with deleted users
