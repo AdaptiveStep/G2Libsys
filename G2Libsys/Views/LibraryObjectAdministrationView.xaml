@@ -15,6 +15,12 @@
     SnapsToDevicePixels="True"
     mc:Ignorable="d">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         <Button
             Width="0"
             Height="0"
@@ -27,141 +33,192 @@
             MinWidth="600"
             MinHeight="400"
             Margin="20">
-            <StackPanel>
-                <materialDesign:Card Margin="5">
-                    <DockPanel>
-                        <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
-                            <TextBox
-                                MinWidth="200"
-                                Margin="6"
-                                HorizontalAlignment="Stretch"
-                                materialDesign:TextFieldAssist.HasClearButton="True"
-                                materialDesign:TextFieldAssist.RippleOnFocusEnabled="True"
-                                Background="WhiteSmoke"
-                                Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button
-                                Margin="5"
-                                Command="{Binding Search}"
-                                Content="Sök"
-                                IsDefault="True" />
-                        </StackPanel>
-                        <StackPanel
-                            HorizontalAlignment="Right"
-                            DockPanel.Dock="Right"
-                            Orientation="Horizontal">
-                            <ComboBox
-                                Width="120"
-                                Height="32"
-                                Margin="5"
-                                Padding="0"
-                                HorizontalAlignment="Center"
-                                FontSize="16"
-                                Foreground="WhiteSmoke"
-                                ItemsSource="{Binding Categories}"
-                                ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                SelectedItem="{Binding SelectedCategory}"
-                                Style="{StaticResource MaterialDesignFloatingHintComboBox}">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Width="110" Text="{Binding Name}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <Button
-                                Margin="10,5,5,5"
-                                Padding="5,0"
-                                Command="{Binding CreateItem}"
-                                Content="Lägg Till"
-                                IsDefault="False"
-                                IsTabStop="False" />
-                        </StackPanel>
-                    </DockPanel>
-                </materialDesign:Card>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="50" />
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <materialDesign:Card Margin="5">
+                        <DockPanel>
 
-                <DataGrid
-                    x:Name="ObjectDataGrid"
-                    MinWidth="400"
+                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                <TextBox
+                                    MinWidth="200"
+                                    Margin="6"
+                                    HorizontalAlignment="Stretch"
+                                    materialDesign:TextFieldAssist.HasClearButton="True"
+                                    materialDesign:TextFieldAssist.RippleOnFocusEnabled="True"
+                                    Background="WhiteSmoke"
+                                    Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button
+                                    Margin="5"
+                                    Command="{Binding Search}"
+                                    Content="Sök"
+                                    IsDefault="True" />
+                            </StackPanel>
+                            <StackPanel
+                                HorizontalAlignment="Right"
+                                DockPanel.Dock="Right"
+                                Orientation="Horizontal">
+
+                                <ComboBox
+                                    Width="120"
+                                    Height="32"
+                                    Margin="5"
+                                    Padding="0"
+                                    HorizontalAlignment="Center"
+                                    FontSize="16"
+                                    Foreground="WhiteSmoke"
+                                    ItemsSource="{Binding Categories}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                    SelectedItem="{Binding SelectedCategory}"
+                                    Style="{StaticResource MaterialDesignFloatingHintComboBox}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Width="110" Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <Button
+                                    Margin="10,5,5,5"
+                                    Padding="5,0"
+                                    Command="{Binding CreateItem}"
+                                    Content="Lägg Till"
+                                    IsDefault="False"
+                                    IsTabStop="False" />
+
+
+                                <StackPanel />
+                            </StackPanel>
+                        </DockPanel>
+                    </materialDesign:Card>
+
+                    <DataGrid
+                        x:Name="ObjectDataGrid"
+                        MinWidth="400"
+                        Margin="5"
+                        Padding="0"
+                        materialDesign:DataGridAssist.CellPadding="4"
+                        materialDesign:DataGridAssist.ColumnHeaderPadding="4"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        CanUserResizeColumns="True"
+                        ColumnHeaderStyle="{StaticResource MaterialDesignDataGridColumnHeader}"
+                        DataContext="{Binding}"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding LibraryObjects}"
+                        SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                MaxWidth="50"
+                                Binding="{Binding ID}"
+                                Header="ID" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding Title}"
+                                Header="Titel" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                MaxWidth="120"
+                                Binding="{Binding ISBN}"
+                                Header="ISBN" />
+                            <DataGridTextColumn
+                                Width="140"
+                                Binding="{Binding Description}"
+                                Header="Beskrivning" />
+                            <DataGridTextColumn
+                                Width="80"
+                                Binding="{Binding DateAdded}"
+                                Header="Tillagd" />
+                            <DataGridTextColumn
+                                Width="80"
+                                Binding="{Binding LastEdited}"
+                                Header="Ändrad" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                Binding="{Binding Publisher}"
+                                Header="Publicerad av" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                Binding="{Binding PurchasePrice}"
+                                Header="Pris" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                Binding="{Binding Pages}"
+                                Header="Sidor" />
+                            <DataGridTextColumn MaxWidth="100" Header="Kvantitet" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding Disabled}"
+                                Header="Borttagen" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                Binding="{Binding Dewey}"
+                                Header="DeweyDecimal" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding imagesrc}"
+                                Header="Bildadress" />
+
+                        </DataGrid.Columns>
+
+
+                        <DataGrid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding EditItem}"
+                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
+                                Gesture="LeftDoubleClick" />
+                            <KeyBinding
+                                Key="Delete"
+                                Command="{Binding DeleteItem}"
+                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
+                        </DataGrid.InputBindings>
+                    </DataGrid>
+
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="1"
                     Margin="5"
-                    Padding="0"
-                    materialDesign:DataGridAssist.CellPadding="4"
-                    materialDesign:DataGridAssist.ColumnHeaderPadding="4"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    ColumnHeaderStyle="{StaticResource MaterialDesignDataGridColumnHeader}"
-                    DataContext="{Binding}"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding LibraryObjects}"
-                    SelectedItem="{Binding SelectedItem}"
-                    SelectionMode="Single">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            MaxWidth="40"
-                            Binding="{Binding ID}"
-                            Header="ID" />
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding Title}"
-                            Header="Titel" />
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding ISBN}"
-                            Header="ISBN" />
-                        <DataGridTextColumn
-                            MaxWidth="200"
-                            Binding="{Binding Description}"
-                            Header="Beskrivning" />
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding DateAdded}"
-                            Header="Tillagd" />
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding LastEdited}"
-                            Header="Ändrad" />
-                        <DataGridTextColumn 
-                            MaxWidth="100"
-                            Binding="{Binding Publisher}"
-                            Header="Publicerad av" />
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding PurchasePrice}"
-                            Header="Pris" />
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding Pages}"
-                            Header="Sidor"/>
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding Disabled}"
-                            Header="Aktiverad"/>
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding Dewey}"
-                            Header="DeweyDecimal"/>
-                        <DataGridTextColumn
-                            MaxWidth="100"
-                            Binding="{Binding imagesrc}"
-                            Header="Bildadress" />
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
 
-                    </DataGrid.Columns>
-                        
-                    <DataGrid.InputBindings>
-                        <MouseBinding
-                            Command="{Binding EditItem}"
-                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
-                            Gesture="LeftDoubleClick" />
-                        <KeyBinding
-                            Key="Delete"
-                            Command="{Binding DeleteItem}"
-                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
-                    </DataGrid.InputBindings>
-                </DataGrid>
+                    <CheckBox
+                        Margin="10,0"
+                        VerticalAlignment="Center"
+                        Content="Borttagna objekt"
+                        Foreground="White"
+                        IsChecked="{Binding DisabledLibraryObjects, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        Style="{StaticResource MaterialDesignAccentCheckBox}"
+                        ToolTip="Visar en lista på borttagna eller aktiverade objekt" />
+                    <Button
+                        Width="45"
+                        Height="30"
+                        Command="{Binding DownloadLibLogCommand}"
+                        Content="{materialDesign:PackIcon Kind=ContentSave}"
+                        IsDefault="False"
+                        IsTabStop="False"
+                        ToolTip="Spara en lista på objekt i .csv" />
+                </StackPanel>
 
-            </StackPanel>
+            </Grid>
+
         </materialDesign:Card>
-        
-               
+        <!--<materialDesign:Card Grid.Column="1" Height="70" VerticalAlignment="Bottom"
+                             Margin="0 0 0 18" >
+            <DockPanel>
+
+            <TextBlock Text="Spara logfil"
+                       Foreground="White"
+                       Style="{StaticResource MaterialDesignSubtitle2TextBlock}" DockPanel.Dock="Top" VerticalAlignment="Top" TextWrapping="Wrap"/>
+
+
+            </Button>
+            </DockPanel>
+        </materialDesign:Card>-->
+
     </Grid>
 </local:BasePage>

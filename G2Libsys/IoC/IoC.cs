@@ -39,7 +39,7 @@
 
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddScoped<IDialogService, DialogService>();
-            // skapa scoped
+            services.AddTransient<IFileService, FileService>();
             services.AddScoped<ILoansService, LoansServices>();
             return services;
         }

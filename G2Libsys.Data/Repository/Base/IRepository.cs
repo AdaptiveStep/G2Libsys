@@ -1,10 +1,12 @@
 ﻿namespace G2Libsys.Data.Repository
 {
-    /// <summary>
-    /// Required namespaces
-    /// </summary>
-    #region Namespaces
-    using System.Collections.Generic;
+	using G2Libsys.Library;
+
+	/// <summary>
+	/// Required namespaces
+	/// </summary>
+	#region Namespaces
+	using System.Collections.Generic;
     using System.Threading.Tasks;
     #endregion
 
@@ -54,9 +56,9 @@
         /// Get all items matching search with multiple filters
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="item"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        public Task<IEnumerable<T>> GetRangeAsync<T>(T item);
+        public Task<IEnumerable<T>> GetRangeAsync<T>(object parameters);
 
         /// <summary>
         /// Update item in database
@@ -71,7 +73,7 @@
         /// <param name="item"></param>
         /// <returns></returns>
         public Task RemoveAsync<T>(int id);
-    }
+	}
 
     /// <summary>
     /// Repository with type param
@@ -83,55 +85,47 @@
         /// Insert new item
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
         public Task<int> AddAsync(T item);
 
         /// <summary>
         /// Insert multiple items
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
         public Task AddRangeAsync(IEnumerable<T> item);
 
         /// <summary>
         /// Get item by id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
         public Task<T> GetByIdAsync(int id);
 
         /// <summary>
         /// Get all items
         /// </summary>
-        /// <returns></returns>
         public Task<IEnumerable<T>> GetAllAsync(int? id = null);
 
         /// <summary>
         /// Get all items matching search
         /// </summary>
         /// <param name="search"></param>
-        /// <returns></returns>
         public Task<IEnumerable<T>> GetRangeAsync(string search);
 
         /// <summary>
         /// Get all items matching search with multiple filters
         /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        public Task<IEnumerable<T>> GetRangeAsync(T item);
+        /// <param name="parameters"></param>
+        public Task<IEnumerable<T>> GetRangeAsync(object parameters);
 
         /// <summary>
         /// Update item in database
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
         public Task UpdateAsync(T item);
 
         /// <summary>
         /// Delete item from database
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
         public Task RemoveAsync(int id);
     }
 }
