@@ -10,17 +10,23 @@
     d:DesignHeight="1000"
     d:DesignWidth="1000"
     x:TypeArguments="vm:LoanCheckoutViewModel"
-    FontSize="15"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
+    FontSize="16"
     mc:Ignorable="d">
     <Grid>
 
         <materialDesign:Card
-            Width="800"
+            Width="600"
             Height="480"
             Margin="20"
             UniformCornerRadius="10">
             <StackPanel Orientation="Vertical">
-                
+
                 <ListView
                     Grid.Column="1"
                     Width="480"
@@ -29,7 +35,6 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     ItemsSource="{Binding LoanObj}"
-                    
                     SelectedItem="{Binding SelectedItem}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -52,21 +57,13 @@
                                     <Border
                                         Width="100"
                                         Height="100"
-                                        HorizontalAlignment="Left">
-                                        <!--<Border.Background>-->
-                                        <!--<ImageBrush ImageSource="{Binding imagesrc, Converter={convert:PathToImageConverter}}" Stretch="Uniform"/>
-                                        </Border.Background>-->
-
-                                    </Border>
+                                        HorizontalAlignment="Left" />
                                     <Border
                                         Grid.Column="2"
                                         Width="20"
                                         Height="20"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Top">
-                                        <Border.Background>
-                                            <ImageBrush ImageSource="/Views/depositphotos_38606631-stock-illustration-trash-bin-icon.jpg" />
-                                        </Border.Background>
 
                                         <Border.InputBindings>
                                             <MouseBinding
@@ -74,22 +71,20 @@
                                                 CommandParameter="{Binding}"
                                                 MouseAction="LeftClick" />
                                         </Border.InputBindings>
-
+                                        <materialDesign:PackIcon
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="TrashCan" />
                                     </Border>
 
-                                    <StackPanel Grid.Column="1" Margin="8,24,8,0" >
-                                       
+                                    <StackPanel Grid.Column="1" Margin="8,24,8,0">
+
                                         <TextBlock
                                             HorizontalAlignment="Left"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Foreground="#DD000000"
                                             Text="{Binding Tile, UpdateSourceTrigger=PropertyChanged}" />
                                         <TextBlock
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Center"
-                                            FontSize="15"
-                                            Foreground="#DD000000"
                                             Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
                                             TextWrapping="Wrap" />
                                     </StackPanel>
@@ -111,14 +106,14 @@
                         Margin="10"
                         Command="{Binding Confirm}"
                         Content="Checka ut"
-                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                         />
                     <Button
                         Width="136"
                         Height="40"
                         Margin="10"
                         Command="{Binding Clear}"
                         Content="Töm Varukorgen"
-                        Style="{StaticResource MaterialDesignRaisedButton}" />
+                         />
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>

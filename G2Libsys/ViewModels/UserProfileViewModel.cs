@@ -9,7 +9,7 @@ using G2Libsys.Services;
 namespace G2Libsys.ViewModels
 {
     // Hantera användarens egna info
-    public class UserProfileViewModel : BaseViewModel, IViewModel
+    public class UserProfileViewModel : BaseViewModel, ISubViewModel
     {
         private ObservableCollection<LibraryObject> libObjects;
         private ObservableCollection<Loan> loanObjects;
@@ -21,7 +21,7 @@ namespace G2Libsys.ViewModels
         private User currentUser;
         public ICommand Showbutton { get; private set; }
         public ICommand Savebutton { get; private set; }
-        //public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         public Card UserCard
         {
@@ -100,12 +100,7 @@ namespace G2Libsys.ViewModels
         #region Methods
         public async void Save()
         {
-            //PropertyInfo[] props = typeof(User).GetProperties();
-            //foreach (var atri in props)
-            //{
-
-
-            //}
+            
 
 
             if (Confirm.Firstname == Confirm2.Firstname && Confirm.Lastname == Confirm2.Lastname && Confirm.Password == Confirm2.Password && Confirm.Email == Confirm2.Email)

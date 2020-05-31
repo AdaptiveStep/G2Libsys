@@ -77,6 +77,9 @@
                         <Label Content="DeweyDecimal" />
                         <TextBox
                             Text="{Binding LibraryObject.Dewey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                        <Label Content="Kvantitet" />
+                        <TextBox
+                            Text="{Binding LibraryObject.Quantity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                     </StackPanel>
 
                     <StackPanel Grid.Column="2" Width="130">
