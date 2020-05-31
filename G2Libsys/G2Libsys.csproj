@@ -11,8 +11,6 @@
     <None Remove="Resources\Images\fg.jpg" />
     <None Remove="Resources\Images\LIBSYS.png" />
     <None Remove="Views\back-icon-isolated-on-white-background-back-icon-vector-26555694.jpg" />
-    <None Remove="Views\depositphotos_38606631-stock-illustration-trash-bin-icon.jpg" />
-    <None Remove="Views\In tha city 3840 x 2400.jpg" />
     <None Remove="Views\nedladdning.png" />
   </ItemGroup>
 
@@ -40,8 +38,6 @@
     </Resource>
     <Resource Include="Resources\Images\LIBSYS.png" />
     <Resource Include="Resources\Images\nedladdning.png" />
-    <Resource Include="Views\depositphotos_38606631-stock-illustration-trash-bin-icon.jpg" />
-    <Resource Include="Views\In tha city 3840 x 2400.jpg" />
   </ItemGroup>
 
   <ItemGroup>

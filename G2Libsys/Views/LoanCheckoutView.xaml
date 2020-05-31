@@ -13,6 +13,20 @@
     FontSize="15"
     mc:Ignorable="d">
     <Grid>
+        <Rectangle
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="3"
+            Opacity="0.7">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Black" />
+            </Rectangle.Fill>
+            <Rectangle.InputBindings>
+                <MouseBinding
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding}"
+                    MouseAction="LeftClick" />
+            </Rectangle.InputBindings>
+        </Rectangle>
 
         <materialDesign:Card
             Width="800"
@@ -20,7 +34,7 @@
             Margin="20"
             UniformCornerRadius="10">
             <StackPanel Orientation="Vertical">
-                
+
                 <ListView
                     Grid.Column="1"
                     Width="480"
@@ -29,7 +43,6 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     ItemsSource="{Binding LoanObj}"
-                    
                     SelectedItem="{Binding SelectedItem}">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
@@ -77,8 +90,8 @@
 
                                     </Border>
 
-                                    <StackPanel Grid.Column="1" Margin="8,24,8,0" >
-                                       
+                                    <StackPanel Grid.Column="1" Margin="8,24,8,0">
+
                                         <TextBlock
                                             HorizontalAlignment="Left"
                                             FontSize="16"
