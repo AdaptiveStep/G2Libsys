@@ -35,16 +35,13 @@
         </Rectangle>
 
         <materialDesign:Card
-            Width="600"
-            Height="480"
-            Margin="20"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             UniformCornerRadius="10">
             <StackPanel Orientation="Vertical">
 
                 <ListView
                     Grid.Column="1"
-                    Width="480"
-                    Height="380"
                     Margin="5,20,5,5"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
@@ -94,20 +91,22 @@
                     </ListView.ItemTemplate>
 
                 </ListView>
+
+                <materialDesign:Card HorizontalAlignment="Center"
+                                     Margin="5">
+                    
+                
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Button
-                        Width="100"
-                        Height="40"
                         Margin="10"
                         Command="{Binding Confirm}"
                         Content="Checka ut" />
                     <Button
-                        Width="136"
-                        Height="40"
                         Margin="10"
                         Command="{Binding Clear}"
                         Content="Töm Varukorgen" />
                 </StackPanel>
+                </materialDesign:Card>
             </StackPanel>
         </materialDesign:Card>
     </Grid>
