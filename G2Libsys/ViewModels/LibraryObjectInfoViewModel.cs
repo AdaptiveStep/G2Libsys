@@ -95,7 +95,10 @@ namespace G2Libsys.ViewModels
 
                     _loans.LoanCart.Add(currentBook);
                     _dialog.Alert("", $"Tillagd i varukorgen");
-                    currentBook.Quantity--;
+                    if (currentBook.Category == 1)
+                    {
+                        currentBook.Quantity--;
+                    }
                     
                     CancelCommand.Execute(null);
                 }
