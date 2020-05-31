@@ -145,7 +145,7 @@
 							Orientation="Horizontal">
 
 
-							<Button Command="{Binding SaveButton}">
+                            <Button Command="{Binding Savebutton}">
 								<Button.Content>
 									<StackPanel Orientation="Horizontal">
 										<TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Bekräfta Profiländringar" />
@@ -207,7 +207,17 @@
 							</StackPanel>
 						</Button.Content>
 					</Button>
-				</StackPanel>
+                    <Button Margin="5" Command="{Binding ExportHistory}">
+
+                        <Button.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="FileDownload" />
+                                <TextBlock Margin="10,0,0,0" Text="Eportera historik" />
+
+                            </StackPanel>
+                        </Button.Content>
+                    </Button>
+                </StackPanel>
 
 
 				<!--  panel for loaned objects  -->

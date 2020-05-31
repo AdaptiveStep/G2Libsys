@@ -150,7 +150,7 @@
                                 Width="auto"
                                 Binding="{Binding Pages}"
                                 Header="Sidor" />
-                            <DataGridTextColumn MaxWidth="100" Header="Kvantitet" />
+                            <DataGridTextColumn MaxWidth="100" Header="Kvantitet" Binding="{Binding Quantity}" />
                             <DataGridTextColumn
                                 Width="100"
                                 Binding="{Binding Disabled}"

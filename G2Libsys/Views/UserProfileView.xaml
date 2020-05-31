@@ -148,7 +148,7 @@
 							Orientation="Horizontal">
 
 
-                            <Button Command="{Binding SaveButton}">
+                            <Button Command="{Binding Savebutton}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Style="{StaticResource MaterialDesignHeadline6TextBlock}" Text="Bekräfta Profiländringar" />
