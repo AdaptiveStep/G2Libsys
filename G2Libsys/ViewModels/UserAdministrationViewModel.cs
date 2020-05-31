@@ -167,8 +167,6 @@
 
             GetLoans();
             GetCard();
-
-            SaveDialogBoxAsync();
         }
 
         #endregion
