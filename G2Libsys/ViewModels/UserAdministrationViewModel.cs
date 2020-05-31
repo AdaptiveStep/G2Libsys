@@ -196,9 +196,25 @@
         {
             if (UserCard != null)
             {
+                var dialogViewModel = new RemoveItemDialogViewModel("Ta bort kort", "Anledning:");
+                (bool isSuccess, string msg) = _dialog.Show(dialogViewModel);
+
+                if (!isSuccess) return;
+
+                var adminAction = new AdminAction()
+                {
+                    Comment = msg,
+                    ActionType = 4,
+                    Actiondate = DateTime.Now
+                };
+
+                await _repo.AddAsync(adminAction);
+
+                await SaveDialogBoxAsync();
+
                 await _repo.RemoveAsync<Card>(UserCard.Owner);
             }
-    
+
             await _repo.AddAsync(NewCard);
             GetCard();
             _dialog.Alert("Klart", "Nytt Kort Skapat");
@@ -239,7 +255,7 @@
         {
             if (UserCard.Activated)
             {
-                var dialogViewModel = new RemoveItemDialogViewModel("Spärra kort", "KASFKAJSFHKASJFHAKSJ");
+                var dialogViewModel = new RemoveItemDialogViewModel("Spärra kort");
                 (bool isSuccess, string msg) = _dialog.Show(dialogViewModel);
 
                 if (isSuccess)
@@ -313,7 +329,6 @@
             {
                 LibraryObjects.Add(await _repo.GetByIdAsync<LibraryObject>(a.ObjectID));
             }
-            //LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
         }
 
         #endregion
