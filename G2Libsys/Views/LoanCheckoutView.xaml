@@ -11,12 +11,12 @@
     d:DesignWidth="1000"
     x:TypeArguments="vm:LoanCheckoutViewModel"
     FontFamily="{DynamicResource MaterialDesignFont}"
-	TextElement.FontSize="13"
-	TextElement.FontWeight="Regular"
-	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-	TextOptions.TextFormattingMode="Ideal"
-	TextOptions.TextRenderingMode="Auto"
     FontSize="16"
+    TextElement.FontSize="13"
+    TextElement.FontWeight="Regular"
+    TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+    TextOptions.TextFormattingMode="Ideal"
+    TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
     <Grid>
         <Rectangle
@@ -62,16 +62,9 @@
                                 Grid.Column="1"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch">
-                                <Grid Background="{DynamicResource light_background}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <Border
-                                        Width="100"
-                                        Height="100"
-                                        HorizontalAlignment="Left" />
+                                <Grid>
+
+
                                     <Border
                                         Grid.Column="2"
                                         Width="20"
@@ -90,23 +83,11 @@
                                             VerticalAlignment="Center"
                                             Kind="TrashCan" />
                                     </Border>
-
-                                    <StackPanel Grid.Column="1" Margin="8,24,8,0">
-
-                                        <TextBlock
-                                            HorizontalAlignment="Left"
-                                            Text="{Binding Tile, UpdateSourceTrigger=PropertyChanged}" />
-                                        <TextBlock
-                                            HorizontalAlignment="Left"
-                                            VerticalAlignment="Center"
-                                            Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
-                                            TextWrapping="Wrap" />
-                                    </StackPanel>
-                                    <StackPanel
-                                        Grid.Row="2"
-                                        Margin="8"
-                                        HorizontalAlignment="Right"
-                                        Orientation="Horizontal" />
+                                    <TextBlock
+                                        Margin="10"
+                                        HorizontalAlignment="Left"
+                                        Text="{Binding Title}"
+                                        TextWrapping="Wrap" />
                                 </Grid>
                             </materialDesign:Card>
                         </DataTemplate>
@@ -119,15 +100,13 @@
                         Height="40"
                         Margin="10"
                         Command="{Binding Confirm}"
-                        Content="Checka ut"
-                         />
+                        Content="Checka ut" />
                     <Button
                         Width="136"
                         Height="40"
                         Margin="10"
                         Command="{Binding Clear}"
-                        Content="Töm Varukorgen"
-                         />
+                        Content="Töm Varukorgen" />
                 </StackPanel>
             </StackPanel>
         </materialDesign:Card>

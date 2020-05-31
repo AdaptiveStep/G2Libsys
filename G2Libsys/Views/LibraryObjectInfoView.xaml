@@ -162,11 +162,14 @@
 
 
 						<Button
+                            IsEnabled="{Binding Available}"
+                            
 							Grid.Row="4"
 							Grid.Column="3"
 							Margin="10"
 							Command="{Binding AddLoan}"
-							Content="Låna" />
+							Content="{Binding Buttonstatus}" />
+                        
 
 					</Grid>
 				</materialDesign:Card>
