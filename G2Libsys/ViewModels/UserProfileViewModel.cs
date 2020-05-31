@@ -9,10 +9,8 @@ using G2Libsys.Services;
 namespace G2Libsys.ViewModels
 {
     // Hantera användarens egna info
-    public class UserProfileViewModel : BaseViewModel, IViewModel
+    public class UserProfileViewModel : BaseViewModel, ISubViewModel
     {
-        
-
         private ObservableCollection<LibraryObject> libObjects;
         private ObservableCollection<Loan> loanObjects;
         private readonly IRepository _repo;
@@ -23,7 +21,8 @@ namespace G2Libsys.ViewModels
         private User currentUser;
         public ICommand Showbutton { get; private set; }
         public ICommand Savebutton { get; private set; }
-        
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+
         public Card UserCard
         {
             get => userCard;
@@ -79,6 +78,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LibraryObjects));
             }
         }
+
         #region Construct
         public UserProfileViewModel()
         {

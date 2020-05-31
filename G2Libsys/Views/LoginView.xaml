@@ -88,10 +88,11 @@
 
                     <Button
                         Margin="10"
+                        Width="90"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Command="{Binding LogIn}"
-                        Content="Logga in"
+                        Content="{Binding LoginText}"
                         Style="{StaticResource MaterialDesignRaisedButton}" />
 
                 </StackPanel>

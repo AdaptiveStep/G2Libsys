@@ -175,7 +175,7 @@
             _navigationService.Setup(this);
 
             // Enable dev menu
-            DeveloperMode = false;
+            DeveloperMode = true;
             if (DeveloperMode) dispatcher.Invoke(DevelopSetup);
 
             // Initial viewmodel 
@@ -210,9 +210,10 @@
             }
 
             // Create UserMenuItems
-            MenuItems.Add(new UserMenuItem(typeof(UserProfileViewModel), "Profil"));
-            MenuItems.Add(new UserMenuItem(typeof(LoanCheckoutViewModel), "Varukorg"));
-
+            MenuItems.Add(new UserMenuItem("Profil",
+                new RelayCommand(_ =>
+                _navigationService.HostScreen.SubViewModel =
+                (ISubViewModel)_navigationService.GetViewModel(new UserProfileViewModel()))));
 
             (CurrentUser.UserType switch
             {
