@@ -79,6 +79,7 @@
                         </ComboBox>-->
                         <Label Content="Beskrivning" />
                         <TextBox
+                            TextWrapping="Wrap"
                             Text="{Binding Reason, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Height="62" Width="130" />
                     </StackPanel>
 
