@@ -13,7 +13,7 @@
     FontFamily="{StaticResource MaterialDesignFont}"
     mc:Ignorable="d">
 
-    <Grid Background="{StaticResource light_background}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25" />
             <ColumnDefinition Width="2*" />
