@@ -9,17 +9,7 @@ namespace G2Libsys.ViewModels
 {
     public class LibrarianViewModel: BaseViewModel, IViewModel
     {
-        public ICommand addbutton { get; private set; }
-        public ICommand deletebutton { get; private set; }
-        public ICommand searchbutton { get; private set; }
-        public ICommand cancelsearch { get; private set; }
-        private ICommand goToUser;
-        public ICommand GoToUser => goToUser ??=
-            new RelayCommand(_ =>
-            {
-                _navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new UserAdministrationViewModel(SelectedUser));
-            }, _ => SelectedUser != null);
-
+       
         private readonly IRepository<User> _repo;
 
         //binda knapparna från viewen
@@ -38,6 +28,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SelectedUser));
             }
         }
+
         public string SearchString
         {
             get => searchstring;
@@ -47,6 +38,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SearchString));
             }
         }
+
         private User newUser;
         public User NewUser
         {
@@ -58,9 +50,6 @@ namespace G2Libsys.ViewModels
             }
         }
 
-        
-       
-
         public ObservableCollection<User> Users
         {
             get => _users;
@@ -70,7 +59,23 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(Users));
             }
         }
-        
+
+        #region Commands
+        public ICommand addbutton { get; private set; }
+        public ICommand deletebutton { get; private set; }
+        public ICommand searchbutton { get; private set; }
+        public ICommand cancelsearch { get; private set; }
+        private ICommand goToUser;
+
+        public ICommand GoToUser => goToUser ??=
+            new RelayCommand(_ =>
+            {
+                _navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new UserAdministrationViewModel(SelectedUser));
+            }, _ => SelectedUser != null);
+
+        #endregion
+
+        #region Constructor
 
         public LibrarianViewModel()
         {
@@ -89,34 +94,21 @@ namespace G2Libsys.ViewModels
 
         }
 
-        
+        #endregion
+
+        #region Public Methods
         public async void Search()
         {
             Users.Clear();
             Users = new ObservableCollection<User>((await _repo.GetRangeAsync(SearchString)).Where(x => x.UserType == 3));
             
-        }
-        
-        //private void Users_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-
-        //    if (e.OldItems != null)
-        //        foreach (INotifyPropertyChanged i in e.OldItems)
-        //            i.PropertyChanged -= itempropchanged;
-        //    if (e.NewItems != null)
-        //        foreach (INotifyPropertyChanged i in e.NewItems)
-        //            i.PropertyChanged -= itempropchanged;
-           
-
-        //}
-        //void itempropchanged(object sender, PropertyChangedEventArgs e) { }
+        }        
 
         public async void GetUsers()
         {
             Users = new ObservableCollection<User>((await _repo.GetAllAsync()).ToList().Where(x => x.UserType == 3));
             
         }
-        
         
         public async void DeleteUser()
         {
@@ -136,6 +128,6 @@ namespace G2Libsys.ViewModels
         //söka efter besökare. antigen en funtion eller i datagrid
         //registrera lånekort
 
-       
+        #endregion
     }
 }

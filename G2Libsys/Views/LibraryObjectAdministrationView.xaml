@@ -207,18 +207,6 @@
             </Grid>
 
         </materialDesign:Card>
-        <!--<materialDesign:Card Grid.Column="1" Height="70" VerticalAlignment="Bottom"
-                             Margin="0 0 0 18" >
-            <DockPanel>
-
-            <TextBlock Text="Spara logfil"
-                       Foreground="White"
-                       Style="{StaticResource MaterialDesignSubtitle2TextBlock}" DockPanel.Dock="Top" VerticalAlignment="Top" TextWrapping="Wrap"/>
-
-
-            </Button>
-            </DockPanel>
-        </materialDesign:Card>-->
 
     </Grid>
 </local:BasePage>
