@@ -5,13 +5,13 @@ namespace G2Libsys.Dialogs
 {
     public class RemoveItemDialogViewModel : BaseDialogViewModel<(bool isSuccess, string msg)>
     {
-        public ICommand RemoveItemCommand => new RelayCommand(ExecuteDialog);
+        public ICommand SaveCommand => new RelayCommand(ExecuteDialog, _ => !string.IsNullOrWhiteSpace(ReturnMessage));
 
         private string message;
 
         public string ReturnMessage
         {
-            get { return message; }
+            get => message;
             set
             {
                 message = value;
@@ -25,7 +25,7 @@ namespace G2Libsys.Dialogs
             base.OKCommand.Execute(param);
         }
 
-        public RemoveItemDialogViewModel(string title = null) : base(title)
+        public RemoveItemDialogViewModel(string title = null, string message = null) : base(title, message)
         {
         }
     }

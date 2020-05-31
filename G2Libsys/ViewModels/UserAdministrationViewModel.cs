@@ -239,7 +239,7 @@
         {
             if (UserCard.Activated)
             {
-                var dialogViewModel = new RemoveItemDialogViewModel("Spärra kort");
+                var dialogViewModel = new RemoveItemDialogViewModel("Spärra kort", "KASFKAJSFHKASJFHAKSJ");
                 (bool isSuccess, string msg) = _dialog.Show(dialogViewModel);
 
                 if (isSuccess)
