@@ -182,7 +182,7 @@
 						Text="Aktiva lån" />
 
                     <Separator/>
-                    <ScrollViewer  VerticalScrollBarVisibility="Auto" MaxHeight="500" MaxWidth="500" >
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100" MaxWidth="500" Margin="10"  >
                         <StackPanel Orientation="Horizontal">
 
 

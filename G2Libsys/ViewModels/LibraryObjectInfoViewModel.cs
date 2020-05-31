@@ -17,7 +17,7 @@ namespace G2Libsys.ViewModels
     public class LibraryObjectInfoViewModel : BaseViewModel, ISubViewModel
     {
         #region Fields
-        private bool available;
+        
         private readonly IRepository _repo;
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
         public ICommand AddLoan { get; private set; }
@@ -47,15 +47,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(buttonstatus));
             }
         }
-        public bool Available
-        {
-            get => available;
-            set
-            {
-                available = value;
-                OnPropertyChanged(nameof(Available));
-            }
-        }
+       
         public LibraryObjectInfoViewModel()
         {
 
@@ -68,18 +60,18 @@ namespace G2Libsys.ViewModels
             if (libraryObject.Quantity > 0)
             {
                 Buttonstatus = "Låna";
-                Available = true;
             }
-            else 
+
+            else
             {
                 Buttonstatus = "Slut";
-                Available = false;
+
             }
             _repo = new GeneralRepository();
             //author = new Author();
             currentBook = libraryObject;
             //GetAuthor();
-            AddLoan = new RelayCommand(_ => AddToCart());
+            AddLoan = new RelayCommand(_=> AddToCart(), _=> libraryObject.Category >1 || libraryObject.Quantity>0);
             GetCard();
         }
         public async void GetCard()

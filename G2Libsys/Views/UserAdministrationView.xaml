@@ -36,27 +36,21 @@
 		</Grid.RowDefinitions>
 
 
-		<Rectangle
-			Grid.RowSpan="3"
-			Grid.ColumnSpan="3"
-			Opacity="0.7">
-			<Rectangle.Fill>
-				<SolidColorBrush Color="Black" />
-			</Rectangle.Fill>
-		</Rectangle>
-
-
-		<Button
-			Grid.RowSpan="2"
-			Grid.ColumnSpan="2"
-			Width="{Binding (FrameworkElement.ActualWidth)}"
-			Height="{Binding (FrameworkElement.ActualHeight)}"
-			Background="Transparent"
-			Command="{Binding CancelCommand}"
-			Cursor="Arrow"
-			Style="{StaticResource MaterialDesignToolForegroundButton}" />
-
-		<materialDesign:Card
+        <Rectangle
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="3"
+            Opacity="0.7">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Black" />
+            </Rectangle.Fill>
+            <Rectangle.InputBindings>
+                <MouseBinding
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding}"
+                    MouseAction="LeftClick" />
+            </Rectangle.InputBindings>
+        </Rectangle>
+        <materialDesign:Card
 			Grid.Row="1"
 			Grid.Column="1"
 			UniformCornerRadius="10">
@@ -227,7 +221,7 @@
 						Text="Aktiva lån" />
 
 					<Separator/>
-					<ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100" MaxWidth="500"  >
+					<ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100" MaxWidth="500" Margin="10" >
 						<StackPanel Orientation="Horizontal">
 
 
