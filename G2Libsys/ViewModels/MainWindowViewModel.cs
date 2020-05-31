@@ -215,7 +215,7 @@
 
             // Create UserMenuItems
             MenuItems.Add(new UserMenuItem(typeof(UserProfileViewModel), "Profil"));
-               
+            
             MenuItems.Add(new UserMenuItem(typeof(LoanCheckoutViewModel), "Varukorg"));
 
             (CurrentUser.UserType switch

@@ -9,18 +9,19 @@ using System;
 
 namespace G2Libsys.ViewModels
 {
-    public class LoanCheckoutViewModel : BaseViewModel, IViewModel
+    public class LoanCheckoutViewModel : BaseViewModel, ISubViewModel
     {
-        
-        public ICommand Confirm { get; set; }
-        public ICommand DeleteItem { get; set; }
-        public ICommand Clear { get; set; }
         private readonly IRepository _repo;
-        ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
+        private readonly ILoansService _loans;
         private Card currentUserCard;
         private ObservableCollection<Loan> loanCart;
         private ObservableCollection<LibraryObject> loanObj;
         private LibraryObject selectedItem;
+
+        public ICommand Confirm { get; set; }
+        public ICommand DeleteItem { get; set; }
+        public ICommand Clear { get; set; }
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         public LibraryObject SelectedItem
         {
@@ -31,7 +32,6 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }
-
         
         public ObservableCollection<LibraryObject> LoanObj
         {
@@ -42,6 +42,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LoanObj));
             }
         }
+
         public ObservableCollection<Loan> LoanCart
         {
             get => loanCart;
@@ -51,6 +52,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LoanCart));
             }
         }
+
         public Card CurrentUserCard
         {
             get => currentUserCard;
@@ -60,18 +62,20 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(currentUserCard));
             }
         }
+
         public LoanCheckoutViewModel()
         {
             if (base.IsInDesignMode) return;
-            _navigationService.HostScreen.SubViewModel = null;
+
             _repo = new GeneralRepository();
+            _loans = IoC.ServiceProvider.GetService<ILoansService>();
             LoanObj = _loans.LoanCart;
             GetUser();
             Confirm = new RelayCommand(_ => ConfirmLoan());
             Clear = new RelayCommand(_ => ClearLoan());
             DeleteItem = new RelayCommand(_ => DeleteLoan());
-            
         }
+
         private void DeleteLoan()
         {
             _loans.LoanCart.Remove(SelectedItem);
@@ -103,31 +107,23 @@ namespace G2Libsys.ViewModels
             LoanObj.Clear();
             
             _loans.LoanCart.Clear();
-            _navigationService.HostScreen.CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
+            CancelCommand.Execute(null);
         }
-        public void GetLoans()
-        {
-        }
+
         public async void ConfirmLoan()
         {
-           
-            
-             LoanCart = new ObservableCollection<Loan>();
+            LoanCart = new ObservableCollection<Loan>();
             foreach (LibraryObject a in LoanObj)
             {
                 LoanCart.Add(new Loan { ObjectID = a.ID, CardID = CurrentUserCard.ID, LoanDate = DateTime.Now });
             }
             await _repo.AddRangeAsync(LoanCart);
 
-           
-
             _dialog.Alert("", "Dina lån är nu skapade");
             LoanCart.Clear();
             LoanObj.Clear();
             _loans.LoanCart.Clear();
-            _navigationService.HostScreen.CurrentViewModel = _navigationService.GetViewModel(new LibraryMainViewModel());
-
-            
+            CancelCommand.Execute(null);
         }
     }
 }

@@ -11,6 +11,9 @@
     using System.Linq;
     using System.Reflection;
     using System.Windows.Input;
+    using Microsoft.Extensions.DependencyInjection;
+    using System.Threading.Tasks;
+    using G2Libsys.Library.Models;
 
     /// <summary>
     /// User details administration
@@ -18,7 +21,6 @@
     public class UserAdministrationViewModel : BaseViewModel, ISubViewModel
     {
         #region Fields
-        private ReasonDialogViewModel dialogViewModel;
         private User activeUser;
         private Card userCard;
         private Card newCard;
@@ -28,18 +30,11 @@
         private ObservableCollection<LibraryObject> libObjects;
         private string cardStatus;
         private string reason;
-       
         private User confirm;
         private User confirm2;
         #endregion
 
-
         #region Properties
-
-        /// <summary>
-        /// Currently displayed User
-        /// </summary>
-        /// 
         
         public string Reason
         {
@@ -50,6 +45,7 @@
                 OnPropertyChanged(nameof(Reason));
             }
         }
+
         public User Confirm 
         {
             get=> confirm;
@@ -57,6 +53,7 @@
                 OnPropertyChanged(nameof(Confirm));
             }
         }
+
         public User Confirm2
         {
             get => confirm2;
@@ -67,6 +64,9 @@
             }
         }
 
+        /// <summary>
+        /// Carstatus message
+        /// </summary>
         public string CardStatus
         {
             get => cardStatus;
@@ -76,6 +76,7 @@
                 OnPropertyChanged(nameof(CardStatus));
             }
         }
+
         public User ActiveUser
         {
             get => activeUser;
@@ -85,6 +86,7 @@
                 OnPropertyChanged(nameof(ActiveUser));
             }
         }
+
         public Card UserCard
         {
             get => userCard;
@@ -94,6 +96,7 @@
                 OnPropertyChanged(nameof(UserCard));
             }
         }
+
         public Card NewCard
         {
             get => newCard;
@@ -113,6 +116,7 @@
                 OnPropertyChanged(nameof(LibraryObjects));
             }
         }
+
         public ObservableCollection<Loan> LoanObjects
         {
             get => loanObjects;
@@ -122,6 +126,7 @@
                 OnPropertyChanged(nameof(LoanObjects));
             }
         }
+
         #endregion
 
         #region Commands
@@ -130,159 +135,187 @@
         /// Close SubViewModel
         /// </summary>
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+
+        public ICommand ExportHistory { get; private set; }
+
         public ICommand Savebutton { get; private set; }
+
         public ICommand ChangeCardStatusbutton { get; private set; }
+
         public ICommand CreateNewCardbutton { get; private set; }
+
         public ICommand ReturnLoan { get; private set; }
+
         #endregion
 
         #region Constructor
 
         public UserAdministrationViewModel() { }
-
         public UserAdministrationViewModel(User user)
         {
             this.ActiveUser = user;
-            Confirm = new User();
-            Confirm2 = new User();
-            
-            NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1), Activated= true};
-
-            NewCard.Owner = ActiveUser.ID;
-
-            ReturnLoan = new RelayCommand(x => Return());
-            Savebutton = new RelayCommand(x => Save());
-            ChangeCardStatusbutton = new RelayCommand(x => ChangeCardStatus());
-            CreateNewCardbutton = new RelayCommand(x => CreateNewCard());
             _userrepo = new UserRepository();
             _repo = new GeneralRepository();
+
+            Confirm = new User();
+            Confirm2 = new User();
+
+            NewCard = new Card() { ActivationDate = DateTime.Now, ValidUntil = DateTime.Now.AddYears(1), Activated = true };
+            NewCard.Owner = ActiveUser.ID;
+
+            SetupCommands();
+
             GetLoans();
             GetCard();
         }
 
-
         #endregion
 
         #region Methods
-        public async void Return()
+
+        private void SetupCommands()
         {
-                     
+            ExportHistory = new RelayCommand(async _ => await SaveDialogBoxAsync());
+            ReturnLoan = new RelayCommand(_ => Return());
+            Savebutton = new RelayCommand(_ => Save());
+            ChangeCardStatusbutton = new RelayCommand(_ => ChangeCardStatus(), _ => UserCard != null);
+            CreateNewCardbutton = new RelayCommand(_ => CreateNewCard());
+        }
+
+        private async void Return()
+        {
             foreach (Loan a in LoanObjects)
             {
                 await _repo.UpdateAsync(a);
             }
-            GetLoans();
 
+            GetLoans();
         }
-        public async void CreateNewCard()
+
+        private async void CreateNewCard()
         {
             if (UserCard != null)
             {
                 await _repo.RemoveAsync<Card>(UserCard.Owner);
             }
-            
+    
             await _repo.AddAsync(NewCard);
             GetCard();
             _dialog.Alert("Klart", "Nytt Kort Skapat");
         }
-        public async void Save()
+
+        private async void Save()
         {
-            //PropertyInfo[] props = typeof(User).GetProperties();
-            //foreach (var atri in props)
-            //{
-               
-                
-            //}
-
-
-                if (Confirm.Firstname == Confirm2.Firstname && Confirm.Lastname == Confirm2.Lastname && Confirm.Password == Confirm2.Password && Confirm.Email == Confirm2.Email)
-                {
-                    if (Confirm.Firstname != null && Confirm.Firstname !="")
-                    {
-                        ActiveUser.Firstname = Confirm.Firstname;
-                    }
-                    if (Confirm.Lastname != null && Confirm.Lastname != "")
-                    {
-                        ActiveUser.Lastname = Confirm.Lastname;
-                    }
-                    if (Confirm.Password != null && Confirm.Password != "")
-                    {
-                        ActiveUser.Password = Confirm.Password;
-                    }
-                    if (Confirm.Email != null && Confirm.Email != "")
-                    {
-                        ActiveUser.Email = Confirm.Email;
-                    }
-                    await _repo.UpdateAsync(ActiveUser);
-                   _dialog.Alert("Klart", "Uppgifterna sparades");
-                }
-                else { _dialog.Alert("Error", "Kunde inte spara. dubbelkolla alla parametrar"); }
-        }
-       
-        public async void ChangeCardStatus()
-        {
-
-            
-            if (UserCard.Activated == true)
+            if (Confirm.Firstname == Confirm2.Firstname && Confirm.Lastname == Confirm2.Lastname && Confirm.Password == Confirm2.Password && Confirm.Email == Confirm2.Email)
             {
+                if (!string.IsNullOrWhiteSpace(Confirm.Firstname))
+                {
+                    ActiveUser.Firstname = Confirm.Firstname;
+                }
+                if (!string.IsNullOrWhiteSpace(Confirm.Lastname))
+                {
+                    ActiveUser.Lastname = Confirm.Lastname;
+                }
+                if (!string.IsNullOrWhiteSpace(Confirm.Password))
+                {
+                    ActiveUser.Password = Confirm.Password;
+                }
+                if (!string.IsNullOrWhiteSpace(Confirm.Email))
+                {
+                    ActiveUser.Email = Confirm.Email;
+                }
 
-                dialogViewModel = new ReasonDialogViewModel("");
-                Reason = _dialog.Show(dialogViewModel);
-                //UserCard.DeactivateReason = Reason;
-                if (Reason != null && Reason != "")
+                await _repo.UpdateAsync(ActiveUser);
+
+                _dialog.Alert("Klart", "Uppgifterna sparades");
+            }
+            else
+            {
+                _dialog.Alert("Error", "Kunde inte spara, dubbelkolla alla parametrar");
+            }
+        }
+
+        private async void ChangeCardStatus()
+        {
+            if (UserCard.Activated)
+            {
+                var dialogViewModel = new RemoveItemDialogViewModel("Spärra kort");
+                (bool isSuccess, string msg) = _dialog.Show(dialogViewModel);
+
+                if (isSuccess)
                 {
                     UserCard.Activated = false;
+
+                    // Change cardstatus message
                     CardStatus = "Aktivera Kort";
+
+                    var adminAction = new AdminAction()
+                    {
+                        Comment = msg,
+                        ActionType = 4,
+                        Actiondate = DateTime.Now
+                    };
+
+                    await _repo.AddAsync(adminAction).ConfigureAwait(false);
                 }
-                else { _dialog.Alert("", "Ingen anledning gavs\nFörsök igen"); }
             }
-            else 
-            { 
+            else
+            {
+                // Change cardstatus message
                 CardStatus = "Spärra Kort";
                 UserCard.Activated = true;
             }
+
             await _repo.UpdateAsync(UserCard);
-            
         }
-    //    dialogViewModel = new LibraryObjectDialogViewModel(new LibraryObject(), ItemCategories, "Lägg till ny");
 
-    //        LibraryObject newItem = _dialog.Show(dialogViewModel);
-
-    //        if (newItem == null) return;
-
-    //        try
-    //        {
-    //            await _repo.AddAsync(newItem);
-    //    ResetLists();
-    //}
-    //        catch (Exception ex)
-    //        {
-    //            _dialog.Alert("Error", "Ändringarna sparades ej, försök igen");
-    //            Debug.WriteLine(ex.Message);
-    //        }
-public async void GetCard()
+        private async void GetCard()
         {
-                UserCard = await _repo.GetByIdAsync<Card>(ActiveUser.ID);
-            if (UserCard != null)
+            UserCard = await _repo.GetByIdAsync<Card>(ActiveUser.ID);
+
+            CardStatus = UserCard?.Activated ?? false ? "Spärra Kort" : "Aktivera Kort";
+        }
+
+        /// <summary>
+        /// Export this users loan history to a csv file
+        /// </summary>
+        private async Task SaveDialogBoxAsync()
+        {
+            if (ActiveUser is null) return;
+
+            var loanHistory = await _repo.GetRangeAsync<Loan>(new { ActiveUser.ID });
+
+            var fileService = IoC.ServiceProvider.GetService<IFileService>();
+
+            bool fileCreated = fileService.CreateFile($"Lånehistorik_{ActiveUser.ID}");
+
+            if (fileCreated)
             {
-                if (UserCard.Activated == true)
+                bool success = fileService.ExportCSV(loanHistory.ToList());
+
+                if (success)
                 {
-                    CardStatus = "Spärra Kort";
+                    _dialog.Alert("Filen sparad", "");
                 }
-                else { CardStatus = "Aktivera Kort"; }
+                else
+                {
+                    _dialog.Alert("Exportering misslyckades", "Stäng filen om öppen och försök igen.");
+                }
             }
         }
+
         public async void GetLoans()
         {
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
             LibraryObjects = new ObservableCollection<LibraryObject>();
+
             foreach (Loan a in LoanObjects)
             {
                 LibraryObjects.Add(await _repo.GetByIdAsync<LibraryObject>(a.ObjectID));
             }
             //LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
-            
         }
+
         #endregion
     }
 }

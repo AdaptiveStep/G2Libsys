@@ -13,18 +13,20 @@
     x:TypeArguments="vm:LoginViewModel"
     mc:Ignorable="d">
     <Grid>
-        <Rectangle Opacity="0.7">
+        <Rectangle
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="3"
+            Opacity="0.7">
             <Rectangle.Fill>
                 <SolidColorBrush Color="Black" />
             </Rectangle.Fill>
+            <Rectangle.InputBindings>
+                <MouseBinding
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding}"
+                    MouseAction="LeftClick" />
+            </Rectangle.InputBindings>
         </Rectangle>
-        <Button
-            Width="{Binding (FrameworkElement.ActualWidth)}"
-            Height="{Binding (FrameworkElement.ActualHeight)}"
-            Background="Transparent"
-            Command="{Binding CancelCommand}"
-            Cursor="Arrow"
-            Style="{StaticResource MaterialDesignToolForegroundButton}" />
 
         <materialDesign:Card
             Width="420"
@@ -87,8 +89,8 @@
                         Style="{StaticResource MaterialDesignPasswordBox}" />
 
                     <Button
-                        Margin="10"
                         Width="90"
+                        Margin="10"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top"
                         Command="{Binding LogIn}"
