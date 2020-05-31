@@ -6,6 +6,12 @@
     xmlns:local="clr-namespace:G2Libsys.Dialogs"
     xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
     mc:Ignorable="d">
     <Grid>
         <materialDesign:Card
@@ -14,29 +20,24 @@
             Margin="20"
             Padding="0"
             materialDesign:ShadowAssist.ShadowDepth="Depth5"
-            BorderBrush="Black"
-            BorderThickness="2"
             UniformCornerRadius="18">
             <materialDesign:Card.Background>
-                <SolidColorBrush Opacity="0.6" Color="Black" />
+                <SolidColorBrush Opacity="0.7" Color="{StaticResource Primary900}" />
             </materialDesign:Card.Background>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Border Background="Black" Opacity="0.2" />
+                <Border Opacity="0.2" />
                 <TextBlock
                     Height="26"
                     Margin="2"
                     Padding="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    FontSize="16"
-                    FontWeight="DemiBold"
-                    Foreground="{StaticResource accent_light}"
-                    Style="{StaticResource MaterialDesignBody2TextBlock}"
                     Text="{Binding Title}" />
+                
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -48,8 +49,6 @@
                         Padding="0"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="White"
                         Text="{Binding Message}"
                         TextWrapping="WrapWithOverflow" />
 
@@ -60,8 +59,7 @@
                         Command="{Binding OKCommand}"
                         CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
                         Content="OK"
-                        FontSize="18"
-                        Style="{StaticResource MaterialDesignRaisedDarkButton}" />
+                        />
                 </Grid>
             </Grid>
         </materialDesign:Card>
