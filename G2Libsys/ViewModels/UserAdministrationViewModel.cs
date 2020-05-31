@@ -308,6 +308,17 @@
                 }
             }
         }
+
+        public async void GetLoans()
+        {
+            LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
+            LibraryObjects = new ObservableCollection<LibraryObject>();
+            foreach (Loan a in LoanObjects)
+            {
+                LibraryObjects.Add(await _repo.GetByIdAsync<LibraryObject>(a.ObjectID));
+            }
+            //LibraryObjects = new ObservableCollection<LibraryObject>(await _userrepo.GetLoanObjectsAsync(ActiveUser.ID));
+        }
         #endregion
     }
 }
