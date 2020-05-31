@@ -1,14 +1,16 @@
-﻿using G2Libsys.Commands;
-using G2Libsys.Data.Repository;
-using G2Libsys.Library;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
-using System.Linq;
-using G2Libsys.Services;
-
-namespace G2Libsys.ViewModels
+﻿namespace G2Libsys.ViewModels
 {
-    // Hantera användarens egna info
+    using G2Libsys.Commands;
+    using G2Libsys.Data.Repository;
+    using G2Libsys.Library;
+    using System.Collections.ObjectModel;
+    using System.Windows.Input;
+    using System.Linq;
+    using G2Libsys.Services;
+
+    /// <summary>
+    ///  Hantera användarens egna info
+    /// </summary>
     public class UserProfileViewModel : BaseViewModel, ISubViewModel
     {
         private ObservableCollection<LibraryObject> libObjects;
@@ -32,6 +34,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(UserCard));
             }
         }
+
         public User Confirm
         {
             get => confirm;
@@ -41,6 +44,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(Confirm));
             }
         }
+
         public User Confirm2
         {
             get => confirm2;
@@ -60,6 +64,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(CurrentUser));
             }
         }
+
         public ObservableCollection<Loan> LoanObjects
         {
             get => loanObjects;
@@ -69,6 +74,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LoanObjects));
             }
         }
+
         public ObservableCollection<LibraryObject> LibraryObjects
         {
             get => libObjects;
@@ -79,12 +85,11 @@ namespace G2Libsys.ViewModels
             }
         }
 
-        #region Construct
+        #region Constructor
+
         public UserProfileViewModel()
         {
-            
-           
-           
+            if (base.IsInDesignMode) return;
 
             CurrentUser = _navigationService.HostScreen.CurrentUser;
             _repo = new GeneralRepository();
@@ -94,50 +99,48 @@ namespace G2Libsys.ViewModels
             Confirm = new User();
             Confirm2 = new User();
             GetLoans();
-
         }
+
         #endregion
+
         #region Methods
+
         public async void Save()
         {
-            
-
-
             if (Confirm.Firstname == Confirm2.Firstname && Confirm.Lastname == Confirm2.Lastname && Confirm.Password == Confirm2.Password && Confirm.Email == Confirm2.Email)
             {
-                if (Confirm.Firstname != null && Confirm.Firstname != "")
+                if (!string.IsNullOrEmpty(Confirm.Firstname))
                 {
                     CurrentUser.Firstname = Confirm.Firstname;
                 }
-                if (Confirm.Lastname != null && Confirm.Lastname != "")
+                if (!string.IsNullOrEmpty(Confirm.Lastname))
                 {
                     CurrentUser.Lastname = Confirm.Lastname;
                 }
-                if (Confirm.Password != null && Confirm.Password != "")
+                if (!string.IsNullOrEmpty(Confirm.Password))
                 {
                     CurrentUser.Password = Confirm.Password;
                 }
-                if (Confirm.Email != null && Confirm.Email != "")
+                if (!string.IsNullOrEmpty(Confirm.Email))
                 {
                     CurrentUser.Email = Confirm.Email;
                 }
+
                 await _repo.UpdateAsync(CurrentUser);
+
                 _dialog.Alert("Klart", "Uppgifterna sparades");
             }
-            else { _dialog.Alert("Error", "Kunde inte spara. dubbelkolla alla parametrar"); }
+            else 
+            { 
+                _dialog.Alert("Error", "Kunde inte spara. dubbelkolla alla parametrar"); 
+            }
         }
-        //public async void GetCurrentUser()
-        //{ 
-        //    CurrentUser = await _repo.GetAllAsync().Where(o => o.Logg)
-
-        //}
 
         public async void GetCard()
         {
-
             UserCard = await _repo.GetByIdAsync<Card>(CurrentUser.ID);
-           
         }
+
         public async void GetLoans()
         {
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(CurrentUser.ID));
@@ -148,8 +151,8 @@ namespace G2Libsys.ViewModels
             }
            
             GetCard();
-
         }
+
         #endregion 
     }
 }

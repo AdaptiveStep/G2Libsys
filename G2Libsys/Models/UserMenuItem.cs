@@ -39,9 +39,17 @@
             // Create new command if action is null
             Action = action ?? new RelayCommand(_ =>
             {
-                // Set CurrentViewModel to viewModel
-                navigationService.HostScreen.CurrentViewModel =
-                navigationService.CreateNewInstance((IViewModel)Activator.CreateInstance(viewModel));
+                var newViewModel = navigationService.CreateNewInstance((IViewModel)Activator.CreateInstance(viewModel));
+
+                if (newViewModel is ISubViewModel subViewModel)
+                {
+                    navigationService.HostScreen.SubViewModel = subViewModel;
+                }
+                else
+                {
+                    // Set CurrentViewModel to viewModel
+                    navigationService.HostScreen.CurrentViewModel = newViewModel;
+                }
             });
         }
 

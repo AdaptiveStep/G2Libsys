@@ -19,6 +19,20 @@
     FontSize="16"
     mc:Ignorable="d">
     <Grid>
+        <Rectangle
+            Grid.RowSpan="3"
+            Grid.ColumnSpan="3"
+            Opacity="0.7">
+            <Rectangle.Fill>
+                <SolidColorBrush Color="Black" />
+            </Rectangle.Fill>
+            <Rectangle.InputBindings>
+                <MouseBinding
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding}"
+                    MouseAction="LeftClick" />
+            </Rectangle.InputBindings>
+        </Rectangle>
 
         <materialDesign:Card
             Width="600"
