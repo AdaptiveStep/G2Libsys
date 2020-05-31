@@ -186,7 +186,11 @@
         {
             foreach (Loan a in LoanObjects)
             {
-                await _repo.UpdateAsync(a);
+                if (a.Returned == true)
+                {
+                    await _repo.UpdateAsync(a);
+                }
+                
             }
 
             GetLoans();

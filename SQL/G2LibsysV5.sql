@@ -607,7 +607,7 @@ Create proc usp_getall_users
     END
     GO
 
-    Create PROC usp_getloans_users(
+    Create PROC [dbo].[usp_getloans_users](
     @ID INT)
     AS
     BEGIN
@@ -617,7 +617,11 @@ Create proc usp_getall_users
                 ( 
                 SELECT CardID
                 FROM Cards as C
-                WHERE Loans.CardID = C.ID and c.Owner = @ID
+                WHERE Loans.CardID = C.ID and c.Owner = @ID and ObjectID IN 
+				(
+				SELECT ObjectID
+				FROM LibraryObjects as L
+				WHERE L.Category=1 AND L.ID = OBjectID)
                 )
 
     END
