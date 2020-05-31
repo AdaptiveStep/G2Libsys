@@ -55,7 +55,7 @@
                     </materialDesign:Card>
             <materialDesign:Card Margin="10 10 10 10">
 
-                    <DataGrid SelectedItem="{Binding OldUser}" 
+                    <DataGrid SelectedItem="{Binding SelectedUser}" 
                               CanUserAddRows="False" 
                               CanUserDeleteRows="False" 
                               Margin="10 10 10 10" 
@@ -71,7 +71,13 @@
                         <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
                         
                     </DataGrid.Columns>
-                </DataGrid>
+                        <DataGrid.InputBindings>
+                            <MouseBinding
+                                Command="{Binding GoToUser}"
+                                CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
+                                Gesture="LeftDoubleClick" />
+                        </DataGrid.InputBindings>
+                    </DataGrid>
                 
             </materialDesign:Card>
             </StackPanel>

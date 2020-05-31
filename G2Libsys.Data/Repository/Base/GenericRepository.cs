@@ -119,7 +119,7 @@
             {
                 // Insert for each item in items
                 await _db.ExecuteAsync(
-                            sql: GetProcedureName<T>("insertrange"),
+                            sql: GetProcedureName<T>("insert"),
                           param: items,
                     commandType: CommandType.StoredProcedure, transaction: transaction);
 

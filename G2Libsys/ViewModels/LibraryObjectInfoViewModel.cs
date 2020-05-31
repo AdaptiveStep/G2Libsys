@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
+using Microsoft.Extensions.DependencyInjection;
 #endregion
 namespace G2Libsys.ViewModels
 {
@@ -18,6 +19,7 @@ namespace G2Libsys.ViewModels
         #region Fields
         private readonly IRepository _repo;
         public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+        public ICommand AddLoan { get; private set; }
 
         private LibraryObject currentBook;
 
@@ -43,11 +45,23 @@ namespace G2Libsys.ViewModels
 
         public LibraryObjectInfoViewModel(LibraryObject libraryObject)
         {
+
             _repo = new GeneralRepository();
             //author = new Author();
             currentBook = libraryObject;
             //GetAuthor();
-           
+            AddLoan = new RelayCommand(_ => AddToCart());
+        }
+        public void AddToCart()
+        {
+            if (_navigationService.HostScreen.CurrentUser != null)
+            {
+                ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
+
+                _loans.LoanCart.Add(currentBook);
+                _dialog.Alert("", $"Tillagd i varukorgen{ _loans.LoanCart.Count }");
+            }
+            else { _dialog.Alert("", "Vänligen logga in för att låna"); }
         }
         #endregion
         #region Methods
