@@ -326,6 +326,9 @@
 
         public async void GetLoans()
         {
+            if (ActiveUser is null){ return; }
+
+
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(ActiveUser.ID));
             LibraryObjects = new ObservableCollection<LibraryObject>();
 
