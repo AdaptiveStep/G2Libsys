@@ -58,14 +58,32 @@
 					<StackPanel
 						Grid.Row="1"
 						Width="130"
-						Margin="0,30,0,30">
+						Margin="0,0,0,10">
 
-						<TextBox materialDesign:HintAssist.Hint="Title" Text="{Binding LibraryObject.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-						<TextBox materialDesign:HintAssist.Hint="ISBN" Text="{Binding LibraryObject.ISBN, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-						<TextBox materialDesign:HintAssist.Hint="Bokförlag" Text="{Binding LibraryObject.Publisher, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-						<TextBox materialDesign:HintAssist.Hint="Antal sidor" Text="{Binding LibraryObject.Pages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-						<TextBox materialDesign:HintAssist.Hint="DeweyDecimal" Text="{Binding LibraryObject.Dewey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-						<TextBox materialDesign:HintAssist.Hint="Kvantitet" Text="{Binding LibraryObject.Quantity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox
+							materialDesign:HintAssist.Hint="Title"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+							Text="{Binding LibraryObject.Title, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox
+							materialDesign:HintAssist.Hint="ISBN"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+							Text="{Binding LibraryObject.ISBN, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox
+							materialDesign:HintAssist.Hint="Bokförlag"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+							Text="{Binding LibraryObject.Publisher, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox
+							materialDesign:HintAssist.Hint="Antal sidor"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+							Text="{Binding LibraryObject.Pages, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox
+							materialDesign:HintAssist.Hint="DeweyDecimal"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+							Text="{Binding LibraryObject.Dewey, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox
+							materialDesign:HintAssist.Hint="Kvantitet"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+							Text="{Binding LibraryObject.Quantity, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
 					</StackPanel>
 
@@ -73,39 +91,43 @@
 						Grid.Row="1"
 						Grid.Column="2"
 						Width="130"
-						Margin="0,30,0,30">
+						Margin="0,0,0,10">
 						<ComboBox
-							Width="110"
-							Height="24"
-							Margin="10,0,10,0"
-							Padding="0"
+							Margin="0,3,0,0.5"
 							materialDesign:HintAssist.Hint="Kategori"
 							ItemsSource="{Binding Categories}"
 							SelectedIndex="{Binding LibraryObject.Category}"
-							SelectedItem="{Binding SelectedCategory}">
+							SelectedItem="{Binding SelectedCategory}"
+							Style="{StaticResource MaterialDesignFloatingHintComboBox}">
 							<ComboBox.ItemTemplate>
 								<DataTemplate>
 									<TextBlock Text="{Binding Name}" />
 								</DataTemplate>
 							</ComboBox.ItemTemplate>
 						</ComboBox>
-						<TextBox materialDesign:HintAssist.Hint="Bildlänk" Text="{Binding LibraryObject.imagesrc, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox
+							materialDesign:HintAssist.Hint="Bildlänk"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+							Text="{Binding LibraryObject.imagesrc, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 						<TextBox
 							materialDesign:HintAssist.Hint="Beskrivning"
 							materialDesign:ScrollBarAssist.ThumbWidth="2"
 							AcceptsReturn="true"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 							Text="{Binding LibraryObject.Description, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 						<TextBox
 							materialDesign:HintAssist.Hint="Inköpspris"
 							AcceptsReturn="true"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 							Text="{Binding LibraryObject.PurchasePrice, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 						<TextBox
 							materialDesign:HintAssist.Hint="Författare"
 							AcceptsReturn="true"
+							Style="{StaticResource MaterialDesignFloatingHintTextBox}"
 							Text="{Binding LibraryObject.Author, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
 
 						<CheckBox
-							Margin="10,5,0,0"
+							Margin="0,15,0,0"
 							VerticalAlignment="Center"
 							Content="Aktivera"
 							IsChecked="{Binding LibraryObject.Disabled, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Converter={converter:InverseBooleanConverter}}"
