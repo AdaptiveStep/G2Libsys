@@ -58,8 +58,9 @@
 					<StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
 						<TextBox
 							MinWidth="200"
-							Margin="6"
+							Margin="5"
 							HorizontalAlignment="Stretch"
+							materialDesign:HintAssist.Hint="Sök Bokdata"
 							materialDesign:TextFieldAssist.HasClearButton="True"
 							materialDesign:TextFieldAssist.RippleOnFocusEnabled="True"
 							Text="{Binding SearchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -69,17 +70,16 @@
 							Content="Sök"
 							IsDefault="True" />
 					</StackPanel>
+
 					<StackPanel
 						HorizontalAlignment="Right"
 						DockPanel.Dock="Right"
 						Orientation="Horizontal">
 
 						<ComboBox
-							Width="120"
-							Height="32"
 							Margin="5"
-							Padding="0"
 							HorizontalAlignment="Center"
+							materialDesign:HintAssist.Hint="Välj kategori"
 							ItemsSource="{Binding Categories}"
 							ScrollViewer.HorizontalScrollBarVisibility="Auto"
 							ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -99,81 +99,84 @@
 							IsTabStop="False" />
 
 
-                                <StackPanel />
-                            </StackPanel>
-                        </DockPanel>
-                    </materialDesign:Card>
+						<StackPanel />
+					</StackPanel>
+				</DockPanel>
 
-                    <DataGrid
-                        x:Name="ObjectDataGrid"
-                        MinWidth="400"
-                        Margin="5"
-                        Padding="0"
-                        materialDesign:DataGridAssist.CellPadding="4"
-                        materialDesign:DataGridAssist.ColumnHeaderPadding="4"
-                        AutoGenerateColumns="False"
-                        CanUserAddRows="False"
-                        CanUserDeleteRows="False"
-                        CanUserResizeColumns="True"
-                        DataContext="{Binding}"
-                        IsReadOnly="True"
-                        ItemsSource="{Binding LibraryObjects}"
-                        SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        SelectionMode="Single">
-                        <DataGrid.ToolTip>
-                            <ToolTip Placement="MousePoint" Content="{Binding ToolTip}"/>
-                        </DataGrid.ToolTip>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn
-                                MaxWidth="50"
-                                Binding="{Binding ID}"
-                                Header="ID" />
-                            <DataGridTextColumn
-                                Width="100"
-                                Binding="{Binding Title}"
-                                Header="Titel" />
-                            <DataGridTextColumn
-                                Width="auto"
-                                MaxWidth="120"
-                                Binding="{Binding ISBN}"
-                                Header="ISBN" />
-                            <DataGridTextColumn
-                                Width="140"
-                                Binding="{Binding Description}"
-                                Header="Beskrivning" />
-                            <DataGridTextColumn
-                                Width="80"
-                                Binding="{Binding DateAdded}"
-                                Header="Tillagd" />
-                            <DataGridTextColumn
-                                Width="80"
-                                Binding="{Binding LastEdited}"
-                                Header="Ändrad" />
-                            <DataGridTextColumn
-                                Width="auto"
-                                Binding="{Binding Publisher}"
-                                Header="Publicerad av" />
-                            <DataGridTextColumn
-                                Width="auto"
-                                Binding="{Binding PurchasePrice}"
-                                Header="Pris" />
-                            <DataGridTextColumn
-                                Width="auto"
-                                Binding="{Binding Pages}"
-                                Header="Sidor" />
-                            <DataGridTextColumn MaxWidth="100" Header="Kvantitet" Binding="{Binding Quantity}" />
-                            <DataGridTextColumn
-                                Width="100"
-                                Binding="{Binding Disabled}"
-                                Header="Borttagen" />
-                            <DataGridTextColumn
-                                Width="auto"
-                                Binding="{Binding Dewey}"
-                                Header="DeweyDecimal" />
-                            <DataGridTextColumn
-                                Width="100"
-                                Binding="{Binding imagesrc}"
-                                Header="Bildadress" />
+				<materialDesign:Card Grid.Row="1">
+					<DataGrid
+						x:Name="ObjectDataGrid"
+						MinWidth="400"
+						Margin="5"
+						Padding="0"
+						materialDesign:DataGridAssist.CellPadding="4"
+						materialDesign:DataGridAssist.ColumnHeaderPadding="4"
+						AutoGenerateColumns="False"
+						CanUserAddRows="False"
+						CanUserDeleteRows="False"
+						CanUserResizeColumns="True"
+						DataContext="{Binding}"
+						IsReadOnly="True"
+						ItemsSource="{Binding LibraryObjects}"
+						SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						SelectionMode="Single">
+						<DataGrid.ToolTip>
+							<ToolTip Content="{Binding ToolTip}" Placement="MousePoint" />
+						</DataGrid.ToolTip>
+						<DataGrid.Columns>
+							<DataGridTextColumn
+								MaxWidth="50"
+								Binding="{Binding ID}"
+								Header="ID" />
+							<DataGridTextColumn
+								Width="100"
+								Binding="{Binding Title}"
+								Header="Titel" />
+							<DataGridTextColumn
+								Width="auto"
+								MaxWidth="120"
+								Binding="{Binding ISBN}"
+								Header="ISBN" />
+							<DataGridTextColumn
+								Width="140"
+								Binding="{Binding Description}"
+								Header="Beskrivning" />
+							<DataGridTextColumn
+								Width="80"
+								Binding="{Binding DateAdded}"
+								Header="Tillagd" />
+							<DataGridTextColumn
+								Width="80"
+								Binding="{Binding LastEdited}"
+								Header="Ändrad" />
+							<DataGridTextColumn
+								Width="auto"
+								Binding="{Binding Publisher}"
+								Header="Publicerad av" />
+							<DataGridTextColumn
+								Width="auto"
+								Binding="{Binding PurchasePrice}"
+								Header="Pris" />
+							<DataGridTextColumn
+								Width="auto"
+								Binding="{Binding Pages}"
+								Header="Sidor" />
+							<DataGridTextColumn
+								MaxWidth="100"
+								Binding="{Binding Quantity}"
+								Header="Kvantitet" />
+							<DataGridTextColumn
+								Width="100"
+								Binding="{Binding Disabled}"
+								Header="Borttagen" />
+							<DataGridTextColumn
+								Width="auto"
+								Binding="{Binding Dewey}"
+								Header="DeweyDecimal" />
+							<DataGridTextColumn
+								Width="100"
+								Binding="{Binding imagesrc}"
+								Header="Bildadress" />
 
 						</DataGrid.Columns>
 
@@ -190,6 +193,7 @@
 						</DataGrid.InputBindings>
 					</DataGrid>
 				</materialDesign:Card>
+
 				<StackPanel
 					Grid.Row="2"
 					Margin="10"
