@@ -21,7 +21,7 @@
 	{
 		#region Fields
 		private readonly IRepository _repo;
-		
+		private SearchObject searchObject;
 		private ObservableCollection<LibraryObject> libObjects;
 		private Category selectedCatagory;
 		private string searchtext;
@@ -32,26 +32,8 @@
 		#region Properties
 
 		/// <summary>
-		/// This is used when Uploading/downloading image blobs from the server.
-		/// </summary>
-		private byte[] _rawImageData;
-		public byte[] RawImageData
-		{
-			get { return _rawImageData; }
-			set
-			{
-				if (value != _rawImageData)
-				{
-					_rawImageData = value;
-					OnPropertyChanged(nameof(RawImageData));
-				}
-			}
-		}
-
-		/// <summary>
 		/// We create this object when doing an advanced search query. Its instanse-variables are used for the search method.
 		/// </summary>
-		private SearchObject searchObject;
 
 		public SearchObject SearchObject
 		{
@@ -107,11 +89,6 @@
 				OnPropertyChanged(nameof(LibraryObjects));
 			}
 		}
-		
-		/// <summary>
-		/// Vid klick av library object, gå till ny vy av objektet
-		/// </summary>
-		
 
 		/// <summary>
 		/// Basic search string
@@ -162,6 +139,8 @@
 				OnPropertyChanged(nameof(AdvSearch));
 			}
 		}
+
+		public bool HasSearchResult => !(LibraryObjects?.Count > 0);
 
 		/// <summary>
 		/// If Advancedsearch enabled
@@ -218,6 +197,7 @@
 		{
 			FrontPage = false;
 			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>(id));
+			OnPropertyChanged(nameof(HasSearchResult));
 		}
 
 		/// <summary>
@@ -227,6 +207,7 @@
 		{
 			FrontPage = false;
 			LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetRangeAsync<LibraryObject>(SearchText)).Where(o => o.Category == SelectedCategory.ID));
+			OnPropertyChanged(nameof(HasSearchResult));
 		}
 
 		/// <summary>
@@ -239,6 +220,7 @@
 			FrontPage = false;
 
 			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetRangeAsync<LibraryObject>(SearchObject));
+			OnPropertyChanged(nameof(HasSearchResult));
 		}
 
 		/// <summary>
