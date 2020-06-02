@@ -40,7 +40,7 @@
         #endregion
 
         #region Properties
-
+        public string ToolTip { get; set; }
         /// <summary>
         /// filepath for reports
         /// </summary>
@@ -169,7 +169,7 @@
         public AdminViewModel()
         {
             if (base.IsInDesignMode) return;
-
+            GetToolTip();
             _userRepo = new UserRepository();
             _repo = new GeneralRepository();
 
@@ -276,7 +276,10 @@
                 }
             }
         }
-
+        private void GetToolTip()
+        {
+            ToolTip = "\u2022Dubbelklicka för att redigera.";
+        }
         /// <summary>
         /// Create new user
         /// </summary>

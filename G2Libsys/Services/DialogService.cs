@@ -17,7 +17,7 @@
         /// <param name="msg">Display message with character limit</param>
         public void Alert(string title = null, string msg = null)
         {
-            var viewModel = new AlertDialogViewModel(title.LimitLength(20), msg.LimitLength(80));
+            var viewModel = new AlertDialogViewModel(title.LimitLength(20), msg);
             ShowDialog(viewModel);
         }
 

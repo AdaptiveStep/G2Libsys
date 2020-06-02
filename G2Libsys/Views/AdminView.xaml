@@ -58,6 +58,9 @@
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     SelectedItem="{Binding SelectedUser}"
                     SelectionMode="Single">
+                    <DataGrid.ToolTip>
+                        <ToolTip Placement="MousePoint" Content="{Binding ToolTip}"/>
+                    </DataGrid.ToolTip>
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
                         <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
@@ -149,6 +152,7 @@
                         Content="{materialDesign:PackIcon Kind=ContentSave}" />
                 </StackPanel>
             </materialDesign:Card>
+
         </StackPanel>
 
 
