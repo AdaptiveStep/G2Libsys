@@ -222,7 +222,7 @@
                     return;
                     
                 }
-                _dialog.Alert("Fel lösenord", "Försök igen.");
+                _dialog.Alert("Fel lösenord", "Försök igen.\nOm du har glömt ditt lösenord, vänligen kontakta personalen");
             }
             else
             {
