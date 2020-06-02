@@ -82,7 +82,7 @@ namespace G2Libsys.ViewModels
                     ILoansService _loans = IoC.ServiceProvider.GetService<ILoansService>();
 
                     _loans.LoanCart.Add(currentBook);
-                    _dialog.Alert("", $"Tillagd i varukorgen");
+                    _dialog.Alert("Varukorg", $"Tillagd i varukorgen");
                     if (currentBook.Category == 1)
                     {
                         currentBook.Quantity--;
@@ -90,9 +90,9 @@ namespace G2Libsys.ViewModels
                     
                     CancelCommand.Execute(null);
                 }
-                else { _dialog.Alert("", "Du har inget Lånekort registrerat eller aktiverat \nVänligen kontakta personalen"); }
+                else { _dialog.Alert("Lånekort", "Du har inget Lånekort registrerat eller aktiverat \nVänligen kontakta personalen"); }
             }
-            else { _dialog.Alert("", "Vänligen logga in för att låna"); }
+            else { _dialog.Alert("Login", "Vänligen logga in för att låna"); }
         }
         #endregion
 

@@ -36,21 +36,21 @@
 		</Grid.RowDefinitions>
 
 
-        <Rectangle
-            Grid.RowSpan="3"
-            Grid.ColumnSpan="3"
-            Opacity="0.7">
-            <Rectangle.Fill>
-                <SolidColorBrush Color="Black" />
-            </Rectangle.Fill>
-            <Rectangle.InputBindings>
-                <MouseBinding
-                    Command="{Binding CancelCommand}"
-                    CommandParameter="{Binding}"
-                    MouseAction="LeftClick" />
-            </Rectangle.InputBindings>
-        </Rectangle>
-        <materialDesign:Card
+		<Rectangle
+			Grid.RowSpan="3"
+			Grid.ColumnSpan="3"
+			Opacity="0.7">
+			<Rectangle.Fill>
+				<SolidColorBrush Color="Black" />
+			</Rectangle.Fill>
+			<Rectangle.InputBindings>
+				<MouseBinding
+					Command="{Binding CancelCommand}"
+					CommandParameter="{Binding}"
+					MouseAction="LeftClick" />
+			</Rectangle.InputBindings>
+		</Rectangle>
+		<materialDesign:Card
 			Grid.Row="1"
 			Grid.Column="1"
 			UniformCornerRadius="10">
@@ -63,7 +63,7 @@
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="4*" />
-					<RowDefinition Height="3*" MaxHeight="500"/>
+					<RowDefinition Height="3*" MaxHeight="500" />
 				</Grid.RowDefinitions>
 
 
@@ -71,16 +71,15 @@
 				<materialDesign:Card Grid.ColumnSpan="2" VerticalAlignment="Top">
 
 
-					<StackPanel
-						Grid.ColumnSpan="2"
-						Margin="0 10 0 0"
-						HorizontalAlignment="Center">
+					<StackPanel Grid.ColumnSpan="2">
 						<TextBlock
-							HorizontalAlignment="Center"
-                            Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
-							Text="{Binding ActiveUser.Email}" />
+							Padding="0,15,0,15"
+							Background="{StaticResource MaterialDesignPaper}"
+							Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
+							Text="{Binding ActiveUser.Email}"
+							TextAlignment="Center" />
 
-						<StackPanel Margin="0,5,0,10" Orientation="Horizontal">
+						<StackPanel Margin="0,10,0,10" Orientation="Horizontal">
 
 							<TextBlock Margin="15,0,0,0" Text="KortID:       " />
 							<TextBlock Text="{Binding UserCard.CardNumber, Mode=OneWay, NotifyOnSourceUpdated=True}" />
@@ -145,14 +144,12 @@
 							Orientation="Horizontal">
 
 
-                            <Button Command="{Binding Savebutton}">
+							<Button Command="{Binding Savebutton}">
 								<Button.Content>
 									<StackPanel Orientation="Horizontal">
-										<TextBlock Text="Bekräfta Profiländringar" 
-                                                   Margin="0 0 5 0"/>
+										<TextBlock Margin="0,0,5,0" Text="Bekräfta Profiländringar" />
 
-										<materialDesign:PackIcon
-											Kind="ContentSave" />
+										<materialDesign:PackIcon Kind="ContentSave" />
 									</StackPanel>
 								</Button.Content>
 
@@ -206,31 +203,37 @@
 							</StackPanel>
 						</Button.Content>
 					</Button>
-                    <Button Margin="5" Command="{Binding ExportHistory}">
+					<Button Margin="5" Command="{Binding ExportHistory}">
 
-                        <Button.Content>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="FileDownload" />
-                                <TextBlock Margin="5,0,0,0" Text="Eportera historik" />
+						<Button.Content>
+							<StackPanel Orientation="Horizontal">
+								<materialDesign:PackIcon Kind="FileDownload" />
+								<TextBlock Margin="5,0,0,0" Text="Eportera historik" />
 
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                </StackPanel>
+							</StackPanel>
+						</Button.Content>
+					</Button>
+				</StackPanel>
 
 
 				<!--  panel for loaned objects  -->
 				<StackPanel
 					Grid.Row="1"
+					MaxWidth="500"
 					Margin="10,10,0,0"
-					materialDesign:ShadowAssist.ShadowDepth="Depth2" VerticalAlignment="Top" MaxWidth="500">
+					VerticalAlignment="Top"
+					materialDesign:ShadowAssist.ShadowDepth="Depth2">
 					<TextBlock
-						Margin="0 5 10 0"
+						Margin="0,5,10,0"
 						Style="{StaticResource MaterialDesignSubtitle2TextBlock}"
 						Text="Aktiva lån" />
 
-					<Separator/>
-					<ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100" MaxWidth="500" Margin="10" >
+					<Separator />
+					<ScrollViewer
+						MaxWidth="500"
+						MaxHeight="100"
+						Margin="10"
+						VerticalScrollBarVisibility="Auto">
 						<StackPanel Orientation="Horizontal">
 
 
@@ -238,7 +241,10 @@
 							<ItemsControl ItemsSource="{Binding LibraryObjects}">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
-                                        <TextBlock Height="20" Text="{Binding Title}" MaxWidth="400"/> 
+										<TextBlock
+											Height="20"
+											MaxWidth="400"
+											Text="{Binding Title}" />
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
 							</ItemsControl>

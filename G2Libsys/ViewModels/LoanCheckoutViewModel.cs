@@ -9,7 +9,7 @@ using System;
 
 namespace G2Libsys.ViewModels
 {
-    public class LoanCheckoutViewModel : BaseViewModel, ISubViewModel
+    public class LoanCheckoutViewModel : BaseViewModel, IViewModel
     {
         #region fields
         private readonly IRepository _repo;

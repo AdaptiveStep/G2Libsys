@@ -158,6 +158,8 @@
 			}
 		}
 
+		public bool HasSearchResult => !(LibraryObjects?.Count > 0);
+
 		/// <summary>
 		/// If Advancedsearch enabled
 		/// </summary>
@@ -217,6 +219,7 @@
 		{
 			FrontPage = false;
 			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetAllAsync<LibraryObject>(id));
+			OnPropertyChanged(nameof(HasSearchResult));
 		}
 
 		/// <summary>
@@ -226,6 +229,7 @@
 		{
 			FrontPage = false;
 			LibraryObjects = new ObservableCollection<LibraryObject>((await _repo.GetRangeAsync<LibraryObject>(SearchText)).Where(o => o.Category == SelectedCategory.ID));
+			OnPropertyChanged(nameof(HasSearchResult));
 		}
 
 		/// <summary>
@@ -238,6 +242,7 @@
 			FrontPage = false;
 
 			LibraryObjects = new ObservableCollection<LibraryObject>(await _repo.GetRangeAsync<LibraryObject>(SearchObject));
+			OnPropertyChanged(nameof(HasSearchResult));
 		}
 
 		/// <summary>
