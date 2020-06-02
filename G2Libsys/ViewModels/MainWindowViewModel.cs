@@ -27,6 +27,7 @@
         private ICommand goToFrontPage;
         private ICommand logOutCommand;
         private ICommand cancelCommand;
+        private ICommand infoButton;
         #endregion
 
         #region Public Properties
@@ -127,7 +128,7 @@
         /// Call logout method
         /// </summary>
         public ICommand LogOutCommand => logOutCommand ??= new RelayCommand(_ => LogOut());
-
+        public ICommand InfoButton => infoButton ??= new RelayCommand(_ =>GetInfo());
         /// <summary>
         /// Navigate to frontpage
         /// </summary>
@@ -204,6 +205,11 @@
         /// <summary>
         /// Setup user navigation access
         /// </summary>
+        /// 
+        private void GetInfo()
+        {
+            _dialog.Alert("Info", "Allmänna vilkor:\n\u2022Vid lån av bok ska boken lämnas tillbaka inom 14 dagar av utlämnat datum.\n\u2022Vid lån av E-bok eller Film är endast för privat bruk.\nOm dessa vilkor inte hålls ges biblioteket rätten att spärra ditt lånekort och debitera eventuella avgifter.\n\nOm du har frågor kan du alltid kontakta personalen på bilbioteket");
+        }
         private void SetUserAccess()
         {
             MenuItems ??= new ObservableCollection<UserMenuItem>();

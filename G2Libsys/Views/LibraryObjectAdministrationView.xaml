@@ -97,8 +97,10 @@
                             </StackPanel>
                         </DockPanel>
                     </materialDesign:Card>
-
+                    
+                            
                     <DataGrid
+                      
                         x:Name="ObjectDataGrid"
                         MinWidth="400"
                         Margin="5"
@@ -114,6 +116,9 @@
                         ItemsSource="{Binding LibraryObjects}"
                         SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SelectionMode="Single">
+                        <DataGrid.ToolTip>
+                            <ToolTip Placement="MousePoint" Content="{Binding ToolTip}"/>
+                        </DataGrid.ToolTip>
                         <DataGrid.Columns>
                             <DataGridTextColumn
                                 MaxWidth="50"
