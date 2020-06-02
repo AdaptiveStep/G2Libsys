@@ -851,31 +851,35 @@ Create proc usp_getall_users
 		-- 				or card owner for CARD LIKE %bla543
 
 	--search with multiple parameters and filter
-	CREATE PROC usp_filtersearch_users
+	CREATE PROC [dbo].[usp_filtersearch_users]
 		@PartialName VARCHAR(20) = '',
 		@PartialLastName VARCHAR(20) = '',
 		@PartialEmail VARCHAR(300) = ''
 
+		
 		AS
+		declare @Phrase varchar(20);
 		BEGIN
-			SELECT *
-			FROM Users
+		    select @Phrase = dbo.fnConstant();
+			select ID, Email, CONVERT(varchar(100), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as [Password], Firstname, Lastname, UserType, LoggedIn from users
 			WHERE 
 				Firstname LIKE '%' + @PartialName + '%' AND
 				Lastname LIKE '%' + @PartialLastName + '%' AND
 				[Email] LIKE '%' + @PartialEmail + '%';
 		END
+
 		GO
 
 
 	--Simple search users
-	CREATE PROC usp_simplesearch_users
+	CREATE PROC [dbo].[usp_simplesearch_users]
 		@search VARCHAR(20) = ''
 
 		AS
+		declare @Phrase varchar(20);
 		BEGIN
-			SELECT *
-			FROM Users
+		    select @Phrase = dbo.fnConstant();
+			select ID, Email, CONVERT(varchar(100), DECRYPTBYPASSPHRASE(@Phrase, [Password])) as [Password], Firstname, Lastname, UserType, LoggedIn from users
 			WHERE 
 				Firstname LIKE '%' + @search + '%' OR
 				Lastname LIKE '%' + @search + '%' OR

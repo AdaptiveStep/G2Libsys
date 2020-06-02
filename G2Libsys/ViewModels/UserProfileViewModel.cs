@@ -7,6 +7,7 @@
     using System.Windows.Input;
     using System.Linq;
     using G2Libsys.Services;
+    using System;
 
     /// <summary>
     ///  Hantera användarens egna info
@@ -143,7 +144,12 @@
 
         public async void GetLoans()
         {
+            if(CurrentUser is null) { return; }
             LoanObjects = new ObservableCollection<Loan>(await _userrepo.GetLoansAsync(CurrentUser.ID));
+            foreach (Loan a in LoanObjects)
+            {
+                a.LoanDate = a.LoanDate.AddDays(14);
+            }
             LibraryObjects = new ObservableCollection<LibraryObject>();
             foreach (Loan a in LoanObjects)
             {
