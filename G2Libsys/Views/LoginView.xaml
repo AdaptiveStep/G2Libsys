@@ -64,7 +64,8 @@
                     Width="160"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Center">
-
+                        
+                    <Image Source="..\Resources\Images\LIBSYS.png" HorizontalAlignment="Center" Stretch="Fill" MaxHeight="75" MaxWidth="75" />
                     <TextBlock Text="E-post" />
                     <TextBox
                         materialDesign:TextFieldAssist.HasClearButton="True"

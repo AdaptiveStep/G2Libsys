@@ -36,7 +36,6 @@
                 <TextBlock
                     Margin="10"
                     HorizontalAlignment="Left"
-                    FontFamily="{StaticResource MaterialDesignFont}"
                     FontWeight="Regular"
                     Style="{StaticResource MaterialDesignHeadline6TextBlock}"
                     Text="Nyheter" />
