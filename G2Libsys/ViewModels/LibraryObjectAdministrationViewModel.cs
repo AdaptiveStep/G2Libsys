@@ -37,17 +37,20 @@
         private ICommand deleteItem;
         private ICommand reset;
         private ICommand downloadLibLogCommand;
-        
         private LibraryObject newLibraryObject;
         private ObservableCollection<LibraryObject> libraryObjects;
         private Category selectedCategory;
         private LibraryObject selectedItem;
         private string searchString;
         private bool disabledLibraryObjects;
+        private List<Category> ItemCategories => Categories.ToList().GetRange(1, Categories.Count - 1);
 
         #endregion
 
         #region Properties
+        /// <summary>
+        /// tooltip for datagrid
+        /// </summary>
         public string ToolTip { get; set; }
         public ObservableCollection<Category> Categories { get; set; }
 
@@ -120,7 +123,9 @@
                 OnPropertyChanged(nameof(NewLibraryObject));
             }
         }
-
+        /// <summary>
+        /// string for searching in libraryobjects
+        /// </summary>
         public string SearchString
         {
             get => searchString;
@@ -135,8 +140,8 @@
                 OnPropertyChanged(nameof(SearchString));
             }
         }
-
-        private List<Category> ItemCategories => Categories.ToList().GetRange(1, Categories.Count - 1);
+      
+       
 
         #endregion
 
@@ -202,6 +207,9 @@
         #endregion
 
         #region Methods
+        /// <summary>
+        /// set tooltip
+        /// </summary>
         private void GetToolTip()
         {
             ToolTip = "\u2022Dubbelklicka för att redigera.\n\u2022Klicka på DELETE knappen för att ta bort";

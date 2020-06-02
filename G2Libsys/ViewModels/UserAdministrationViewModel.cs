@@ -28,24 +28,16 @@
         private readonly IRepository _repo;
         private readonly IUserRepository _userrepo;
         private ObservableCollection<LibraryObject> libObjects;
-        private string cardStatus;
-        private string reason;
+        private string cardStatus;  
         private User confirm;
         private User confirm2;
         #endregion
 
         #region Properties
-        
-        public string Reason
-        {
-            get => reason;
-            set
-            {
-                reason = value;
-                OnPropertyChanged(nameof(Reason));
-            }
-        }
-
+      
+        /// <summary>
+        /// user object to check input data against confirm2
+        /// </summary>
         public User Confirm 
         {
             get=> confirm;
@@ -76,7 +68,9 @@
                 OnPropertyChanged(nameof(CardStatus));
             }
         }
-
+        /// <summary>
+        /// selected User
+        /// </summary>
         public User ActiveUser
         {
             get => activeUser;
@@ -86,7 +80,9 @@
                 OnPropertyChanged(nameof(ActiveUser));
             }
         }
-
+        /// <summary>
+        /// selected users card
+        /// </summary>
         public Card UserCard
         {
             get => userCard;
@@ -96,7 +92,9 @@
                 OnPropertyChanged(nameof(UserCard));
             }
         }
-
+        /// <summary>
+        /// new card 
+        /// </summary>
         public Card NewCard
         {
             get => newCard;
@@ -106,7 +104,9 @@
                 OnPropertyChanged(nameof(NewCard));
             }
         }
-
+        /// <summary>
+        /// collection to show library object of loans
+        /// </summary>
         public ObservableCollection<LibraryObject> LibraryObjects
         {
             get => libObjects;
@@ -172,7 +172,9 @@
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// create all commands
+        /// </summary>
         private void SetupCommands()
         {
             ExportHistory = new RelayCommand(async _ => await SaveDialogBoxAsync());
@@ -181,7 +183,9 @@
             ChangeCardStatusbutton = new RelayCommand(_ => ChangeCardStatus(), _ => UserCard != null);
             CreateNewCardbutton = new RelayCommand(_ => CreateNewCard());
         }
-
+        /// <summary>
+        /// return loan
+        /// </summary>
         private async void Return()
         {
             foreach (Loan a in LoanObjects)
@@ -195,7 +199,9 @@
 
             GetLoans();
         }
-
+        /// <summary>
+        /// create new card and create adminaction
+        /// </summary>
         private async void CreateNewCard()
         {
             if (UserCard != null)
@@ -223,7 +229,9 @@
             GetCard();
             _dialog.Alert("Klart", "Nytt Kort Skapat");
         }
-
+        /// <summary>
+        /// save new data on user
+        /// </summary>
         private async void Save()
         {
             if (Confirm.Firstname == Confirm2.Firstname && Confirm.Lastname == Confirm2.Lastname && Confirm.Password == Confirm2.Password && Confirm.Email == Confirm2.Email)
@@ -254,7 +262,9 @@
                 _dialog.Alert("Error", "Kunde inte spara, dubbelkolla alla parametrar");
             }
         }
-
+        /// <summary>
+        /// change status on card and create admin action
+        /// </summary>
         private async void ChangeCardStatus()
         {
             if (UserCard.Activated)
@@ -288,7 +298,9 @@
 
             await _repo.UpdateAsync(UserCard);
         }
-
+        /// <summary>
+        /// get the card of the user
+        /// </summary>
         private async void GetCard()
         {
             UserCard = await _repo.GetByIdAsync<Card>(ActiveUser.ID);
@@ -323,7 +335,9 @@
                 }
             }
         }
-
+        /// <summary>
+        /// get all loans of user
+        /// </summary>
         public async void GetLoans()
         {
             if (ActiveUser is null) { return; }

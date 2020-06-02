@@ -21,12 +21,13 @@
 	{
 		#region Fields
 		private readonly IRepository _repo;
-		
 		private ObservableCollection<LibraryObject> libObjects;
 		private Category selectedCatagory;
 		private string searchtext;
 		private bool frontPage;
 		private bool basicSearch;
+		private byte[] _rawImageData;
+		private SearchObject searchObject;
 		#endregion
 
 		#region Properties
@@ -34,7 +35,7 @@
 		/// <summary>
 		/// This is used when Uploading/downloading image blobs from the server.
 		/// </summary>
-		private byte[] _rawImageData;
+
 		public byte[] RawImageData
 		{
 			get { return _rawImageData; }
@@ -51,7 +52,7 @@
 		/// <summary>
 		/// We create this object when doing an advanced search query. Its instanse-variables are used for the search method.
 		/// </summary>
-		private SearchObject searchObject;
+		
 
 		public SearchObject SearchObject
 		{
@@ -107,12 +108,6 @@
 				OnPropertyChanged(nameof(LibraryObjects));
 			}
 		}
-		
-		/// <summary>
-		/// Vid klick av library object, gå till ny vy av objektet
-		/// </summary>
-		
-
 		/// <summary>
 		/// Basic search string
 		/// </summary>
@@ -207,6 +202,10 @@
 		#endregion
 
 		#region Private methods
+		/// <summary>
+		/// get the view for the selected object
+		/// </summary>
+		/// <param name="param"></param>
 		private void GetObj(LibraryObject param)
 		{
 			_navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new LibraryObjectInfoViewModel(param));

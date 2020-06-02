@@ -40,6 +40,9 @@
         #endregion
 
         #region Properties
+            /// <summary>
+            /// tooltip for datagrid
+            /// </summary>
         public string ToolTip { get; set; }
         /// <summary>
         /// filepath for reports
@@ -53,7 +56,9 @@
                 OnPropertyChanged(nameof(FilePath));
             }
         }
-
+        /// <summary>
+        /// string for search results
+        /// </summary>
         public string SearchString
         {
             get => searchstring;
@@ -116,7 +121,9 @@
                 OnPropertyChanged(nameof(SelectedUser));
             }
         }
-
+        /// <propertys>
+        /// type for the selected user
+        /// </summary>
         public UserType SelectedUserType
         {
             get => selectedUserType;
@@ -185,12 +192,16 @@
         #endregion
 
         #region Methods
-
+        /// <summary>
+        /// get all usertypes
+        /// </summary>
         private async void GetUserTypes()
         {
             UserTypes = new ObservableCollection<UserType>(await _repo.GetAllAsync<UserType>());
         }
-
+        /// <summary>
+        /// get all users that match search results
+        /// </summary>
         private async void Search()
         {
             Users.Clear();
@@ -276,6 +287,9 @@
                 }
             }
         }
+        /// <summary>
+        /// create the tooltip for datagrid
+        /// </summary>
         private void GetToolTip()
         {
             ToolTip = "\u2022Dubbelklicka för att redigera.";
