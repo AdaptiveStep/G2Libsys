@@ -25,28 +25,13 @@ namespace G2Libsys.ViewModels
         private LibraryObject currentBook;
         private Card currentUserCard;
         private string buttonstatus;
-        //private Author author;
+       
 
-        //private async void GetAuthor()
-        //{
-        //    if (LibraryObject?.Author == null)
-        //    {
-        //        return;
-        //    }
-            
-        //    AuthorObject = await _repo.GetByIdAsync<Author>((int)LibraryObject.Author);
-        //}
+      
         #endregion       
+
         #region Constructor
-            public string Buttonstatus
-        {
-            get => buttonstatus;
-            set
-            {
-                buttonstatus = value;
-                OnPropertyChanged(nameof(buttonstatus));
-            }
-        }
+       
        
         public LibraryObjectInfoViewModel()
         {
@@ -75,6 +60,9 @@ namespace G2Libsys.ViewModels
             AddLoan = new RelayCommand(_=> AddToCart(), _=> libraryObject.Category >1 || libraryObject.Quantity>0);
             GetCard();
         }
+        #endregion
+
+        #region methods
         public async void GetCard()
         {
 			if (_navigationService.HostScreen.CurrentUser != null)
@@ -107,26 +95,21 @@ namespace G2Libsys.ViewModels
             else { _dialog.Alert("Login", "Vänligen logga in för att låna"); }
         }
         #endregion
-        #region Methods
-        //private async void GetAuthor()
-        //{
-        //    if (LibraryObject?.Author == null)
-        //    {
-        //        return;
-        //    }
-        //}
 
-
-        //public Author AuthorObject
-        //{
-        //    get => author;
-        //    set
-        //    {
-        //        author = value;
-        //        OnPropertyChanged(nameof(AuthorObject));
-        //    }
-        //}
+        #region properties
         
+        /// <summary>
+        /// text on button if its in stock or not
+        /// </summary>
+        public string Buttonstatus
+        {
+            get => buttonstatus;
+            set
+            {
+                buttonstatus = value;
+                OnPropertyChanged(nameof(buttonstatus));
+            }
+        }
         public LibraryObject LibraryObject
         {
             get => currentBook;

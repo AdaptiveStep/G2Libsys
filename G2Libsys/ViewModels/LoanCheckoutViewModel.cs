@@ -11,19 +11,23 @@ namespace G2Libsys.ViewModels
 {
     public class LoanCheckoutViewModel : BaseViewModel, IViewModel
     {
+        #region fields
         private readonly IRepository _repo;
         private readonly ILoansService _loans;
         private Card currentUserCard;
         private ObservableCollection<Loan> loanCart;
         private ObservableCollection<LibraryObject> loanObj;
         private LibraryObject selectedItem;
+        #endregion
 
+        #region commands
         public ICommand Confirm { get; set; }
         public ICommand DeleteItem { get; set; }
         public ICommand Clear { get; set; }
-        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.CurrentViewModel = _navigationService.CreateNewInstance(new LibraryMainViewModel()));
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
+        #endregion
 
-
+        #region properties
         public LibraryObject SelectedItem
         {
             get => selectedItem;
@@ -33,7 +37,9 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SelectedItem));
             }
         }
-        
+        /// <summary>
+        /// collection of libraryobject
+        /// </summary>
         public ObservableCollection<LibraryObject> LoanObj
         {
             get => loanObj;
@@ -43,7 +49,9 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(LoanObj));
             }
         }
-
+        /// <summary>
+        /// collection of loans
+        /// </summary>
         public ObservableCollection<Loan> LoanCart
         {
             get => loanCart;
@@ -63,7 +71,9 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(currentUserCard));
             }
         }
+        #endregion
 
+        #region Constructor
         public LoanCheckoutViewModel()
         {
             if (base.IsInDesignMode) return;
@@ -76,13 +86,21 @@ namespace G2Libsys.ViewModels
             Clear = new RelayCommand(_ => ClearLoan());
             DeleteItem = new RelayCommand(_ => DeleteLoan());
         }
+        #endregion
 
+        #region methods
+
+        /// <summary>
+        /// delete selected loan
+        /// </summary>
         private void DeleteLoan()
         {
             _loans.LoanCart.Remove(SelectedItem);
             LoanObj.Remove(SelectedItem);
         }
-        
+        /// <summary>
+        /// get user card for current user so loans can be created on the card
+        /// </summary>
         private async void GetUser()
         {
 
@@ -92,17 +110,10 @@ namespace G2Libsys.ViewModels
                 CurrentUserCard = await _repo.GetByIdAsync<Card>(_navigationService.HostScreen.CurrentUser.ID);
             }
         }
-        //public void AddToCart()
-        //{
-        //    if (_navigationService.HostScreen.CurrentUser != null)
-        //    {
-        //        //LoanCart.Add();
-
-        //        _dialog.Alert("", "Tillagd i varukorgen");
-        //    }
-        //    else { _dialog.Alert("", "Vänligen logga in för att låna"); }
-        //}
-        
+       
+        /// <summary>
+        /// clear all loans and close view
+        /// </summary>
         public void ClearLoan()
         {
             LoanObj.Clear();
@@ -114,11 +125,15 @@ namespace G2Libsys.ViewModels
 
         }
        
+        /// <summary>
+        /// add loans to database
+        /// </summary>
         public async void ConfirmLoan()
         {
             if (LoanObj.Count > 0)
             {
                 LoanCart = new ObservableCollection<Loan>();
+                //create loanobjects foreach library object that are selected
                 foreach (LibraryObject a in LoanObj)
                 {
                     LoanCart.Add(new Loan { ObjectID = a.ID, CardID = CurrentUserCard.ID, LoanDate = DateTime.Now });
@@ -130,13 +145,17 @@ namespace G2Libsys.ViewModels
                 LoanObj.Clear();
                 _loans.LoanCart.Clear();
 
+                // close view when loans are saved
                 CancelCommand.Execute(null);
             }
             else 
             { 
                 _dialog.Alert("", "Inga lån tillagda");
+                
                 CancelCommand.Execute(null);
             }
+
         }
+        #endregion
     }
 }

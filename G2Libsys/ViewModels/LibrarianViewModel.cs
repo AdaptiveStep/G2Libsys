@@ -9,16 +9,15 @@ namespace G2Libsys.ViewModels
 {
     public class LibrarianViewModel: BaseViewModel, IViewModel
     {
-       
+        #region Fields
         private readonly IRepository<User> _repo;
-
-        //binda knapparna från viewen
-        //skapa datagrid
-
         private ObservableCollection<User> _users;
         private string searchstring;
-
         private User selectedUser;
+        private User newUser;
+        #endregion
+
+        #region properties
         public User SelectedUser
         {
             get => selectedUser;
@@ -39,7 +38,7 @@ namespace G2Libsys.ViewModels
             }
         }
 
-        private User newUser;
+        
         public User NewUser
         {
             get => newUser;
@@ -59,6 +58,7 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(Users));
             }
         }
+        #endregion
 
         #region Commands
         public ICommand addbutton { get; private set; }
@@ -83,7 +83,7 @@ namespace G2Libsys.ViewModels
 
             _repo = new GeneralRepository<User>();
             Users = new ObservableCollection<User>();
-            //Users.CollectionChanged += Users_CollectionChanged;
+            
             NewUser = new User();
             GetUsers();
             addbutton = new RelayCommand(x => AddUser());
@@ -97,37 +97,40 @@ namespace G2Libsys.ViewModels
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// get search results for all users with usertype 3
+        /// </summary>
         public async void Search()
         {
             Users.Clear();
             Users = new ObservableCollection<User>((await _repo.GetRangeAsync(SearchString)).Where(x => x.UserType == 3));
             
-        }        
-
+        }
+        /// <summary>
+        /// get all users with usertype 3
+        /// </summary>
         public async void GetUsers()
         {
             Users = new ObservableCollection<User>((await _repo.GetAllAsync()).ToList().Where(x => x.UserType == 3));
             
         }
-        
+        /// <summary>
+        /// delete user
+        /// </summary>
         public async void DeleteUser()
         {
             if (SelectedUser != null)
                 await _repo.RemoveAsync(SelectedUser.ID);
             GetUsers();
         }
+        /// <summary>
+        /// create a new user
+        /// </summary>
         public async void AddUser()
         {
            await _repo.AddAsync(NewUser);
             GetUsers();
         }
-
-        //lista av besökare
-        //ta bort besökare funktion
-        //lägga till besökare funktion
-        //söka efter besökare. antigen en funtion eller i datagrid
-        //registrera lånekort
-
         #endregion
     }
 }

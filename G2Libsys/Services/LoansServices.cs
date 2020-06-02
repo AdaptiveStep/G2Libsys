@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
-
+//Service too get the LoanCart between viewmodels
 namespace G2Libsys.Services
 {
     class LoansServices: ILoansService

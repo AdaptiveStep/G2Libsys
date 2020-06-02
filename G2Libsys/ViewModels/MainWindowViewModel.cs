@@ -201,15 +201,17 @@
         #endregion
 
         #region Methods
-
         /// <summary>
-        /// Setup user navigation access
+        /// info dialog for all users
         /// </summary>
-        /// 
         private void GetInfo()
         {
             _dialog.Alert("Info", "Allmänna vilkor:\n\u2022Vid lån av bok ska boken lämnas tillbaka inom 14 dagar av utlämnat datum.\n\u2022Vid lån av E-bok eller Film är endast för privat bruk.\nOm dessa vilkor inte hålls ges biblioteket rätten att spärra ditt lånekort och debitera eventuella avgifter.\n\nOm du har frågor kan du alltid kontakta personalen på bilbioteket");
         }
+        /// <summary>
+        /// Setup user navigation access
+        /// </summary>
+        /// 
         private void SetUserAccess()
         {
             MenuItems ??= new ObservableCollection<UserMenuItem>();
