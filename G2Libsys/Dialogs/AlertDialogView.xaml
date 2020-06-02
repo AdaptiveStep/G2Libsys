@@ -15,8 +15,10 @@
     mc:Ignorable="d">
     <Grid>
         <materialDesign:Card
-            Width="180"
-            Height="120"
+            
+            
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             Margin="20"
             Padding="0"
             materialDesign:ShadowAssist.ShadowDepth="Depth5"
@@ -44,7 +46,8 @@
 
                     <TextBlock
                         Margin="0,0,0,6"
-                        Padding="0"
+                        Padding="20"
+                        
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Text="{Binding Message}"

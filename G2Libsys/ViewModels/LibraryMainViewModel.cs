@@ -21,7 +21,7 @@
 	{
 		#region Fields
 		private readonly IRepository _repo;
-		private LibraryObject selectedLibraryObject;
+		
 		private ObservableCollection<LibraryObject> libObjects;
 		private Category selectedCatagory;
 		private string searchtext;
@@ -107,23 +107,11 @@
 				OnPropertyChanged(nameof(LibraryObjects));
 			}
 		}
-
+		
 		/// <summary>
 		/// Vid klick av library object, gå till ny vy av objektet
 		/// </summary>
-		public LibraryObject SelectedLibraryObject
-		{
-			get => selectedLibraryObject;
-			set
-			{
-				selectedLibraryObject = value;
-				OnPropertyChanged(nameof(SelectedLibraryObject));
-				if (value != null)
-				{
-					_navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new LibraryObjectInfoViewModel(value));
-				}
-			}
-		}
+		
 
 		/// <summary>
 		/// Basic search string
@@ -188,6 +176,7 @@
 		public ICommand AdvClearCommand { get; }
 		public ICommand SearchCommand { get; }
 		public ICommand EnableAdvancedSearch { get; }
+		public ICommand OpenObjectInfo { get; }
 
 		#endregion
 
@@ -196,7 +185,7 @@
 		public LibraryMainViewModel()
 		{
 			if (base.IsInDesignMode) return;
-
+			
 			_repo = new GeneralRepository();
 
 			LibraryObjects = new ObservableCollection<LibraryObject>();
@@ -208,7 +197,7 @@
 			GetCategories();
 			GetFpLibraryObjects();
 			ResetSearchObject();
-
+			OpenObjectInfo = new RelayCommand<LibraryObject>(GetObj);
 			SearchCommand = new RelayCommand(_ => GetSearchObjects());
 			AdvancedSearchCommand = new RelayCommand(_ => GetAdvancedSearchObjects());
 			AdvClearCommand = new RelayCommand(_ => ResetSearchObject());
@@ -218,7 +207,10 @@
 		#endregion
 
 		#region Private methods
-
+		private void GetObj(LibraryObject param)
+		{
+			_navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new LibraryObjectInfoViewModel(param));
+		}
 		/// <summary>
 		/// Get library objects with the matching category id
 		/// </summary>

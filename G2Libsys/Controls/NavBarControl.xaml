@@ -132,24 +132,22 @@
 
 
         <!--  Some Button  -->
-        <!--<Button
+        <Button
             Grid.Column="2"
             Height="45"
-            Padding="0"
-            Command="{Binding NavigateToVM}"
-            CommandParameter="{x:Type vm:TestVM}"
-            Style="{StaticResource MaterialDesignFlatButton}">
+            Padding="5"
+            Command="{Binding InfoButton}"
+            
+            Style="{StaticResource MaterialDesignFlatButton}"
+            >
             <Button.Content>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    FontSize="20"
-                    FontWeight="Regular"
-                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
-                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                    Text="Fråga oss!" />
+                <materialDesign:PackIcon
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="QuestionMarkCircleOutline"
+                    Width="auto" Height="auto"/>
             </Button.Content>
-        </Button>-->
+        </Button>
 
         <!--  Login Button  -->
         <Button

@@ -99,89 +99,81 @@
 							IsTabStop="False" />
 
 
-						<StackPanel />
-					</StackPanel>
-				</DockPanel>
+                                <StackPanel />
+                            </StackPanel>
+                        </DockPanel>
+                    </materialDesign:Card>
 
-				<!--  This datagrid shows the LibraryObjects  -->
-
-				<materialDesign:Card
-					Grid.Row="1"
-					Height="Auto"
-					materialDesign:ShadowAssist.ShadowDepth="Depth0"
-					UniformCornerRadius="10">
-					<DataGrid
-						x:Name="ObjectDataGrid"
-						Grid.Row="1"
-						MinWidth="400"
-						Padding="0"
-						materialDesign:DataGridAssist.CellPadding="4"
-						materialDesign:DataGridAssist.ColumnHeaderPadding="4"
-						AutoGenerateColumns="False"
-						CanUserAddRows="False"
-						CanUserDeleteRows="False"
-						CanUserResizeColumns="True"
-						DataContext="{Binding}"
-						HorizontalScrollBarVisibility="Auto"
-						IsReadOnly="True"
-						ItemsSource="{Binding LibraryObjects}"
-						SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						SelectionMode="Single"
-						VerticalScrollBarVisibility="Auto">
-						<DataGrid.Columns>
-							<DataGridTextColumn
-								MaxWidth="50"
-								Binding="{Binding ID}"
-								Header="ID" />
-							<DataGridTextColumn
-								Width="100"
-								Binding="{Binding Title}"
-								Header="Titel" />
-							<DataGridTextColumn
-								Width="auto"
-								MaxWidth="120"
-								Binding="{Binding ISBN}"
-								Header="ISBN" />
-							<DataGridTextColumn
-								Width="140"
-								Binding="{Binding Description}"
-								Header="Beskrivning" />
-							<DataGridTextColumn
-								Width="80"
-								Binding="{Binding DateAdded}"
-								Header="Tillagd" />
-							<DataGridTextColumn
-								Width="80"
-								Binding="{Binding LastEdited}"
-								Header="Ändrad" />
-							<DataGridTextColumn
-								Width="auto"
-								Binding="{Binding Publisher}"
-								Header="Publicerad av" />
-							<DataGridTextColumn
-								Width="auto"
-								Binding="{Binding PurchasePrice}"
-								Header="Pris" />
-							<DataGridTextColumn
-								Width="auto"
-								Binding="{Binding Pages}"
-								Header="Sidor" />
-							<DataGridTextColumn
-								MaxWidth="100"
-								Binding="{Binding Quantity}"
-								Header="Kvantitet" />
-							<DataGridTextColumn
-								Width="100"
-								Binding="{Binding Disabled}"
-								Header="Borttagen" />
-							<DataGridTextColumn
-								Width="auto"
-								Binding="{Binding Dewey}"
-								Header="DeweyDecimal" />
-							<DataGridTextColumn
-								Width="100"
-								Binding="{Binding imagesrc}"
-								Header="Bildadress" />
+                    <DataGrid
+                        x:Name="ObjectDataGrid"
+                        MinWidth="400"
+                        Margin="5"
+                        Padding="0"
+                        materialDesign:DataGridAssist.CellPadding="4"
+                        materialDesign:DataGridAssist.ColumnHeaderPadding="4"
+                        AutoGenerateColumns="False"
+                        CanUserAddRows="False"
+                        CanUserDeleteRows="False"
+                        CanUserResizeColumns="True"
+                        DataContext="{Binding}"
+                        IsReadOnly="True"
+                        ItemsSource="{Binding LibraryObjects}"
+                        SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectionMode="Single">
+                        <DataGrid.ToolTip>
+                            <ToolTip Placement="MousePoint" Content="{Binding ToolTip}"/>
+                        </DataGrid.ToolTip>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn
+                                MaxWidth="50"
+                                Binding="{Binding ID}"
+                                Header="ID" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding Title}"
+                                Header="Titel" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                MaxWidth="120"
+                                Binding="{Binding ISBN}"
+                                Header="ISBN" />
+                            <DataGridTextColumn
+                                Width="140"
+                                Binding="{Binding Description}"
+                                Header="Beskrivning" />
+                            <DataGridTextColumn
+                                Width="80"
+                                Binding="{Binding DateAdded}"
+                                Header="Tillagd" />
+                            <DataGridTextColumn
+                                Width="80"
+                                Binding="{Binding LastEdited}"
+                                Header="Ändrad" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                Binding="{Binding Publisher}"
+                                Header="Publicerad av" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                Binding="{Binding PurchasePrice}"
+                                Header="Pris" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                Binding="{Binding Pages}"
+                                Header="Sidor" />
+                            <DataGridTextColumn MaxWidth="100" Header="Kvantitet" Binding="{Binding Quantity}" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding Disabled}"
+                                Header="Borttagen" />
+                            <DataGridTextColumn
+                                Width="auto"
+                                Binding="{Binding Dewey}"
+                                Header="DeweyDecimal" />
+                            <DataGridTextColumn
+                                Width="100"
+                                Binding="{Binding imagesrc}"
+                                Header="Bildadress" />
 
 						</DataGrid.Columns>
 

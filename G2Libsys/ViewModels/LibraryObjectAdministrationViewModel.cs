@@ -37,6 +37,7 @@
         private ICommand deleteItem;
         private ICommand reset;
         private ICommand downloadLibLogCommand;
+        
         private LibraryObject newLibraryObject;
         private ObservableCollection<LibraryObject> libraryObjects;
         private Category selectedCategory;
@@ -47,7 +48,7 @@
         #endregion
 
         #region Properties
-
+        public string ToolTip { get; set; }
         public ObservableCollection<Category> Categories { get; set; }
 
         /// <summary>
@@ -140,7 +141,7 @@
         #endregion
 
         #region Commands
-
+    
         /// <summary>
         /// Enable execute if an Item is selected
         /// </summary>
@@ -201,7 +202,10 @@
         #endregion
 
         #region Methods
-
+        private void GetToolTip()
+        {
+            ToolTip = "\u2022Dubbelklicka för att redigera.\n\u2022Klicka på DELETE knappen för att ta bort";
+        }
         /// <summary>
         /// Initial setup
         /// </summary>
@@ -211,7 +215,7 @@
             DisabledLibraryObjects = true;
             Categories     = new ObservableCollection<Category>();
             LibraryObjects = new ObservableCollection<LibraryObject>();
-
+            GetToolTip();
             // Call queries
             Task<IEnumerable<Category>>  categoryList = _repo.GetAllAsync<Category>();
             Task<IEnumerable<LibraryObject>> itemList = _repo.GetAllAsync<LibraryObject>();

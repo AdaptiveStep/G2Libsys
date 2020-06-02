@@ -54,40 +54,42 @@
 					</StackPanel>
 				</materialDesign:Card>
 
-
 				<!--The datagrid with the users-->
 				<DataGrid
-					Grid.Row="1"
-					Margin="10"
-					AutoGenerateColumns="False"
-					CanUserAddRows="False"
-					CanUserDeleteRows="False"
-					DataContext="{Binding}"
-					IsReadOnly="True"
-					ItemsSource="{Binding Users}"
-					ScrollViewer.CanContentScroll="True"
-					ScrollViewer.HorizontalScrollBarVisibility="Auto"
-					ScrollViewer.VerticalScrollBarVisibility="Auto"
-					SelectedItem="{Binding SelectedUser}"
-					SelectionMode="Single">
-					<DataGrid.Columns>
-						<DataGridTextColumn Binding="{Binding ID}" Header="ID" />
-						<DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
-						<DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
-						<DataGridTextColumn Binding="{Binding Email}" Header="Email" />
-						<DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
-					</DataGrid.Columns>
-					<DataGrid.InputBindings>
-						<MouseBinding
-							Command="{Binding GoToUser}"
-							CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
-							Gesture="LeftDoubleClick" />
-						<KeyBinding
-							Key="Delete"
-							Command="{Binding RemoveUserCommand}"
-							CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
-					</DataGrid.InputBindings>
-				</DataGrid>
+                    Height="320"
+                    MinWidth="400"
+                    Margin="10,10,10,10"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    CanUserDeleteRows="False"
+                    DataContext="{Binding}"
+                    IsReadOnly="True"
+                    ItemsSource="{Binding Users}"
+                    ScrollViewer.CanContentScroll="True"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    SelectedItem="{Binding SelectedUser}"
+                    SelectionMode="Single">
+					<DataGrid.ToolTip>
+                        <ToolTip Placement="MousePoint" Content="{Binding ToolTip}"/>
+                    </DataGrid.ToolTip>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
+                        <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
+                        <DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
+                        <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+                        <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
+                    </DataGrid.Columns>
+                    <DataGrid.InputBindings>
+                        <MouseBinding
+                            Command="{Binding GoToUser}"
+                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
+                            Gesture="LeftDoubleClick" />
+                        <KeyBinding
+                            Key="Delete"
+                            Command="{Binding RemoveUserCommand}"
+                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
+                    </DataGrid.InputBindings>
+                </DataGrid>
 
 			</Grid>
 		</materialDesign:Card>
