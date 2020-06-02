@@ -181,6 +181,8 @@
 
         public void LoginWait()
         {
+
+
             isLocked = true;
             timer = new DispatcherTimer();
             countdown = 60;
@@ -201,7 +203,6 @@
             };
 
             timer.Start();
-
         }
 
         /// <summary>
@@ -217,12 +218,13 @@
                 maxAttempts++;
                 if (maxAttempts >= 3)
                 {
-                    _dialog.Alert("Max antal inloggningsförsök nådda", "Försök igen");
+                    _dialog.Alert("Fel lösenord", "Max antal inloggningsförsök nådda\nOm du har glömt ditt lösenord,\nvänligen kontakta personalen");
                     LoginWait();
-                    return;
-                    
                 }
-                _dialog.Alert("Fel lösenord", "Försök igen.\nOm du har glömt ditt lösenord, vänligen kontakta personalen");
+                else
+                {
+                    _dialog.Alert("Fel lösenord", "Försök igen.\nOm du har glömt ditt lösenord,\nvänligen kontakta personalen");
+                }
             }
             else
             {

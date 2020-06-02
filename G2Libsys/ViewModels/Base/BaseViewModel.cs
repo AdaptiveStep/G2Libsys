@@ -31,7 +31,7 @@
         protected Dispatcher dispatcher;
 
         /// <summary>
-        /// Check if in design mode
+        /// Check if applciation is in design mode
         /// </summary>
         protected bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
         #endregion
