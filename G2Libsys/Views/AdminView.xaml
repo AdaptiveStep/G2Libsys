@@ -26,154 +26,154 @@
 
 		</Grid.ColumnDefinitions>
 
-		<!--The Left part-->
+		<!--  The Left part  -->
 		<materialDesign:Card Grid.Column="0" Margin="10">
 
 
 			<Grid>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="auto" />
+					<RowDefinition Height="auto" />
 					<RowDefinition />
 				</Grid.RowDefinitions>
 
 				<!--  Searchpanel , search/cancel  -->
-				<materialDesign:Card Grid.Row="0" Margin="10">
-					<StackPanel Orientation="Horizontal">
+				<StackPanel
+					Grid.Row="0"
+					Margin="10"
+					Orientation="Horizontal">
+					<TextBox
+						Width="140"
+						Margin="10"
+						materialDesign:HintAssist.Hint="Sök efter användare"
+						Text="{Binding SearchString}" />
+					<Button
+						Margin="0,0,10,0"
+						Command="{Binding searchbutton}"
+						Content="Sök" />
+					<Button Command="{Binding cancelsearch}" Content="Avbryt" />
+				</StackPanel>
 
-
-						<TextBox
-							Width="140"
-							Margin="10"
-							materialDesign:HintAssist.Hint="Sök efter användare"
-							Text="{Binding SearchString}" />
-						<Button
-							Margin="0,0,10,0"
-							Command="{Binding searchbutton}"
-							Content="Sök" />
-						<Button Command="{Binding cancelsearch}" Content="Avbryt" />
-					</StackPanel>
-				</materialDesign:Card>
-
-				<!--The datagrid with the users-->
+				<!--  The datagrid with the users  -->
 				<DataGrid
-                    Height="320"
-                    MinWidth="400"
-                    Margin="10,10,10,10"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    CanUserDeleteRows="False"
-                    DataContext="{Binding}"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding Users}"
-                    ScrollViewer.CanContentScroll="True"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    SelectedItem="{Binding SelectedUser}"
-                    SelectionMode="Single">
+					Grid.Row="2"
+					MinWidth="400"
+					AutoGenerateColumns="False"
+					CanUserAddRows="False"
+					CanUserDeleteRows="False"
+					DataContext="{Binding}"
+					IsReadOnly="True"
+					ItemsSource="{Binding Users}"
+					ScrollViewer.CanContentScroll="True"
+					ScrollViewer.VerticalScrollBarVisibility="Auto"
+					SelectedItem="{Binding SelectedUser}"
+					SelectionMode="Single">
 					<DataGrid.ToolTip>
-                        <ToolTip Placement="MousePoint" Content="{Binding ToolTip}"/>
-                    </DataGrid.ToolTip>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding ID}" Header="ID" />
-                        <DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
-                        <DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
-                        <DataGridTextColumn Binding="{Binding Email}" Header="Email" />
-                        <DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
-                    </DataGrid.Columns>
-                    <DataGrid.InputBindings>
-                        <MouseBinding
-                            Command="{Binding GoToUser}"
-                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
-                            Gesture="LeftDoubleClick" />
-                        <KeyBinding
-                            Key="Delete"
-                            Command="{Binding RemoveUserCommand}"
-                            CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
-                    </DataGrid.InputBindings>
-                </DataGrid>
+						<ToolTip Content="{Binding ToolTip}" Placement="MousePoint" />
+					</DataGrid.ToolTip>
+					<DataGrid.Columns>
+						<DataGridTextColumn Binding="{Binding ID}" Header="ID" />
+						<DataGridTextColumn Binding="{Binding Firstname}" Header="Namn" />
+						<DataGridTextColumn Binding="{Binding Lastname}" Header="Efternamn" />
+						<DataGridTextColumn Binding="{Binding Email}" Header="Email" />
+						<DataGridTextColumn Binding="{Binding UserType, Converter={converter:TypeIDToNameConverter}}" Header="Roll" />
+					</DataGrid.Columns>
+					<DataGrid.InputBindings>
+						<MouseBinding
+							Command="{Binding GoToUser}"
+							CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}"
+							Gesture="LeftDoubleClick" />
+						<KeyBinding
+							Key="Delete"
+							Command="{Binding RemoveUserCommand}"
+							CommandParameter="{Binding ElementName=ObjectDataGrid, Path=SelectedItem}" />
+					</DataGrid.InputBindings>
+				</DataGrid>
 
 			</Grid>
 		</materialDesign:Card>
 
-		<!--The Right Part-->
-		<ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-		<StackPanel
-			
-			Margin="0,0,10,10"
-			Orientation="Vertical">
+		<!--  The Right Part  -->
+		<ScrollViewer
+			Grid.Column="1"
+			HorizontalScrollBarVisibility="Auto"
+			VerticalScrollBarVisibility="Auto">
 
 
-			<!--  ADD USER Panel  -->
-			<materialDesign:Card Margin="0,10,0,0" Padding="10">
-				<StackPanel>
-					<Label
-						HorizontalAlignment="Center"
-						Content="Lägg till medlem"
-						FontSize="15" />
-					<Separator Style="{StaticResource MaterialDesignDarkSeparator}" />
-					<TextBox materialDesign:HintAssist.Hint="Namn" Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-					<TextBox materialDesign:HintAssist.Hint="Efternamn" Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-					<TextBox materialDesign:HintAssist.Hint="Email" Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-					<TextBox materialDesign:HintAssist.Hint="Lösenord" Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-					<ComboBox
-						materialDesign:HintAssist.Hint="Användartyp"
-						ItemsSource="{Binding UserTypes}"
-						SelectedItem="{Binding SelectedUserType}">
-						<ComboBox.ItemTemplate>
-							<DataTemplate>
-								<TextBlock Text="{Binding Name}" />
-							</DataTemplate>
-						</ComboBox.ItemTemplate>
-					</ComboBox>
-					<Separator Margin="0,10,0,10" Style="{StaticResource MaterialDesignDarkSeparator}" />
-					<Button
-						HorizontalAlignment="Stretch"
-						Command="{Binding AddUserCommand}"
-						Content="Lägg till" />
-				</StackPanel>
-			</materialDesign:Card>
+			<StackPanel Margin="0,0,10,10">
 
-			<!--  Remove User Panel  -->
-			<materialDesign:Card Margin="0,10,0,0" Padding="10">
-				<StackPanel>
+				<!--  ADD USER Panel  -->
+				<materialDesign:Card Margin="0,10,0,0" Padding="10">
+					<StackPanel>
+						<Label
+							HorizontalAlignment="Center"
+							Content="Lägg till medlem"
+							FontSize="15" />
+						<Separator Style="{StaticResource MaterialDesignDarkSeparator}" />
+						<TextBox materialDesign:HintAssist.Hint="Namn" Text="{Binding NewUser.Firstname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox materialDesign:HintAssist.Hint="Efternamn" Text="{Binding NewUser.Lastname, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox materialDesign:HintAssist.Hint="Email" Text="{Binding NewUser.Email, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<TextBox materialDesign:HintAssist.Hint="Lösenord" Text="{Binding NewUser.Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+						<ComboBox
+							materialDesign:HintAssist.Hint="Användartyp"
+							ItemsSource="{Binding UserTypes}"
+							SelectedItem="{Binding SelectedUserType}">
+							<ComboBox.ItemTemplate>
+								<DataTemplate>
+									<TextBlock Text="{Binding Name}" />
+								</DataTemplate>
+							</ComboBox.ItemTemplate>
+						</ComboBox>
+						<Separator Margin="0,10,0,10" Style="{StaticResource MaterialDesignDarkSeparator}" />
+						<Button
+							HorizontalAlignment="Stretch"
+							Command="{Binding AddUserCommand}"
+							Content="Lägg till" />
+					</StackPanel>
+				</materialDesign:Card>
 
-					<Label
-						HorizontalAlignment="Center"
-						Content="Ta bort medlem"
-						FontSize="15" />
-					<Separator Style="{StaticResource MaterialDesignDarkSeparator}" />
+				<!--  Remove User Panel  -->
+				<materialDesign:Card Margin="0,10,0,0" Padding="10">
+					<StackPanel>
 
-					<Button
-						HorizontalAlignment="Stretch"
-						Command="{Binding RemoveUserCommand}"
-						Content="Ta bort" />
-				</StackPanel>
-			</materialDesign:Card>
+						<Label
+							HorizontalAlignment="Center"
+							Content="Ta bort medlem"
+							FontSize="15" />
+						<Separator Style="{StaticResource MaterialDesignDarkSeparator}" />
+
+						<Button
+							HorizontalAlignment="Stretch"
+							Command="{Binding RemoveUserCommand}"
+							Content="Ta bort" />
+					</StackPanel>
+				</materialDesign:Card>
 
 
-			<!--  Download deleted users  -->
-			<materialDesign:Card Margin="0,10,0,0" Padding="10">
-				<StackPanel>
-					<TextBlock
-						HorizontalAlignment="Center"
-						FontSize="15"
-						Text="Raderade användare"
-						TextWrapping="Wrap" />
-					<Separator Style="{StaticResource MaterialDesignDarkSeparator}" />
+				<!--  Download deleted users  -->
+				<materialDesign:Card Margin="0,10,0,0" Padding="10">
+					<StackPanel>
+						<TextBlock
+							HorizontalAlignment="Center"
+							FontSize="15"
+							Text="Raderade användare"
+							TextWrapping="Wrap" />
+						<Separator Style="{StaticResource MaterialDesignDarkSeparator}" />
 
-					<Button HorizontalAlignment="Center" Command="{Binding DownloadUserLogCommand}">
+						<Button HorizontalAlignment="Center" Command="{Binding DownloadUserLogCommand}">
 
-						<Button.Content>
-							<StackPanel Orientation="Horizontal">
-								<materialDesign:PackIcon Kind="FileDownload" />
-								<TextBlock Margin="5,0,0,0" Text="Exportera CSV" />
+							<Button.Content>
+								<StackPanel Orientation="Horizontal">
+									<materialDesign:PackIcon Kind="FileDownload" />
+									<TextBlock Margin="5,0,0,0" Text="Exportera CSV" />
 
-							</StackPanel>
-						</Button.Content>
-					</Button>
-				</StackPanel>
-			</materialDesign:Card>
+								</StackPanel>
+							</Button.Content>
+						</Button>
+					</StackPanel>
+				</materialDesign:Card>
 
-		</StackPanel>
+			</StackPanel>
 
 		</ScrollViewer>
 	</Grid>

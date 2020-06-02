@@ -6,12 +6,6 @@
 	xmlns:local="clr-namespace:G2Libsys.Dialogs"
 	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	FontFamily="{DynamicResource MaterialDesignFont}"
-	TextElement.FontSize="13"
-	TextElement.FontWeight="Regular"
-	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-	TextOptions.TextFormattingMode="Ideal"
-	TextOptions.TextRenderingMode="Auto"
 	mc:Ignorable="d">
 	<Grid>
 		<materialDesign:Card
@@ -28,9 +22,11 @@
 				</Grid.RowDefinitions>
 				<Border Opacity="0.2" />
 				<TextBlock
-					Height="30" Padding="10" TextAlignment="Center"
+					Height="30"
+					Padding="10"
 					Background="{DynamicResource MaterialDesignCardBackground}"
-					Text="{Binding Title}" />
+					Text="{Binding Title}"
+					TextAlignment="Center" />
 
 				<Grid Grid.Row="1">
 					<Grid.RowDefinitions>

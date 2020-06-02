@@ -12,12 +12,7 @@
 	d:DesignHeight="500"
 	d:DesignWidth="800"
 	x:TypeArguments="vm:LibraryObjectInfoViewModel"
-	FontFamily="{DynamicResource MaterialDesignFont}"
-	TextElement.FontSize="13"
-	TextElement.FontWeight="Regular"
-	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-	TextOptions.TextFormattingMode="Ideal"
-	TextOptions.TextRenderingMode="Auto"
+
 	mc:Ignorable="d">
 
 	<!--  Klickbar rectangle som stänger fönstret  -->
