@@ -1,18 +1,18 @@
 ﻿namespace G2Libsys.ViewModels
 {
     #region Namespaces
-    using G2Libsys.Models;
     using System;
-    using System.Collections.Generic;
     using System.Windows.Input;
     using G2Libsys.Library.Extensions;
-    using System.Collections.ObjectModel;
-    using System.Windows;
     using G2Libsys.Services;
-    using System.Linq;
     using G2Libsys.Commands;
     using G2Libsys.Data.Repository;
     using G2Libsys.Library;
+    using System.Security;
+    using System.Diagnostics;
+    using G2Libsys.Models;
+    using System.Windows.Threading;
+    using System.Windows;
     #endregion
 
     /// <summary>
@@ -22,11 +22,17 @@
     {
         #region Private Fields
         private readonly IUserRepository _repo;
-        private readonly IDialogService _dialog;
         private string username;
-        private string password;
+        private SecureString password;
+        private SecureString newPassword;
         private string emailValidationMessage;
         private User newUser;
+        private int maxAttempts = 0;
+        private DispatcherTimer timer;
+        private bool isLocked;
+        private int countdown;
+        private string loginText;
+
         #endregion
 
         #region Public Properties
@@ -48,13 +54,26 @@
         /// User password
         /// TODO: Change to secure password and passwordbox
         /// </summary>
-        public string Password
+        public SecureString Password
         {
             get => password;
             set
             {
                 password = value;
                 OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        /// <summary>
+        /// Password for new user
+        /// </summary>
+        public SecureString NewPassword
+        {
+            get => newPassword;
+            set
+            {
+                newPassword = value;
+                OnPropertyChanged(nameof(newPassword));
             }
         }
 
@@ -68,7 +87,8 @@
             {
                 newUser = value;
                 Username = string.Empty;
-                Password = string.Empty;
+                Password = null;
+                NewPassword = null;
                 OnPropertyChanged(nameof(NewUser));
             }
         }
@@ -86,6 +106,18 @@
             }
         }
 
+
+        public string LoginText
+        {
+            get => loginText;
+            set 
+            { 
+                loginText = value;
+                OnPropertyChanged(nameof(LoginText));
+            }
+        }
+
+
         #endregion
 
         #region Commands
@@ -95,11 +127,18 @@
         public ICommand LogIn { get; set; }
 
         /// <summary>
+        /// Start and stop commands for the timer used for locking a user out
+        /// </summary>
+        public ICommand StartTimer { get; private set; }
+        public ICommand ResetTimer { get; private set; }
+
+        /// <summary>
         /// Verify if canExecute login command
         /// </summary>
         private Predicate<object> CanLogin =>
-            o => !string.IsNullOrWhiteSpace(Username)
-              && !string.IsNullOrWhiteSpace(Password);
+            _ => !string.IsNullOrWhiteSpace(Username)
+              && Password?.Length > 0
+              && !isLocked;
 
         /// <summary>
         /// Register new user command
@@ -110,12 +149,12 @@
         /// Verify if canExecute Register command
         /// </summary>
         private Predicate<object> CanRegister =>
-            o => !string.IsNullOrWhiteSpace(NewUser.Firstname)
+            _ => !string.IsNullOrWhiteSpace(NewUser.Firstname)
               && !string.IsNullOrWhiteSpace(NewUser.Lastname)
               && !string.IsNullOrWhiteSpace(NewUser.Email)
-              && !string.IsNullOrWhiteSpace(NewUser.Password);
+              && NewPassword?.Length > 0;
 
-        public ICommand CancelCommand => new RelayCommand(_ => NavService.HostScreen.SubViewModel = null);
+        public ICommand CancelCommand => new RelayCommand(_ => _navigationService.HostScreen.SubViewModel = null);
 
         #endregion
 
@@ -127,13 +166,11 @@
         {
             if (base.IsInDesignMode) return;
 
-            _dialog = new DialogService();
-
             _repo = new UserRepository();
-
+            LoginText = "Logga in";
             EmailValidationMessage = string.Empty;
             NewUser = new User();
-
+            isLocked = false;
             // Create commands
             LogIn = new RelayCommand(_ => VerifyLogin(), CanLogin);
             Register = new RelayCommand(_ => VerifyRegister(), CanRegister);
@@ -142,17 +179,52 @@
 
         #region Private Methods
 
+        public void LoginWait()
+        {
+
+
+            isLocked = true;
+            timer = new DispatcherTimer();
+            countdown = 60;
+            timer.Interval += new TimeSpan(0, 0, 1);
+            timer.Tick += (o, e) =>
+            {
+                countdown--;
+                LoginText = $"({countdown})";
+
+                if (countdown == 1)
+                {
+                    isLocked = false;
+                    LoginText = "Logga in";
+                    maxAttempts = 0;
+                    timer.Stop(); 
+                }
+
+            };
+
+            timer.Start();
+        }
+
         /// <summary>
         /// Verify user credentials and login
         /// </summary>
         private async void VerifyLogin()
         {
             // Check for user with correct credentials
-            var user = await _repo.VerifyLoginAsync(Username, Password);
+            var user = await _repo.VerifyLoginAsync(Username, Password.Unsecure());
 
             if (user is null)
             {
-                _dialog.Alert("Fel lösenord", "Försök igen.");
+                maxAttempts++;
+                if (maxAttempts >= 3)
+                {
+                    _dialog.Alert("Fel lösenord", "Max antal inloggningsförsök nådda\nOm du har glömt ditt lösenord,\nvänligen kontakta personalen");
+                    LoginWait();
+                }
+                else
+                {
+                    _dialog.Alert("Fel lösenord", "Försök igen.\nOm du har glömt ditt lösenord,\nvänligen kontakta personalen");
+                }
             }
             else
             {
@@ -163,10 +235,10 @@
                 await _repo.UpdateAsync(user).ConfigureAwait(false);
 
                 // Set current active user
-                NavService.HostScreen.CurrentUser = user;
+                _navigationService.HostScreen.CurrentUser = user;
 
                 // On successfull login go to frontpage
-                NavService.GoToAndReset(new LibraryMainViewModel());
+                _navigationService.GoToAndReset(new LibraryMainViewModel());
 
                 // Exit LoginViewModel
                 CancelCommand.Execute(null);
@@ -207,6 +279,9 @@
         {
             try
             {
+                NewUser.UserType = 3;
+                NewUser.Password = NewPassword.Unsecure();
+
                 // Insert new user
                 await _repo.AddAsync(NewUser);
                 _dialog.Alert("Registrerad", "Logga in med: " + NewUser.Email);
@@ -214,7 +289,8 @@
             catch (Exception ex)
             {
                 // Insert failed
-                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare:\n" + ex.Message);
+                _dialog.Alert("Misslyckades", "Kunde inte lägga till användare");
+                Debug.WriteLine(ex.Message);
             }
             finally
             {

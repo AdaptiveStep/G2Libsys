@@ -14,7 +14,7 @@
         {
             string result = model.Name.ToLower();
 
-            if (result.Last().Equals("s"))
+            if (result.Last().Equals('s') || result.Last().Equals('y'))
                 return result;
             else
             {

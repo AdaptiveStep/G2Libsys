@@ -1,8 +1,5 @@
-﻿using G2Libsys.Library;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Text;
 
 namespace G2Libsys.Converters
 {
@@ -15,7 +12,7 @@ namespace G2Libsys.Converters
                 1 => "Administratör",
                 2 => "Bibliotekarie",
                 3 => "Användare",
-                _ => value.ToString()
+                _ => value.ToString() + " övrigt"
             });
 
         }

@@ -1,18 +1,24 @@
-﻿<local:BasePage x:Class="G2Libsys.Views.FrontPageView"
-                x:TypeArguments="vm:FrontPageViewModel"
-                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                xmlns:local="clr-namespace:G2Libsys.Views"
-                xmlns:vm="clr-namespace:G2Libsys.ViewModels"
-                xmlns:uc="clr-namespace:G2Libsys.Controls"
-                xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-                mc:Ignorable="d"
-                d:DesignHeight="1500" d:DesignWidth="780"
-                FontFamily="{StaticResource MaterialDesignFont}">
+﻿<UserControl
+    x:Class="G2Libsys.Views.FrontPageView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:G2Libsys.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uc="clr-namespace:G2Libsys.Controls"
+    xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+    FontFamily="{DynamicResource MaterialDesignFont}"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
+    d:DesignHeight="1500"
+    d:DesignWidth="780"
+    mc:Ignorable="d">
 
-    <Grid Background="{StaticResource light_background}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="25" />
             <ColumnDefinition Width="2*" />
@@ -22,54 +28,37 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
             <RowDefinition Height="auto" />
-            
+
         </Grid.RowDefinitions>
 
-        <!--Header-->
-        <ScrollViewer Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3">
-            
-        <WrapPanel
-                   Orientation="Vertical"
-                   >
-        <TextBlock Text="Heta Boktips!"
-                   FontSize="30"
-                   Grid.Column="1"
-                   Grid.Row="0"
-                   HorizontalAlignment="Left"
-                   FontFamily="{StaticResource MaterialDesignFont}"
-                   FontWeight="Regular"/>
-        <uc:SmallPostControl 
-                
-                DataContext="{Binding}" 
-                x:Name="smallpostcontrol"
-                Margin="0 0 40 0"
-                />
+        <!--  Header  -->
+        <ScrollViewer
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="3"
+            Height="{Binding Path=ActualHeight, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UIElement}}">
 
-                <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" />
-            
-                <uc:BigPostControl 
-                
-                DataContext="{Binding}" 
-                x:Name="bigpostctrl"
-                Grid.ColumnSpan="2"
-                    
-                />
+            <WrapPanel Orientation="Vertical">
 
-                <GridSplitter Style="{StaticResource MaterialDesignScrollBarThumb}" Height="50"/>
+                <uc:SmallPostControl
+                    x:Name="smallpostcontrol"
+                    Margin="0,0,40,0"
+                    DataContext="{Binding}" />
 
+                <GridSplitter  />
 
-                <uc:SmallPostControl 
-                
-                DataContext="{Binding}" 
-                x:Name="smallpostonrl"
-                />
-        <uc:SmallPostControl 
-                
-                DataContext="{Binding}" 
-                x:Name="smallpostCntrl"
-                />
+                <uc:BigPostControl
+                    x:Name="bigpostctrl"
+                    Grid.ColumnSpan="2"
+                    DataContext="{Binding}" />
+
+                <GridSplitter Height="50"  />
+
+                <uc:SmallPostControl x:Name="smallpostonrl" DataContext="{Binding}" />
+
+                <uc:SmallPostControl x:Name="smallpostCntrl" DataContext="{Binding}" />
             </WrapPanel>
 
         </ScrollViewer>
     </Grid>
-</local:BasePage>
+</UserControl>

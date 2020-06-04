@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
+﻿using System.ComponentModel;
 
 namespace G2Libsys.ViewModels
 {
-    public class BaseNotificationClass : INotifyPropertyChanged
+    public abstract class BaseNotificationClass : INotifyPropertyChanged
     {
         #region PropertyChangedEvent
         /// <summary>
@@ -22,6 +19,5 @@ namespace G2Libsys.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
-
     }
 }

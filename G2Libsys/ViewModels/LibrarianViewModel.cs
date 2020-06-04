@@ -1,29 +1,32 @@
 ﻿using G2Libsys.Data.Repository;
 using G2Libsys.Library;
 using G2Libsys.Commands;
-using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Linq;
-using System.Collections.Generic;
-using System.Collections;
 
 namespace G2Libsys.ViewModels
 {
     public class LibrarianViewModel: BaseViewModel, IViewModel
     {
-        public ICommand addbutton { get; private set; }
-        public ICommand deletebutton { get; private set; }
-        public ICommand searchbutton { get; private set; }
-        public ICommand cancelsearch { get; private set; }
+        #region Fields
         private readonly IRepository<User> _repo;
-
-        //binda knapparna från viewen
-        //skapa datagrid
         private ObservableCollection<User> _users;
         private string searchstring;
+        private User selectedUser;
+        private User newUser;
+        #endregion
+
+        #region properties
+        public User SelectedUser
+        {
+            get => selectedUser;
+            set
+            {
+                selectedUser = value;
+                OnPropertyChanged(nameof(SelectedUser));
+            }
+        }
 
         public string SearchString
         {
@@ -34,7 +37,8 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(SearchString));
             }
         }
-        private User newUser;
+
+        
         public User NewUser
         {
             get => newUser;
@@ -42,19 +46,6 @@ namespace G2Libsys.ViewModels
             {
                 newUser = value;
                 OnPropertyChanged(nameof(NewUser));
-            }
-        }
-
-        
-        private User oldUser;
-
-        public User OldUser
-        {
-            get => oldUser;
-            set
-            {
-                oldUser = value;
-                OnPropertyChanged(nameof(oldUser));
             }
         }
 
@@ -67,7 +58,24 @@ namespace G2Libsys.ViewModels
                 OnPropertyChanged(nameof(Users));
             }
         }
-        
+        #endregion
+
+        #region Commands
+        public ICommand addbutton { get; private set; }
+        public ICommand deletebutton { get; private set; }
+        public ICommand searchbutton { get; private set; }
+        public ICommand cancelsearch { get; private set; }
+        private ICommand goToUser;
+
+        public ICommand GoToUser => goToUser ??=
+            new RelayCommand(_ =>
+            {
+                _navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.CreateNewInstance(new UserAdministrationViewModel(SelectedUser));
+            }, _ => SelectedUser != null);
+
+        #endregion
+
+        #region Constructor
 
         public LibrarianViewModel()
         {
@@ -75,7 +83,7 @@ namespace G2Libsys.ViewModels
 
             _repo = new GeneralRepository<User>();
             Users = new ObservableCollection<User>();
-            //Users.CollectionChanged += Users_CollectionChanged;
+            
             NewUser = new User();
             GetUsers();
             addbutton = new RelayCommand(x => AddUser());
@@ -86,52 +94,43 @@ namespace G2Libsys.ViewModels
 
         }
 
-        
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// get search results for all users with usertype 3
+        /// </summary>
         public async void Search()
         {
             Users.Clear();
             Users = new ObservableCollection<User>((await _repo.GetRangeAsync(SearchString)).Where(x => x.UserType == 3));
             
         }
-        
-        //private void Users_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        //{
-
-        //    if (e.OldItems != null)
-        //        foreach (INotifyPropertyChanged i in e.OldItems)
-        //            i.PropertyChanged -= itempropchanged;
-        //    if (e.NewItems != null)
-        //        foreach (INotifyPropertyChanged i in e.NewItems)
-        //            i.PropertyChanged -= itempropchanged;
-           
-
-        //}
-        //void itempropchanged(object sender, PropertyChangedEventArgs e) { }
-
+        /// <summary>
+        /// get all users with usertype 3
+        /// </summary>
         public async void GetUsers()
         {
             Users = new ObservableCollection<User>((await _repo.GetAllAsync()).ToList().Where(x => x.UserType == 3));
             
         }
-        
-        
+        /// <summary>
+        /// delete user
+        /// </summary>
         public async void DeleteUser()
         {
-            if (OldUser != null)
-                await _repo.DeleteByIDAsync(OldUser.ID);
+            if (SelectedUser != null)
+                await _repo.RemoveAsync(SelectedUser.ID);
             GetUsers();
         }
+        /// <summary>
+        /// create a new user
+        /// </summary>
         public async void AddUser()
         {
            await _repo.AddAsync(NewUser);
             GetUsers();
         }
-        //lista av besökare
-        //ta bort besökare funktion
-        //lägga till besökare funktion
-        //söka efter besökare. antigen en funtion eller i datagrid
-        //registrera lånekort
-
-       
+        #endregion
     }
 }

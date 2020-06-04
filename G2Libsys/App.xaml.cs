@@ -1,11 +1,4 @@
-﻿using G2Libsys.Services;
-using G2Libsys.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using G2Libsys.ViewModels;
 using System.Windows;
 
 namespace G2Libsys
@@ -21,6 +14,9 @@ namespace G2Libsys
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
+            // Initiate the inversion of control for serviceprovider
+            IoC.SetUp();
 
             var app = new MainWindow { DataContext = new MainWindowViewModel() };
             app.Show();

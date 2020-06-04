@@ -11,14 +11,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace G2Libsys.Controls
+namespace G2Libsys.Dialogs
 {
     /// <summary>
-    /// Interaction logic for LibraryObjectItemControl.xaml
+    /// Interaction logic for LibraryObjectDialogView.xaml
     /// </summary>
-    public partial class LibraryObjectItemControl : UserControl
+    public partial class LibraryObjectDialogView : UserControl
     {
-        public LibraryObjectItemControl()
+        public LibraryObjectDialogView()
         {
             InitializeComponent();
         }

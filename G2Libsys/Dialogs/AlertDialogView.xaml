@@ -1,69 +1,56 @@
 ﻿<UserControl
-    x:Class="G2Libsys.Dialogs.AlertDialogView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:G2Libsys.Dialogs"
-    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-    <Grid>
-        <materialDesign:Card
-            Width="180"
-            Height="120"
-            Margin="20"
-            Padding="0"
-            materialDesign:ShadowAssist.ShadowDepth="Depth5"
-            BorderBrush="Black"
-            BorderThickness="2"
-            UniformCornerRadius="18">
-            <materialDesign:Card.Background>
-                <SolidColorBrush Opacity="0.6" Color="Black" />
-            </materialDesign:Card.Background>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Border Background="Black" Opacity="0.2" />
-                <TextBlock
-                    Height="26"
-                    Margin="2"
-                    Padding="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="16"
-                    FontWeight="DemiBold"
-                    Foreground="{StaticResource accent_light}"
-                    Style="{StaticResource MaterialDesignBody2TextBlock}"
-                    Text="{Binding Title}" />
-                <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
+	x:Class="G2Libsys.Dialogs.AlertDialogView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:G2Libsys.Dialogs"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d">
+	<Grid>
+		<materialDesign:Card
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			materialDesign:ShadowAssist.ShadowDepth="Depth5"
+			Background="{DynamicResource MaterialDesignPaper}"
+			UniformCornerRadius="18">
 
-                    <TextBlock
-                        Margin="0,0,0,6"
-                        Padding="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="White"
-                        Text="{Binding Message}"
-                        TextWrapping="WrapWithOverflow" />
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto" />
+					<RowDefinition />
+				</Grid.RowDefinitions>
+				<Border Opacity="0.2" />
+				<TextBlock
+					Height="30"
+					Padding="10"
+					Background="{DynamicResource MaterialDesignCardBackground}"
+					Text="{Binding Title}"
+					TextAlignment="Center" />
 
-                    <Button
-                        Grid.Row="1"
-                        Height="32"
-                        Padding="0"
-                        Command="{Binding OKCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
-                        Content="OK"
-                        FontSize="18"
-                        Style="{StaticResource MaterialDesignRaisedDarkButton}" />
-                </Grid>
-            </Grid>
-        </materialDesign:Card>
-    </Grid>
+				<Grid Grid.Row="1">
+					<Grid.RowDefinitions>
+						<RowDefinition />
+						<RowDefinition Height="auto" />
+					</Grid.RowDefinitions>
+
+					<TextBlock
+						Margin="0,0,0,6"
+						Padding="20"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						Text="{Binding Message}"
+						TextWrapping="WrapWithOverflow" />
+
+					<Button
+						Grid.Row="1"
+						Height="32"
+						Padding="0"
+						Command="{Binding OKCommand}"
+						CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"
+						Content="OK" />
+				</Grid>
+			</Grid>
+		</materialDesign:Card>
+	</Grid>
 </UserControl>

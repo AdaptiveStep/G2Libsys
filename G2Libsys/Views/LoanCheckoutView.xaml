@@ -1,0 +1,112 @@
+﻿<local:BasePage
+	x:Class="G2Libsys.Views.LoanCheckoutView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:local="clr-namespace:G2Libsys.Views"
+	xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:vm="clr-namespace:G2Libsys.ViewModels"
+	d:DesignHeight="1000"
+	d:DesignWidth="1000"
+	x:TypeArguments="vm:LoanCheckoutViewModel"
+	FontFamily="{DynamicResource MaterialDesignFont}"
+	FontSize="16"
+	TextElement.FontSize="13"
+	TextElement.FontWeight="Regular"
+	TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+	TextOptions.TextFormattingMode="Ideal"
+	TextOptions.TextRenderingMode="Auto"
+	mc:Ignorable="d">
+	<Grid>
+		<Rectangle
+			Grid.RowSpan="3"
+			Grid.ColumnSpan="3"
+			Opacity="0.7">
+			<Rectangle.Fill>
+				<SolidColorBrush Color="Black" />
+			</Rectangle.Fill>
+			<Rectangle.InputBindings>
+				<MouseBinding
+					Command="{Binding CancelCommand}"
+					CommandParameter="{Binding}"
+					MouseAction="LeftClick" />
+			</Rectangle.InputBindings>
+		</Rectangle>
+
+		<materialDesign:Card
+			HorizontalAlignment="Center"
+			VerticalAlignment="Center"
+			UniformCornerRadius="18">
+			<StackPanel Orientation="Vertical">
+				<TextBlock
+					Padding="10"
+					Background="{StaticResource MaterialDesignPaper}"
+					Text="Varukorg"
+					TextAlignment="Center" />
+
+				<ListView
+					Grid.Column="1"
+					Margin="5,10,5,10"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Top"
+					ItemsSource="{Binding LoanObj}"
+					SelectedItem="{Binding SelectedItem}">
+
+					<ListView.ItemTemplate>
+						<DataTemplate>
+
+							<materialDesign:Card
+								Grid.Column="1"
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Stretch">
+								<Grid>
+
+
+									<Border
+										Grid.Column="2"
+										Width="20"
+										Height="20"
+										HorizontalAlignment="Right"
+										VerticalAlignment="Top">
+
+										<Border.InputBindings>
+											<MouseBinding
+												Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=DataContext.DeleteItem}"
+												CommandParameter="{Binding}"
+												MouseAction="LeftClick" />
+										</Border.InputBindings>
+										<materialDesign:PackIcon
+											HorizontalAlignment="Center"
+											VerticalAlignment="Center"
+											Kind="TrashCan" />
+									</Border>
+									<TextBlock
+										Margin="10"
+										HorizontalAlignment="Left"
+										Text="{Binding Title}"
+										TextWrapping="Wrap" />
+								</Grid>
+							</materialDesign:Card>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+
+				</ListView>
+
+
+
+
+				<StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+					<Button
+						Margin="0"
+						Command="{Binding Confirm}"
+						Content="Checka ut" />
+					<Button
+						Margin="10,0,0,0"
+						Command="{Binding Clear}"
+						Content="Töm Varukorgen" />
+				</StackPanel>
+			</StackPanel>
+		</materialDesign:Card>
+	</Grid>
+</local:BasePage>

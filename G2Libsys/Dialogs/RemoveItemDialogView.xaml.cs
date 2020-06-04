@@ -1,5 +1,4 @@
-﻿using G2Libsys.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -12,14 +11,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace G2Libsys.Views
+namespace G2Libsys.Dialogs
 {
     /// <summary>
-    /// Interaction logic for UserReservationsView.xaml
+    /// Interaction logic for RemoveItemDialogView.xaml
     /// </summary>
-    public partial class UserReservationsView : BasePage<UserReservationsViewModel>
+    public partial class RemoveItemDialogView : UserControl
     {
-        public UserReservationsView()
+        public RemoveItemDialogView()
         {
             InitializeComponent();
         }

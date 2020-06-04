@@ -9,18 +9,29 @@
     using System.Windows.Threading;
     using G2Libsys.Commands;
     using G2Libsys.Services;
+    using Microsoft.Extensions.DependencyInjection;
     #endregion
 
     public abstract class BaseViewModel : BaseNotificationClass
     {
         #region Fields
         /// <summary>
+        /// Navigation service
+        /// </summary>
+        protected readonly INavigationService _navigationService;
+
+        /// <summary>
+        /// Dialog service
+        /// </summary>
+        protected readonly IDialogService _dialog;
+
+        /// <summary>
         /// Provides services for managing the queue of work on the current thread
         /// </summary>
         protected Dispatcher dispatcher;
 
         /// <summary>
-        /// Check if in design mode
+        /// Check if applciation is in design mode
         /// </summary>
         protected bool IsInDesignMode => DesignerProperties.GetIsInDesignMode(new DependencyObject());
         #endregion
@@ -37,13 +48,18 @@
         public ICommand OpenSubVM { get; protected set; }
         #endregion
 
+
         #region Constructor
         /// <summary>
         /// Default constructor
         /// </summary>
-        public BaseViewModel()
+        protected BaseViewModel()
         {
             if (IsInDesignMode) return;
+
+            _navigationService = IoC.ServiceProvider.GetService<INavigationService>();
+            _dialog            = IoC.ServiceProvider.GetService<IDialogService>()
+                               ?? new DialogService();
 
             // Set dispatcher
             dispatcher = Application.Current.Dispatcher;
@@ -57,7 +73,7 @@
                     var viewModel = (IViewModel)Activator.CreateInstance(vm);
 
                     // Set CurrentViewModel
-                    NavService.HostScreen.CurrentViewModel = NavService.GetViewModel(viewModel);
+                    _navigationService.HostScreen.CurrentViewModel = _navigationService.GetViewModel(viewModel);
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });
@@ -71,7 +87,7 @@
                     var viewModel = (ISubViewModel)Activator.CreateInstance(vm);
 
                     // Set SubViewModel
-                    NavService.HostScreen.SubViewModel = (ISubViewModel)NavService.GetViewModel(viewModel);
+                    _navigationService.HostScreen.SubViewModel = (ISubViewModel)_navigationService.GetViewModel(viewModel);
                 }
                 catch { Debug.WriteLine("Couldn't find " + vm.ToString()); }
             });

@@ -17,6 +17,7 @@
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0,-10,0,0" />
             <Setter Property="Header" Value="{Binding Title}" />
+            <Setter Property="Foreground" Value="White"/>
             <Setter Property="Command" Value="{Binding Action}" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -79,7 +80,7 @@
             Style="{StaticResource MaterialDesignFlatButton}">
             <Button.Content>
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="C:\Users\CM\source\repos\AdaptiveStep\G2Libsys\G2Libsys\Resources\Images\LIBSYS.png" Stretch="Fill" />
+                    <Image Source="..\Resources\Images\LIBSYS.png" Stretch="Fill" />
                     <TextBlock
                         Margin="10,0,0,4"
                         HorizontalAlignment="Center"
@@ -131,24 +132,22 @@
 
 
         <!--  Some Button  -->
-        <!--<Button
+        <Button
             Grid.Column="2"
             Height="45"
-            Padding="0"
-            Command="{Binding NavigateToVM}"
-            CommandParameter="{x:Type vm:TestVM}"
-            Style="{StaticResource MaterialDesignFlatButton}">
+            Padding="5"
+            Command="{Binding InfoButton}"
+            
+            Style="{StaticResource MaterialDesignFlatButton}"
+            >
             <Button.Content>
-                <TextBlock
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    FontSize="20"
-                    FontWeight="Regular"
-                    Foreground="{StaticResource PrimaryHueDarkForegroundBrush}"
-                    Style="{StaticResource MaterialDesignHeadline6TextBlock}"
-                    Text="Fråga oss!" />
+                <materialDesign:PackIcon
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Kind="QuestionMarkCircleOutline"
+                    Width="auto" Height="auto"/>
             </Button.Content>
-        </Button>-->
+        </Button>
 
         <!--  Login Button  -->
         <Button
@@ -173,63 +172,6 @@
 
         <Grid Grid.Column="3" Visibility="{Binding IsLoggedIn, Converter={converter:BoolToVisibilityConverter}}">
 
-            <!--<Menu
-                Padding="0"
-                HorizontalAlignment="Stretch"
-                Background="Black"
-                FlowDirection="RightToLeft"
-                FontSize="20">
-                <Menu.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Grid />
-                    </ItemsPanelTemplate>
-                </Menu.ItemsPanel>
-                <MenuItem
-                    Padding="0"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Center"
-                    ItemContainerStyle="{StaticResource MenuItemStyle}">
-                    <MenuItem.Header>
-                        <Border
-                            Margin="0,0,-70,0"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Transparent">
-                            <TextBlock Text="Mina sidor" />
-                        </Border>
-                    </MenuItem.Header>
-                    <MenuItem
-                        Width="160"
-                        Margin="0,-10,0,0"
-                        Command="{Binding NavigateToVM}"
-                        CommandParameter="{x:Type vm:TestVM}">
-                        <MenuItem.Header>
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="Profil" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <MenuItem Width="160" Command="{Binding Path=MenuItems[0].Action}">
-                        <MenuItem.Header>
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="{Binding Path=MenuItems[0].Title}" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                    <Separator Padding="0" />
-                    <MenuItem Command="{Binding LogOutCommand}">
-                        <MenuItem.Header>
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="Logout" />
-                        </MenuItem.Header>
-                    </MenuItem>
-                </MenuItem>
-            </Menu>-->
-
             <Menu
                 Padding="0"
                 HorizontalAlignment="Stretch"
@@ -237,6 +179,7 @@
                 BorderBrush="Transparent"
                 FlowDirection="RightToLeft"
                 FontSize="20"
+                Foreground="White"
                 IsMainMenu="true">
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -256,7 +199,7 @@
                             VerticalAlignment="Center"
                             Background="Transparent">
                             <TextBlock
-                                Margin="0,0,-70,0"
+                                Margin="0,0,-50,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Text="Mina sidor" />

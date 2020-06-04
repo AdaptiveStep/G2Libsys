@@ -7,14 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Bild_saknas.png" />
+    <None Remove="Resources\Images\fg.jpg" />
     <None Remove="Resources\Images\LIBSYS.png" />
+    <None Remove="Views\back-icon-isolated-on-white-background-back-icon-vector-26555694.jpg" />
+    <None Remove="Views\nedladdning.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Dapper" Version="2.0.35" />
-    <PackageReference Include="DapperExtensions.DotnetCore" Version="1.0.1" />
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MaterialDesignColors" Version="1.2.3" />
     <PackageReference Include="MaterialDesignThemes" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,7 +30,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Bild_saknas.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\fg.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\Images\LIBSYS.png" />
+    <Resource Include="Resources\Images\nedladdning.png" />
   </ItemGroup>
 
   <ItemGroup>

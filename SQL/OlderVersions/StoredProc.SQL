@@ -22,7 +22,7 @@ Create proc usp_verifyemail_users
     end
     GO
 
-Create proc usp_insert_users
+Alter proc usp_insert_users
     @ID int = null,
     @LoanID numeric = null,
     @Email varchar(100),
@@ -74,6 +74,28 @@ Create proc usp_getall_users
     as
     begin
         select * from users;
+    end
+    GO
+
+create proc usp_getall_category
+    as
+    begin
+        select * from Categories;
+    end
+    GO
+
+create proc usp_getall_libraryobjects
+    as
+    begin
+        select * from LibraryObjects;
+    end
+    GO
+
+Create proc usp_remove_libraryobjects
+    @ID int
+    as
+    begin
+		delete from libraryobjects where ID = @ID
     end
     GO
 -------------------------------------------------------------

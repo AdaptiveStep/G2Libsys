@@ -7,10 +7,6 @@
     xmlns:vs="clr-namespace:G2Libsys.Views">
 
     <!--  Match ViewModels To Views  -->
-    <DataTemplate DataType="{x:Type vm:FrontPageViewModel}">
-        <vs:FrontPageView />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type vm:TestVM}">
         <vs:TestView />
     </DataTemplate>
@@ -27,20 +23,12 @@
         <vs:LibraryMainView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type vm:LibraryObjectViewModel}">
-        <vs:LibraryObjectView />
-    </DataTemplate>
-
     <DataTemplate DataType="{x:Type vm:LibraryObjectInfoViewModel}">
         <vs:LibraryObjectInfoView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:LibraryObjectAdministrationViewModel}">
         <vs:LibraryObjectAdministrationView />
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type vm:UserReservationsViewModel}">
-        <vs:UserReservationsView />
     </DataTemplate>
 
     <DataTemplate DataType="{x:Type vm:UserProfileViewModel}">
@@ -55,6 +43,12 @@
         <vs:LibrarianView />
     </DataTemplate>
 
+    <DataTemplate DataType="{x:Type vm:LoanCheckoutViewModel}">
+        <vs:LoanCheckoutView />
+    </DataTemplate>
+
+
+
 
 
 
@@ -66,5 +60,17 @@
     <DataTemplate DataType="{x:Type dialog:ConfirmDialogViewModel}">
         <dialog:ConfirmDialogView />
     </DataTemplate>
+
+    <DataTemplate DataType="{x:Type dialog:LibraryObjectDialogViewModel}">
+        <dialog:LibraryObjectDialogView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type dialog:ReasonDialogViewModel}">
+        <dialog:ReasonDialogView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type dialog:RemoveItemDialogViewModel}">
+        <dialog:RemoveItemDialogView />
+    </DataTemplate>
+
 
 </ResourceDictionary>
