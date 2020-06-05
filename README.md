@@ -2,7 +2,7 @@
 G2Systems - Library System Agile Implementation
 
 ## Requirement for running: 
-* SQL Server
+* SQL Server 2019 or later
 * .Net Core 3
 
 ## Installation: 
