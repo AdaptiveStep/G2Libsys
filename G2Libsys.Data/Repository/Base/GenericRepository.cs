@@ -35,7 +35,6 @@
         /// Connection string
         /// </summary>
         private readonly string _connectionString;
-        private string bkupString;
 
         /// <summary>
         /// Name of target table
@@ -60,38 +59,7 @@
 
         #region Connection
 
-        //protected virtual IDbConnection GetConnection => new SqlConnection(_connectionString);
-
-        // Temporär lösning för flera connectionstrings
-        protected virtual IDbConnection Connection
-        {
-            get
-            {
-                try
-                {
-                    var conn = new SqlConnection(_connectionString);
-                    conn.Open();
-                    return conn;
-                }
-                catch
-                {
-                    try
-                    {
-                        bkupString = ConfigurationManager.ConnectionStrings["sqlexpress"].ConnectionString;
-                        var conn = new SqlConnection(bkupString);
-                        conn.Open();
-                        return conn;
-                    }
-                    catch
-                    {
-                        bkupString = ConfigurationManager.ConnectionStrings["sqlcustom"].ConnectionString;
-                        var conn = new SqlConnection(bkupString);
-                        conn.Open();
-                        return conn;
-                    }
-                }
-            }
-        }
+        protected virtual IDbConnection Connection => new SqlConnection(_connectionString);
 
         #endregion
 
