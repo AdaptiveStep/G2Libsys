@@ -2,8 +2,8 @@
 G2Systems - Library System Agile Implementation
 
 ## Requirement for running: 
-SQL Server
-.Net Core 3
+* SQL Server
+* .Net Core 3
 
 ## Installation: 
 * 1: Clone the project
