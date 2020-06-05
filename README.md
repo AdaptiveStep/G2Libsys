@@ -12,8 +12,8 @@ SQL Server
 * -> Press Play in visual studio.
 
 ## Exempel admin Login: 
-Username: Admin@johan.com 
-Password: 123
+* Username: Admin@johan.com 
+* Password: 123
 
 ## Thanks!
 
