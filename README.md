@@ -1,24 +1,21 @@
 # G2Libsys
 G2Systems - Library System Agile Implementation
 
-Projekt:
-https://github.com/AdaptiveStep/G2Libsys
-
-Requirement for running: 
+## Requirement for running: 
 SQL Server
 .Net Core 3
 
-Installation: ALT1: 
-1: Clone the project
-2: setup one connection in App.config
-3: Run the G2Libsys.SQL in your database
--> Press Play in visual studio.
+## Installation: 
+* 1: Clone the project
+* 2: setup one connection in App.config
+* 3: Run the G2Libsys.SQL in your database
+* -> Press Play in visual studio.
 
-Exempel admin Login: 
+## Exempel admin Login: 
 Username: Admin@johan.com 
 Password: 123
 
-Thanks!
+## Thanks!
 
 ![Login](https://i.imgur.com/dHVLnNV.png)
 ![Startpage](https://i.imgur.com/lU0RNqT.png)
